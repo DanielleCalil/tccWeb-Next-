@@ -1,0 +1,32 @@
+.searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px 16px;
+}
+
+.searchContainer .input {
+    padding-left: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 17px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+    width: 42%;
+    margin-left: 10px;
+}
+
+.searchContainer .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.icone {
+    height: 2.4rem;
+    width: 2.4rem;
+}

@@ -1,14 +1,14 @@
 import styles from './index.module.css';
 
-import { MdSearch } from "react-icons/md";
+import { IoSearchOutline } from "react-icons/io5";
 
-export default function Searchbar () {
+export default function BarraPesquisa () {
     return(
         <div className="containerGlobal">
              <div className={styles.searchContainer}>
                 <input type="text" placeholder="Pesquisar" id="search-input" className={styles.input} />
                 <button type="button" className={styles.button}>
-                    <MdSearch className={styles.icone} />
+                    <IoSearchOutline className={styles.icone} />
                 </button>
             </div>
         </div>

@@ -16,6 +16,7 @@
 
 .imgFrase {
   width: 50%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;

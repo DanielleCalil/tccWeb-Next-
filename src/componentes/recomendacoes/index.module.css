@@ -3,6 +3,7 @@
     margin: 0 auto;
     padding-top: 25px;
     padding-bottom: 10px;
+    text-align: left;
 }
 
 .title {
@@ -10,6 +11,7 @@
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
+    text-align: left !important;
 }
 
 .bookList {

@@ -1,6 +1,7 @@
 
 import "./globals.css";
 import Cabecalho from "@/componentes/cabecalho";
+import Rodape from "@/componentes/rodape";
 
 export const metadata = {
   title: "SmoakBook",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
         <div className="layout">
           <Cabecalho />
           {children}
+          <Rodape />
         </div>
       </body>
     </html>

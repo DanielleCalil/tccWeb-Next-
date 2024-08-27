@@ -1,6 +1,15 @@
-.header {
+.containerNav {
+    display: flex;
     justify-content: center;
     align-items: center;
+    color: #000;
+    border-bottom: 0.4rem solid #FFF;
+    font-size: 4.4rem;
+    width: 100%;
+    max-width: 112.8rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 100%;
 }
 
 .retangGreen {
@@ -32,6 +41,10 @@
     height: 0.875rem; 
     background-color: #FF735C;
 }
+
+
+
+
 
 .navbar {
     background-color: #FFF;
@@ -76,8 +89,51 @@
 }
 
 .navbar ul li a.active {
+    color: black;
+    border: 0.4rem solid #FF735C;
+}
+
+.navbar ul li a.hover {
     background-color: #FF735C;
     color: black;
+}
+
+.navbar ul li a.sair {
+    color: red;
+}
+
+.navbar .header .menuMobile {
+    display: none;
+}
+
+.navbar .menuMobileExpandidon {
+    display: none;
+}
+
+.navbar .menuMobileExpandidos a {
+    display: none;
+    border: 0.4rem solid #FF735C;
+    width: 100%;
+    height: 4rem;
+    color: #FFF;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.navbar .menuMobileExpandidos a:hover {
+    border: 0.4rem solid #FF735C;
+    color: #FFF;
+}
+
+.navbar .menuMobileExpandidos a.active {
+    background-color: #FF735C;
+    color: #FFF;
+    border: 0.4rem solid #FF735C;
 }
 
 .navbar ul li a.sair {

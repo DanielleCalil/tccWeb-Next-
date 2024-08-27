@@ -1,5 +1,6 @@
 
 import "./globals.css";
+import Cabecalho from "@/componentes/cabecalho";
 
 export const metadata = {
   title: "SmoakBook",
@@ -9,7 +10,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
-      <body>{children}</body>
+      <body>
+        <div className="layout">
+          <Cabecalho />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

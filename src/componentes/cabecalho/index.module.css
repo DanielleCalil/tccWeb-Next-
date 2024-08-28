@@ -97,7 +97,11 @@
     background-color: #FF735C;
 }
 
-.containerNav .menu .menuGrande .sair {
+.containerNav .menu .menuGrande .sairMenuGrande {
+    color: red;
+}
+
+.containerNav .menu .menuGrande .sairMobile {
     color: red;
 }
 
@@ -161,8 +165,13 @@
     margin-right: 5px;
 }
 
-.containerNav .menuMobileExpandidos a.sair {
+.containerNav .menuMobileExpandidos a.sairMenuGrande {
     color: red;
+}
+
+.containerNav .menuMobileExpandidos a.sairMobile {
+    color: red;
+    border-bottom: 1px solid #000;
 }
 
 .containerNav .menuMobileExpandidos .tpiconSair {

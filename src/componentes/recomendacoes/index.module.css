@@ -3,21 +3,20 @@
     margin: 0 auto;
     padding-top: 25px;
     padding-bottom: 10px;
-    text-align: left;
+    display: block; /* Pode ser removido se não precisar de layout flexível */
 }
 
 .title {
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 18px;
-    text-align: left !important;
+    text-align: left; /* Alinha o texto do título à esquerda */
+    margin: 0; /* Remove margens que possam afetar o alinhamento */
+    padding: 0; /* Remove preenchimento que possa afetar o alinhamento */
 }
 
+
 .bookList {
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
@@ -49,6 +48,7 @@
     color: #000;
     margin: 0;
     margin-bottom: 8px;
+    margin-top: 2px;
     font-weight: bold;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
@@ -67,11 +67,13 @@
 
 .bookTitle {
     font-size: 14px;
-    margin: 0 0 4px;
+    margin: 4px 0 4px;
+    font-weight: bold;
+    line-height: 1.2;
 }
 
 .bookAuthor {
     font-size: 12px;
     color: #555;
-    margin: 0;
+    margin: 4px;
 }

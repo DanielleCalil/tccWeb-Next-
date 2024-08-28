@@ -1,3 +1,7 @@
+.main {
+  padding: 20px;
+}
+
 .img {
   align-items: center;
   justify-content: center;
@@ -21,4 +25,5 @@
   align-items: center;
   justify-content: center;
   border-radius: 20px;
+  margin-bottom: 20px;
 }

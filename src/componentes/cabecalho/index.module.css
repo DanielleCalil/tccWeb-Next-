@@ -6,14 +6,14 @@
     width: 100%;
 }
 
-.containerNav .navbar {
+.containerNav .menu {
     display: flex;
     align-items: center;
     justify-content: space-between;   
     width: 100%; 
 }
 
-.navbar {
+.menu {
     background-color: #FFF;
     overflow: hidden;
     justify-content: center;
@@ -33,6 +33,15 @@
     justify-content: center;
     align-items: center;
     position: relative;
+}
+
+.containerNav .menu .menuMobile .icon {
+    color: #FFF;
+    position: absolute;
+    height: 30px;
+    width: auto;
+    bottom: 14px;
+    left: 30px;
 }
 
 .imgLogo {
@@ -55,66 +64,57 @@
     background-color: #FF735C;
 }
 
-.containerNavbar {
+.containerNav .menu .menuGrande {
     display: flex;
     align-items: center;
-    justify-content: space-between;   
+    justify-content: center;
+    text-align: center;
     width: 100%; 
-}
-
-.menu {
-    list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
-    flex-grow: 1;
-    height: 48px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
-.menu a {
+.containerNav .menu .menuGrande a {
     display: flex;
     align-items: center;
     justify-content: center;
     color: black;
     text-align: center;
-    padding: 15.6px 29px;
     text-decoration: none;
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
+    height: 5rem;
+    flex-direction: row;
+    cursor: pointer;
+    flex-wrap: wrap;
+    flex-grow: 1;
 }
 
-.navbar .menu a i {
-    font-size: 1.375rem;
-    margin-right: 0.5rem;
-}
-
-.navbar .menu a.active {
+.containerNav .menu .menuGrande a.active {
     color: black;
     background-color: #FF735C;
 }
 
-.navbar .menu .sair {
+.containerNav .menu .menuGrande .sair {
     color: red;
 }
 
-.menu .tpicon {
+.containerNav .menu .menuGrande .tpicon {
     margin-right: 5px;
 }
 
-.menu .tpiconSair {
+.containerNav .menu .menuGrande .tpiconSair {
     margin-right: 5px;
     color: red;
 }
 
-.navbar .containerNavbar .menu {
+.containerNav .menu .menuGrande {
     display: flex;
 }
 
-/* .navbar .containerNavbar .menu a {
+/* .containerNav .menu .menuGrande a {
     width: 12rem;
     height: 8rem;
     color: #000;
@@ -129,74 +129,81 @@
     cursor: pointer;
 } */
 
-.menuMobile {
+.containerNav .menu .menuMobile {
     display: none;
 }
 
-.menuMobileExpandidon {
+.containerNav .menuMobileExpandidon {
     display: none;
 }
 
-.menuMobileExpandidos a {
+.containerNav .menuMobileExpandidos a {
     display: none;
-    border: 0.4rem solid #FF735C;
     width: 100%;
     height: 4rem;
-    color: #FFF;
+    color: #000;
     text-decoration: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     font-size: 1.6rem;
-    font-weight: bold;
     cursor: pointer;
+    font-weight: 300;
+    padding-left: 15px;
 }
 
-.menuMobileExpandidos a:hover {
-    border: 0.4rem solid #FF735C;
-    color: #FFF;
-}
-
-.menuMobileExpandidos a.active {
+.containerNav .menuMobileExpandidos a.active {
     background-color: #FF735C;
-    color: #FFF;
-    border: 0.4rem solid #FF735C;
+    color: #000;
 }
 
-.navbar .menu a.sair {
+.containerNav .menuMobileExpandidos .tpicon {
+    margin-right: 5px;
+}
+
+.containerNav .menuMobileExpandidos a.sair {
     color: red;
 }
 
-.navbar .menu .icon {
-    color: #B71C1C;
-    font-size: 4.4rem;
+.containerNav .menuMobileExpandidos .tpiconSair {
+    color: red;
+    user-select: none;
+    margin-right: 5px;
+}
+
+.menu .menuGrande a.sair {
+    color: red;
+}
+
+.menu .menuGrande .tpiconSair {
+    color: red;
     user-select: none;
 }
 
 @media screen and (max-width: 940px) {
-    .navbar {
+    .containerNav {
         flex-direction: column;
     }
 
-    .navbar .menu {
-        width: 88%;
+    .containerNav .menu {
+        width: 100%;
         justify-content: space-between;
     }
 
-    .navbar .menu {
+    .containerNav .menu .menuGrande {
         display: none;
     }
 
-    .menuMobile {
+    .containerNav .menu .menuMobile {
         display: flex;
     }
 
 }
 
 @media screen and (max-width: 940px) {
-    .menuMobileExpandidos a {
+    .containerNav .menuMobileExpandidos {
         display: flex;
         flex-direction: column;
-        width: 92%;
+        width: 100%;
     }
 }

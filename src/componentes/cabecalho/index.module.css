@@ -1,3 +1,18 @@
+.containerNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    width: 100%;
+}
+
+.containerNav .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   
+    width: 100%; 
+}
+
 .navbar {
     background-color: #FFF;
     overflow: hidden;
@@ -26,8 +41,8 @@
 }
 
 .imgEtec {
-    height: 34px;
-    width: 75px;
+    height: 35px;
+    width: 85px;
     position: absolute;
     right: 0;
     bottom: 12px;
@@ -40,7 +55,14 @@
     background-color: #FF735C;
 }
 
-.navbar .menu {
+.containerNavbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   
+    width: 100%; 
+}
+
+.menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -52,7 +74,7 @@
     height: 48px;
 }
 
-.navbar .menu a {
+.menu a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,15 +110,34 @@
     color: red;
 }
 
-.navbar .menu .menuMobile {
+.navbar .containerNavbar .menu {
+    display: flex;
+}
+
+/* .navbar .containerNavbar .menu a {
+    width: 12rem;
+    height: 8rem;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+} */
+
+.menuMobile {
     display: none;
 }
 
-.navbar .menuMobileExpandidon {
+.menuMobileExpandidon {
     display: none;
 }
 
-.navbar .menuMobileExpandidos a {
+.menuMobileExpandidos a {
     display: none;
     border: 0.4rem solid #FF735C;
     width: 100%;
@@ -111,12 +152,12 @@
     cursor: pointer;
 }
 
-.navbar .menuMobileExpandidos a:hover {
+.menuMobileExpandidos a:hover {
     border: 0.4rem solid #FF735C;
     color: #FFF;
 }
 
-.navbar .menuMobileExpandidos a.active {
+.menuMobileExpandidos a.active {
     background-color: #FF735C;
     color: #FFF;
     border: 0.4rem solid #FF735C;
@@ -142,18 +183,18 @@
         justify-content: space-between;
     }
 
-    .navbar .menu .menuGrande {
+    .navbar .menu {
         display: none;
     }
 
-    .navbar .menu .menuMobile {
+    .menuMobile {
         display: flex;
     }
 
 }
 
 @media screen and (max-width: 940px) {
-    .navbar .menuMobileExpandidos {
+    .menuMobileExpandidos a {
         display: flex;
         flex-direction: column;
         width: 92%;

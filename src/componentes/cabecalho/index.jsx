@@ -23,7 +23,7 @@ export default function Cabecalho() {
     }
 
     return (
-        <div className="containerGlobal">
+        <header className={styles.containerNav}>
             <div className={styles.navbar}>
                 <div className={styles.retangGreen}>
                     <Image
@@ -43,76 +43,79 @@ export default function Cabecalho() {
                 </div>
                 <div className={styles.retangOrange}></div>
 
-                <nav className={styles.menu}>
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoHomeOutline className={styles.tpicon} />
-                        Início
-                    </Link>
+                <nav className={styles.containerNavbar}>
+                    <div className={styles.menu}>
+                        <Link
+                            href="/"
+                            className={rota === "/" ? styles.active : ""}>
+                            <IoHomeOutline className={styles.tpicon} />
+                            Início
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoPersonOutline className={styles.tpicon} />
-                        Perfil
-                    </Link>
+                        <Link
+                            href="/"
+                            className={rota === "/" ? styles.active : ""}>
+                            <IoPersonOutline className={styles.tpicon} />
+                            Perfil
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoTrailSignOutline className={styles.tpicon} />
-                        Seleção
-                    </Link>
+                        <Link
+                            href="/"
+                            className={rota === "/" ? styles.active : ""}>
+                            <IoTrailSignOutline className={styles.tpicon} />
+                            Seleção
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoStarOutline className={styles.tpicon} />
-                        Recomendações
-                    </Link>
+                        <Link
+                            href="/recomendacoes"
+                            className={rota === "/recomendacoes" ? styles.active : ""}>
+                            <IoStarOutline className={styles.tpicon} />
+                            Recomendações
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoBookOutline className={styles.tpicon} />
-                        Biblioteca
-                    </Link>
+                        <Link
+                            href="/biblioteca"
+                            className={rota === "/biblioteca" ? styles.active : ""}>
+                            <IoBookOutline className={styles.tpicon} />
+                            Biblioteca
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoTodayOutline className={styles.tpicon} />
-                        Reservas
-                    </Link>
+                        <Link
+                            href="/reservas"
+                            className={rota === "/reservas" ? styles.active : ""}>
+                            <IoTodayOutline className={styles.tpicon} />
+                            Reservas
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoNotificationsOutline className={styles.tpicon} />
-                        Notificações
-                    </Link>
+                        <Link
+                            href="/notificacoes"
+                            className={rota === "/notificacoes" ? styles.active : ""}>
+                            <IoNotificationsOutline className={styles.tpicon} />
+                            Notificações
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoPhonePortraitOutline className={styles.tpicon} />
-                        Empréstimos
-                    </Link>
+                        <Link
+                            href="/emprestimos"
+                            className={rota === "/emprestimos" ? styles.active : ""}>
+                            <IoPhonePortraitOutline className={styles.tpicon} />
+                            Empréstimos
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={rota === "/" ? styles.active : ""}>
-                        <IoInformationCircleOutline className={styles.tpicon} />
-                        Informações
-                    </Link>
+                        <Link
+                            href="/informacoes"
+                            className={rota === "/informacoes" ? styles.active : ""}>
+                            <IoInformationCircleOutline className={styles.tpicon} />
+                            Informações
+                        </Link>
 
-                    <Link
-                        href="/"
-                        className={styles.sair}>
-                        <IoLogOutOutline className={styles.tpiconSair} />
-                        Sair
-                    </Link>
+                        <Link
+                            href="/sair"
+                            className={styles.sair}>
+                            <IoLogOutOutline className={styles.tpiconSair} />
+                            Sair
+                        </Link>
+                    </div>
+
                     <div className={styles.menuMobile}>
                         <IoMenuOutline onClick={ativaMenu} className={styles.icon} id="logo" />
                     </div>
@@ -194,6 +197,6 @@ export default function Cabecalho() {
                     Sair
                 </Link>
             </div>
-        </div >
+        </header >
     );
 }

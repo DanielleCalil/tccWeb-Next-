@@ -1,0 +1,72 @@
+.main {
+  padding: 20px;
+}
+
+.emprestimo {
+  font-size: 1.875rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  margin-top: 1.563rem;
+  margin-bottom: 0.938rem;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 95%;
+  margin: 0 auto;
+  gap: 0.625rem;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.lineSquare {
+  width: 25.625rem;
+  box-sizing: border-box;
+  height: auto;
+  border: 1px solid black;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+}
+
+.inputContainer {
+  width: 100%;
+}
+
+.infoBookReserva {
+  display: flex;
+}
+
+.imgReserva {
+  height: auto;
+  width: 3.125rem;
+  border-radius: 0.313rem;
+  margin: 0.938rem;
+}
+
+.livroInfo {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.75rem;
+  margin-top: 0.313rem;
+}
+
+.line {
+  width: 100%;
+  box-sizing: border-box;
+  height: auto;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.625rem;
+}
+
+.info {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 0.813rem;
+  margin-left: 0.5rem;
+}

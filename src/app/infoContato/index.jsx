@@ -26,7 +26,7 @@ export default function InfoContato() {
         <div className={styles.editar}>
           <Link href="/infoContatoEditar/">
             <button
-              type="button"
+              type="submit"
               className={styles.editarButton}
             >
               <Image

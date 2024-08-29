@@ -1,0 +1,102 @@
+.background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-image: url('/imagens_telas/background.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.imgContainer {
+    display: flex;
+}
+
+.imgEsqSenha {
+    width: 21.875rem;
+    height: 21.875rem;
+}
+
+.conteudo {
+    text-align: center;
+}
+
+.redefinirSenha {
+    font-size: 1.875rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    margin-top: 0.625rem;
+    margin-bottom: 0.938rem;
+}
+
+.texto {
+    font-size: 0.875rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.inputField {
+    width: 65%;
+    height: 2.813rem;
+    padding: 1.25rem;
+    margin: 0.625rem 0;
+    border: 1px solid #ccc;
+    border-radius: 1.875rem;
+    box-sizing: border-box;
+}
+
+.inputField::placeholder {
+    color: #999;
+    font-size: 0.875rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    opacity: 1;
+}
+
+.logar {
+    color: #FF735C;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 0.75rem;
+    margin-top: 1.563rem;
+    margin-bottom: 0.313rem;
+}
+
+a {
+    color: #FF735C;
+}
+
+.redefinirButton {
+    width: 20%;
+    height: 2.813rem;
+    padding: 0.625rem;
+    margin: 1.25rem 0;
+    background-color: #FF735C;
+    color: white;
+    border: none;
+    border-radius: 1.875rem;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+}
+
+.redefinirButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}

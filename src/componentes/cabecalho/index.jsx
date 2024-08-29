@@ -101,7 +101,7 @@ export default function Cabecalho() {
                         Informações
                     </Link>
                     <Link
-                        href="/login"
+                        href="usuarios/login"
                         className={styles.sairMenuGrande}>
                         <IoLogOutOutline className={styles.tpiconSair} />
                         Sair
@@ -171,14 +171,14 @@ export default function Cabecalho() {
                     Empréstimos
                 </Link>
                 <Link
-                    href='/informacoes'
+                    href='/infoContato'
                     onClick={ativaMenu}
-                    className={rota === '/informacoes' ? styles.active : ''}>
+                    className={rota === '/infoContato' ? styles.active : ''}>
                     <IoInformationCircleOutline className={styles.tpicon} />
                     Informações
                 </Link>
                 <Link
-                    href='/login'
+                    href='usuarios/login'
                     className={styles.sairMobile}
                     onClick={ativaMenu}>
                     <IoLogOutOutline className={styles.tpiconSair} />

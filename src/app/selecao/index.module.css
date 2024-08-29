@@ -1,0 +1,113 @@
+.main {
+  padding: 20px;
+}
+
+.selecao {
+  font-size: 1.875rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  margin-top: 1.563rem;
+  margin-bottom: 0.938rem;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 95%;
+  margin: 0 auto;
+  gap: 0.625rem;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.lineSquare {
+  width: auto;
+  box-sizing: border-box;
+  height: auto;
+  border: 1px solid black;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+}
+
+.inputContainer {
+  width: 100%;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.info {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+.line {
+  width: 100%;
+  box-sizing: border-box;
+  height: auto;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.625rem;
+}
+
+.pUsuario {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 0.125rem;
+}
+
+.opcao {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.selectInput {
+  width: 58%;
+  height: 2.5rem;
+  padding: 0.625rem;
+  border: 1px solid #CCC;
+  border-radius: 0.313rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #FFF;
+  font-family: "Poppins", sans-serif;
+  margin: 0.875rem;
+  font-size: 0.75rem;
+}
+
+/* Opcional: Estilo para hover e focus */
+.selectInput:hover,
+.selectInput:focus {
+  border-color: #FF735C;
+  outline: none;
+}
+
+.confirmButton {
+  height: 2.813rem;
+  width: 35%;
+  padding: 0.625rem 1.25rem;
+  background-color: #FF735C;
+  color: white;
+  border: none;
+  border-radius: 1.875rem;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.875rem;
+}
+
+.confirmButton:hover {
+  opacity: 0.5;
+  transition: 0.5s;
+}

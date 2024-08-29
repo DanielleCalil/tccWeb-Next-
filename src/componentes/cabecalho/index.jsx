@@ -53,8 +53,8 @@ export default function Cabecalho() {
                         Início
                     </Link>
                     <Link
-                        href='/perfil'
-                        className={rota === '/perfil' ? styles.active : ""}>
+                        href="/perfil"
+                        className={rota === "/perfil" ? styles.active : ""}>
                         <IoPersonOutline className={styles.tpicon} />
                         Perfil
                     </Link>
@@ -95,8 +95,8 @@ export default function Cabecalho() {
                         Empréstimos
                     </Link>
                     <Link
-                        href="/informacoes"
-                        className={rota === "/informacoes" ? styles.active : ""}>
+                        href="/infoContato"
+                        className={rota === "/infoContato" ? styles.active : ""}>
                         <IoInformationCircleOutline className={styles.tpicon} />
                         Informações
                     </Link>

@@ -5,7 +5,7 @@ export default function Recomendacoes() {
     return (
         <div className="containerGlobal">
             <div className={styles.bookSection}>
-                <text className={styles.title}>Recomendações dos professores</text>
+                <h1 className={styles.title}>Recomendações dos professores</h1>
             </div>
             <div className={styles.bookList}>
                 <div className={styles.bookItem}>

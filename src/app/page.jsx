@@ -11,13 +11,13 @@ export default function Home() {
         <BarraPesquisa />
 
         <div className={styles.img}>
-          <Image src="/imagens_telas/horario.png" width={1709} height={379} className={styles.imgHorario} />
+          <Image src="/imagens_telas/horario.png" width={1709} height={379} className={styles.imgHorario} alt="Horário de Funcionamento" />
         </div>
 
         <Recomendacoes />
 
         <div className={styles.img}>
-          <Image src="/imagens_telas/frase.png" className={styles.imgFrase} width={1709} height={379} />
+          <Image src="/imagens_telas/frase.png" className={styles.imgFrase} width={1709} height={379} alt="Frase"/>
         </div>
       </div>
     </main>

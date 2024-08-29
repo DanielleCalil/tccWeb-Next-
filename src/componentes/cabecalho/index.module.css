@@ -154,6 +154,7 @@
     cursor: pointer;
     font-weight: 300;
     padding-left: 15px;
+    background-color: #FFF;
 }
 
 .containerNav .menuMobileExpandidos a.active {

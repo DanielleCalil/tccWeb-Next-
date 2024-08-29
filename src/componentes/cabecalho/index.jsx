@@ -53,8 +53,8 @@ export default function Cabecalho() {
                         Início
                     </Link>
                     <Link
-                        href="/perfil"
-                        className={rota === "/perfil" ? styles.active : ""}>
+                        href='/perfil'
+                        className={rota === '/perfil' ? styles.active : ""}>
                         <IoPersonOutline className={styles.tpicon} />
                         Perfil
                     </Link>

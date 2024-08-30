@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SmoakBook</title>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100,0,0" />
+    </head>
+    <body>
+        <div class="header">
+                <div class="retangGreen">
+                    <img src="/imagens_telas/logo.png" class="imgLogo" alt="Logo">
+                    <img src="/imagens_telas/etec.png" class="imgEtec" alt="Etec">
+                </div>
+                <div class="retangOrange"></div>
+            <nav class="navbar">
+                <ul>
+                    <li>
+                        <a href="/telaInicial/"><span class="material-symbols-outlined">home</span>Início</a>
+                    </li>
+                    <li>
+                        <a href="/perfil/"><span class="material-symbols-outlined">person</span>Perfil</a>
+                    </li>
+                    <li>
+                        <a href="/selecao/"><span class="material-symbols-outlined">signpost</span>Seleção</a>
+                    </li>
+                    <li>
+                        <a href="/recomendacao/"><span class="material-symbols-outlined">star</span>Recomendações</a>
+                    </li>
+                    <li>
+                        <a href="/biblioteca/" class="active"><span class="material-symbols-outlined">menu_book</span>Biblioteca</a>
+                    </li>
+                    <li>
+                        <a href="/reservas/"><span class="material-symbols-outlined">calendar_month</span>Reservas</a>
+                    </li>
+                    <li>
+                        <a href="/notificacoes/"><span class="material-symbols-outlined">notifications</span>Notificações</a>
+                    </li>
+                    <li>
+                        <a href="/emprestimos/"><span class="material-symbols-outlined">book_2</span>Empréstimos</a>
+                    </li>
+                    <li>
+                        <a href="/infoContato/"><span class="material-symbols-outlined">info</span>Informações</a>
+                    </li>
+                    <li>
+                        <a href="/login/" class="sair"><span class="material-symbols-outlined">logout</span>Sair</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <main>
+            <h1 class="informacoes">Informações do livro</h1>
+            <a href="#addModal">
+                <button class="remov-button">- Remover</button>
+            </a>
+            <div class="container">
+                <div class="lineSquare">
+                    <div class="input-container">
+                        <div class="info-book-reserva">
+                            <img src="/Capa_dos_livros/o diário de anne frank.jpg" alt="O Diário de Anne Frank" class="img-reserva">
+                            <div class="livro-info">
+                                <div class="header-lineSquare">
+                                    <div class="title">
+                                        <p class="geral">Visão geral</p>
+                                        <p class="livro">O Diário de Anne Frank</p>
+                                    </div>
+                                    <div class="smallLineSquare">
+                                        <div class="text">
+                                            <text class="disponivel">Disponíveis</text>
+                                            <text class="quant">5</text>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="resumo">O Diário de Anne Frank é um livro que relata a história de uma jovem judia chamada Anne Frank, que viveu durante a Segunda Guerra Mundial 
+                                    e se escondeu com sua família e outros judeus em um anexo secreto em Amsterdã, nos Países Baixos, para escapar da perseguição nazista. 
+                                </p>
+                                <div class="info-container">
+                                    <div class="info-box">
+                                        <text class="title-superior">Autor(a)</text>
+                                        <img src="/Icons TCC/autora.png" class="img-icons">
+                                        <text class="title-inferior">Anne Frank</text>
+                                    </div>
+                                    <div class="info-box">
+                                        <text class="title-superior">Editora</text>
+                                        <img src="/Icons TCC/editora.png" class="img-icons">
+                                        <text class="title-inferior">Grupo Editorial Record</text>
+                                    </div>
+                                    <div class="info-box">
+                                        <text class="title-superior">Gênero</text>
+                                        <img src="/Icons TCC/genero.png" class="img-icons">
+                                        <text class="title-inferior">Autobiográfico</text>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="editar">
+                    <a href="/reservarLivro/"><button class="reserv-button">Reservar livro</button></a>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div>
+                Desenvolvido por <a href="/sobreNos/">Danikawari</a>
+            </div>
+        </footer>
+        <div id="addModal" class="modal">
+            <div class="modal-content">
+                <a href="#" class="close-button">
+                    &times;
+                </a>
+                <p class="text-modal">Tem certeza que deseja excluir este livro?</p>
+                <div class="buttons">
+                    <a href="/biblioteca/">
+                        <button class="modal-button-sim">Sim</button>
+                    </a>
+                    <a href="/infoLivroBiblioteca/">
+                        <button class="modal-button-não">Não</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

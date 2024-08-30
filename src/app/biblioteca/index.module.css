@@ -1,0 +1,215 @@
+.main {
+    padding: 20px;
+  }
+
+.biblioteca {
+    font-size: 1.875rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    margin-top: 1.563rem;
+    margin-bottom: 0.938rem;
+    text-align: center;
+}
+
+.addButton {
+    right: 3.125rem;
+    top: 9.375rem;
+    position: absolute;
+    height: 2.5rem;
+    padding: 0.625rem 1.25rem;
+    margin: 1.25rem 0;
+    background-color: #3F7263;
+    color: white;
+    border: none;
+    border-radius: 1.875rem;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.addButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 95%;
+    margin: 0 auto;
+    gap: 0.625rem;
+    padding: 1.25rem;
+    box-sizing: border-box;
+}
+
+.genreButtons {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    justify-content: center;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-bottom: 1.875rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.bookGenre {
+    width: 5.625rem;
+    height: 5.625rem;
+    box-sizing: border-box;
+    max-width: calc(16.66% - 1.25rem);
+    background: #599684;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.288);
+}
+
+.icon {
+    height: auto;
+    width: 2.5rem;
+    margin-bottom: 0;
+}
+
+.textIcon {
+    font-size: 0.625rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    margin-top: 0;
+}
+
+.bookList {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    justify-content: center;
+    max-width: 98%;
+    margin: 0 auto;
+    margin-bottom: 1.875rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.bookList a {
+    text-decoration: none;
+    color: #000;
+}
+
+.bookItem {
+    width: 12.5rem;
+    height: 14.063rem;
+    box-sizing: border-box;
+    max-width: calc(16.66% - 1.25rem);
+    background: #FFF;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.288);
+}
+
+.bookItem:hover {
+    transform: scale(1.05);
+}
+
+.bookImage {
+    width: 45%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin-top: 0.625rem;
+}
+
+.bookInfo {
+    padding: 0.063rem;
+}
+
+.bookTitle {
+    font-size: 0.875rem;
+    margin: 0 0 0.25rem;
+}
+
+.bookAuthor {
+    font-size: 0.75rem;
+    color: #555;
+    margin: 0;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal:target {
+    display: block;
+}
+
+.modalContent {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 1.25rem;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 18.75rem;
+    text-align: center;
+    border-radius: 0.625rem;
+}
+
+.closeButton {
+    color: #aaa;
+    float: right;
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.closeButton:hover,
+.closeButton:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modalButton {
+    background-color: #FF735C;
+    color: white;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    margin: 0.625rem 0;
+    border-radius: 1.875rem;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 0.875rem;
+    display: block;
+    width: 100%;
+}
+
+.modalButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.modalContent a {
+    text-decoration: none;
+}

@@ -5,7 +5,7 @@ export default function Rodape() {
     return (
         <footer className={styles.footer}>
             <div className={styles.conteudo}>
-                Desenvolvido por <Link href="/sobreNos/">Danikawari</Link>
+                Desenvolvido por <Link href="/sobreNos">Danikawari</Link>
             </div>
         </footer>
     );

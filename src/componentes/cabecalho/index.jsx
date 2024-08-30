@@ -34,6 +34,7 @@ export default function Cabecalho() {
                         height={420}
                         className={styles.imgLogo}
                         alt="Logo"
+                        priority={true}
                     />
                     <Image
                         src="/imagens_telas/etec.png"
@@ -41,6 +42,7 @@ export default function Cabecalho() {
                         height={80}
                         className={styles.imgEtec}
                         alt="Etec"
+                        priority={true}
                     />
                 </div>
                 <div className={styles.retangOrange}></div>
@@ -107,7 +109,6 @@ export default function Cabecalho() {
                         Sair
                     </Link>
                 </nav>
-
             </div>
 
             <div

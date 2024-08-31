@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import styles from './index.module.css';
+import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa';
 
@@ -108,7 +108,7 @@ export default function Biblioteca() {
                         ].map(({ src, title, author }) => (
                             <div className={styles.bookItem} key={title}>
                                 <Link href="/infoLivroBiblioteca/">
-                                    <a>
+                                    <div>
                                         <Image
                                             src={src}
                                             alt={title}
@@ -120,7 +120,7 @@ export default function Biblioteca() {
                                             <h2 className={styles.bookTitle}>{title}</h2>
                                             <p className={styles.bookAuthor}>{author}</p>
                                         </div>
-                                    </a>
+                                    </div>
                                 </Link>
                             </div>
                         ))}
@@ -131,13 +131,13 @@ export default function Biblioteca() {
             <div id="addModal" className={styles.modal}>
                 <div className={styles.modalContent}>
                     <Link href="#">
-                        <a className={styles.closeButton}>&times;</a>
+                        <div className={styles.closeButton}>&times;</div>
                     </Link>
                     <Link href="/addLivroExistente/">
-                        <a className={styles.modalButton}>Adicionar livro existente</a>
+                        <div className={styles.modalButton}>Adicionar livro existente</div>
                     </Link>
                     <Link href="/addLivroNovo/">
-                        <a className={styles.modalButton}>Adicionar livro novo</a>
+                        <div className={styles.modalButton}>Adicionar livro novo</div>
                     </Link>
                 </div>
             </div>

@@ -1,106 +1,5 @@
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-}
-
-.header {
-    justify-content: center;
-    align-items: center;
-}
-
-.retangGreen {
-    width: 100%;
-    height: 4.063rem;
-    background-color: #3F7263;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.imgLogo {
-    height: 3.438rem;
-    width: 4.375rem;
-}
-
-.imgEtec {
-    height: 2.188rem;
-    width: 5.313rem;
-    position: absolute;
-    right: 0;
-    bottom: 0.75rem;
-    margin-right: 1.875rem;
-}
-
-.retangOrange {
-    width: 100%;
-    height: 0.875rem; 
-    background-color: #FF735C;
-}
-
-.navbar {
-    background-color: #FFF;
-    overflow: hidden;
-    justify-content: center;
-    width: 100%;
-    border-bottom: 1px solid #000;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-grow: 1;
-}
-
-.navbar ul li {
-    flex: 1;
-}
-
-.navbar ul li a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: black;
-    text-align: center;
-    padding: 0.75rem 0.875rem;
-    text-decoration: none;
-    font-family: "Poppins", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-}
-
-.navbar ul li a i {
-    font-size: 1.375rem;
-    margin-right: 0.5rem;
-}
-
-.navbar ul li a.active {
-    background-color: #FF735C;
-    color: black;
-}
-
-.navbar ul li a.sair {
-    color: red;
-}
-
-main {
-    flex: 1;
-    padding: 1.25rem;
-    box-sizing: border-box;
+.main {
+    padding: 20px;
 }
 
 .informacoes {
@@ -133,18 +32,18 @@ main {
     padding: 0.625rem;
 }
 
-.info-book-reserva {
+.infoBookReserva {
     display: flex;
 }
 
-.img-reserva {
+.imgReserva {
     height: 11.25rem;
     width: 7.5rem;
     border-radius: 0.313rem;
     margin: 0.938rem;
 }
 
-.livro-info {
+.livroInfo {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -152,7 +51,7 @@ main {
     margin-top: 0.313rem;
 }
 
-.header-lineSquare {
+.headerLineSquare {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -198,20 +97,20 @@ main {
     font-size: 0.844rem;
 }
 
-.info-container {
+.infoContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
 }
 
-.info-box {
+.infoBox {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.img-icons {
+.imgIcons {
     height: auto;
     width: 1.875rem;
 }
@@ -224,7 +123,7 @@ main {
     margin: 0.625rem;
 }
 
-.desc-prof {
+.descProf {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -233,7 +132,7 @@ main {
     margin-bottom: 0px;
 }
 
-.desc-prof-curso {
+.descProfCurso {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -242,7 +141,7 @@ main {
     margin-top: 0.313rem;
 }
 
-.modulo-form {
+.moduloForm {
     display: flex;
     gap: 2.125rem;
     margin-left: 0.75rem;
@@ -290,7 +189,7 @@ input[type="radio"]:checked::before {
     width: 100%;
 }
 
-.reserv-button {
+.reservButton {
     height: 2.813rem;
     padding: 0.625rem 1.875rem;
     margin: 1.25rem 0;
@@ -305,31 +204,7 @@ input[type="radio"]:checked::before {
     font-size: 1rem;
 }
 
-.reserv-button:hover {
+.reservButton:hover {
     opacity: 0.5;
     transition: 0.5s;
-}
-
-footer {
-    display: block;
-	bottom: 0;
-	background: #fff;
-	width: 100%;
-	color:#000;
-	text-align: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-	font-family: "Poppins", sans-serif;
-	font-weight: 400;
-	font-style: normal;
-    box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.288);
-    font-size: 0.875rem;
-}
-footer a {
-    color: #FF735C;
-    text-decoration: none;
-}
-
-footer a:hover {
-    color: #3F7263;
 }

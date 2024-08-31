@@ -1,5 +1,6 @@
 import Image from "next/image";
-import styles from "./index.module.css";
+import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Perfil() {
     return (
@@ -14,6 +15,8 @@ export default function Perfil() {
                                     <Image
                                         src="/Icons TCC/perfil.jpg"
                                         alt="Foto de perfil"
+                                        width={512}
+                                        height={512}
                                     />
                                 </div>
                             </div>
@@ -96,12 +99,16 @@ export default function Perfil() {
                         <a href="/esqueceuSenha1/">Esqueceu a senha?</a>
                     </div>
                     <div className={styles.editar}>
-                        <Link href="/perfilEditar/">
+                        <Link href="/perfilEditar">
                             <button
                                 type="submit"
                                 className={styles.cadastroButton}
                             >
-                                <Image src="/imagens_telas/editar_perfil.png" />
+                                <Image
+                                    src="/imagens_telas/editar_perfil.png"
+                                    width={500}
+                                    height={500}
+                                />
                             </button>
                         </Link>
                     </div>

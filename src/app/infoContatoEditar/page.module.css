@@ -28,7 +28,7 @@
   width: 20%;
 }
 
-input[type="file"] {
+.inputField input[type="file"] {
   display: none;
 }
 
@@ -46,7 +46,7 @@ input[type="file"] {
   max-width: 31.25rem;
 }
 
-form {
+.inputGroup form {
   width: 25rem;
 }
 

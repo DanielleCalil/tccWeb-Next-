@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import styles from './index.module.css';
+import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa';
 
 export default function Reservas() {
     return (
         <main className={styles.main}>
-            <div className={styles.containerGlobal}>
+            <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <BarraPesquisa />
                 <div className={styles.container}>

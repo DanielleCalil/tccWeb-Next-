@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./index.module.css";
+import styles from "./page.module.css";
 import Link from 'next/link';
 
 import BarraPesquisa from "@/componentes/barraPesquisa";
@@ -18,6 +18,8 @@ export default function Emprestimos() {
                   src="/Capa_dos_livros/o diário de anne frank.jpg"
                   alt="O Diário de Anne Frank"
                   className={styles.imgReserva}
+                  width={667}
+                  height={1000}
                 />
                 <div className={styles.livroInfo}>
                   <p>O Diário de Anne Frank</p>

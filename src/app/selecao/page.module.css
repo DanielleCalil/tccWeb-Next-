@@ -36,9 +36,9 @@
   width: 100%;
 }
 
-input[type="file"] {
+/* input[type="file"] {
   display: none;
-}
+} */
 
 .info {
   font-family: "Poppins", sans-serif;

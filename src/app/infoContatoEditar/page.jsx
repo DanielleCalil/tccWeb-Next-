@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./index.module.css";
+import styles from "./page.module.css";
 import Link from 'next/link';
 
 export default function InfoContatoEditar() {
@@ -13,6 +13,8 @@ export default function InfoContatoEditar() {
             src="/imagens_telas/contato.jpg"
             alt="Imagem tela contatos"
             className={styles.imgContato}
+            width={3000}
+            height={2000}
           />
           <div className={styles.inputContainer}>
             <div className={styles.inputGroup}>

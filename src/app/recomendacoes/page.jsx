@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import styles from './index.module.css';
+import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa';
 
-export default function Recomendacao() {
+export default function Recomendacoes() {
     return (
         <main className={styles.main}>
             <div className="containerGlobal">

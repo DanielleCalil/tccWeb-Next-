@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./index.module.css";
+import styles from "./page.module.css";
 import Link from "next/link";
 
 export default function PerfilEditar() {
@@ -14,6 +14,8 @@ export default function PerfilEditar() {
                                 <Image
                                     src="/Icons TCC/perfil.jpg"
                                     alt="Foto de perfil"
+                                    width={512}
+                                    height={512}
                                 />
                             </div>
                             <form

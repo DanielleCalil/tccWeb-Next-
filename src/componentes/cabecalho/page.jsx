@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IoMenuOutline, IoHomeOutline, IoPersonOutline, IoTrailSignOutline, IoStarOutline, IoBookOutline, IoTodayOutline, IoNotificationsOutline, IoPhonePortraitOutline, IoInformationCircleOutline, IoLogOutOutline } from "react-icons/io5";
 
-import styles from './index.module.css';
+import styles from './page.module.css';
 import Image from 'next/image';
 
 export default function Cabecalho() {

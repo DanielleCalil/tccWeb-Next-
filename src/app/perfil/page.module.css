@@ -1,6 +1,12 @@
 
-main {
+.main {
     padding: 20px;
+}
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(89vh - 4.938rem);
 }
 
 .perfil {
@@ -31,13 +37,14 @@ main {
     box-sizing: border-box;
 }
 
+
 .profileContainer {
     text-align: center;
     margin-right: 9.375rem;
 }
 
 .imgContainer {
-    margin-bottom: 0.625rem;
+    margin-bottom: 1.25rem;
 }
 
 .imgContainer img {
@@ -45,33 +52,14 @@ main {
     height: 9.375rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ccc;
-}
-
-/* Estilo para custom-file-upload */
-.customFileUpload {
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem 0.875rem;
-    cursor: pointer;
-    background-color: #3F7263;
-    color: white;
-    border: 1px solid #3F7263;
-    border-radius: 1.875rem;
-    text-align: center;
-    font-size: 0.75rem;
-    font-family: 'Poppins', sans-serif;
-}
-
-.customFileUpload:hover {
-    opacity: 0.5;
+    border: 0.125rem solid #ccc;
 }
 
 .inputContainer {
     width: 100%;
 }
 
-input[type="file"] {
+.sexoForm input[type="file"] {
     display: none;
 }
 
@@ -102,8 +90,8 @@ input[type="file"] {
 }
 
 /* Remove as setas do input de número */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+.inputField input[type=number]::-webkit-outer-spin-button,
+.inputField input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -136,7 +124,7 @@ input[type=number]::-webkit-inner-spin-button {
     gap: 0.5rem;
 }
 
-input[type="radio"] {
+.sexoForm input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -149,12 +137,12 @@ input[type="radio"] {
     position: relative;
 }
 
-input[type="radio"]:checked {
+.sexoForm input[type="radio"]:checked {
     border: 1px solid #FF735C;
     background-color: #FF735C;
 }
 
-input[type="radio"]:checked::before {
+.sexoForm input[type="radio"]:checked::before {
     content: '';
     display: block;
     width: 0.5rem;
@@ -178,19 +166,22 @@ input[type="radio"]:checked::before {
     text-align: center;
 }
 
-a {
+.redefinir a {
     color: #FF735C;
 }
 
 .editar {
-    display: flex;
-    justify-content: center;
     width: 100%;
+    align-items: flex-end;
+    flex: 1;
+    padding-right: 20;
+    padding-bottom: 10;
 }
 
-.saveButton {
-    height: 2.813rem;
-    padding: 0.625rem 1.875rem;
+.cadastroButton {
+    width: 3.75rem;
+    height: 3.75rem;
+    padding: 0.625rem;
     margin: 1.25rem 0;
     background-color: #FF735C;
     color: white;
@@ -200,10 +191,18 @@ a {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 1rem; 
+    position: absolute;
+    right: 4.375rem;
+    bottom: 3.125rem;
 }
 
-.saveButton:hover {
-    opacity: 0.5;
+.cadastroButton:hover {
+    background-color: #3F7263;
     transition: 0.5s;
+}
+
+.cadastroButton img {
+    height: auto;
+    width: 2.5rem;
 }

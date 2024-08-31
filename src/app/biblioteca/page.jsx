@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
-import BarraPesquisa from '@/componentes/barraPesquisa';
+import BarraPesquisa from '@/componentes/barraPesquisa/page';
 
 export default function Biblioteca() {
     return (

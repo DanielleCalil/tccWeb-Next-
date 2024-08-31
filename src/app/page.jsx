@@ -1,8 +1,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
-import BarraPesquisa from "@/componentes/barraPesquisa";
-import Recomendacoes from "@/componentes/recomendacoes";
+import BarraPesquisa from "@/componentes/barraPesquisa/page";
+import Recomendacoes from "@/componentes/recomendacoes/page";
 
 export default function Home() {
   return (

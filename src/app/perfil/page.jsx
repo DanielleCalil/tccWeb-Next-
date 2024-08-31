@@ -96,7 +96,7 @@ export default function Perfil() {
                         </div>
                     </div>
                     <div className={styles.redefinir}>
-                        <a href="/esqueceuSenha1/">Esqueceu a senha?</a>
+                        <Link href="/esqueceuSenha1/">Esqueceu a senha?</Link>
                     </div>
                     <div className={styles.editar}>
                         <Link href="/perfilEditar">

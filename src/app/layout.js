@@ -1,7 +1,7 @@
 
 import "./globals.css";
-import Cabecalho from "@/componentes/cabecalho";
-import Rodape from "@/componentes/rodape";
+import Cabecalho from "@/componentes/cabecalho/page";
+import Rodape from "@/componentes/rodape/page";
 
 export const metadata = {
   title: "SmoakBook",

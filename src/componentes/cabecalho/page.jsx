@@ -179,7 +179,7 @@ export default function Cabecalho() {
                     Informações
                 </Link>
                 <Link
-                    href='usuarios/login'
+                    href='/usuarios/login'
                     className={styles.sairMobile}
                     onClick={ativaMenu}>
                     <IoLogOutOutline className={styles.tpiconSair} />

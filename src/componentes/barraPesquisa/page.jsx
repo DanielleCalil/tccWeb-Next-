@@ -1,4 +1,4 @@
-import styles from './index.module.css';
+import styles from './page.module.css';
 
 import { IoSearchOutline } from "react-icons/io5";
 

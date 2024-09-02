@@ -14,7 +14,7 @@ export default function Perfil() {
                                 <div className={styles.imgContainer}>
                                     <Image
                                         src="/Icons TCC/perfil.jpg"
-                                        alt="Foto de perfil"
+                                        alt="Foto de perfil padrão"
                                         width={512}
                                         height={512}
                                     />
@@ -96,13 +96,13 @@ export default function Perfil() {
                         </div>
                     </div>
                     <div className={styles.redefinir}>
-                        <Link href="/esqueceuSenha1/">Esqueceu a senha?</Link>
+                        <Link href="/usuarios/esqueceuSenha1">Esqueceu a senha?</Link>
                     </div>
                     <div className={styles.editar}>
                         <Link href="/perfilEditar">
                             <button
                                 type="submit"
-                                className={styles.cadastroButton}
+                                className={styles.editarButton}
                             >
                                 <Image
                                     src="/imagens_telas/editar_perfil.png"

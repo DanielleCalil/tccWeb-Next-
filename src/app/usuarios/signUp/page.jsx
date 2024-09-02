@@ -14,6 +14,8 @@ export default function SignUp() {
                             src="/imagens_telas/img_cadastro.png"
                             alt="Imagem tela de cadastro"
                             className={styles.imgCadastro}
+                            width={500}
+                            height={453}
                         />
                     </div>
                     <div className={styles.conteudo}>
@@ -37,12 +39,12 @@ export default function SignUp() {
                             <input
                                 type="password"
                                 placeholder="Senha"
-                                className={classNames(styles.inputField, styles.senhaField)}
+                                className={`${styles.inputField} ${styles.senhaField}`}
                             />
                             <input
                                 type="password"
                                 placeholder="Confirmar senha"
-                                className={classNames(styles.inputField, styles.senhaField)}
+                                className={`${styles.inputField} ${styles.senhaField}`}
                             />
                         </div>
                         <form className={styles.sexoForm}>
@@ -75,9 +77,9 @@ export default function SignUp() {
                         </form>
 
                         <div className={styles.logar}>
-                            Já tem uma conta? <Link href="/login/">Faça login</Link>
+                            Já tem uma conta? <Link href="/usuarios/login">Faça login</Link>
                         </div>
-                        <Link href="/login/">
+                        <Link href="/usuarios/login">
                             <button type="submit" className={styles.cadastroButton}>Fazer cadastro</button>
                         </Link>
                     </div>

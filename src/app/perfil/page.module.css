@@ -12,8 +12,8 @@
 .perfil {
     font-size: 3rem;
     font-weight: 600;
-    margin-top: 1.563rem;
-    margin-bottom: 0.938rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
     text-align: center;
 }
 
@@ -31,14 +31,13 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    max-width: 70rem;
+    max-width: 42%;
     box-sizing: border-box;
 }
 
-
 .profileContainer {
     text-align: center;
-    margin-right: 9.375rem;
+    margin-right: 12rem;
 }
 
 .imgContainer {
@@ -46,11 +45,11 @@
 }
 
 .imgContainer img {
-    width: 12rem;
-    height: 12rem;
+    width: 15rem;
+    height: 15rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 0.125rem solid #ccc;
+    border: 0.2rem solid #ccc;
 }
 
 .inputContainer {
@@ -63,7 +62,7 @@
 
 .inputGroup {
     flex-direction: column;
-    margin-bottom: 0.625rem;
+    margin-bottom: 1.4rem;
     display: flex;
 }
 
@@ -76,11 +75,11 @@
 
 .inputField {
     width: 100%;
-    height: 3.5rem;
-    padding: 1.25rem;
-    margin: 0.625rem 0;
+    height: 4.5rem;
+    padding: 2rem;
+    margin: 0.8rem 0;
     border: 1px solid #CCC;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     box-sizing: border-box; 
     background-color: #FFF;
 }
@@ -96,10 +95,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 3rem;
     margin-top: 0.75rem;
     font-weight: 300;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     flex-direction: row;
 }
 
@@ -150,12 +149,10 @@
 
 .redefinir {
     color: #FF735C;
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
-    font-size: 0.75rem;
-    margin-top: 1.563rem;
-    margin-bottom: 0.313rem;
+    font-size: 1.3rem;
+    margin-top: 4rem;
+    margin-bottom: 0.5rem;
     text-align: center;
 }
 
@@ -171,9 +168,9 @@
     padding-bottom: 10;
 }
 
-.cadastroButton {
-    width: 3.75rem;
-    height: 3.75rem;
+.editarButton {
+    width: 5.5rem;
+    height: 5.5rem;
     padding: 0.625rem;
     margin: 1.25rem 0;
     background-color: #FF735C;
@@ -181,21 +178,19 @@
     border: none;
     border-radius: 1.875rem;
     cursor: pointer;
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 1rem; 
     position: absolute;
-    right: 4.375rem;
-    bottom: 3.125rem;
+    right: 4%;
+    bottom: 10%;
 }
 
-.cadastroButton:hover {
+.editarButton:hover {
     background-color: #3F7263;
     transition: 0.5s;
 }
 
-.cadastroButton img {
+.editarButton img {
     height: auto;
-    width: 2.5rem;
+    width: 4rem;
 }

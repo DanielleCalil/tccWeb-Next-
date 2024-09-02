@@ -16,7 +16,7 @@ export default function Home() {
           width={1709} 
           height={379} 
           className={styles.imgHorario} 
-          alt="Horário de Funcionamento"
+          alt="Imagem Horário de Funcionamento"
           priority={true}
           />
         </div>
@@ -29,7 +29,7 @@ export default function Home() {
           className={styles.imgFrase} 
           width={1709} 
           height={379} 
-          alt="Frase"
+          alt="Imagem Frase"
           priority={false}
           />
         </div>

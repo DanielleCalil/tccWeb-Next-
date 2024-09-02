@@ -33,7 +33,7 @@ export default function Cabecalho() {
                         width={509}
                         height={420}
                         className={styles.imgLogo}
-                        alt="Logo"
+                        alt="Logo projeto"
                         priority={true}
                     />
                     <Image
@@ -41,7 +41,7 @@ export default function Cabecalho() {
                         width={174}
                         height={80}
                         className={styles.imgEtec}
-                        alt="Etec"
+                        alt="Logo Etec"
                         priority={true}
                     />
                 </div>
@@ -84,12 +84,12 @@ export default function Cabecalho() {
                         <IoTodayOutline className={styles.tpicon} />
                         Reservas
                     </Link>
-                    <Link
+                    {/* <Link
                         href="/notificacoes"
-                        className={rota === "/notificacoes" ? styles.active : ""}>
+                        className={rota === "/notificacoes" ? styles.active : ""}> -tela excluída-
                         <IoNotificationsOutline className={styles.tpicon} />
                         Notificações
-                    </Link>
+                    </Link> */}
                     <Link
                         href="/emprestimos"
                         className={rota === "/emprestimos" ? styles.active : ""}>
@@ -103,7 +103,7 @@ export default function Cabecalho() {
                         Informações
                     </Link>
                     <Link
-                        href="usuarios/login"
+                        href="/usuarios/login"
                         className={styles.sairMenuGrande}>
                         <IoLogOutOutline className={styles.tpiconSair} />
                         Sair

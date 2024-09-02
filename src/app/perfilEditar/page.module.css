@@ -4,12 +4,10 @@
 }
 
 .perfil {
-    font-size: 1.875rem;
-    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
     font-weight: 600;
-    font-style: normal;
-    margin-top: 1.563rem;
-    margin-bottom: 0.938rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
     text-align: center;
 }
 
@@ -27,44 +25,45 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    max-width: 50rem;
+    max-width: 42%;
     box-sizing: border-box;
 }
 
 .profileContainer {
     text-align: center;
-    margin-right: 9.375rem;
+    margin-right: 12rem;
 }
 
 .imgContainer {
-    margin-bottom: 0.625rem;
+    margin-bottom: 1.25rem;
 }
 
 .imgContainer img {
-    width: 9.375rem;
-    height: 9.375rem;
+    width: 15rem;
+    height: 15rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ccc;
+    border: 0.2rem solid #ccc;
 }
 
 /* Estilo para custom-file-upload */
 .customFileUpload {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem 0.875rem;
+    padding: 1.2rem 1rem;
     cursor: pointer;
     background-color: #3F7263;
     color: white;
     border: 1px solid #3F7263;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     text-align: center;
-    font-size: 0.75rem;
-    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    width: 50%;
 }
 
 .customFileUpload:hover {
     opacity: 0.5;
+    transition: 0.5s;
 }
 
 .inputContainer {
@@ -77,26 +76,24 @@
 
 .inputGroup {
     flex-direction: column;
-    margin-bottom: 0.625rem;
+    margin-bottom: 1.4rem;
     display: flex;
 }
 
 .textInput {
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
-    font-size: 0.875rem;
+    font-size: 1.4rem;
     width: 100%;
     margin: 0 auto;
 }
 
 .inputField {
     width: 100%;
-    height: 2.813rem;
-    padding: 1.25rem;
-    margin: 0.625rem 0;
+    height: 4.5rem;
+    padding: 2rem;
+    margin: 0.8rem 0;
     border: 1px solid #CCC;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     box-sizing: border-box; 
     background-color: #FFF;
 }
@@ -112,22 +109,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.625rem;
+    gap: 3rem;
     margin-top: 0.75rem;
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
-    font-size: 0.875rem;
+    font-size: 1.4rem;
     flex-direction: row;
 }
 
 .sexoForm legend {
     margin: 0;
     padding-right: 0.625rem;
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
-    font-size: 0.938rem;
+    font-size: 1.4rem;
 }
 
 .sexoForm label {
@@ -140,13 +133,14 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border: 1px solid #ccc;
     border-radius: 50%;
     background: #fff;
     cursor: pointer;
     position: relative;
+    margin: 0;
 }
 
 .sexoForm input[type="radio"]:checked {
@@ -169,12 +163,10 @@
 
 .redefinir {
     color: #FF735C;
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
-    font-size: 0.75rem;
-    margin-top: 1.563rem;
-    margin-bottom: 0.313rem;
+    font-size: 1.3rem;
+    margin-top: 4rem;
+    margin-bottom: 0.5rem;
     text-align: center;
 }
 
@@ -189,18 +181,18 @@
 }
 
 .saveButton {
-    height: 2.813rem;
-    padding: 0.625rem 1.875rem;
-    margin: 1.25rem 0;
+    height: 70%;
+    padding: 0rem 3rem;
+    margin: 2rem 0;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 1.6rem;
 }
 
 .saveButton:hover {

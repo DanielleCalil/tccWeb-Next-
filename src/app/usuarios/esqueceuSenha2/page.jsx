@@ -14,6 +14,8 @@ export default function EsqueceuSenha2() {
                             src="/imagens_telas/6333054.png"
                             alt="Imagem tela de redefinir senha"
                             class={styles.imgEsqSenha}
+                            width={373}
+                            height={384}
                         />
                     </div>
                     <div class={styles.conteudo}>
@@ -36,9 +38,9 @@ export default function EsqueceuSenha2() {
                                 class={styles.inputField}
                             />
                         </div>
-                        <a href="/login/">
+                        <Link href="/usuarios/login">
                             <button class={styles.redefinirButton}>Redefinir senha</button>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

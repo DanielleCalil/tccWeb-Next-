@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
-import BarraPesquisa from '@/componentes/barraPesquisa';
+import BarraPesquisa from '@/componentes/barraPesquisa/page';
 
 export default function Recomendacoes() {
     return (
@@ -23,7 +23,7 @@ export default function Recomendacoes() {
                     </div>
                     <div className={styles.bookGenre}>
                         <Image
-                            src="/Icons TCC/Policial e Suspense.png"
+                            src="/Icons TCC/Policial_e_Suspense.png"
                             alt="Policial e Suspense"
                             width={24}
                             height={24}
@@ -43,7 +43,7 @@ export default function Recomendacoes() {
                     </div>
                     <div className={styles.bookGenre}>
                         <Image
-                            src="/Icons TCC/Ação e Aventura.png"
+                            src="/Icons TCC/Ação_e_Aventura.png"
                             alt="Ação e Aventura"
                             width={24}
                             height={24}
@@ -73,7 +73,7 @@ export default function Recomendacoes() {
                     </div>
                     <div className={styles.bookGenre}>
                         <Image
-                            src="/Icons TCC/Ficção Científica.png"
+                            src="/Icons TCC/Ficção_Científica.png"
                             alt="Ficção Científica"
                             width={24}
                             height={24}
@@ -101,7 +101,7 @@ export default function Recomendacoes() {
                         >
                             <p className={styles.bookCourse}>Téc. Recursos Humanos</p>
                             <Image
-                                src="/Capa_dos_livros/o diário de anne frank.jpg"
+                                src="/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
                                 alt="O diário de Anne Frank"
                                 width={100}
                                 height={150}
@@ -115,7 +115,7 @@ export default function Recomendacoes() {
                         <div className={styles.bookItem}>
                             <p className={styles.bookCourse}>Téc. Contabilidade</p>
                             <Image
-                                src="/Capa_dos_livros/dom casmurro.jpg"
+                                src="/Capa_dos_livros/Dom_Casmurro.jpg"
                                 alt="Dom Casmurro"
                                 width={100}
                                 height={150}
@@ -129,7 +129,7 @@ export default function Recomendacoes() {
                         <div className={styles.bookItem}>
                             <p className={styles.bookCourse}>Téc. Design de Interiores</p>
                             <Image
-                                src="/Capa_dos_livros/romeu e julieta.jpg"
+                                src="/Capa_dos_livros/Romeu_e_Julieta.jpg"
                                 alt="Romeu e Julieta"
                                 width={100}
                                 height={150}
@@ -157,7 +157,7 @@ export default function Recomendacoes() {
                         <div className={styles.bookItem}>
                             <p className={styles.bookCourse}>Téc. Administração</p>
                             <Image
-                                src="/Capa_dos_livros/os miseráveis.jpg"
+                                src="/Capa_dos_livros/Os_Miseraveis.jpg"
                                 alt="Os Miseráveis"
                                 width={100}
                                 height={150}
@@ -171,7 +171,7 @@ export default function Recomendacoes() {
                         <div className={styles.bookItem}>
                             <p className={styles.bookCourse}>Téc. Farmácia</p>
                             <Image
-                                src="/Capa_dos_livros/orgulho e preconceito.png"
+                                src="/Capa_dos_livros/Orgulho_e_Preconceito.png"
                                 alt="Orgulho e Preconceito"
                                 width={100}
                                 height={150}

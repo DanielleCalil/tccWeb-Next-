@@ -12,7 +12,7 @@ export default function Recomendacoes() {
                     <div className={styles.bookItem}>
                         <p className={styles.bookCourse}>Téc. Recursos Humanos</p>
                         <Image
-                            src="/Capa_dos_livros/o diário de anne frank.jpg"
+                            src="/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
                             alt="O diário de Anne Frank"
                             className={styles.bookImage}
                             width={150}
@@ -26,7 +26,7 @@ export default function Recomendacoes() {
                     <div className={styles.bookItem}>
                         <p className={styles.bookCourse}>Téc. Contabilidade</p>
                         <Image
-                            src="/Capa_dos_livros/dom casmurro.jpg"
+                            src="/Capa_dos_livros/Dom_Casmurro.jpg"
                             alt="Dom Casmurro"
                             className={styles.bookImage}
                             width={150}
@@ -40,7 +40,7 @@ export default function Recomendacoes() {
                     <div className={styles.bookItem}>
                         <p className={styles.bookCourse}>Téc. Design de Interiores</p>
                         <Image
-                            src="/Capa_dos_livros/romeu e julieta.jpg"
+                            src="/Capa_dos_livros/Romeu_e_Julieta.jpg"
                             alt="Romeu e Julieta"
                             className={styles.bookImage}
                             width={150}
@@ -68,7 +68,7 @@ export default function Recomendacoes() {
                     <div className={styles.bookItem}>
                         <p className={styles.bookCourse}>Téc. Administração</p>
                         <Image
-                            src="/Capa_dos_livros/os miseráveis.jpg"
+                            src="/Capa_dos_livros/Os_Miseraveis.jpg"
                             alt="Os Miseráveis"
                             className={styles.bookImage}
                             width={150}
@@ -83,7 +83,7 @@ export default function Recomendacoes() {
                     <div className={styles.bookItem}>
                         <p className={styles.bookCourse}>Téc. Farmácia</p>
                         <Image
-                            src="/Capa_dos_livros/orgulho e preconceito.png"
+                            src="/Capa_dos_livros/Orgulho_e_Preconceito.png"
                             alt="Orgulho e Preconceito"
                             className={styles.bookImage}
                             width={150}

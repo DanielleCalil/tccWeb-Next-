@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
-import BarraPesquisa from '@/componentes/barraPesquisa';
+import BarraPesquisa from '@/componentes/barraPesquisa/page';
 
 export default function Reservas() {
     return (
@@ -14,7 +14,7 @@ export default function Reservas() {
                         <div className={styles.inputContainer}>
                             <div className={styles.infoBookReserva}>
                                 <Image
-                                    src="/Capa_dos_livros/o_diario_de_anne_frank.jpg"
+                                    src="/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
                                     alt="O Diário de Anne Frank"
                                     className={styles.imgReserva}
                                     width={200} // Defina o tamanho conforme necessário

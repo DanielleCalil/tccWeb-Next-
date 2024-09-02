@@ -14,6 +14,8 @@ export default function Login() {
                             src="/imagens_telas/6737457.png"
                             alt="Imagem tela de login"
                             className={styles.imgLogin}
+                            width={373}
+                            height={384}
                         />
                     </div>
                     <div className={styles.conteudo}>
@@ -29,12 +31,12 @@ export default function Login() {
                             className={styles.inputField}
                         />
                         <div className={styles.cadastre}>
-                            Não tem cadastro? <Link href="/signUp/">Cadastre-se</Link>
+                            Não tem cadastro? <Link href="/usuarios/signUp">Cadastre-se</Link>
                         </div>
                         <div className={styles.esqueceuSenha}>
-                            <Link href="/esqueceuSenha1/">Esqueceu a senha?</Link>
+                            <Link href="/usuarios/esqueceuSenha1">Esqueceu a senha?</Link>
                         </div>
-                        <Link href="/telaInicial/">
+                        <Link href="/">
                             <button className={styles.loginButton}>Fazer login</button>
                         </Link>
                     </div>

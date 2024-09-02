@@ -22,6 +22,8 @@ export default function SobreNos() {
                     src="/imagens_telas/avatarDani.jpeg"
                     alt="Avatar Danielle"
                     class={styles.imagemFlutuante}
+                    width={1024}
+                    height={1024}
                   />
                   <text class={styles.nome}>Danielle: </text><text>é formada como técnica em farmácia, uma área na qual ela
                     atuava anteriormente. No entanto, sua paixão pelo aprendizado e pela tecnologia a levou a se aventurar no
@@ -34,6 +36,8 @@ export default function SobreNos() {
                     src="/imagens_telas/avatarKawany.jpeg"
                     alt="Avatar Kawany"
                     class={styles.imagemFlutuante}
+                    width={1024}
+                    height={1024}
                   />
                   <text class={styles.nome}>Kawany: </text><text>ela sempre teve uma afinidade pelas questões jurídicas, entretanto permitiu-se verificar se era realmente isso
                     que ela queria para a vida dela, ingressando na área de T.I. e conforme o decorrer das aulas, foi se interessando
@@ -46,6 +50,8 @@ export default function SobreNos() {
                     src="/imagens_telas/avatarKian.jpeg"
                     alt="Avatar Kian"
                     class={styles.imagemFlutuante}
+                    width={1024}
+                    height={1024}
                   />
                   <text class={styles.nome}>Sayuri: </text><text>Formada em design gráfico pela Univem em Marilía, mas decidiu se aprofundar na
                     área do desenvolvimento para conciliar os seus conhecimentos. Como já tinha conhecimento no front, ela resolveu se

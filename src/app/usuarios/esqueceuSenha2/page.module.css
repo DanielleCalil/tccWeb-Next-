@@ -75,15 +75,15 @@
 }
 
 /* Remove as setas do input de número */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+.inputField input[type=number]::-webkit-outer-spin-button,
+.inputField input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-a {
+/* a {
     color: #FF735C;
-}
+} */
 
 .redefinirButton {
     width: 24%;

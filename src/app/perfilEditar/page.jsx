@@ -1,8 +1,17 @@
+"use client"
 import Image from "next/image";
+import { useState } from 'react';
 import styles from "./page.module.css";
 import Link from "next/link";
+import FileInput from "@/componentes/FileInput/page";
 
 export default function PerfilEditar() {
+    const [profileImage, setProfileImage] = useState('/Icons TCC/perfil.jpg'); // Imagem padrão
+
+    const handleFileSelect = (imageUrl) => {
+        setProfileImage(imageUrl);
+    };
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -12,30 +21,13 @@ export default function PerfilEditar() {
                         <div className={styles.profileContainer}>
                             <div className={styles.imgContainer}>
                                 <Image
-                                    src="/Icons TCC/perfil.jpg"
+                                    src={profileImage}
                                     alt="Foto de perfil"
                                     width={512}
                                     height={512}
                                 />
                             </div>
-                            <form
-                                action="/upload"
-                                method="post"
-                                enctype="multipart/form-data"
-                            >
-                                <label
-                                    for="fileInput"
-                                    className={styles.customFileUpload}
-                                >
-                                    Escolher nova foto
-                                </label>
-                                <input
-                                    type="file"
-                                    id="fileInput"
-                                    name="profileImage"
-                                    accept="image/*"
-                                />
-                            </form>
+                            <FileInput onFileSelect={handleFileSelect} />
                         </div>
 
                         <div className={styles.inputContainer}>
@@ -63,7 +55,7 @@ export default function PerfilEditar() {
                                 />
                             </div>
                             <div className={styles.inputGroup}>
-                                <text className={styles.textInput}>E-mail:</text>
+                                <p className={styles.textInput}>E-mail:</p>
                                 <input
                                     type="email"
                                     className={styles.inputField}

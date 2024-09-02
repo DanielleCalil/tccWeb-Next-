@@ -115,7 +115,7 @@ export default function InfoLivroRecomendacao() {
                 </div>
                 <div className="editar">
                     <Link href="/reservarLivro/">
-                        <a className="reserv-button">Reservar livro</a>
+                        <span className="reserv-button">Reservar livro</span>
                     </Link>
                 </div>
             </div>

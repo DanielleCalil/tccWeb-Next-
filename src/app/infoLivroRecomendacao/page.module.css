@@ -1,5 +1,9 @@
 .main {
     padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 80vh;
 }
 
 .informacoes {
@@ -32,18 +36,18 @@
     padding: 0.625rem;
 }
 
-.infoBookReserva {
+.info-book-reserva {
     display: flex;
 }
 
-.imgReserva {
+.img-reserva {
     height: 11.25rem;
     width: 7.5rem;
     border-radius: 0.313rem;
     margin: 0.938rem;
 }
 
-.livroInfo {
+.livro-info {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -51,7 +55,7 @@
     margin-top: 0.313rem;
 }
 
-.headerLineSquare {
+.header-lineSquare {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -97,20 +101,20 @@
     font-size: 0.844rem;
 }
 
-.infoContainer {
+.info-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
 }
 
-.infoBox {
+.info-box {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.imgIcons {
+.img-icons {
     height: auto;
     width: 1.875rem;
 }
@@ -123,7 +127,7 @@
     margin: 0.625rem;
 }
 
-.descProf {
+.desc-prof {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -132,7 +136,7 @@
     margin-bottom: 0px;
 }
 
-.descProfCurso {
+.desc-prof-curso {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -141,7 +145,7 @@
     margin-top: 0.313rem;
 }
 
-.moduloForm {
+.modulo-form {
     display: flex;
     gap: 2.125rem;
     margin-left: 0.75rem;
@@ -152,7 +156,7 @@
     font-size: 0.813rem;
 }
 
-input[type="radio"] {
+.modulo-form input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -165,12 +169,12 @@ input[type="radio"] {
     position: relative;
 }
 
-input[type="radio"]:checked {
+.modulo-form input[type="radio"]:checked {
     border: 1px solid #3F7263;
     background-color: #3F7263;
 }
 
-input[type="radio"]:checked::before {
+.modulo-form input[type="radio"]:checked::before {
     content: '';
     display: block;
     width: 0.5rem;
@@ -189,7 +193,7 @@ input[type="radio"]:checked::before {
     width: 100%;
 }
 
-.reservButton {
+.reserv-button {
     height: 2.813rem;
     padding: 0.625rem 1.875rem;
     margin: 1.25rem 0;
@@ -204,7 +208,7 @@ input[type="radio"]:checked::before {
     font-size: 1rem;
 }
 
-.reservButton:hover {
+.reserv-button:hover {
     opacity: 0.5;
     transition: 0.5s;
 }

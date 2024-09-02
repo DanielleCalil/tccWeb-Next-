@@ -1,5 +1,4 @@
 .footer {
-    display: block;
 	bottom: 0;
 	background: #fff;
 	width: 100%;
@@ -9,7 +8,11 @@
     padding-bottom: 2rem;
 	font-weight: 400;
     box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.288);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     font-size: 1.4rem;
+    position: relative;
 }
 
 .footer .conteudo a {

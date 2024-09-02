@@ -1,0 +1,19 @@
+
+/* Estilo para custom-file-upload */
+.customFileUpload {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem 1rem;
+    cursor: pointer;
+    background-color: #3F7263;
+    color: white;
+    border: 1px solid #3F7263;
+    border-radius: 3rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.customFileUpload:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}

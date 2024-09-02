@@ -8,9 +8,9 @@ export default function InfoLivroBiblioteca() {
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <Link href="#addModal">
-                    <a>
+                    <span>
                         <button className={styles.removButton}>- Remover</button>
-                    </a>
+                    </span>
                 </Link>
                 <div className={styles.container}>
                     <div className={styles.lineSquare}>
@@ -81,9 +81,9 @@ export default function InfoLivroBiblioteca() {
                     </div>
                     <div className={styles.editar}>
                         <Link href="/reservarLivro/">
-                            <a>
+                            <span>
                                 <button className={styles.reservButton}>Reservar livro</button>
-                            </a>
+                            </span>
                         </Link>
                     </div>
                 </div>
@@ -92,21 +92,21 @@ export default function InfoLivroBiblioteca() {
             <div id="addModal" className={styles.modal}>
                 <div className={styles.modalContent}>
                     <Link href="#">
-                        <a className={styles.closeButton}>
+                        <span className={styles.closeButton}>
                             &times;
-                        </a>
+                        </span>
                     </Link>
                     <p className={styles.textModal}>Tem certeza que deseja excluir este livro?</p>
                     <div className={styles.buttons}>
                         <Link href="/biblioteca/">
-                            <a>
+                            <span>
                                 <button className={styles.modalButtonSim}>Sim</button>
-                            </a>
+                            </span>
                         </Link>
                         <Link href="/infoLivroBiblioteca/">
-                            <a>
+                            <span>
                                 <button className={styles.modalButtonNao}>Não</button>
-                            </a>
+                            </span>
                         </Link>
                     </div>
                 </div>

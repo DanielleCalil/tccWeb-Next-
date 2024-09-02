@@ -1,7 +1,35 @@
+"use client";
 import Link from 'next/link';
 import styles from './page.module.css';
+import { usePathname } from 'next/navigation';
+
+import listaTelas from '@/rotas/semCabRod';
 
 export default function Rodape() {
+    const rota = usePathname();    
+
+    function ativaMenu() {
+        if (mobile === false) {
+            setMobile(true);
+        } else {
+            setMobile(false);
+        }
+    }
+
+    function validaCabRod() {
+        let valida = false;        
+        listaTelas.forEach((tela) => {
+            if (tela === rota) {
+                valida = true
+            }           
+        });
+        return valida;
+    }
+
+    if (validaCabRod() === true) {
+        return(<></>)
+    }
+    
     return (
         <div className="containerGlobal">
             <footer className={styles.footer}>

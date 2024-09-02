@@ -7,11 +7,13 @@ import { IoMenuOutline, IoHomeOutline, IoPersonOutline, IoTrailSignOutline, IoSt
 import styles from './page.module.css';
 import Image from 'next/image';
 
+import listaTelas from '@/rotas/semCabRod';
+
 export default function Cabecalho() {
 
     const [mobile, setMobile] = useState(false);
 
-    const rota = usePathname();
+    const rota = usePathname();    
 
     function ativaMenu() {
         if (mobile === false) {
@@ -19,6 +21,20 @@ export default function Cabecalho() {
         } else {
             setMobile(false);
         }
+    }
+
+    function validaCabRod() {
+        let valida = false;        
+        listaTelas.forEach((tela) => {
+            if (tela === rota) {
+                valida = true
+            }           
+        });
+        return valida;
+    }
+
+    if (validaCabRod() === true) {
+        return(<></>)
     }
 
     return (

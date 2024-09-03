@@ -7,7 +7,7 @@ import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import Modal from '@/componentes/modal/page';
 
 const genres = [
-    'todos',
+    'Todos',
     'Policial e Suspense',
     'Terror',
     'Ação e Aventura',
@@ -111,9 +111,9 @@ const books = [
 ];
 
 export default function Biblioteca() {
-    const [selectedGenre, setSelectedGenre] = useState('todos');
+    const [selectedGenre, setSelectedGenre] = useState('Todos');
 
-    const filteredBooks = selectedGenre === 'todos'
+    const filteredBooks = selectedGenre === 'Todos'
         ? books
         : books.filter(book => book.genre === selectedGenre);
 
@@ -131,42 +131,42 @@ export default function Biblioteca() {
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.biblioteca}>Biblioteca</h1>
-                <div>
-                    <button onClick={openModal}>+ Adicionar</button>
+                <div className={styles.contButton}>
+                    <button onClick={openModal}  className={styles.addButton}>+ Adicionar</button>
                     <Modal show={showModal} onClose={closeModal} />
                     {/* Outros conteúdos da página */}
                 </div>
                 <BarraPesquisa />
-                <div className={styles.container}>
-                    <div className={styles.genreButtons}>
-                        {genres.map((genre) => (
-                            <div
-                                className={styles.bookGenre}
-                                key={genre}
-                                onClick={() => setSelectedGenre(genre)}
-                            >
-                                <Image
-                                    src={`/Icons TCC/${genre.replace(/\s+/g, '_')}.png`}
-                                    alt={genre}
-                                    width={50}
-                                    height={50}
-                                    className={styles.icon}
-                                />
-                                <p className={styles.textIcon}>{genre}</p>
-                            </div>
-                        ))}
-                    </div>
 
+                <div className={styles.genreButtons}>
+                    {genres.map((genre) => (
+                        <div
+                            className={styles.bookGenre}
+                            key={genre}
+                            onClick={() => setSelectedGenre(genre)}
+                        >
+                            <Image
+                                src={`/Icons TCC/${genre.replace(/\s+/g, '_')}.png`}
+                                alt={genre}
+                                width={512}
+                                height={512}
+                                className={styles.icon}
+                            />
+                            <p className={styles.textIcon}>{genre}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className={styles.container}>
                     <div className={styles.bookList}>
                         {filteredBooks.map(({ src, title, author }) => (
                             <div className={styles.bookItem} key={title}>
-                                <Link href="/infoLivroBiblioteca/">
+                                <Link href="/infoLivroBiblioteca">
                                     <div>
                                         <Image
                                             src={src}
                                             alt={title}
-                                            width={150}
-                                            height={200}
+                                            width={100}
+                                            height={150}
                                             className={styles.bookImage}
                                         />
                                         <div className={styles.bookInfo}>

@@ -12,7 +12,7 @@ export default function AddLivroExistente() {
                         <p className={styles.pUsuario}>Selecione o livro:</p>
                         <div className={styles.opcao}>
                             <select id="options" className={styles.selectInput}>
-                                <option value="" disabled>
+                                <option value="" disabled selected>
                                     Selecione uma opção
                                 </option>
                                 <option value="OdiáriodeAnneFrank(AnneFrank)">

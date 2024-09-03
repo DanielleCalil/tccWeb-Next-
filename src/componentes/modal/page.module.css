@@ -26,7 +26,7 @@
     right: 10px;
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 2.6rem;
     cursor: pointer;
   }
   
@@ -34,19 +34,26 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 2rem;
   }
   
   .modalButton {
-    background-color: #ff6b6b;
+    background-color: #FF735C;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 3rem;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1.4rem;
+    width: 80%;
+    height: auto;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
   
   .modalButton:hover {
-    background-color: #ff4d4d;
+    opacity: 0.5;
+    transition: 0.5s;
   }
   

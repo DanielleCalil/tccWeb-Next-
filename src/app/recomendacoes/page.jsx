@@ -5,7 +5,6 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
 
-// Lista de gêneros
 const genres = [
     'Todos',
     'Policial e Suspense',
@@ -17,14 +16,49 @@ const genres = [
     'Romance'
 ];
 
-// Lista de livros
 const books = [
-    { title: 'O diário de Anne Frank', author: 'Anne Frank', genre: 'Autobiografia', image: '/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg', course: 'Téc. Recursos Humanos' },
-    { title: 'Dom Casmurro', author: 'Machado de Assis', genre: 'Romance', image: '/Capa_dos_livros/Dom_Casmurro.jpg', course: 'Téc. Contabilidade' },
-    { title: 'Romeu e Julieta', author: 'William Shakespeare', genre: 'Romance', image: '/Capa_dos_livros/Romeu_e_Julieta.jpg', course: 'Téc. Design de Interiores' },
-    { title: '1984', author: 'George Orwell', genre: 'Ficção Científica', image: '/Capa_dos_livros/1984.jpg', course: 'Téc. Informática' },
-    { title: 'Os Miseráveis', author: 'Victor Hugo', genre: 'Romance', image: '/Capa_dos_livros/Os_Miseraveis.jpg', course: 'Téc. Administração' },
-    { title: 'Orgulho e Preconceito', author: 'Jane Austen', genre: 'Romance', image: '/Capa_dos_livros/Orgulho_e_Preconceito.png', course: 'Téc. Farmácia' }
+    { 
+        title: 'O diário de Anne Frank', 
+        author: 'Anne Frank', 
+        genre: 'Autobiografia', 
+        image: '/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg', 
+        course: 'Téc. Recursos Humanos' 
+    },
+    { 
+        title: 'Dom Casmurro', 
+        author: 'Machado de Assis', 
+        genre: 'Romance', 
+        image: '/Capa_dos_livros/Dom_Casmurro.jpg', 
+        course: 'Téc. Contabilidade' 
+    },
+    { 
+        title: 'Romeu e Julieta', 
+        author: 'William Shakespeare', 
+        genre: 'Romance', 
+        image: '/Capa_dos_livros/Romeu_e_Julieta.jpg', 
+        course: 'Téc. Design de Interiores' 
+    },
+    { 
+        title: '1984', 
+        author: 'George Orwell', 
+        genre: 'Ficção Científica', 
+        image: '/Capa_dos_livros/1984.jpg', 
+        course: 'Téc. Informática' 
+    },
+    { 
+        title: 'Os Miseráveis', 
+        author: 'Victor Hugo', 
+        genre: 'Romance', 
+        image: '/Capa_dos_livros/Os_Miseraveis.jpg', 
+        course: 'Téc. Administração' 
+    },
+    { 
+        title: 'Orgulho e Preconceito', 
+        author: 'Jane Austen', 
+        genre: 'Romance', 
+        image: '/Capa_dos_livros/Orgulho_e_Preconceito.png', 
+        course: 'Téc. Farmácia' 
+    },
 ];
 
 export default function Recomendacoes() {

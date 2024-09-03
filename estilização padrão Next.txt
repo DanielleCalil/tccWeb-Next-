@@ -1,2 +1,10 @@
 titulo principal
-font-size: 3rem;
+    font-size: 3rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 0.938rem;
+    text-align: center;
+
+
+disabled selected //usar em input selecionável na opção que não pode selecionar
+

@@ -7,11 +7,9 @@
   }
 
 .addLivroExistente {
-    font-size: 1.875rem;
-    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
     font-weight: 600;
-    font-style: normal;
-    margin-top: 1.563rem;
+    margin-top: 3rem;
     margin-bottom: 0.938rem;
     text-align: center;
 }
@@ -21,19 +19,17 @@
     flex-wrap: wrap;
     justify-content: center;
     max-width: 95%;
-    margin: 0 auto;
+    margin-top: 2.4rem;
     gap: 0.625rem;
     padding: 1.25rem;
     box-sizing: border-box;
 }
 
 .pUsuario {
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.875rem;
+    font-size: 1.4rem;
     text-align: center;
-    margin: 0.125rem;
+    margin: 0.125rem 0rem 1rem;
 }
 
 .opcao {
@@ -44,17 +40,16 @@
 }
 
 .selectInput {
-    width: 37.5rem;
-    height: 2.5rem;
+    width: 60rem;
+    height: 3.6rem;
     padding: 0.625rem;
     border: 1px solid #ccc;
-    border-radius: 0.313rem;
-    font-size: 1rem;
+    border-radius: 0.5rem;
     box-sizing: border-box;
     background-color: #fff;
     font-family: "Poppins", sans-serif;
     margin: 0.875rem;
-    font-size: 0.813rem;
+    font-size: 1.2rem;
 }
 
 .selectInput:hover,
@@ -70,18 +65,18 @@
 }
 
 .addButton {
-    height: 2.813rem;
-    padding: 0.625rem 1.875rem;
+    height: 3.6rem;
+    padding: 0.7rem 2.5rem;
     margin: 1.25rem 0;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 1.4rem;
 }
 
 .addButton:hover {

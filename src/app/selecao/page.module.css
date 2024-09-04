@@ -22,7 +22,7 @@
   flex-wrap: wrap;
   justify-content: center;
   max-width: 95%;
-  margin: auto;
+  /* margin: auto; */
   gap: 0.625rem;
   padding: 1.25rem;
   box-sizing: border-box;

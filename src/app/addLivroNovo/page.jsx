@@ -6,7 +6,7 @@ import Link from 'next/link';
 import FileInput from '@/componentes/FileInput/page';
 
 export default function AddLivroNovo() {
-    const [capaImage, setCapaImage] = useState();
+    const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
 
     const handleFileSelect = (imageUrl) => {
         setCapaImage(imageUrl);

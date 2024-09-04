@@ -112,35 +112,37 @@ const books = [
 
 export default function Biblioteca() {
     const [selectedGenre, setSelectedGenre] = useState('Todos');
+    const [searchQuery, setSearchQuery] = useState(''); // Estado para armazenar o texto da pesquisa
+    const [showModal, setShowModal] = useState(false);
 
-    // Filtra os livros com base no gênero selecionado
-    const filteredBooks = selectedGenre === 'Todos'
-        ? books
-        : books.filter(book => book.genre === selectedGenre);
+    // Filtra os livros com base no gênero selecionado e na pesquisa
+    const filteredBooks = books
+    .filter(book => 
+        (selectedGenre === 'Todos' || book.genre === selectedGenre) && (
+            book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.editora.toLowerCase().includes(searchQuery.toLowerCase()) || // Corrija o campo conforme necessário
+            book.genre.toLowerCase().includes(searchQuery.toLowerCase()) // Corrija o campo conforme necessário
+        )
+    );
+
 
     // Ordena os livros pelo título em ordem alfabética
     const sortedBooks = filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
 
-    const [showModal, setShowModal] = useState(false);
-
-    const openModal = () => {
-        setShowModal(true);
-    };
-
-    const closeModal = () => {
-        setShowModal(false);
-    };
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.biblioteca}>Biblioteca</h1>
                 <div className={styles.contButton}>
-                    <button onClick={openModal}  className={styles.addButton}>+ Adicionar</button>
+                    <button onClick={openModal} className={styles.addButton}>+ Adicionar</button>
                     <Modal show={showModal} onClose={closeModal} />
-                    {/* Outros conteúdos da página */}
                 </div>
-                <BarraPesquisa />
+                <BarraPesquisa setSearchQuery={setSearchQuery} />
 
                 <div className={styles.genreButtons}>
                     {genres.map((genre) => (

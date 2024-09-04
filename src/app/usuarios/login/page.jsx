@@ -1,10 +1,18 @@
+"use client"
+import { useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
-
 import { IoSearchOutline } from "react-icons/io5";
+import { IoEye, IoEyeOff  } from "react-icons/io5";
 
 export default function Login() {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <div className="containerGlobal">
             <div className={styles.background}>
@@ -14,8 +22,8 @@ export default function Login() {
                             src="/imagens_telas/6737457.png"
                             alt="Imagem tela de login"
                             className={styles.imgLogin}
-                            width={373}
-                            height={384}
+                            width={500}
+                            height={500}
                         />
                     </div>
                     <div className={styles.conteudo}>
@@ -25,11 +33,19 @@ export default function Login() {
                             placeholder="RM"
                             className={styles.inputField}
                         />
-                        <input
-                            type="password"
-                            placeholder="Senha"
-                            className={styles.inputField}
-                        />
+                        <div className={styles.passwordContainer}>
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Senha"
+                                className={styles.inputField}
+                            />
+                            <span
+                                onClick={togglePasswordVisibility}
+                                className={styles.eyeIcon}
+                            >
+                                {showPassword ? <IoEyeOff /> : <IoEye />}
+                            </span>
+                        </div>
                         <div className={styles.cadastre}>
                             Não tem cadastro? <Link href="/usuarios/signUp">Cadastre-se</Link>
                         </div>

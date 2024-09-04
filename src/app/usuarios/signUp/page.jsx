@@ -1,10 +1,23 @@
+"use client"
+import { useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
-
 import { IoSearchOutline } from "react-icons/io5";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignUp() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
     return (
         <div className="containerGlobal">
             <div className={styles.background}>
@@ -35,21 +48,36 @@ export default function SignUp() {
                             placeholder="E-mail"
                             className={styles.inputField}
                         />
-                        <div className="senha">
-                            <input
-                                type="password"
-                                placeholder="Senha"
-                                className={`${styles.inputField} ${styles.senhaField}`}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Confirmar senha"
-                                className={`${styles.inputField} ${styles.senhaField}`}
-                            />
+                        <div className={styles.passwordRow}>
+                            <div className={styles.passwordContainer}>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Senha"
+                                    className={`${styles.inputField} ${styles.senhaField}`}
+                                />
+                                <span
+                                    onClick={togglePasswordVisibility}
+                                    className={styles.eyeIcon}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
+                            <div className={styles.passwordContainer}>
+                                <input
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    placeholder="Confirmar senha"
+                                    className={`${styles.inputField} ${styles.senhaField}`}
+                                />
+                                <span
+                                    onClick={toggleConfirmPasswordVisibility}
+                                    className={styles.eyeIcon}
+                                >
+                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
                         </div>
                         <form className={styles.sexoForm}>
                             <legend>Sexo:</legend>
-
                             <label>
                                 <input
                                     type="radio"
@@ -75,7 +103,6 @@ export default function SignUp() {
                                 Neutro
                             </label>
                         </form>
-
                         <div className={styles.logar}>
                             Já tem uma conta? <Link href="/usuarios/login">Faça login</Link>
                         </div>

@@ -11,17 +11,18 @@
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-style: normal;
-  margin-top: 1.563rem;
+  margin-top: 2.5rem;
   margin-bottom: 0.938rem;
   text-align: center;
 }
 
 .container {
+  height: 30rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 95%;
-  margin: 0 auto;
+  /* margin: auto; */
   gap: 0.625rem;
   padding: 1.25rem;
   box-sizing: border-box;
@@ -48,7 +49,7 @@
   font-family: "Poppins", sans-serif;
   font-weight: 300;
   font-style: normal;
-  font-size: 0.875rem;
+  /* font-size: 0.875rem; */
   margin-left: 0.5rem;
 }
 

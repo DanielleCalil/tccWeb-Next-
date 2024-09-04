@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import ModalAdd from '@/componentes/modalAdd/page';
+import Api from '../../services/axios';
 
 const genres = [
     'Todos',
@@ -133,6 +134,20 @@ export default function Biblioteca() {
 
     const openModalAdd = () => setShowModalAdd(true);
     const closeModalAdd = () => setShowModalAdd(false);
+
+    async function buscarLivros() {
+        // Lógica para buscar livros
+        try {
+
+            const response = await Api.get('/livros');
+            console.log(response.data)
+        }catch(error){
+            console.log("ERRO: "+error)
+        }
+
+    }
+
+
 
     return (
         <main className={styles.main}>

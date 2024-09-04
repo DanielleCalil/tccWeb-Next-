@@ -1,82 +1,90 @@
+"use client";
+import { useState } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
+import FileInput from '@/componentes/FileInput/page';
 
 export default function AddLivroNovo() {
+    const [capaImage, setCapaImage] = useState();
+
+    const handleFileSelect = (imageUrl) => {
+        setCapaImage(imageUrl);
+    };
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
-                <h1 class={styles.addLivroNovo}>Adicionar livro novo</h1>
-                <div class={styles.container}>
-                    <div class={styles.inputTotal}>
-                        <div class={styles.inputImgContainer}>
-                            <div class={styles.imgBook}>
-                                <p class={styles.textCapa}>Capa:</p>
-                                <label
-                                    for="file-upload"
-                                    class={styles.uploadButton}>
-                                    Escolher Imagem</label>
-                                <input
-                                    id="file-upload"
-                                    type="file"
-                                    accept="image/*"
-                                    class={styles.inputWrapper}
-                                />
+                <h1 className={styles.addLivroNovo}>Adicionar livro novo</h1>
+                <div className={styles.container}>
+                    <div className={styles.inputTotal}>
+                        <div className={styles.inputImgContainer}>
+                            <div className={styles.imgBook}>
+                                <p className={styles.textInput}>Capa:</p>
+                                <div className={styles.imagePreview}>
+                                    <Image
+                                        src={capaImage}
+                                        alt="Capa do livro"
+                                        width={150}
+                                        height={200}
+                                    />
+                                </div>
+                                <FileInput onFileSelect={handleFileSelect} />
                             </div>
-                            <div class={styles.inputGroup}>
-                                <text class={styles.text}>Quantidade:</text>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Quantidade:</p>
                                 <input
                                     type="number"
-                                    class={styles.inputQuant}
+                                    className={styles.inputQuant}
                                 />
                             </div>
                         </div>
-                        <div class={styles.inputContainer}>
-                            <div class={styles.inputGroup}>
-                                <p class={styles.textInput}>Nome:</p>
+                        <div className={styles.inputContainer}>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Nome:</p>
                                 <input
                                     type="text"
-                                    class={styles.inputField}
+                                    className={styles.inputField}
                                 />
                             </div>
-                            <div class={styles.inputGroup}>
-                                <p class={styles.textInput}>Autor:</p>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Autor:</p>
                                 <input
                                     type="text"
-                                    class={styles.inputField}
+                                    className={styles.inputField}
                                 />
                             </div>
-                            <div class={styles.inputGroup}>
-                                <p class={styles.textInput}>Editora:</p>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Editora:</p>
                                 <input
                                     type="text"
-                                    class={styles.inputField}
+                                    className={styles.inputField}
                                 />
                             </div>
-                            <div class={styles.inputGroup}>
-                                <text class={styles.textInput}>Gênero:</text>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Gênero:</p>
                                 <input
                                     type="text"
-                                    class={styles.inputField}
+                                    className={styles.inputField}
                                 />
                             </div>
-                            <div class={styles.inputGroup}>
-                                <text class={styles.textInput}>Resumo:</text>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Resumo:</p>
                                 <textarea
                                     id="resumo"
                                     name="resumo"
-                                    class={styles.inputResumo}>
-                                </textarea>
+                                    className={styles.inputResumo}
+                                />
                             </div>
                         </div>
                     </div>
-                    <div class={styles.editar}>
+                    <div className={styles.editar}>
                         <Link href="/biblioteca/">
-                            <button class={styles.addButton}>Adicionar</button>
+                            <button className={styles.addButton}>Adicionar</button>
                         </Link>
                     </div>
                 </div>
             </div>
         </main>
-    )
+    );
 }

@@ -69,6 +69,9 @@ export default function Recomendacoes() {
         ? books
         : books.filter(book => book.genre === selectedGenre);
 
+    // Ordena os livros pelo título em ordem alfabética
+    const sortedBooks = filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -96,7 +99,7 @@ export default function Recomendacoes() {
 
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {filteredBooks.map((book) => (
+                        {sortedBooks.map((book) => (
                             <Link
                                 key={book.title}
                                 href="/infoLivroRecomendacao/"

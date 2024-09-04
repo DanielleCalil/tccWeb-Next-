@@ -21,7 +21,7 @@ const FileInput = ({ onFileSelect }) => {
         style={{ display: 'none' }} // Hide the default file input
       />
       <label htmlFor="fileInput" className={styles.customFileUpload}>
-        Escolher nova foto
+        Escolher Imagem
       </label>
     </div>
   );

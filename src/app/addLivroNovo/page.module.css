@@ -7,21 +7,37 @@
 }
 
 .addLivroNovo {
-    font-size: 1.875rem;
-    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
     font-weight: 600;
-    font-style: normal;
-    margin-top: 1.563rem;
+    margin-top: 3rem;
     margin-bottom: 0.938rem;
     text-align: center;
 }
 
 .container {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    width: 100%;
-    margin: 0 auto;
+    max-width: 95%;
+    margin-top: 2.4rem;
+    gap: 0.625rem;
     padding: 1.25rem;
     box-sizing: border-box;
+    width: 100%;
+}
+
+.imgBook {
+    margin-bottom: 1.25rem;
+    width: 15rem;
+}
+
+.imgBook .imagePreview {
+    width: 15rem;
+    height: 20rem;
+    border-radius: 1.4rem;
+    object-fit: cover;
+    border: 0.2rem solid #ccc;
+    margin-bottom: 1.25rem;
 }
 
 .inputTotal {
@@ -46,7 +62,7 @@
     margin-top: 0;
 }
 
-.uploadButton {
+/* .uploadButton {
     margin-top: 0.625rem;
     padding: 0.5rem 0.875rem;
     font-size: 0.875rem;
@@ -58,12 +74,12 @@
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-}
+} */
 
-.uploadButton:hover {
+/* .uploadButton:hover {
     opacity: 0.5;
     transition: 0.5s;
-}
+} */
 
 .inputContainer input[type="file"] {
     display: none;
@@ -90,7 +106,7 @@
 
 .inputQuant {
     width: 40%;
-    height: 2.813rem;
+    height: 3.7rem;
     padding: 1.25rem;
     margin: 0.625rem 0;
     border: 1px solid #ccc;
@@ -110,28 +126,31 @@
 }
 
 .textInput {
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
-    font-style: normal;
-    font-size: 0.875rem;
+    font-size: 1.4rem;
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 0.2rem;
 }
 
 .inputField {
-    height: 2.813rem;
-    padding: 1.25rem;
-    margin: 0.625rem 0;
+    width: 100%;
+    height: 4.4rem;
+    padding: 0.625rem;
+    margin: 0.625rem 0rem 1.6rem;
     border: 1px solid #ccc;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     box-sizing: border-box; 
+    padding: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .inputResumo {
     width: 100%;
     height: 12.5rem;
-    padding: 1.25rem;
+    padding: 1.5rem;
     margin: 0.625rem 0;
+    font-size: 1.25rem;
     border: 1px solid #ccc;
     border-radius: 1.875rem;
     box-sizing: border-box; 
@@ -144,18 +163,18 @@
 }
 
 .addButton {
-    height: 2.813rem;
-    padding: 0.625rem 1.875rem;
+    height: 3.6rem;
+    padding: 0.7rem 2.5rem;
     margin: 1.25rem 0;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 1.4rem;
 }
 
 .addButton:hover {

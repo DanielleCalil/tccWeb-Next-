@@ -113,9 +113,13 @@ const books = [
 export default function Biblioteca() {
     const [selectedGenre, setSelectedGenre] = useState('Todos');
 
+    // Filtra os livros com base no gênero selecionado
     const filteredBooks = selectedGenre === 'Todos'
         ? books
         : books.filter(book => book.genre === selectedGenre);
+
+    // Ordena os livros pelo título em ordem alfabética
+    const sortedBooks = filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
 
     const [showModal, setShowModal] = useState(false);
 
@@ -158,7 +162,7 @@ export default function Biblioteca() {
                 </div>
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {filteredBooks.map(({ src, title, author }) => (
+                        {sortedBooks.map(({ src, title, author }) => (
                             <div className={styles.bookItem} key={title}>
                                 <Link href="/infoLivroBiblioteca">
                                     <div>

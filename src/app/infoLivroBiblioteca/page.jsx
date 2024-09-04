@@ -1,17 +1,24 @@
+"use client"
+import { useState } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
+import ModalInativa from '@/componentes/modalInativa/page';
 
 export default function InfoLivroBiblioteca() {
+    const [showModalInativa, setShowModalInativa] = useState(false);
+
+    const openModalInativa = () => setShowModalInativa(true);
+    const closeModalInativa = () => setShowModalInativa(false);
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
-                <Link href="#addModal">
-                    <span>
-                        <button className={styles.removButton}>- Remover</button>
-                    </span>
-                </Link>
+                <div className={styles.contButton}>
+                    <button onClick={openModalInativa} className={styles.inativaButton}>- Inativar</button>
+                    <ModalInativa show={showModalInativa} onClose={closeModalInativa} />
+                </div>
                 <div className={styles.container}>
                     <div className={styles.lineSquare}>
                         <div className={styles.inputContainer}>
@@ -19,8 +26,8 @@ export default function InfoLivroBiblioteca() {
                                 <Image
                                     src="/Capa_dos_livros/o_diario_de_anne_frank.jpg"
                                     alt="O Diário de Anne Frank"
-                                    width={200} 
-                                    height={300}
+                                    width={667} 
+                                    height={1000}
                                     className={styles.imgReserva}
                                 />
                                 <div className={styles.livroInfo}>
@@ -44,10 +51,10 @@ export default function InfoLivroBiblioteca() {
                                         <div className={styles.infoBox}>
                                             <span className={styles.titleSuperior}>Autor(a)</span>
                                             <Image
-                                                src="/Icons TCC/autora.png"
+                                                src="/Icons TCC/autor.png"
                                                 alt="Autor"
-                                                width={24} 
-                                                height={24} 
+                                                width={1080} 
+                                                height={980} 
                                                 className={styles.imgIcons}
                                             />
                                             <span className={styles.titleInferior}>Anne Frank</span>
@@ -57,8 +64,8 @@ export default function InfoLivroBiblioteca() {
                                             <Image
                                                 src="/Icons TCC/editora.png"
                                                 alt="Editora"
-                                                width={24} 
-                                                height={24} 
+                                                width={1080} 
+                                                height={980} 
                                                 className={styles.imgIcons}
                                             />
                                             <span className={styles.titleInferior}>Grupo Editorial Record</span>
@@ -68,8 +75,8 @@ export default function InfoLivroBiblioteca() {
                                             <Image
                                                 src="/Icons TCC/genero.png"
                                                 alt="Gênero"
-                                                width={24} 
-                                                height={24} 
+                                                width={1080} 
+                                                height={980} 
                                                 className={styles.imgIcons}
                                             />
                                             <span className={styles.titleInferior}>Autobiográfico</span>
@@ -83,29 +90,6 @@ export default function InfoLivroBiblioteca() {
                         <Link href="/reservarLivro/">
                             <span>
                                 <button className={styles.reservButton}>Reservar livro</button>
-                            </span>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            <div id="addModal" className={styles.modal}>
-                <div className={styles.modalContent}>
-                    <Link href="#">
-                        <span className={styles.closeButton}>
-                            &times;
-                        </span>
-                    </Link>
-                    <p className={styles.textModal}>Tem certeza que deseja excluir este livro?</p>
-                    <div className={styles.buttons}>
-                        <Link href="/biblioteca/">
-                            <span>
-                                <button className={styles.modalButtonSim}>Sim</button>
-                            </span>
-                        </Link>
-                        <Link href="/infoLivroBiblioteca/">
-                            <span>
-                                <button className={styles.modalButtonNao}>Não</button>
                             </span>
                         </Link>
                     </div>

@@ -7,12 +7,10 @@
 }
 
 .informacoes {
-    font-size: 1.875rem;
-    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
     font-weight: 600;
-    font-style: normal;
-    margin-top: 1.563rem;
-    margin-bottom: 0.938rem;
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
     text-align: center;
 }
 
@@ -25,65 +23,65 @@
     gap: 0.625rem;
     padding: 1.25rem;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .lineSquare {
     width: 40%;
-    box-sizing: border-box;
     height: auto;
+    box-sizing: border-box;
     border: 1px solid black;
     border-radius: 0.625rem;
     padding: 0.625rem;
 }
 
-.info-book-reserva {
+.inputContainer {
+    margin: 1rem;
+}
+
+.infoBookReserva {
     display: flex;
 }
 
-.img-reserva {
-    height: 11.25rem;
-    width: 7.5rem;
-    border-radius: 0.313rem;
-    margin: 0.938rem;
+.imgReserva {
+    height: 16rem;
+    width: 12rem;
+    border-radius: 0.5rem;
+    margin-right: 1.2rem;
 }
 
-.livro-info {
-    font-family: "Poppins", sans-serif;
+.livroInfo {
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.75rem;
     margin-top: 0.313rem;
 }
 
-.header-lineSquare {
+.headerLineSquare {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .geral {
-    font-family: "Poppins", sans-serif;
     font-weight: 700;
-    font-style: normal;
-    font-size: 1rem;
-    margin-bottom: 0px;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .livro {
-    margin-bottom: 0px;
+    margin-bottom: 0.6rem;
     margin-top: 0.188rem;
-    font-size: 0.844rem;
+    font-size: 1.3rem;
 }
 
 .smallLineSquare {
     width: auto;
-    height: 10px;
+    height: 4rem;
     box-sizing: border-box;
     height: auto;
     border: 1px solid black;
     border-radius: 0.625rem;
     padding: 0.625rem;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .text {
@@ -91,32 +89,52 @@
     justify-content: center;
     display: flex;
     flex-direction: column;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5rem;
+}
+
+.quant {
+    font-weight: 600;
+    font-size: 1.2rem;
 }
 
 .resumo {
     margin-top: 0.188rem;
-    font-size: 0.875rem;
-    font-size: 0.844rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    margin-bottom: 1rem;
 }
 
-.info-container {
+.infoContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
 }
 
-.info-box {
+.infoBox {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 1.2rem;
 }
 
-.img-icons {
+.titleSuperior {
+    margin-bottom: 0.5rem;
+}
+
+.titleInferior {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.imgIcons {
     height: auto;
-    width: 1.875rem;
+    width: 3.5rem;
 }
 
 .line {
@@ -127,60 +145,56 @@
     margin: 0.625rem;
 }
 
-.desc-prof {
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 0.813rem;
+.descProf {
+    font-weight: 500;
+    font-size: 1.3rem;
     margin-left: 0.938rem;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
-.desc-prof-curso {
-    font-family: "Poppins", sans-serif;
+.descProfCurso {
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.813rem;
-    margin-left: 0.938rem;
-    margin-top: 0.313rem;
+    font-size: 1.3rem;
+    margin: 0.5rem 1rem 0.8rem 1rem;
 }
 
-.modulo-form {
+.moduloForm {
     display: flex;
     gap: 2.125rem;
-    margin-left: 0.75rem;
-    margin-top: 0.375rem;
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.813rem;
+    font-size: 1.3rem;
+    margin: 0.5rem 1rem 0.8rem 1rem;
 }
 
-.modulo-form input[type="radio"] {
+.moduloForm label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.moduloForm input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 1rem;
-    height: 1rem;
-    border: 1px solid #ccc;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid #CCC;
     border-radius: 50%;
-    background: #fff;
+    background: #FFF;
     cursor: pointer;
     position: relative;
+    margin: 0;
 }
 
-.modulo-form input[type="radio"]:checked {
-    border: 1px solid #3F7263;
-    background-color: #3F7263;
+.moduloForm input[type="radio"]:checked {
+    border: 1px solid #FF735C;
+    background-color: #FF735C;
 }
 
-.modulo-form input[type="radio"]:checked::before {
+.moduloForm input[type="radio"]:checked::before {
     content: '';
     display: block;
-    width: 0.5rem;
-    height: 0.5rem;
     border-radius: 50%;
-    background-color: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -193,22 +207,22 @@
     width: 100%;
 }
 
-.reserv-button {
-    height: 2.813rem;
-    padding: 0.625rem 1.875rem;
-    margin: 1.25rem 0;
+.reservButton {
+    height: 4rem;
+    padding: 0.7rem 2.5rem;
+    margin: 2rem 0;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 1.4rem;
 }
 
-.reserv-button:hover {
+.reservButton:hover {
     opacity: 0.5;
     transition: 0.5s;
 }

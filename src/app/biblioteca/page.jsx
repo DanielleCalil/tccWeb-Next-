@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
-import Modal from '@/componentes/modal/page';
+import ModalAdd from '@/componentes/modalAdd/page';
 
 const genres = [
     'Todos',
@@ -113,7 +113,7 @@ const books = [
 export default function Biblioteca() {
     const [selectedGenre, setSelectedGenre] = useState('Todos');
     const [searchQuery, setSearchQuery] = useState(''); // Estado para armazenar o texto da pesquisa
-    const [showModal, setShowModal] = useState(false);
+    const [showModalAdd, setShowModalAdd] = useState(false);
 
     // Filtra os livros com base no gênero selecionado e na pesquisa
     const filteredBooks = books
@@ -131,16 +131,16 @@ export default function Biblioteca() {
     // Ordena os livros pelo título em ordem alfabética
     const sortedBooks = filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
 
-    const openModal = () => setShowModal(true);
-    const closeModal = () => setShowModal(false);
+    const openModalAdd = () => setShowModalAdd(true);
+    const closeModalAdd = () => setShowModalAdd(false);
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.biblioteca}>Biblioteca</h1>
                 <div className={styles.contButton}>
-                    <button onClick={openModal} className={styles.addButton}>+ Adicionar</button>
-                    <Modal show={showModal} onClose={closeModal} />
+                    <button onClick={openModalAdd} className={styles.addButton}>+ Adicionar</button>
+                    <ModalAdd show={showModalAdd} onClose={closeModalAdd} />
                 </div>
                 <BarraPesquisa setSearchQuery={setSearchQuery} />
 

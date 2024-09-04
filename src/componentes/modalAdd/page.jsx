@@ -1,8 +1,8 @@
-import React from 'react';
+
 import Link from 'next/link';
 import styles from './page.module.css'; // Assume you will write your CSS styles in Modal.module.css
 
-const Modal = ({ show, onClose }) => {
+const ModalAdd = ({ show, onClose }) => {
     if (!show) return null;
 
     return (
@@ -22,4 +22,4 @@ const Modal = ({ show, onClose }) => {
     );
 };
 
-export default Modal;
+export default ModalAdd;

@@ -151,9 +151,8 @@
 }
 
 .cadastroButton {
-    width: 28%;
     height: 4rem;
-    padding: 0.625rem;
+    padding: 0.7rem 3rem;
     margin: 2.5rem 0;
     background-color: #FF735C;
     color: white;

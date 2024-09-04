@@ -6,6 +6,10 @@ titulo principal
     text-align: center;
 
 
+buttons
+    height: 4rem;
+    padding: 0.7rem 3rem;
+
 disabled selected //usar em input selecionável na opção que não pode selecionar
 
 colocar a função de colocar a foto de capa do livro - feito
@@ -17,3 +21,4 @@ fazer teste de função do usuário para mostrar as telas que podem ser mostrada
   - Funcionário
   - ADM
 ver com o alan como eu faço a pesquisa
+tirar oo defeitinho do radio button

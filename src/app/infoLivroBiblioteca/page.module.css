@@ -7,32 +7,34 @@
 }
 
 .informacoes {
-    font-size: 1.875rem;
-    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
     font-weight: 600;
-    font-style: normal;
-    margin-top: 1.563rem;
-    margin-bottom: 0.938rem;
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
     text-align: center;
 }
 
-.removButton {
-    right: 3.125rem;
-    top: 9.375rem;
+.contButton .inativaButton {
+    right: 5rem;
+    top: 17rem;
     position: absolute;
-    height: 2.5rem;
-    padding: 0.625rem 1.25rem;
-    margin: 1.25rem 0;
+    height: 4rem;
+    width: 12rem;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     cursor: pointer;
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.875rem;
+    font-size: 1.4rem;
     text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+}
+
+.contButton .inativaButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
 }
 
 .container {
@@ -44,15 +46,20 @@
     gap: 0.625rem;
     padding: 1.25rem;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .lineSquare {
     width: 40%;
-    box-sizing: border-box;
     height: auto;
+    box-sizing: border-box;
     border: 1px solid black;
     border-radius: 0.625rem;
     padding: 0.625rem;
+}
+
+.inputContainer {
+    margin: 1rem;
 }
 
 .infoBookReserva {
@@ -60,17 +67,14 @@
 }
 
 .imgReserva {
-    height: 11.25rem;
-    width: 7.5rem;
-    border-radius: 0.313rem;
-    margin: 0.938rem;
+    height: 16rem;
+    width: 12rem;
+    border-radius: 0.5rem;
+    margin-right: 1.2rem;
 }
 
 .livroInfo {
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.75rem;
     margin-top: 0.313rem;
 }
 
@@ -81,22 +85,20 @@
 }
 
 .geral {
-    font-family: "Poppins", sans-serif;
     font-weight: 700;
-    font-style: normal;
-    font-size: 1rem;
-    margin-bottom: 0;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .livro {
-    margin-bottom: 0;
+    margin-bottom: 0.6rem;
     margin-top: 0.188rem;
-    font-size: 0.844rem;
+    font-size: 1.3rem;
 }
 
 .smallLineSquare {
     width: auto;
-    height: 0.625rem;
+    height: 4rem;
     box-sizing: border-box;
     height: auto;
     border: 1px solid black;
@@ -112,12 +114,22 @@
     flex-direction: column;
     margin-top: 0;
     margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5rem;
+}
+
+.quant {
+    font-weight: 600;
+    font-size: 1.2rem;
 }
 
 .resumo {
     margin-top: 0.188rem;
-    font-size: 0.875rem;
-    font-size: 0.844rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    margin-bottom: 1rem;
 }
 
 .infoContainer {
@@ -131,11 +143,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 1.2rem;
+}
+
+.titleSuperior {
+    margin-bottom: 0.5rem;
+}
+
+.titleInferior {
+    margin-top: 0.5rem;
 }
 
 .imgIcons {
     height: auto;
-    width: 1.875rem;
+    width: 3.5rem;
 }
 
 .editar {
@@ -145,123 +166,21 @@
 }
 
 .reservButton {
-    height: 2.813rem;
-    padding: 0.625rem 1.875rem;
+    height: 4rem;
+    padding: 0.7rem 2.5rem;
     margin: 1.25rem 0;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 3rem;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 1.4rem;
 }
 
 .reservButton:hover {
     opacity: 0.5;
     transition: 0.5s;
-}
-
-.modal:target {
-    display: block;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modalContent {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 1.25rem;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 18.75rem;
-    text-align: center;
-    border-radius: 0.625rem;
-}
-
-.closeButton {
-    color: #aaa;
-    float: right;
-    font-size: 1.75rem;
-    font-weight: bold;
-}
-
-.closeButton:hover,
-.closeButton:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.textModal {
-    font-family: "Poppins", sans-serif;
-	font-weight: 600;
-	font-style: normal;
-    font-size: 1.125rem;
-    margin-top: 1.875rem;
-}
-
-.buttons {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-evenly;
-}
-
-.modalButtonSim {
-    background-color: #FF735C;
-    color: #000;
-    border: none;
-    padding: 0.625rem 1.875rem;
-    margin: 0.625rem 0;
-    border-radius: 1.875rem;
-    cursor: pointer;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 1rem;
-    display: block;
-    width: 100%;
-}
-
-.modalButtonSim:hover {
-    opacity: 0.5;
-    transition: 0.5s;
-}
-
-.modalButtonNão {
-    background-color: #FFF;
-    color: #000;
-    border: 1px  solid #000;
-    padding: 0.625rem 1.875rem;
-    margin: 0.625rem 0;
-    border-radius: 1.875rem;
-    cursor: pointer;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 1rem;
-    display: block;
-    width: 100%;
-}
-
-.modalButtonNão:hover {
-    opacity: 0.5;
-    transition: 0.5s;
-}
-
-.modalContent a {
-    text-decoration: none;
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from './page.module.css';
+import Link from 'next/link';
 
 export default function Recomendacoes() {
     return (
@@ -10,19 +11,22 @@ export default function Recomendacoes() {
                 </div>
                 <div className={styles.bookList}>
                     <div className={styles.bookItem}>
-                        <p className={styles.bookCourse}>Téc. Recursos Humanos</p>
-                        <Image
-                            src="/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
-                            alt="O diário de Anne Frank"
-                            className={styles.bookImage}
-                            width={150}
-                            height={215}
-                        />
-                        <div className={styles.bookInfo}>
-                            <h2 className={styles.bookTitle}>O diário de Anne Frank</h2>
-                            <p className={styles.bookAuthor}>Anne Frank</p>
-                        </div>
+                        <Link href="/infoLivroRecomendacao">
+                            <p className={styles.bookCourse}>Téc. Recursos Humanos</p>
+                            <Image
+                                src="/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
+                                alt="O diário de Anne Frank"
+                                className={styles.bookImage}
+                                width={150}
+                                height={215}
+                            />
+                            <div className={styles.bookInfo}>
+                                <h2 className={styles.bookTitle}>O diário de Anne Frank</h2>
+                                <p className={styles.bookAuthor}>Anne Frank</p>
+                            </div>
+                        </Link>
                     </div>
+
                     <div className={styles.bookItem}>
                         <p className={styles.bookCourse}>Téc. Contabilidade</p>
                         <Image
@@ -96,6 +100,6 @@ export default function Recomendacoes() {
                     </div>
                 </div>
             </div>
-        </main>
+        </main >
     );
 }

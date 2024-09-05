@@ -72,7 +72,7 @@ export default function Cabecalho() {
                     </Link>
                     <Link
                         href="/perfil"
-                        className={rota === "/perfil" ? styles.active : ""}>
+                        className={rota === "/perfil" || rota === "/perfilEditar" ? styles.active : ""}>
                         <IoPersonOutline className={styles.tpicon} />
                         Perfil
                     </Link>
@@ -84,13 +84,13 @@ export default function Cabecalho() {
                     </Link>
                     <Link
                         href="/recomendacoes"
-                        className={rota === "/recomendacoes" ? styles.active : ""}>
+                        className={rota === "/recomendacoes" || rota === "/infoLivroRecomendacao" ? styles.active : ""}>
                         <IoStarOutline className={styles.tpicon} />
                         Recomendações
                     </Link>
                     <Link
                         href="/biblioteca"
-                        className={rota === "/biblioteca" ? styles.active : ""}>
+                        className={rota === "/biblioteca" || rota === "/infoLivroBiblioteca" ? styles.active : ""}>
                         <IoBookOutline className={styles.tpicon} />
                         Biblioteca
                     </Link>
@@ -114,7 +114,7 @@ export default function Cabecalho() {
                     </Link>
                     <Link
                         href="/infoContato"
-                        className={rota === "/infoContato" ? styles.active : ""}>
+                        className={rota === "/infoContato" || rota === "/infoContatoEditar" ? styles.active : ""}>
                         <IoInformationCircleOutline className={styles.tpicon} />
                         Informações
                     </Link>

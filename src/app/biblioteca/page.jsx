@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import ModalAdd from '@/componentes/modalAdd/page';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
+import api from '@/services/api';
 
 const genres = [
     'Todos',
@@ -123,6 +124,29 @@ export default function Biblioteca() {
 
     const openModalAdd = () => setShowModalAdd(true);
     const closeModalAdd = () => setShowModalAdd(false);
+
+    const [livros, setLivros] = useState([]);
+    
+    const [liv_nome, setLiv_nome] = useState({
+
+    });
+
+    useEffect(() => {
+        listaLivros();
+    }, []);
+
+    async function listaLivros() {
+        try {
+            const response = await api.get('/livros');
+            console.log(response.data.dados);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
 
     return (
         <main className={styles.main}>

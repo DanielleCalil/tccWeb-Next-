@@ -1,5 +1,9 @@
 .main {
     padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 80vh;
 }
 
 .informacoes {
@@ -12,22 +16,124 @@
     text-align: center;
 }
 
-.container {
+.calendarContainer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 95%;
-    margin: 0 auto;
-    gap: 0.625rem;
-    padding: 1.25rem;
-    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .react-calendar {
+    width: 100%; /* Ocupa toda a largura do contêiner */
+    max-width: 800px; /* Define uma largura máxima */
+    font-size: 1.8rem; /* Aumenta o tamanho da fonte para melhor visualização */
+  }
+
+  .calendarContainer h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .calendarContainer h3 {
+    font-size: 1.2em;
+    color: #ff6f61;
+    margin-bottom: 20px;
+  }
+  
+  .calendar {
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  }
+  
+  .datePickers {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .datePickers input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+  }
+
+  .highlightedDate {
+    background-color: #ffeb3b;  /* Cor de fundo para destacar a data */
+    color: #000;  /* Cor do texto para contraste */
+    border-radius: 50%;  /* Formato arredondado para o destaque */
 }
 
-.editar {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
+.react-calendar__tile--start-date {
+    background-color: #cce5ff;
+    border-radius: 50%;
+  }
+  
+  .react-calendar__tile--end-date {
+    background-color: #99c2ff;
+    border-radius: 50%;
+  }
+  
+  .react-calendar__tile--highlighted {
+    background-color: #e6f0ff;
+  }
+  
+  .react-calendar__tile--disabled {
+    background-color: #f5f5f5;
+    color: #d6d6d6;
+  }
+  
+
+/* Estilos básicos para o calendário */
+.react-calendar {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Estilos para a visão mensal */
+  .react-calendar__month-view {
+    background-color: #f5f5f5;
+  }
+  
+  /* Estilos para cada dia do calendário */
+  .react-calendar__tile {
+    border-radius: 50%;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* Estilos para o dia selecionado */
+  .react-calendar__tile--active {
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+  }
+  
+  /* Estilos para o intervalo de datas selecionadas */
+  .react-calendar__tile--highlighted {
+    background: #ffcc00;
+    color: white;
+  }
+  
+  /* Estilos para o header do calendário */
+  .react-calendar__navigation button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  
+  /* Estilos para os dias da semana */
+  .react-calendar__month-view__days__day {
+    color: #333;
+  }
+  
 
 .reservButton {
     height: 2.813rem;

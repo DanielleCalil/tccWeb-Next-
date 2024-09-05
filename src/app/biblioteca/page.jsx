@@ -128,6 +128,13 @@ export default function Biblioteca() {
     const [livros, setLivros] = useState([]);
     
     const [liv_nome, setLiv_nome] = useState({
+            "liv_cod": '',
+            "liv_nome": '',
+            "liv_pha_cod": '',
+            "liv_categ_cod": '',
+            "liv_desc": '',
+            "edt_nome": '',
+            "liv_foto": ''
 
     });
 

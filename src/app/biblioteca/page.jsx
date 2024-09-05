@@ -1,11 +1,10 @@
-"use client"
+"use client";
 import { useState } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
-import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import ModalAdd from '@/componentes/modalAdd/page';
-import Api from '../../services/axios';
+import BarraPesquisa from '@/componentes/barraPesquisa/page';
 
 const genres = [
     'Todos',
@@ -113,41 +112,17 @@ const books = [
 
 export default function Biblioteca() {
     const [selectedGenre, setSelectedGenre] = useState('Todos');
-    const [searchQuery, setSearchQuery] = useState(''); // Estado para armazenar o texto da pesquisa
     const [showModalAdd, setShowModalAdd] = useState(false);
 
-    // Filtra os livros com base no gênero selecionado e na pesquisa
+    // Filtra os livros com base no gênero selecionado
     const filteredBooks = books
-    .filter(book => 
-        (selectedGenre === 'Todos' || book.genre === selectedGenre) && (
-            book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            book.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            book.editora.toLowerCase().includes(searchQuery.toLowerCase()) || // Corrija o campo conforme necessário
-            book.genre.toLowerCase().includes(searchQuery.toLowerCase()) // Corrija o campo conforme necessário
-        )
-    );
-
+        .filter(book => selectedGenre === 'Todos' || book.genre === selectedGenre);
 
     // Ordena os livros pelo título em ordem alfabética
     const sortedBooks = filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
 
     const openModalAdd = () => setShowModalAdd(true);
     const closeModalAdd = () => setShowModalAdd(false);
-
-    async function buscarLivros() {
-        // Lógica para buscar livros
-        try {
-
-            const response = await Api.get('/livros');
-            console.log(response.data)
-        }catch(error){
-            console.log("ERRO: "+error)
-        }
-
-    }
-
-
 
     return (
         <main className={styles.main}>
@@ -157,8 +132,7 @@ export default function Biblioteca() {
                     <button onClick={openModalAdd} className={styles.addButton}>+ Adicionar</button>
                     <ModalAdd show={showModalAdd} onClose={closeModalAdd} />
                 </div>
-                <BarraPesquisa setSearchQuery={setSearchQuery} />
-
+                <BarraPesquisa />
                 <div className={styles.genreButtons}>
                     {genres.map((genre) => (
                         <div

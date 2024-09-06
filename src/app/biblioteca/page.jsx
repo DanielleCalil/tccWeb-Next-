@@ -125,7 +125,18 @@ export default function Biblioteca() {
     const openModalAdd = () => setShowModalAdd(true);
     const closeModalAdd = () => setShowModalAdd(false);
 
-    const [livros, setLivros] = useState([]);
+    //const [livros, setLivros] = useState([]);
+
+    const [livros, setLivros] = useState({
+        liv_cod: '',
+        liv_nome: '',
+        liv_pha_cod: '',
+        liv_categ_cod: '',
+        liv_desc: '',
+        edt_nome: '',
+        liv_foto: '',
+       
+    });
 
     useEffect(() => {
         listaLivros();
@@ -134,7 +145,7 @@ export default function Biblioteca() {
     async function listaLivros() {
         try {
             const response = await api.get('/livros');
-            console.log(response.data.dados);
+            setUfs(response.data.dados);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);

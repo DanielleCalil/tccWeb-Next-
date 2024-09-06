@@ -14,12 +14,18 @@
     text-align: center;
 }
 
+.contButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .contButton .addButton {
     right: 5rem;
     top: 17rem;
     position: absolute;
     height: 4rem;
-    width: 12rem;
+    width: 14rem;
     background-color: #3F7263;
     color: white;
     border: none;
@@ -35,6 +41,12 @@
 .contButton .addButton:hover {
     opacity: 0.5;
     transition: 0.5s;
+}
+
+.tpiconAdm {
+    margin-right: 0.3rem;
+    margin-left: 0;
+    font-size: 1.4rem;
 }
 
 .container {

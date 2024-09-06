@@ -8,10 +8,8 @@
 
 .informacoes {
     font-size: 3rem;
-    font-family: "Poppins", sans-serif;
     font-weight: 600;
-    font-style: normal;
-    margin-top: 1.563rem;
+    margin-top: 3rem;
     margin-bottom: 0.938rem;
     text-align: center;
 }
@@ -25,10 +23,11 @@
     gap: 0.625rem;
     padding: 1.25rem;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .lineSquare {
-    width: 25.625rem;
+    width: 20%;
     box-sizing: border-box;
     height: auto;
     border: 1px solid black;
@@ -37,7 +36,11 @@
 }
 
 .inputContainer {
-    width: 100%;
+    width: auto;
+    /* height: 10rem; */
+    margin: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .infoBookReserva {
@@ -45,18 +48,19 @@
 }
 
 .imgReserva {
+    width: 15%;
     height: auto;
-    width: 3.125rem;
-    border-radius: 0.313rem;
-    margin: 0.938rem;
+    border-radius: 0.6rem;
+    margin-bottom: 0.5rem;
+
 }
 
 .livroInfo {
-    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
     font-weight: 400;
-    font-style: normal;
-    font-size: 0.75rem;
-    margin-top: 0.313rem;
+    margin: 0 0 0.5rem 1rem;
+    color: #000;
+    line-height: 1.5rem;
 }
 
 .line {
@@ -64,35 +68,40 @@
     box-sizing: border-box;
     height: auto;
     border-bottom: 1px solid #ccc;
-    margin-bottom: 0.625rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    justify-content: center;
 }
 
 .info {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
-    font-size: 0.813rem;
+    font-size: 1.2rem;
     margin-left: 0.5rem;
+    line-height: 3rem;
 }
 
 .pUsuario {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 0.813rem;
+    font-size: 1.2rem;
     text-align: center;
+    margin: 0.125rem;
 }
 
 .opcao {
-    justify-content:space-evenly;
+    justify-content: center;
     align-items: center;
     display: flex;
-
+    gap: 3rem;
+    margin-top: 1rem;
 }
 
 .confirmButton {
-    height: 3.125rem;
-    width: 7.5rem;
+    height: 3.5rem;
+    padding: 0.7rem 2rem;
     background-color: #FF735C;
     color: white;
     border: none;
@@ -101,12 +110,12 @@
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 0.75rem;
+    font-size: 1rem;
 }
 
 .cancelButton {
-    height: 3.125rem;
-    width: 7.5rem;
+    height: 3.5rem;
+    padding: 0.7rem 2rem;
     background-color: #FFF;
     color: black;
     border: 1px solid black;
@@ -115,7 +124,7 @@
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 0.75rem;
+    font-size: 1rem;
 }
 
 .confirmButton:hover,
@@ -125,11 +134,12 @@
 }
 
 .obs {
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
     color: #8a8a8a;
     margin-top: 1.25rem;
     margin-bottom: 0.313rem;
+    line-height: 1.5rem;
 }

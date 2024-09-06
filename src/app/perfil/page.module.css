@@ -172,12 +172,12 @@
 .editarButton {
     width: 5.5rem;
     height: 5.5rem;
-    padding: 0.625rem;
+    padding: 0.7rem;
     margin: 1.25rem 0;
     background-color: #FF735C;
     color: white;
     border: none;
-    border-radius: 1.875rem;
+    border-radius: 50%;
     cursor: pointer;
     font-weight: 400;
     font-size: 1rem; 

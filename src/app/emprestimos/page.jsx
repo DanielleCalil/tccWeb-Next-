@@ -1,8 +1,21 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
-
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
+
+const infoEmprestimo = {
+    livro: {
+        titulo: "O Diário de Anne Frank",
+        autor: "Anne Frank",
+        capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
+    },
+    usuario: "Clara Oliveira da Silva",
+    dataEmprestimo: "12/03/2024",
+    periodo: {
+        inicio: "12/03/2024",
+        fim: "27/03/2024"
+    },
+};
 
 export default function Emprestimos() {
   return (
@@ -15,21 +28,21 @@ export default function Emprestimos() {
             <div className={styles.inputContainer}>
               <div className={styles.infoBookReserva}>
                 <Image
-                  src="/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
-                  alt="O Diário de Anne Frank"
+                  src={infoEmprestimo.livro.capa}
+                  alt={infoEmprestimo.livro.titulo}
                   className={styles.imgReserva}
                   width={667}
                   height={1000}
                 />
                 <div className={styles.livroInfo}>
-                  <p>O Diário de Anne Frank</p>
-                  <p>Por: Anne Frank</p>
+                  <p>{infoEmprestimo.livro.titulo}</p>
+                  <p>Por: {infoEmprestimo.livro.autor}</p>
                 </div>
               </div>
               <div className={styles.line}></div>
-              <p className={styles.info}>Reservado por: Clara Oliveira da Silva</p>
-              <p className={styles.info}>Reserva realizada no dia: 12/03/2024</p>
-              <p className={styles.info}>Período da reserva: 12/03/2024 até 27/03/2024</p>
+              <p className={styles.info}>Reservado por: {infoEmprestimo.usuario}</p>
+              <p className={styles.info}>Reserva realizada no dia: {infoEmprestimo.dataEmprestimo}</p>
+              <p className={styles.info}>Período da reserva: {infoEmprestimo.periodo.inicio} até {infoEmprestimo.periodo.fim}</p>
             </div>
           </div>
         </div>

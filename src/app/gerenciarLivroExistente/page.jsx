@@ -3,9 +3,9 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from 'next/link';
 import styles from "./page.module.css";
+import BarraPesquisa from "@/componentes/barraPesquisa/page";
 
 export default function AtivarLivroExistente() {
-    // Estado para armazenar os livros com suas imagens, título, autor e status
     const [books, setBooks] = useState([
         {
             src: '/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg',
@@ -99,20 +99,25 @@ export default function AtivarLivroExistente() {
         },
     ]);
 
-    // Função para ativar/inativar um livro
-    const toggleBookStatus = (index) => {
-        const updatedBooks = [...books];
-        updatedBooks[index].active = !updatedBooks[index].active;
+    // Função para ativar/inativar um livro pelo título
+    const toggleBookStatus = (title) => {
+        const updatedBooks = books.map(book =>
+            book.title === title ? { ...book, active: !book.active } : book
+        );
         setBooks(updatedBooks);
     };
+
+    // Ordenar livros em ordem alfabética pelo título
+    const sortedBooks = [...books].sort((a, b) => a.title.localeCompare(b.title));
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
-                <h1 className={styles.ativarLivroExistente}>Gerenciar Livros</h1>
+                <h1 className={styles.ativarLivroExistente}>Gerenciar livros existentes</h1>
                 <div className={styles.container}>
+                    <BarraPesquisa/>
                     <div className={styles.bookList}>
-                        {books.map(({ src, title, author, active }, index) => (
+                        {sortedBooks.map(({ src, title, author, active }) => (
                             <div
                                 className={`${styles.bookItem} ${!active ? styles.inactive : ""}`}
                                 key={title}
@@ -137,7 +142,7 @@ export default function AtivarLivroExistente() {
                                         <input
                                             type="checkbox"
                                             checked={active}
-                                            onChange={() => toggleBookStatus(index)}
+                                            onChange={() => toggleBookStatus(title)}
                                         />
                                         <span className={`${styles.slider} ${styles.round}`}></span>
                                     </label>

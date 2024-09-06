@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
@@ -126,16 +126,15 @@ export default function Biblioteca() {
     const closeModalAdd = () => setShowModalAdd(false);
 
     const [livros, setLivros] = useState([]);
-    
-    const [liv_nome, setLiv_nome] = useState({
-            "liv_cod": '',
-            "liv_nome": '',
-            "liv_pha_cod": '',
-            "liv_categ_cod": '',
-            "liv_desc": '',
-            "edt_nome": '',
-            "liv_foto": ''
 
+    const [liv_nome, setLiv_nome] = useState({
+        liv_cod: '',
+        liv_nome: '',
+        liv_pha_cod: '',
+        liv_categ_cod: '',
+        liv_desc: '',
+        edt_nome: '',
+        liv_foto: ''
     });
 
     useEffect(() => {

@@ -114,7 +114,7 @@ export default function InfoLivroRecomendacao() {
                     </div>
                 </div>
                 <div className={styles.editar}>
-                    <Link href="/reservarLivro/">
+                    <Link href="/reservarLivro">
                         <span className={styles.reservButton}>Reservar livro</span>
                     </Link>
                 </div>

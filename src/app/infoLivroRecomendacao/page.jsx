@@ -11,12 +11,12 @@ export default function InfoLivroRecomendacao() {
                     <div className={styles.lineSquare}>
                         <div className={styles.inputContainer}>
                             <div className={styles.infoBookReserva}>
-                                <Image 
-                                    src="/Capa_dos_livros/o_diario_de_anne_frank.jpg" 
-                                    alt="O Diário de Anne Frank" 
-                                    className={styles.imgReserva} 
-                                    width={667} 
-                                    height={1000} 
+                                <Image
+                                    src="/Capa_dos_livros/o_diario_de_anne_frank.jpg"
+                                    alt="O Diário de Anne Frank"
+                                    className={styles.imgReserva}
+                                    width={667}
+                                    height={1000}
                                 />
                                 <div className={styles.livroInfo}>
                                     <div className={styles.headerLineSquare}>
@@ -35,41 +35,43 @@ export default function InfoLivroRecomendacao() {
                                         O Diário de Anne Frank é um livro que relata a história de uma jovem judia chamada Anne Frank, que viveu durante a Segunda Guerra Mundial
                                         e se escondeu com sua família e outros judeus em um anexo secreto em Amsterdã, nos Países Baixos, para escapar da perseguição nazista.
                                     </p>
-                                    <div className={styles.infoContainer}>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Autor(a)</span>
-                                            <Image 
-                                                src="/Icons TCC/autor.png" 
-                                                className={styles.imgIcons} 
-                                                alt="Autor(a)" 
-                                                width={1080} 
-                                                height={980} 
-                                            />
-                                            <span className={styles.titleInferior}>Anne Frank</span>
-                                        </div>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Editora</span>
-                                            <Image 
-                                                src="/Icons TCC/editora.png" 
-                                                className={styles.imgIcons} 
-                                                alt="Editora" 
-                                                width={1080} 
-                                                height={980} 
-                                            />
-                                            <span className={styles.titleInferior}>Grupo Editorial Record</span>
-                                        </div>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Gênero</span>
-                                            <Image 
-                                                src="/Icons TCC/genero.png" 
-                                                className={styles.imgIcons} 
-                                                alt="Gênero" 
-                                                width={1080} 
-                                                height={980} 
-                                            />
-                                            <span className={styles.titleInferior}>Autobiográfico</span>
-                                        </div>
-                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div className={styles.infoContainer}>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Autor(a)</span>
+                                    <Image
+                                        src="/Icons TCC/autor.png"
+                                        className={styles.imgIcons}
+                                        alt="Autor(a)"
+                                        width={1080}
+                                        height={980}
+                                    />
+                                    <span className={styles.titleInferior}>Anne Frank</span>
+                                </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Editora</span>
+                                    <Image
+                                        src="/Icons TCC/editora.png"
+                                        className={styles.imgIcons}
+                                        alt="Editora"
+                                        width={1080}
+                                        height={980}
+                                    />
+                                    <span className={styles.titleInferior}>Grupo Editorial Record</span>
+                                </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Gênero</span>
+                                    <Image
+                                        src="/Icons TCC/genero.png"
+                                        className={styles.imgIcons}
+                                        alt="Gênero"
+                                        width={1080}
+                                        height={980}
+                                    />
+                                    <span className={styles.titleInferior}>Autobiográfico</span>
                                 </div>
                             </div>
                             <div className={styles.line}></div>

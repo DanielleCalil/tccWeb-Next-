@@ -114,6 +114,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    margin-top: 2rem;
+    font-weight: 400;
 }
 
 .infoBox {

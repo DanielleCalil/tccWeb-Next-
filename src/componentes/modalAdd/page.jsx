@@ -10,14 +10,11 @@ const ModalAdd = ({ show, onClose }) => {
             <div className={styles.modalContent}>
                 <button className={styles.closeButton} onClick={onClose}>×</button>
                 <div className={styles.buttonsContainer}>
-                    <Link href="/addLivroExistente">
+                    <Link href="/ativarLivroExistente">
                         <button className={styles.modalButton}>Ativar livro existente</button>
                     </Link>
                     <Link Link href="/addLivroNovo">
                         <button className={styles.modalButton}>Adicionar livro novo</button>
-                    </Link>
-                    <Link Link href="/">
-                        <button className={styles.modalButton}>Adicionar autores</button>
                     </Link>
                 </div>
             </div>

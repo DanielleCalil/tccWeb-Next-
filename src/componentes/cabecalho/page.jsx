@@ -13,7 +13,7 @@ export default function Cabecalho() {
 
     const [mobile, setMobile] = useState(false);
 
-    const rota = usePathname();    
+    const rota = usePathname();
 
     function ativaMenu() {
         if (mobile === false) {
@@ -24,17 +24,17 @@ export default function Cabecalho() {
     }
 
     function validaCabRod() {
-        let valida = false;        
+        let valida = false;
         listaTelas.forEach((tela) => {
             if (tela === rota) {
                 valida = true
-            }           
+            }
         });
         return valida;
     }
 
     if (validaCabRod() === true) {
-        return(<></>)
+        return (<></>)
     }
 
     return (
@@ -90,7 +90,11 @@ export default function Cabecalho() {
                     </Link>
                     <Link
                         href="/biblioteca"
-                        className={rota === "/biblioteca" || rota === "/infoLivroBiblioteca" ? styles.active : ""}>
+                        className={rota === "/biblioteca" ||
+                            rota === "/infoLivroBiblioteca" ||
+                            rota === "/editarInfoLivro" ||
+                            rota === "/ativarLivroExistente" ||
+                            rota === "/addLivroNovo" ? styles.active : ""}>
                         <IoBookOutline className={styles.tpicon} />
                         Biblioteca
                     </Link>

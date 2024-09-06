@@ -1,23 +1,30 @@
-"use client"
+"use client";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
-import ModalInativa from '@/componentes/modalInativa/page';
+import { IoPencilSharp } from "react-icons/io5";
 
 export default function InfoLivroBiblioteca() {
-    const [showModalInativa, setShowModalInativa] = useState(false);
+    const router = useRouter();
 
-    const openModalInativa = () => setShowModalInativa(true);
-    const closeModalInativa = () => setShowModalInativa(false);
+    const handleEdit = () => {
+        // Navega para a tela de edição
+        router.push('/editarInfoLivro');
+    };
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.contButton}>
-                    <button onClick={openModalInativa} className={styles.inativaButton}>- Inativar</button>
-                    <ModalInativa show={showModalInativa} onClose={closeModalInativa} />
+                    <Link href="/editarInfoLivro">
+                        <button className={styles.ButtonEditar} onClick={handleEdit}>
+                            <IoPencilSharp className={styles.tpiconEditar} />
+                            Editar
+                        </button>
+                    </Link>
                 </div>
                 <div className={styles.container}>
                     <div className={styles.lineSquare}>
@@ -26,7 +33,7 @@ export default function InfoLivroBiblioteca() {
                                 <Image
                                     src="/Capa_dos_livros/o_diario_de_anne_frank.jpg"
                                     alt="O Diário de Anne Frank"
-                                    width={667} 
+                                    width={667}
                                     height={1000}
                                     className={styles.imgReserva}
                                 />
@@ -47,41 +54,43 @@ export default function InfoLivroBiblioteca() {
                                         O Diário de Anne Frank é um livro que relata a história de uma jovem judia chamada Anne Frank, que viveu durante a Segunda Guerra Mundial
                                         e se escondeu com sua família e outros judeus em um anexo secreto em Amsterdã, nos Países Baixos, para escapar da perseguição nazista.
                                     </p>
-                                    <div className={styles.infoContainer}>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Autor(a)</span>
-                                            <Image
-                                                src="/Icons TCC/autor.png"
-                                                alt="Autor"
-                                                width={1080} 
-                                                height={980} 
-                                                className={styles.imgIcons}
-                                            />
-                                            <span className={styles.titleInferior}>Anne Frank</span>
-                                        </div>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Editora</span>
-                                            <Image
-                                                src="/Icons TCC/editora.png"
-                                                alt="Editora"
-                                                width={1080} 
-                                                height={980} 
-                                                className={styles.imgIcons}
-                                            />
-                                            <span className={styles.titleInferior}>Grupo Editorial Record</span>
-                                        </div>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Gênero</span>
-                                            <Image
-                                                src="/Icons TCC/genero.png"
-                                                alt="Gênero"
-                                                width={1080} 
-                                                height={980} 
-                                                className={styles.imgIcons}
-                                            />
-                                            <span className={styles.titleInferior}>Autobiográfico</span>
-                                        </div>
-                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div className={styles.infoContainer}>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Autor(a)</span>
+                                    <Image
+                                        src="/Icons TCC/autor.png"
+                                        alt="Autor"
+                                        width={1080}
+                                        height={980}
+                                        className={styles.imgIcons}
+                                    />
+                                    <span className={styles.titleInferior}>Anne Frank</span>
+                                </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Editora</span>
+                                    <Image
+                                        src="/Icons TCC/editora.png"
+                                        alt="Editora"
+                                        width={1080}
+                                        height={980}
+                                        className={styles.imgIcons}
+                                    />
+                                    <span className={styles.titleInferior}>Grupo Editorial Record</span>
+                                </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Gênero</span>
+                                    <Image
+                                        src="/Icons TCC/genero.png"
+                                        alt="Gênero"
+                                        width={1080}
+                                        height={980}
+                                        className={styles.imgIcons}
+                                    />
+                                    <span className={styles.titleInferior}>Autobiográfico</span>
                                 </div>
                             </div>
                         </div>

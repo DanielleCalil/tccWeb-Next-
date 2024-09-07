@@ -2,7 +2,7 @@
 import styles from './page.module.css';
 import { IoSearchOutline } from 'react-icons/io5';
 
-export default function BarraPesquisa() {
+export default function BarraPesquisa({livNome, atLivNome, listaLivros}) {
     return (
         <div className="containerGlobal">
             <div className={styles.searchContainer}>
@@ -11,9 +11,10 @@ export default function BarraPesquisa() {
                     placeholder="Pesquisar"
                     id="search-input"
                     className={styles.input}
-                    // Removido o onChange, já que não há mais lógica de busca
+                    onChange={v => atLivNome(v.target.value)}
+                    value={livNome}
                 />
-                <button type="button" className={styles.button}>
+                <button type="button" className={styles.button} onClick={() => listaLivros()}>
                     <IoSearchOutline className={styles.icone} />
                 </button>
             </div>

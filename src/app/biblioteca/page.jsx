@@ -141,8 +141,6 @@ export default function Biblioteca() {
     const openModalAdd = () => setShowModalAdd(true);
     const closeModalAdd = () => setShowModalAdd(false);
 
-    //const [livros, setLivros] = useState([]);
-
     const [livros, setLivros] = useState({
         // liv_cod: '',
         // liv_nome: '',
@@ -153,13 +151,22 @@ export default function Biblioteca() {
         // liv_foto: '',
     });
 
+    const [livNome, setlivNome] = useState('')
+
+    function atLivNome (nome) {
+        setlivNome(nome)
+    }
+
     useEffect(() => {
         listaLivros();
     }, []);
 
     async function listaLivros() {
+        const dados = {
+            liv_nome:livNome
+        }
         try {
-            const response = await api.get('/livros');
+            const response = await api.post('/livros', dados);
             console.log(response.data.dados);
         } catch (error) {
             if (error.response) {
@@ -169,7 +176,7 @@ export default function Biblioteca() {
             }
         }
     }
-
+console.log(livNome)
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -181,7 +188,7 @@ export default function Biblioteca() {
                     </button>
                     <ModalAdd show={showModalAdd} onClose={closeModalAdd} />
                 </div>
-                <BarraPesquisa />
+                <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros}/>
                 <div className={styles.genreButtons}>
                     {genres.map((genre) => (
                         <div

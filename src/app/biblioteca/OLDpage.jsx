@@ -127,7 +127,34 @@ const books = [
     },
 ];
 
-export default function Biblioteca() {
+export default function Biblioteca({ livro }) {
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+    const imageLoader = ({ src, width, quality }) => {
+        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`
+    }
+
+    return (
+        <Link href={`/livros/`} key={livro.liv_cod} className={styles.main}>
+            {/* <div className={styles.card}> */}
+            <div className={styles.imagemContainer}>
+                <Image
+                    loader={imageLoader} /* Quando imagem vem por url */
+                    src={livro.liv_foto_capa}
+                    alt={livro.liv_nome}
+                    width={200}
+                    height={200}
+                    className={styles.biblioteca}
+                />
+            </div>
+            {/* <span className={styles.produtoNome}>{produto.prd_nome}</span>
+            <span className={styles.produtoValor}>{produto.prd_valor}</span> */}
+            {/* </div> */}
+        </Link>
+    );
+
     const [selectedGenre, setSelectedGenre] = useState('Todos');
     const [showModalAdd, setShowModalAdd] = useState(false);
 

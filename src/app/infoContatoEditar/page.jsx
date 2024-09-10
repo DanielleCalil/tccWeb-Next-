@@ -28,17 +28,19 @@ export default function InfoContatoEditar() {
                   className={`${styles.inputField} ${styles.nomeInput}`}
                 />
                 <br /><br />
-                <textarea
-                  id="infos"
-                  name="infos"
-                  className={`${styles.inputField} ${styles.nomeInput}`}
-                  rows="5"
-                >
-                  (14) 3496 1520 - (14) 3491 5393
-                  RUA: BEZERRA DE MENEZES, 215
-                  CEP 17605-440
-                  E136DIR@CPS.SP.GOV.BR
-                </textarea>
+                <div className={styles.textareaWrapper}>
+                  <textarea
+                    id="infos"
+                    name="infos"
+                    className={`${styles.inputField} ${styles.nomeInput}`}
+                    rows="10"
+                  >
+(14) 3496 1520 - (14) 3491 5393
+RUA: BEZERRA DE MENEZES, 215
+CEP 17605-440
+E136DIR@CPS.SP.GOV.BR
+                  </textarea>
+                </div>
               </form>
             </div>
           </div>
@@ -47,7 +49,8 @@ export default function InfoContatoEditar() {
           <Link href="/infoContato/">
             <button
               type="submit"
-              className={styles.saveButton}>
+              className={styles.saveButton}
+            >
               Salvar
             </button>
           </Link>

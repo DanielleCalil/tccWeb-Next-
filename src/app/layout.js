@@ -1,5 +1,5 @@
 import "./globals.css";
-import Cabecalho from "@/componentes/cabecalho/page";
+import Cabecalho from "@/componentes/cabecalho/page"
 import Rodape from "@/componentes/rodape/page";
 
 export const metadata = {
@@ -14,8 +14,6 @@ export default function RootLayout({ children }) {
         <div className="layout">
           <Cabecalho />
           {children}
-          
-          
           <Rodape />
         </div>
       </body>

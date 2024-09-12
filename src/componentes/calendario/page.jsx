@@ -42,7 +42,7 @@ const Calendario = () => {
         color: 'red', // Cor sólida para a data inicial
         display: 'background',
         borderColor: 'red', // Adiciona uma borda sólida para destacar
-        overlap: false,
+        rendering: 'background', // Garante que esse evento apareça no fundo
       },
       {
         title: 'Data Final',
@@ -51,7 +51,7 @@ const Calendario = () => {
         color: 'blue', // Cor sólida para a data final
         display: 'background',
         borderColor: 'blue', // Adiciona uma borda sólida para destacar
-        overlap: false,
+        rendering: 'background', // Garante que esse evento apareça no fundo
       },
       ...daysBetween.map(day => ({
         title: 'Período',
@@ -60,7 +60,7 @@ const Calendario = () => {
         color: 'rgba(0, 255, 0, 0.3)', // Cor verde mais opaca para o período
         display: 'background',
         borderColor: 'rgba(0, 255, 0, 0.3)', // Adiciona uma borda opaca para o período
-        overlap: false,
+        rendering: 'background', // Garante que esse evento apareça no fundo
       }))
     ]);
   };

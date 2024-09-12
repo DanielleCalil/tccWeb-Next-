@@ -1,0 +1,39 @@
+/* styles/globals.css */
+
+/* Estilos gerais para o calendário */
+.fc {
+    font-family: Arial, sans-serif; /* Fonte do calendário */
+  }
+  
+  .fc-daygrid-day {
+    position: relative;
+  }
+  
+  /* Estilos para a data inicial */
+  .fc-daygrid-day.fc-day-inicial {
+    background-color: #ffeb3b !important; /* Cor de fundo para a data inicial */
+    color: black !important;
+    border: 1px solid #fbc02d !important;
+    border-radius: 50% !important; /* Estilo de borda arredondada */
+  }
+  
+  /* Estilos para a data final */
+  .fc-daygrid-day.fc-day-final {
+    background-color: #f44336 !important; /* Cor de fundo para a data final */
+    color: white !important;
+    border: 1px solid #c62828 !important;
+    border-radius: 50% !important;
+  }
+  
+  /* Estilos para o período entre as datas */
+  .fc-daygrid-day.fc-day-periodo {
+    background-color: rgba(33, 150, 243, 0.3) !important; /* Cor de fundo opaca */
+    color: black !important;
+    border: 1px solid rgba(33, 150, 243, 0.5) !important;
+  }
+  
+  /* Estilo para o título do evento */
+  .fc-event-title {
+    font-size: 12px !important; /* Tamanho da fonte dos títulos dos eventos */
+  }
+  

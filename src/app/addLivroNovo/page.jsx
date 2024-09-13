@@ -4,13 +4,20 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import FileInput from '@/componentes/FileInput/page';
+import ModalAddAutor from '@/componentes/modalAddAutor/page'; // Importa o modal
+import ModalAddEditora from '@/componentes/modalAddEditora/page';
+import ModalAddGenero from '@/componentes/modalAddGenero/page';
 
 export default function AddLivroNovo() {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
+    const [showModal, setShowModal] = useState(false); // Estado para controlar o modal
 
     const handleFileSelect = (imageUrl) => {
         setCapaImage(imageUrl);
     };
+
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
 
     return (
         <main className={styles.main}>
@@ -77,19 +84,23 @@ export default function AddLivroNovo() {
                                 />
                             </div>
                             <div className={styles.tresModais}>
-                                <Link href="@/componentes/modalAddAutor">
-                                    <button className={styles.addButton}>Adicionar Autor(a)</button>
-                                </Link>
-                                <Link href="/">
+                                <button onClick={openModal} className={styles.addButton}>
+                                    Adicionar Autor(a)
+                                </button>
+                                {/* Modal para adicionar autor */}
+                                <ModalAddAutor show={showModal} onClose={closeModal} />
+                                
+                                <button onClick={openModal} className={styles.addButton}>
                                     <button className={styles.addButton}>Adicionar Editora</button>
-                                </Link>
+                                </button>
+                                <ModalAddEditora show={showModal} onClose={closeModal} />
+
                                 <Link href="/">
                                     <button className={styles.addButton}>Adicionar Gênero</button>
                                 </Link>
                             </div>
                             <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
                         </div>
-
                     </div>
 
                     <div className={styles.editar}>

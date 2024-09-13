@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
-const ModalAddAutor = ({ show, onClose }) => {
+const ModalAddEditora = ({ show, onClose }) => {
     const [showModal, setShowModal] = useState(false); // Estado para controlar o modal
 
     if (!show) return null;
@@ -20,7 +20,7 @@ const ModalAddAutor = ({ show, onClose }) => {
                 <div className={styles.modalContent}>
                     <div className={styles.conteudo}>
                         <div className={styles.inputGroup}>
-                            <p className={styles.textInput}>Autor(a):</p>
+                            <p className={styles.textInput}>Editora:</p>
                             <input
                                 type="text"
                                 className={styles.inputField}
@@ -47,4 +47,4 @@ const ModalAddAutor = ({ show, onClose }) => {
     );
 };
 
-export default ModalAddAutor;
+export default ModalAddEditora;

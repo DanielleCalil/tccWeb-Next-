@@ -76,11 +76,25 @@ export default function AddLivroNovo() {
                                     className={styles.inputResumo}
                                 />
                             </div>
+                            <div className={styles.tresModais}>
+                                <Link href="@/componentes/modalAddAutor">
+                                    <button className={styles.addButton}>Adicionar Autor(a)</button>
+                                </Link>
+                                <Link href="/">
+                                    <button className={styles.addButton}>Adicionar Editora</button>
+                                </Link>
+                                <Link href="/">
+                                    <button className={styles.addButton}>Adicionar Gênero</button>
+                                </Link>
+                            </div>
+                            <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
                         </div>
+
                     </div>
+
                     <div className={styles.editar}>
                         <Link href="/biblioteca/">
-                            <button className={styles.addButton}>Adicionar</button>
+                            <button className={styles.addButtonPrinc}>Adicionar</button>
                         </Link>
                     </div>
                 </div>

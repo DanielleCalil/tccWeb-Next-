@@ -161,10 +161,29 @@
     width: 100%;
 }
 
+.tresModais {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 6rem;
+}
+
+.obs {
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #8a8a8a;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.8rem;
+}
+
 .addButton {
     height: 3.6rem;
     padding: 0.7rem 2.5rem;
-    margin: 1.25rem 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0rem;
     background-color: #FF735C;
     color: white;
     border: none;
@@ -177,6 +196,27 @@
 }
 
 .addButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.addButtonPrinc {
+    height: 3.6rem;
+    padding: 0.7rem 2.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: #FF735C;
+    color: white;
+    border: none;
+    border-radius: 3rem;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.4rem;
+}
+
+.addButtonPrinc:hover {
     opacity: 0.5;
     transition: 0.5s;
 }

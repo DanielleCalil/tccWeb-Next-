@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
 import { format, addDays, eachDayOfInterval, startOfToday } from 'date-fns';
+import styles from './page.module.css';
 
 const Calendario = () => {
   const [startDate, setStartDate] = useState('');
@@ -39,34 +40,34 @@ const Calendario = () => {
         title: 'Data Inicial',
         start: formattedStartDate,
         end: formattedStartDate,
-        color: 'red', // Cor sólida para a data inicial
+        color: '#FF4081', // Cor vibrante para a data inicial
         display: 'background',
-        borderColor: 'red', // Adiciona uma borda sólida para destacar
-        rendering: 'background', // Garante que esse evento apareça no fundo
+        borderColor: '#FF4081',
+        rendering: 'background',
       },
       {
         title: 'Data Final',
         start: formattedEndDate,
         end: formattedEndDate,
-        color: 'blue', // Cor sólida para a data final
+        color: '#7C4DFF', // Cor vibrante para a data final
         display: 'background',
-        borderColor: 'blue', // Adiciona uma borda sólida para destacar
-        rendering: 'background', // Garante que esse evento apareça no fundo
+        borderColor: '#7C4DFF',
+        rendering: 'background',
       },
       ...daysBetween.map(day => ({
         title: 'Período',
         start: format(day, 'yyyy-MM-dd'),
         end: format(day, 'yyyy-MM-dd'),
-        color: 'rgba(0, 255, 0, 0.3)', // Cor verde mais opaca para o período
+        color: 'rgba(255, 193, 7, 0.6)', // Cor amarela vibrante e opaca
         display: 'background',
-        borderColor: 'rgba(0, 255, 0, 0.3)', // Adiciona uma borda opaca para o período
-        rendering: 'background', // Garante que esse evento apareça no fundo
+        borderColor: 'rgba(255, 193, 7, 0.8)', // Borda amarela vibrante
+        rendering: 'background',
       }))
     ]);
   };
 
   return (
-    <div>
+    <div className={styles.calendarContainer}>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -76,20 +77,25 @@ const Calendario = () => {
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
-        validRange={{ start: today }} // Define a data mínima que pode ser selecionada
+        validRange={{ start: today }}
+        eventContent={(eventInfo) => (
+          <div className={styles.eventContent}>
+            <span>{eventInfo.event.title}</span>
+          </div>
+        )}
       />
 
-      <div style={{ marginTop: '20px' }}>
+      <div className={styles.dateInfo}>
         <label>
           Data Inicial:
-          <input type="text" value={startDate} readOnly />
+          <input type="text" value={startDate} readOnly className={styles.dateInput} />
         </label>
         <br />
         <label>
           Data Final:
-          <input type="text" value={endDate} readOnly />
+          <input type="text" value={endDate} readOnly className={styles.dateInput} />
         </label>
       </div>
     </div>

@@ -70,6 +70,10 @@
     flex: 1;
 }
 
+.passwordContainer .inputField {
+    padding-right: 3rem; /* Adicione espaço para o ícone */
+}
+
 .eyeIcon {
     position: absolute;
     right: 10px;

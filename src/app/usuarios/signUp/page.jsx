@@ -102,6 +102,14 @@ export default function SignUp() {
                                 />
                                 Neutro
                             </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="opcao"
+                                    value="padrao"
+                                />
+                                Padrão
+                            </label>
                         </form>
                         <div className={styles.logar}>
                             Já tem uma conta? <Link href="/usuarios/login">Faça login</Link>

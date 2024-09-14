@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import styles from "./page.module.css";
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
+import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 export default function AtivarLivroExistente() {
     const [books, setBooks] = useState([
@@ -99,6 +100,14 @@ export default function AtivarLivroExistente() {
         },
     ]);
 
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+
+    const openModalConfirm = () => setShowModalConfirm(true);
+    const closeModalConfirm = () => {
+        setShowModalConfirm(false);
+        onClose();
+    };
+
     // Função para ativar/inativar um livro pelo título
     const toggleBookStatus = (title) => {
         const updatedBooks = books.map(book =>
@@ -153,10 +162,11 @@ export default function AtivarLivroExistente() {
                 </div>
             </div>
             <div className={styles.editar}>
-                <Link href="/biblioteca/">
-                    <button className={styles.addButton}>Salvar Alterações</button>
-                </Link>
+                <button onClick={openModalConfirm} className={styles.addButton}>
+                    Salvar Alterações
+                </button>
             </div>
+            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
         </main>
     );
 }

@@ -4,12 +4,21 @@ import { useState } from 'react';
 import styles from "./page.module.css";
 import Link from "next/link";
 import FileInput from "@/componentes/FileInput/page";
+import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 export default function PerfilEditar() {
     const [profileImage, setProfileImage] = useState('/Icons TCC/perfil.jpg'); // Imagem padrão
 
     const handleFileSelect = (imageUrl) => {
         setProfileImage(imageUrl);
+    };
+
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+
+    const openModalConfirm = () => setShowModalConfirm(true);
+    const closeModalConfirm = () => {
+        setShowModalConfirm(false);
+        onClose();
     };
 
     return (
@@ -103,11 +112,12 @@ export default function PerfilEditar() {
                     <Link href="/esqueceuSenha1/">Esqueceu a senha?</Link>
                 </div>
                 <div className={styles.editar}>
-                    <Link href="/perfil/">
-                        <button type="submit" className={styles.saveButton}>Salvar</button>
-                    </Link>
+                    <button type="submit" onClick={openModalConfirm} className={styles.saveButton}>
+                        Salvar
+                    </button>
                 </div>
             </div>
+            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
         </main>
     );
 }

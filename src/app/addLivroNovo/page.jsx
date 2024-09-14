@@ -4,20 +4,36 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import FileInput from '@/componentes/FileInput/page';
+import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import ModalAddAutor from '@/componentes/modalAddAutor/page'; // Importa o modal
 import ModalAddEditora from '@/componentes/modalAddEditora/page';
 import ModalAddGenero from '@/componentes/modalAddGenero/page';
 
 export default function AddLivroNovo() {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
-    const [showModal, setShowModal] = useState(false); // Estado para controlar o modal
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const [showModalAutor, setShowModalAutor] = useState(false);
+    const [showModalEditora, setShowModalEditora] = useState(false);
+    const [showModalGenero, setShowModalGenero] = useState(false);
+
+    const openModalConfirm = () => setShowModalConfirm(true);
+    const closeModalConfirm = () => {
+        setShowModalConfirm(false);
+        onClose();
+    };
 
     const handleFileSelect = (imageUrl) => {
         setCapaImage(imageUrl);
     };
 
-    const openModal = () => setShowModal(true);
-    const closeModal = () => setShowModal(false);
+    const openModalAutor = () => setShowModalAutor(true);
+    const closeModalAutor = () => setShowModalAutor(false);
+
+    const openModalEditora = () => setShowModalEditora(true);
+    const closeModalEditora = () => setShowModalEditora(false);
+
+    const openModalGenero = () => setShowModalGenero(true);
+    const closeModalGenero = () => setShowModalGenero(false);
 
     return (
         <main className={styles.main}>
@@ -84,32 +100,37 @@ export default function AddLivroNovo() {
                                 />
                             </div>
                             <div className={styles.tresModais}>
-                                <button onClick={openModal} className={styles.addButton}>
+                                {/* Modal para adicionar autor */}
+                                <button onClick={openModalAutor} className={styles.addButton}>
                                     Adicionar Autor(a)
                                 </button>
-                                {/* Modal para adicionar autor */}
-                                <ModalAddAutor show={showModal} onClose={closeModal} />
-                                
-                                <button onClick={openModal} className={styles.addButton}>
-                                    <button className={styles.addButton}>Adicionar Editora</button>
-                                </button>
-                                <ModalAddEditora show={showModal} onClose={closeModal} />
+                                <ModalAddAutor show={showModalAutor} onClose={closeModalAutor} />
 
-                                <Link href="/">
-                                    <button className={styles.addButton}>Adicionar Gênero</button>
-                                </Link>
+                                {/* Modal para adicionar editora */}
+                                <button onClick={openModalEditora} className={styles.addButton}>
+                                    Adicionar Editora
+                                </button>
+                                <ModalAddEditora show={showModalEditora} onClose={closeModalEditora} />
+
+                                {/* Modal para adicionar gênero */}
+                                <button onClick={openModalGenero} className={styles.addButton}>
+                                    Adicionar Gênero
+                                </button>
+                                <ModalAddGenero show={showModalGenero} onClose={closeModalGenero} />
+
                             </div>
                             <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
                         </div>
                     </div>
 
                     <div className={styles.editar}>
-                        <Link href="/biblioteca/">
-                            <button className={styles.addButtonPrinc}>Adicionar</button>
-                        </Link>
+                        <button onClick={openModalConfirm} className={styles.addButtonPrinc}>
+                            Adicionar
+                        </button>
                     </div>
                 </div>
             </div>
+            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
         </main>
     );
 }

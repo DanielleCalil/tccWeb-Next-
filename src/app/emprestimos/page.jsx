@@ -7,7 +7,7 @@ const infoEmprestimo = {
     livro: {
         titulo: "O Diário de Anne Frank",
         autor: "Anne Frank",
-        capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
+        liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
     },
     usuario: "Clara Oliveira da Silva",
     dataEmprestimo: "12/03/2024",
@@ -28,7 +28,7 @@ export default function Emprestimos() {
             <div className={styles.inputContainer}>
               <div className={styles.infoBookReserva}>
                 <Image
-                  src={infoEmprestimo.livro.capa}
+                  src={infoEmprestimo.livro.liv_foto_capa}
                   alt={infoEmprestimo.livro.titulo}
                   className={styles.imgReserva}
                   width={667}

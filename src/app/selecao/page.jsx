@@ -28,6 +28,12 @@ const infoUsuario = [
   }
 ];
 
+const situacao = [
+  'Todos',
+  'Ativo',
+  'Inativo',
+];
+
 export default function Selecao() {
 
   const [showModalConfirm, setShowModalConfirm] = useState(false);
@@ -43,6 +49,24 @@ export default function Selecao() {
       <div className="containerGlobal">
         <h1 className={styles.selecao}>Seleção de usuários</h1>
         <BarraPesquisa />
+        <div className={styles.situacaoButtons}>
+          {situacao.map((generos) => (
+            <div
+              className={styles.situacao}
+              key={generos}
+              onClick={() => setSelectedGenre(generos)}
+            >
+              <Image
+                src={`/Icons TCC/${generos.replace(/\s+/g, '_')}.png`}
+                alt={generos}
+                width={512}
+                height={512}
+                className={styles.icon}
+              />
+              <p className={styles.textIcon}>{generos}</p>
+            </div>
+          ))}
+        </div>
         <div className={styles.container}>
           {infoUsuario.map((usuario, index) => (
             <div key={index} className={styles.lineSquare}>

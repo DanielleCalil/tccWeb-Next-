@@ -94,6 +94,7 @@ export default function Cabecalho() {
                             rota === "/infoLivroBiblioteca" ||
                             rota === "/editarInfoLivro" ||
                             rota === "/gerenciarLivroExistente" ||
+                            rota === "/reservarLivro" ||
                             rota === "/addLivroNovo" ? styles.active : ""}>
                         <IoBookOutline className={styles.tpicon} />
                         Biblioteca

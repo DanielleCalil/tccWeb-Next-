@@ -14,12 +14,16 @@ export default function ReservarLivro() {
         <div className={styles.container}>
           {/* Componente de calendário importado */}
           <Calendario />
-
-          <Link href="/perfil/">
-            <Button className={styles.reservButton} type="primary">
-              Finalizar reserva
-            </Button>
-          </Link>
+          <p className={styles.obs}>
+            OBS: a data esta sendo exibida como ano - mês - dia
+          </p>
+          <div className={styles.editar}>
+            <Link href="/perfil/">
+              <Button className={styles.reservButton}>
+                Finalizar reserva
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </main>

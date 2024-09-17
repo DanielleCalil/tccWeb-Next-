@@ -1,80 +1,96 @@
-/* Calendario.module.css */
 .calendarContainer {
-  max-width: 1000px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  /* background-color: #fff; */
+  /* border-radius: 16px; */
+  /* box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); */
+  width: 100%;
+  max-width: 45%;
 }
 
-.fc-toolbar {
-  background: #f5f5f5;
-  border-bottom: 2px solid #ddd;
-  border-radius: 12px 12px 0 0;
-  padding: 10px 0;
+.fc {
+  width: 100%;
 }
 
-.fc-toolbar-title {
-  font-size: 1.5rem;
-  color: #333;
+.fc-title {
+  font-size: 16px;
   font-weight: 600;
+  color: #333;
 }
 
-.fc-button-primary {
-  background-color: #FF4081;
-  border-color: #FF4081;
-  color: white;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-.fc-button-primary:hover {
-  background-color: #f50057;
-  border-color: #f50057;
+.fc-daygrid-day-top {
+  font-size: 12px;
+  color: #888;
+  text-transform: capitalize;
 }
 
 .fc-daygrid-day-number {
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.fc-daygrid-day-number:hover {
-  color: #FF4081;
+  color: #333;
 }
 
 .dateInfo {
   margin-top: 20px;
-  padding: 15px;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .dateInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: 25px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 8px;
-  margin-left: 10px;
-  font-size: 1rem;
-  width: 150px;
-  transition: border-color 0.3s;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
 }
 
-.dateInput:focus {
-  border-color: #FF4081;
+.dateInput::placeholder {
+  color: #888;
+}
+
+.dateInput[readonly] {
+  /* background-color: #f9f9f9; */
+  cursor: not-allowed;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.label input:focus {
   outline: none;
 }
 
-.eventContent {
-  padding: 6px 12px;
-  border-radius: 8px;
-  color: #fff;
-  text-align: center;
-  font-size: 0.9rem;
-  transition: background-color 0.3s;
+/* Botões de navegação */
+.navigationButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  width: 100%;
 }
 
-.eventContent:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+.navButton {
+  /* background-color: #FF735C; */
+  color: #FF735C;
+  border: none;
+  /* border-radius: 100%; */
+  /* padding: 10px; */
+  margin: 1rem 1rem;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.monthTitle {
+  font-size: 18px;
+  font-weight: 300;
+  color: #FF735C;
 }

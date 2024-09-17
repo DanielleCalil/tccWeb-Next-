@@ -1,16 +1,23 @@
-// components/Calendario.js
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
 import { format, addDays, eachDayOfInterval, startOfToday } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import styles from './page.module.css';
+import { IoCaretBack, IoCaretForward } from "react-icons/io5";
+
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 const Calendario = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [events, setEvents] = useState([]);
+  const [currentDate, setCurrentDate] = useState(startOfToday()); // Estado para data atual do calendário
+  const calendarRef = useRef(null); // Cria uma referência para o calendário
 
   const today = startOfToday(); // Obtém a data de hoje
 
@@ -37,66 +44,93 @@ const Calendario = () => {
 
     setEvents([
       {
-        title: 'Data Inicial',
         start: formattedStartDate,
         end: formattedStartDate,
-        color: '#FF4081', // Cor vibrante para a data inicial
+        color: 'rgb(255, 0, 0)', // Cor vibrante para a data inicial
         display: 'background',
-        borderColor: '#FF4081',
         rendering: 'background',
       },
       {
-        title: 'Data Final',
         start: formattedEndDate,
         end: formattedEndDate,
-        color: '#7C4DFF', // Cor vibrante para a data final
+        color: '#FF735C', // Cor vibrante para a data final
         display: 'background',
-        borderColor: '#7C4DFF',
         rendering: 'background',
       },
-      ...daysBetween.map(day => ({
-        title: 'Período',
+      ...daysBetween.map((day) => ({
         start: format(day, 'yyyy-MM-dd'),
         end: format(day, 'yyyy-MM-dd'),
-        color: 'rgba(255, 193, 7, 0.6)', // Cor amarela vibrante e opaca
+        color: 'rgb(255, 143, 126)', // Cor amarela vibrante e opaca
         display: 'background',
-        borderColor: 'rgba(255, 193, 7, 0.8)', // Borda amarela vibrante
         rendering: 'background',
-      }))
+      })),
     ]);
   };
 
-  return (
-    <div className={styles.calendarContainer}>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        dateClick={handleDateClick}
-        locale={ptBrLocale}
-        events={events}
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        }}
-        validRange={{ start: today }}
-        eventContent={(eventInfo) => (
-          <div className={styles.eventContent}>
-            <span>{eventInfo.event.title}</span>
-          </div>
-        )}
-      />
+  const handlePrev = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.prev(); // Vai para o mês anterior
+    setCurrentDate(calendarApi.getDate()); // Atualiza a data atual do calendário
+  };
 
-      <div className={styles.dateInfo}>
-        <label>
-          Data Inicial:
-          <input type="text" value={startDate} readOnly className={styles.dateInput} />
-        </label>
-        <br />
-        <label>
-          Data Final:
-          <input type="text" value={endDate} readOnly className={styles.dateInput} />
-        </label>
+  const handleNext = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.next(); // Vai para o próximo mês
+    setCurrentDate(calendarApi.getDate()); // Atualiza a data atual do calendário
+  };
+
+  return (
+    <div className="containerGlobal">
+      <div className={styles.calendarContainer}>
+        {/* Controles de navegação e título do mês */}
+        <div className={styles.navigationButtons}>
+
+          <IoCaretBack onClick={handlePrev} className={styles.navButton} /> {/* Botão para o mês anterior */}
+
+          <span className={styles.monthTitle}>
+            {capitalizeFirstLetter(format(currentDate, 'MMMM yyyy', { locale: ptBR }))} {/* Título do mês */}
+          </span>
+
+          <IoCaretForward onClick={handleNext} className={styles.navButton} /> {/* Botão para o próximo mês */}
+
+        </div>
+
+        {/* Calendário */}
+        <div className={styles.calendarWrapper}
+          style={{
+            '--fc-today-bg-color': '#3F7263', // Cor de fundo do dia atual
+          }}
+        >
+          <FullCalendar
+            ref={calendarRef} // Conecta o calendário à referência
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            dateClick={handleDateClick}
+            locale={ptBrLocale}
+            events={events}
+            headerToolbar={false} // Remove a toolbar de cabeçalho padrão
+            validRange={{ start: today }}
+            height="auto" // Ajuste de altura
+            contentHeight="auto" // Ajuste de altura do conteúdo
+            eventContent={(eventInfo) => (
+              <div className={styles.eventContent}>
+                <span>{eventInfo.event.title}</span>
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Exibição das datas selecionadas */}
+        <div className={styles.dateInfo}>
+          <label>
+            Data Inicial:
+            <input type="text" value={startDate} readOnly className={styles.dateInput} />
+          </label>
+          <label>
+            Data Final:
+            <input type="text" value={endDate} readOnly className={styles.dateInput} />
+          </label>
+        </div>
       </div>
     </div>
   );

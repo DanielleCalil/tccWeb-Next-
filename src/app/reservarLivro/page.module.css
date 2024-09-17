@@ -23,11 +23,11 @@
 .reservButton {
   height: 4rem;
   padding: 0.7rem 3rem;
-  margin: 1.25rem 0;
+  margin: 2.5rem 0;
   background-color: #FF735C;
   color: white;
   border: none;
-  border-radius: 1.875rem;
+  border-radius: 3rem;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
   font-weight: 400;

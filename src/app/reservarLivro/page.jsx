@@ -15,15 +15,11 @@ export default function ReservarLivro() {
           {/* Componente de calendário importado */}
           <Calendario />
           <p className={styles.obs}>
-            OBS: a data esta sendo exibida como ano - mês - dia
+            OBS: a data esta sendo exibida respectivamente como ano - mês - dia
           </p>
-          <div className={styles.editar}>
             <Link href="/perfil/">
-              <Button className={styles.reservButton}>
-                Finalizar reserva
-              </Button>
+              <Button className={styles.reservButton}>Finalizar reserva</Button>
             </Link>
-          </div>
         </div>
       </div>
     </main>

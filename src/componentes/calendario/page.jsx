@@ -46,23 +46,20 @@ const Calendario = () => {
       {
         start: formattedStartDate,
         end: formattedStartDate,
-        color: 'rgb(255, 0, 0)', // Cor vibrante para a data inicial
+        color: '#FF735C', // Cor vibrante para a data inicial
         display: 'background',
-        rendering: 'background',
       },
       {
         start: formattedEndDate,
         end: formattedEndDate,
         color: '#FF735C', // Cor vibrante para a data final
         display: 'background',
-        rendering: 'background',
       },
       ...daysBetween.map((day) => ({
         start: format(day, 'yyyy-MM-dd'),
         end: format(day, 'yyyy-MM-dd'),
-        color: 'rgb(255, 143, 126)', // Cor amarela vibrante e opaca
+        backgroundColor: '#FF735C',
         display: 'background',
-        rendering: 'background',
       })),
     ]);
   };

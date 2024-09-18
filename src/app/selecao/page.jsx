@@ -35,14 +35,11 @@ const situacao = [
 ];
 
 export default function Selecao() {
-
   const [showModalConfirm, setShowModalConfirm] = useState(false);
+  const [selectedGenre, setSelectedGenre] = useState('Todos');
 
   const openModalConfirm = () => setShowModalConfirm(true);
-  const closeModalConfirm = () => {
-    setShowModalConfirm(false);
-    onClose();
-  };
+  const closeModalConfirm = () => setShowModalConfirm(false);
 
   return (
     <main className={styles.main}>
@@ -50,26 +47,26 @@ export default function Selecao() {
         <h1 className={styles.selecao}>Seleção de usuários</h1>
         <BarraPesquisa />
         <div className={styles.situacaoButtons}>
-          {situacao.map((generos) => (
+          {situacao.map((status) => (
             <div
               className={styles.situacao}
-              key={generos}
-              onClick={() => setSelectedGenre(generos)}
+              key={status}
+              onClick={() => setSelectedGenre(status)}
             >
               <Image
-                src={`/Icons TCC/${generos.replace(/\s+/g, '_')}.png`}
-                alt={generos}
+                src={`/Icons_TCC/${status.replace(/\s+/g, '_')}.png`}
+                alt={status}
                 width={512}
                 height={512}
                 className={styles.icon}
               />
-              <p className={styles.textIcon}>{generos}</p>
+              <p className={styles.textIcon}>{status}</p>
             </div>
           ))}
         </div>
         <div className={styles.container}>
-          {infoUsuario.map((usuario, index) => (
-            <div key={index} className={styles.lineSquare}>
+          {infoUsuario.map((usuario) => (
+            <div key={usuario.usu_rm} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
                 <p className={styles.info}>Cadastro realizado no dia: {usuario.usu_cad}</p>
                 <p className={styles.info}>Nome: {usuario.usu_nome}</p>
@@ -78,8 +75,8 @@ export default function Selecao() {
                 <div className={styles.line}></div>
                 <p className={styles.pUsuario}> Confirmar nível do usuário</p>
                 <div className={styles.opcao}>
-                  <select id="options" className={styles.selectInput}>
-                    <option value="" disabled selected>
+                  <select id="options" className={styles.selectInput} defaultValue="">
+                    <option value="" disabled>
                       Selecione uma opção
                     </option>
                     <option value="funcionario(a)ADM">Funcionário(a) - ADM</option>

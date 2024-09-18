@@ -7,7 +7,7 @@ import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
 
-export default function AtivarLivroExistente() {
+export default function GerenciarLivroExistente() {
 
     // const [books, setBooks] = useState([
     //     {

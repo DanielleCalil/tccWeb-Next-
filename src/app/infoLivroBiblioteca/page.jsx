@@ -16,39 +16,66 @@ import api from '@/services/api';
 //     generos: 'Autobiográfico',
 // };
 
-export default function InfoLivroBiblioteca() {
+function Livro({ codLivro }) {
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+    const [livro, setLivro] = useState({
+        "liv_cod": "",
+        "liv_pha_cod": "",
+        "liv_categ_cod": "",
+        "liv_nome": "",
+        "liv_desc": "",
+        "edt_cod": "",
+        "liv_foto_capa": ""
+    });
+    // const [qtd, setQtd] = useState(1);
+    // const [total, setTotal] = useState(0);
 
-    const imageLoader = ({ src, width, quality }) => {
-        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
-    };
-
-    const [infoLivros, setInfoLivros] = useState([]);
     const router = useRouter();
+    const user = JSON.parse(localStorage.getItem('user'));
 
+    useEffect(() => {
+
+        handleCarregaLivro();
+        // setTotal(livro.liv_cod);
+
+        async function handleCarregaLivro() {
+            const dadosApi = {
+                liv_cod: codLivro
+            }
+            try {
+                const response = await api.post('/livros', dadosApi);
+                const confirmaAcesso = response.data.sucesso;
+                if (confirmaAcesso) {
+                    const livroApi = response.data.dados[0];
+                    if (response.data.dados.length > 0) {
+                        setLivro(livroApi);
+                    }
+                }
+            } catch (error) {
+                if (error.response) {
+                    alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+                } else {
+                    alert('Erro no front-end' + '\n' + error);
+                }
+            }
+        }
+
+
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+        const imageLoader = ({ src, width, quality }) => {
+            return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
+        };
+
+        // const [infoLivros, setInfoLivros] = useState([]);
+        // const router = useRouter();
+
+        
+    }, []);
     const handleEdit = () => {
         router.push('/editarInfoLivro'); // Navega para a tela de edição
     };
-
-    // Função para buscar o livro pelo nome
-    async function fetchLivro() {
-        try {
-            const response = await api.get(`/livros`);
-            setInfoLivros(response.data); // Atualiza o estado com o livro encontrado
-        } catch (error) {
-            console.error('Erro ao buscar o livro:', error);
-        }
-    }
-
-    // Chama a função ao carregar a página
-    useEffect(() => {
-        fetchLivro();
-    }, []);
-
-    // Retorna null enquanto os dados estão sendo carregados
-    if (!infoLivros) return <p>Carregando...</p>;
 
     return (
         <main className={styles.main}>
@@ -63,79 +90,88 @@ export default function InfoLivroBiblioteca() {
                     </Link>
                 </div>
                 <div className={styles.container}>
-                    <div className={styles.lineSquare}>
-                        <div className={styles.inputContainer}>
-                            <div className={styles.infoBookReserva}>
-                                <Image
-                                    loader={imageLoader}
-                                    src={infoLivros.liv_foto_capa}
-                                    alt={infoLivros.liv_nome}
-                                    width={667}
-                                    height={1000}
-                                    className={styles.imgReserva}
-                                />
-                                <div className={styles.livroInfo}>
-                                    <div className={styles.headerLineSquare}>
-                                        <div className={styles.title}>
-                                            <p className={styles.geral}>Visão geral</p>
-                                            <p className={styles.livro}>{infoLivros.liv_nome}</p>
+                    {
+                        livro.liv_cod !== '' ?
+                            <>
+                                <div className={styles.lineSquare}>
+                                    <div className={styles.inputContainer}>
+                                        <div className={styles.infoBookReserva}>
+                                            <Image
+                                                loader={imageLoader}
+                                                src={livro.liv_foto_capa}
+                                                alt={livro.liv_nome}
+                                                width={667}
+                                                height={1000}
+                                                className={styles.imgReserva}
+                                            />
+                                            <div className={styles.livroInfo}>
+                                                <div className={styles.headerLineSquare}>
+                                                    <div className={styles.title}>
+                                                        <p className={styles.geral}>Visão geral</p>
+                                                        <p className={styles.livro}>{livro.liv_nome}</p>
+                                                    </div>
+                                                    <div className={styles.smallLineSquare}>
+                                                        <div className={styles.text}>
+                                                            <span className={styles.disponivel}>Disponíveis</span>
+                                                            <span className={styles.quant}>{livro.quant_disp}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p className={styles.resumo}>{livro.liv_desc}</p>
+                                            </div>
                                         </div>
-                                        <div className={styles.smallLineSquare}>
-                                            <div className={styles.text}>
-                                                <span className={styles.disponivel}>Disponíveis</span>
-                                                <span className={styles.quant}>{infoLivros.quantidade_disponivel}</span>
+                                        <div className={styles.infoContainer}>
+                                            <div className={styles.infoBox}>
+                                                <span className={styles.titleSuperior}>Autor(a)</span>
+                                                <Image
+                                                    src="/Icons TCC/autor.png"
+                                                    alt="Autor"
+                                                    width={1080}
+                                                    height={980}
+                                                    className={styles.imgIcons}
+                                                />
+                                                <span className={styles.titleInferior}>{livro.aut_nome}</span>
+                                            </div>
+                                            <div className={styles.infoBox}>
+                                                <span className={styles.titleSuperior}>Editora</span>
+                                                <Image
+                                                    src="/Icons TCC/editora.png"
+                                                    alt="Editora"
+                                                    width={1080}
+                                                    height={980}
+                                                    className={styles.imgIcons}
+                                                />
+                                                <span className={styles.titleInferior}>{livro.edt_nome}</span>
+                                            </div>
+                                            <div className={styles.infoBox}>
+                                                <span className={styles.titleSuperior}>Gênero</span>
+                                                <Image
+                                                    src="/Icons TCC/genero.png"
+                                                    alt="Gênero"
+                                                    width={1080}
+                                                    height={980}
+                                                    className={styles.imgIcons}
+                                                />
+                                                <span className={styles.titleInferior}>{livro.generos}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <p className={styles.resumo}>{infoLivros.liv_desc}</p>
                                 </div>
-                            </div>
-                            <div className={styles.infoContainer}>
-                                <div className={styles.infoBox}>
-                                    <span className={styles.titleSuperior}>Autor(a)</span>
-                                    <Image
-                                        src="/Icons TCC/autor.png"
-                                        alt="Autor"
-                                        width={1080}
-                                        height={980}
-                                        className={styles.imgIcons}
-                                    />
-                                    <span className={styles.titleInferior}>{infoLivros.aut_nome}</span>
+                                <div className={styles.editar}>
+                                    <Link href="/reservarLivro/">
+                                        <span>
+                                            <button className={styles.reservButton}>Reservar livro</button>
+                                        </span>
+                                    </Link>
                                 </div>
-                                <div className={styles.infoBox}>
-                                    <span className={styles.titleSuperior}>Editora</span>
-                                    <Image
-                                        src="/Icons TCC/editora.png"
-                                        alt="Editora"
-                                        width={1080}
-                                        height={980}
-                                        className={styles.imgIcons}
-                                    />
-                                    <span className={styles.titleInferior}>{infoLivros.edt_nome}</span>
-                                </div>
-                                <div className={styles.infoBox}>
-                                    <span className={styles.titleSuperior}>Gênero</span>
-                                    <Image
-                                        src="/Icons TCC/genero.png"
-                                        alt="Gênero"
-                                        width={1080}
-                                        height={980}
-                                        className={styles.imgIcons}
-                                    />
-                                    <span className={styles.titleInferior}>{infoLivros.generos}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.editar}>
-                        <Link href="/reservarLivro/">
-                            <span>
-                                <button className={styles.reservButton}>Reservar livro</button>
-                            </span>
-                        </Link>
-                    </div>
+                            </>
+                            :
+                            <h1>Não há resultados para a requisição</h1>
+                    }
                 </div>
             </div>
         </main>
     );
 }
+
+export default Livro;

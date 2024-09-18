@@ -211,7 +211,7 @@ export default function Biblioteca() {
                     <div className={styles.bookList}>
                         {sortedBooks.map(livro => (
                             <div className={styles.bookItem} key={livro.liv_nome}>
-                                <Link href="/infoLivroBiblioteca">
+                                <Link href={`/livros/${livro.liv_cod}`}>
                                     <div>
                                         <Image
                                             loader={imageLoader} /* Quando imagem vem por url */

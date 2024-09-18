@@ -1,6 +1,6 @@
 
 // import { produtos } from '../../../mocks/dados';
-import Livro from '../../infoLivroBiblioteca';
+import Livro from '../../infoLivroBiblioteca/page';
 
 export default function LivrosCod({ params }) {
 

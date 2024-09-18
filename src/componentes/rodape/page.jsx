@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import listaTelas from '@/rotas/semCabRod';
 
 export default function Rodape() {
-    const rota = usePathname();    
+    const rota = usePathname();
 
     function ativaMenu() {
         if (mobile === false) {
@@ -17,19 +17,19 @@ export default function Rodape() {
     }
 
     function validaCabRod() {
-        let valida = false;        
+        let valida = false;
         listaTelas.forEach((tela) => {
             if (tela === rota) {
                 valida = true
-            }           
+            }
         });
         return valida;
     }
 
     if (validaCabRod() === true) {
-        return(<></>)
+        return (<></>)
     }
-    
+
     return (
         <div className="containerGlobal">
             <footer className={styles.footer}>

@@ -4,17 +4,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import FileInput from '@/componentes/FileInput/page';
+import api from '@/services/api';
 
 export default function EditarInformacoesLivro() {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(true);
-    const [title, setTitle] = useState("O Diário de Anne Frank");
+    const [title, setTitle] = useState(liv_nome);
     const [availableQuantity, setAvailableQuantity] = useState(5);
-    const [summary, setSummary] = useState("O Diário de Anne Frank é um livro que relata a história de uma jovem judia chamada Anne Frank, que viveu durante a Segunda Guerra Mundial e se escondeu com sua família e outros judeus em um anexo secreto em Amsterdã, nos Países Baixos, para escapar da perseguição nazista.");
-    const [author, setAuthor] = useState("Anne Frank");
-    const [publisher, setPublisher] = useState("Grupo Editorial Record");
-    const [genre, setGenre] = useState("Autobiográfico");
-    const [imageSrc, setImageSrc] = useState("/Capa_dos_livros/o_diario_de_anne_frank.jpg");
+    const [summary, setSummary] = useState(liv_desc);
+    const [author, setAuthor] = useState(aut_nome);
+    const [publisher, setPublisher] = useState(edt_nome);
+    const [genre, setGenre] = useState(generos);
+    const [imageSrc, setImageSrc] = useState(liv_foto_capa);
 
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);

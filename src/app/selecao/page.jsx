@@ -54,7 +54,7 @@ export default function Selecao() {
               onClick={() => setSelectedGenre(status)}
             >
               <Image
-                src={`/Icons_TCC/${status.replace(/\s+/g, '_')}.png`}
+                src={`/requisicoes/${status.replace(/\s+/g, '_')}.png`}
                 alt={status}
                 width={512}
                 height={512}

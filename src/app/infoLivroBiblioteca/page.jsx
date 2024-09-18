@@ -31,7 +31,7 @@ function Livro({ codLivro }) {
     // const [total, setTotal] = useState(0);
 
     const router = useRouter();
-    const user = JSON.parse(localStorage.getItem('user'));
+    // const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
 
@@ -60,21 +60,19 @@ function Livro({ codLivro }) {
             }
         }
 
-
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
-
-        const imageLoader = ({ src, width, quality }) => {
-            return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
-        };
-
         // const [infoLivros, setInfoLivros] = useState([]);
         // const router = useRouter();
 
-        
     }, []);
     const handleEdit = () => {
         router.push('/editarInfoLivro'); // Navega para a tela de edição
+    };
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+    const imageLoader = ({ src, width, quality }) => {
+        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
     };
 
     return (

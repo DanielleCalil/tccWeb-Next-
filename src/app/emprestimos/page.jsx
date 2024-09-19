@@ -21,14 +21,55 @@ const infoEmprestimo = [
   },
 ];
 
+const searchOptions = [
+  { value: 'liv_nome', label: 'Livro' },
+  { value: 'usu_nome', label: 'Autor' },
+  { value: 'usu_cad', label: 'Usuário' },
+  { value: 'dataEmprestimo', label: 'Data da reserva' },
+];
 
 export default function Emprestimos() {
+
+  const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
+
+  async function listaLivros() {
+    const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+    try {
+      const response = await api.post('/livros', dados);
+      console.log(response.data.dados);
+      setBooks(response.data.dados);
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+      } else {
+        alert('Erro no front-end' + '\n' + error);
+      }
+    }
+  }
+  // console.log(livNome)
 
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.emprestimo}>Empréstimos</h1>
         <BarraPesquisa />
+
+        {/* Radio Buttons para selecionar o critério de pesquisa */}
+        <div className={styles.searchOptions}>
+          {searchOptions.map(option => (
+            <label key={option.value} className={styles.radioLabel}>
+              <input
+                type="radio"
+                name="searchOption"
+                value={option.value}
+                checked={selectedSearchOption === option.value}
+                onChange={() => setSelectedSearchOption(option.value)}
+              />
+              {option.label}
+            </label>
+          ))}
+        </div>
+
         <div className={styles.container}>
           {infoEmprestimo.map((emprestimo, index) => (
             <div key={index} className={styles.lineSquare}>

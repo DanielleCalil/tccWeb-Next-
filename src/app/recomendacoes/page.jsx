@@ -17,6 +17,14 @@ const genres = [
     'Romance'
 ];
 
+const searchOptions = [
+    { value: 'liv_nome', label: 'Livro' },
+    { value: 'aut_nome', label: 'Autor' },
+    { value: 'edt_nome', label: 'Editora' },
+    { value: 'liv_cod', label: 'Código' },
+    { value: 'curso', label: 'Curso' },
+];
+
 // const books = [
 //     {
 //         liv_nome: 'O diário de Anne Frank',
@@ -73,6 +81,7 @@ export default function Recomendacoes() {
 
     const [books, setBooks] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState('Todos');
+    const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
 
     // Filtra os livros com base no gênero selecionado
     const filteredBooks = selectedGenre === 'Todos'
@@ -93,9 +102,7 @@ export default function Recomendacoes() {
     }, []);
 
     async function listaLivros() {
-        const dados = {
-            liv_nome: livNome
-        }
+        const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
         try {
             const response = await api.post('/livros', dados);
             console.log(response.data.dados);
@@ -115,6 +122,22 @@ export default function Recomendacoes() {
             <div className="containerGlobal">
                 <h1 className={styles.recomendacao}>Recomendações dos professores</h1>
                 <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
+
+                {/* Radio Buttons para selecionar o critério de pesquisa */}
+                <div className={styles.searchOptions}>
+                    {searchOptions.map(option => (
+                        <label key={option.value} className={styles.radioLabel}>
+                            <input
+                                type="radio"
+                                name="searchOption"
+                                value={option.value}
+                                checked={selectedSearchOption === option.value}
+                                onChange={() => setSelectedSearchOption(option.value)}
+                            />
+                            {option.label}
+                        </label>
+                    ))}
+                </div>
 
                 <div className={styles.genreButtons}>
                     {genres.map((generos) => (

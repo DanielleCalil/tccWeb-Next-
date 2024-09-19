@@ -127,6 +127,13 @@ const genres = [
 //     },
 // ];
 
+const searchOptions = [
+    { value: 'liv_nome', label: 'Livro' },
+    { value: 'aut_nome', label: 'Autor' },
+    { value: 'edt_nome', label: 'Editora' },
+    { value: 'liv_cod', label: 'Código' },
+];
+
 export default function Biblioteca() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -139,6 +146,7 @@ export default function Biblioteca() {
     const [books, setBooks] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState('Todos');
     const [showModalAdd, setShowModalAdd] = useState(false);
+    const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
 
     // Filtra os livros com base no gênero selecionado
     const filteredBooks = books
@@ -161,9 +169,7 @@ export default function Biblioteca() {
     }, []);
 
     async function listaLivros() {
-        const dados = {
-            liv_nome: livNome
-        }
+        const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
         try {
             const response = await api.post('/livros', dados);
             console.log(response.data.dados);
@@ -189,6 +195,21 @@ export default function Biblioteca() {
                     <ModalAdd show={showModalAdd} onClose={closeModalAdd} />
                 </div>
                 <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
+                {/* Radio Buttons para selecionar o critério de pesquisa */}
+                <div className={styles.searchOptions}>
+                    {searchOptions.map(option => (
+                        <label key={option.value} className={styles.radioLabel}>
+                            <input
+                                type="radio"
+                                name="searchOption"
+                                value={option.value}
+                                checked={selectedSearchOption === option.value}
+                                onChange={() => setSelectedSearchOption(option.value)}
+                            />
+                            {option.label}
+                        </label>
+                    ))}
+                </div>
                 <div className={styles.genreButtons}>
                     {genres.map((generos) => (
                         <div

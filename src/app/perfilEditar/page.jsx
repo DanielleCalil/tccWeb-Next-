@@ -1,4 +1,4 @@
-"use client"
+import { useRouter } from 'next/router';
 import Image from "next/image";
 import { useState } from 'react';
 import styles from "./page.module.css";
@@ -8,17 +8,20 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 export default function PerfilEditar() {
     const [profileImage, setProfileImage] = useState('/Icons TCC/perfil.jpg'); // Imagem padrão
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const router = useRouter(); // Hook do router
 
     const handleFileSelect = (imageUrl) => {
         setProfileImage(imageUrl);
     };
 
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
-
     const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => {
-        setShowModalConfirm(false);
-        onClose();
+    const closeModalConfirm = () => setShowModalConfirm(false);
+
+    const handleModalConfirm = () => {
+        console.log('Modal confirmado'); // Verifique se isso aparece no console
+        closeModalConfirm();
+        router.push('/perfil'); // Substitua '/paginaDesejada' pela rota para a qual deseja redirecionar
     };
 
     return (
@@ -116,8 +119,14 @@ export default function PerfilEditar() {
                         Salvar
                     </button>
                 </div>
+                <button onClick={() => router.push('/infoContato')}>Teste Redirecionamento</button>
+
             </div>
-            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
+            <ModalConfirmar
+                show={showModalConfirm}
+                onClose={closeModalConfirm}
+                onConfirm={handleModalConfirm} // Passando a função corretamente
+            />
         </main>
     );
 }

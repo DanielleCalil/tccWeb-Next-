@@ -4,6 +4,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
+import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 const infoReserva = [
     {
@@ -21,13 +22,62 @@ const infoReserva = [
     },
 ];
 
+const searchOptions = [
+    { value: 'liv_nome', label: 'Livro' },
+    { value: 'aut_nome', label: 'Autor' },
+    { value: 'dataReserva', label: 'Data da reserva' },
+];
+
 export default function Reservas() {
+
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+
+    const openModalConfirm = () => setShowModalConfirm(true);
+    const closeModalConfirm = () => {
+        setShowModalConfirm(false);
+        onClose();
+    };
+
+    const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
+
+    async function listaLivros() {
+        const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+        try {
+            const response = await api.post('/livros', dados);
+            console.log(response.data.dados);
+            setBooks(response.data.dados);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
+    // console.log(livNome)
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro reservado</h1>
                 <BarraPesquisa />
+
+                {/* Radio Buttons para selecionar o critério de pesquisa */}
+                <div className={styles.searchOptions}>
+                    {searchOptions.map(option => (
+                        <label key={option.value} className={styles.radioLabel}>
+                            <input
+                                type="radio"
+                                name="searchOption"
+                                value={option.value}
+                                checked={selectedSearchOption === option.value}
+                                onChange={() => setSelectedSearchOption(option.value)}
+                            />
+                            {option.label}
+                        </label>
+                    ))}
+                </div>
+
                 <div className={styles.container}>
                     {infoReserva.map((reserva, index) => (
                         <div key={index} className={styles.lineSquare}>
@@ -54,11 +104,13 @@ export default function Reservas() {
                                 <div className={styles.opcao}>
                                     <button
                                         type="button"
+                                        onClick={openModalConfirm}
                                         className={styles.confirmButton}>
                                         Retirada confirmada
                                     </button>
                                     <button
                                         type="button"
+                                        onClick={openModalConfirm}
                                         className={styles.cancelButton}>
                                         Cancelar retirada
                                     </button>
@@ -72,6 +124,7 @@ export default function Reservas() {
                     ))}
                 </div>
             </div>
+            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
         </main>
     );
 }

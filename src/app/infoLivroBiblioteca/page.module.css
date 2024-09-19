@@ -56,7 +56,8 @@
 }
 
 .lineSquare {
-    width: 40%;
+    width: 100%;
+    max-width: 60%;
     height: auto;
     box-sizing: border-box;
     border: 1px solid black;

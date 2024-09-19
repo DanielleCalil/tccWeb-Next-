@@ -77,10 +77,10 @@ export default function Cabecalho() {
                         Perfil
                     </Link>
                     <Link
-                        href="/selecao"
-                        className={rota === "/selecao" ? styles.active : ""}>
+                        href="/solicitacao"
+                        className={rota === "/solicitacao" ? styles.active : ""}>
                         <IoTrailSignOutline className={styles.tpicon} />
-                        Seleção
+                        Solicitações
                     </Link>
                     <Link
                         href="/recomendacoes"
@@ -151,11 +151,11 @@ export default function Cabecalho() {
                     Perfil
                 </Link>
                 <Link
-                    href='/selecao'
+                    href='/solicitacao'
                     onClick={ativaMenu}
-                    className={rota === '/selecao' ? styles.active : ''}>
+                    className={rota === '/solicitacao' ? styles.active : ''}>
                     <IoTrailSignOutline className={styles.tpicon} />
-                    Seleção
+                    Solicitações
                 </Link>
                 <Link
                     href='/recomendacoes'

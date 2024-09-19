@@ -31,12 +31,14 @@ export default function Rodape() {
     }
 
     return (
-        <div className="containerGlobal">
-            <footer className={styles.footer}>
-                <div className={styles.conteudo}>
-                    Desenvolvido por <Link href="/usuarios/sobreNos">Danikawari</Link>
-                </div>
-            </footer>
+        <div className={styles.container}>
+            <div className="containerGlobal">
+                <footer className={styles.footer}>
+                    <div className={styles.conteudo}>
+                        Desenvolvido por <Link href="/usuarios/sobreNos">Danikawari</Link>
+                    </div>
+                </footer>
+            </div>
         </div>
     );
 }

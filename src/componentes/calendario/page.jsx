@@ -77,59 +77,61 @@ const Calendario = () => {
   };
 
   return (
-    <div className="containerGlobal">
-      <div className={styles.calendarContainer}>
-        {/* Controles de navegação e título do mês */}
-        <div className={styles.navigationButtons}>
+    <main className={styles.main}>
+      <div className="containerGlobal">
+        <div className={styles.calendarContainer}>
+          {/* Controles de navegação e título do mês */}
+          <div className={styles.navigationButtons}>
 
-          <IoCaretBack onClick={handlePrev} className={styles.navButton} /> {/* Botão para o mês anterior */}
+            <IoCaretBack onClick={handlePrev} className={styles.navButton} /> {/* Botão para o mês anterior */}
 
-          <span className={styles.monthTitle}>
-            {capitalizeFirstLetter(format(currentDate, 'MMMM yyyy', { locale: ptBR }))} {/* Título do mês */}
-          </span>
+            <span className={styles.monthTitle}>
+              {capitalizeFirstLetter(format(currentDate, 'MMMM yyyy', { locale: ptBR }))} {/* Título do mês */}
+            </span>
 
-          <IoCaretForward onClick={handleNext} className={styles.navButton} /> {/* Botão para o próximo mês */}
+            <IoCaretForward onClick={handleNext} className={styles.navButton} /> {/* Botão para o próximo mês */}
 
-        </div>
+          </div>
 
-        {/* Calendário */}
-        <div className={styles.calendarWrapper}
-          style={{
-            '--fc-today-bg-color': '#3F7263', // Cor de fundo do dia atual
-          }}
-        >
-          <FullCalendar
-            ref={calendarRef} // Conecta o calendário à referência
-            plugins={[dayGridPlugin, interactionPlugin]}
-            initialView="dayGridMonth"
-            dateClick={handleDateClick}
-            locale={ptBrLocale}
-            events={events}
-            headerToolbar={false} // Remove a toolbar de cabeçalho padrão
-            validRange={{ start: today }}
-            height="auto" // Ajuste de altura
-            contentHeight="auto" // Ajuste de altura do conteúdo
-            eventContent={(eventInfo) => (
-              <div className={styles.eventContent}>
-                <span>{eventInfo.event.title}</span>
-              </div>
-            )}
-          />
-        </div>
+          {/* Calendário */}
+          <div className={styles.calendarWrapper}
+            style={{
+              '--fc-today-bg-color': '#3F7263', // Cor de fundo do dia atual
+            }}
+          >
+            <FullCalendar
+              ref={calendarRef} // Conecta o calendário à referência
+              plugins={[dayGridPlugin, interactionPlugin]}
+              initialView="dayGridMonth"
+              dateClick={handleDateClick}
+              locale={ptBrLocale}
+              events={events}
+              headerToolbar={false} // Remove a toolbar de cabeçalho padrão
+              validRange={{ start: today }}
+              height="auto" // Ajuste de altura
+              contentHeight="auto" // Ajuste de altura do conteúdo
+              eventContent={(eventInfo) => (
+                <div className={styles.eventContent}>
+                  <span>{eventInfo.event.title}</span>
+                </div>
+              )}
+            />
+          </div>
 
-        {/* Exibição das datas selecionadas */}
-        <div className={styles.dateInfo}>
-          <label>
-            Data Inicial:
-            <input type="text" value={startDate} readOnly className={styles.dateInput} />
-          </label>
-          <label>
-            Data Final:
-            <input type="text" value={endDate} readOnly className={styles.dateInput} />
-          </label>
+          {/* Exibição das datas selecionadas */}
+          <div className={styles.dateInfo}>
+            <label>
+              Data Inicial:
+              <input type="text" value={startDate} readOnly className={styles.dateInput} />
+            </label>
+            <label>
+              Data Final:
+              <input type="text" value={endDate} readOnly className={styles.dateInput} />
+            </label>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

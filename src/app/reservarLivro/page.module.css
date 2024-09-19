@@ -14,6 +14,24 @@
   text-align: center;
 }
 
+.observacao {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.obs {
+  font-size: 1.2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #8a8a8a;
+  margin-top: 0rem;
+  margin-bottom: 0.313rem;
+  line-height: 1.5rem;
+  text-align: center;
+}
+
 .editar {
   display: flex;
   justify-content: center;
@@ -41,16 +59,4 @@
 .reservButton:hover {
   opacity: 0.5;
   transition: 0.5s;
-}
-
-.obs {
-  font-size: 1.2rem;
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: #8a8a8a;
-  margin-top: -2.5rem;
-  margin-bottom: 0.313rem;
-  line-height: 1.5rem;
-  text-align: center;
 }

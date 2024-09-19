@@ -48,6 +48,7 @@
     border-radius: 3rem;
     box-sizing: border-box;
     font-size: 1.4rem;
+    
 }
 
 .inputField::placeholder {
@@ -62,26 +63,33 @@
 .passwordRow {
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
 }
 
 .passwordContainer {
     position: relative;
-    flex: 1;
+    flex: 0 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 39%;
 }
 
-.passwordContainer .inputField {
-    padding-right: 3rem; /* Adicione espaço para o ícone */
+.passwordContainer input {
+    width: 100%;
 }
 
 .eyeIcon {
     position: absolute;
-    right: 10px;
+    right: 14px; /* Ajuste conforme necessário */
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     color: #000;
-    font-size: 2rem;
+    font-size: 2rem; /* Ajuste conforme necessário */
 }
 
 .sexoForm {

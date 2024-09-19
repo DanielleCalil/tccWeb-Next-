@@ -1,17 +1,22 @@
 import { useState } from 'react'; // Importar o useState
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
-const ModalAddEditora = ({ show, onClose }) => {
-    const [showModal, setShowModal] = useState(false); // Estado para controlar o modal
+const ModalAddEditora = ({ show }) => {
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const router = useRouter();
 
     if (!show) return null;
 
-    const openModal = () => setShowModal(true);
-    const closeModal = () => {
-        setShowModal(false);
-        onClose(); // Chama a função para fechar o modal principal
+    const openModalConfirm = () => setShowModalConfirm(true);
+    const closeModalConfirm = () => setShowModalConfirm(false);
+
+    const handleConfirm = () => {
+        setShowModalConfirm(false);
+        router.push('/biblioteca');
     };
 
     return (
@@ -27,20 +32,29 @@ const ModalAddEditora = ({ show, onClose }) => {
                             />
                         </div>
                         <div className={styles.buttonsContainer}>
-                            <button onClick={openModal} className={styles.modalButtonAdd}>
+                            <button
+                                type="submit"
+                                onClick={openModalConfirm}
+                                className={styles.modalButtonAdd}
+                            >
                                 Adicionar
                             </button>
-                            <button onClick={closeModal} className={styles.modalButtonCanc}>
+                            <button
+                                type="submit"
+                                onClick={closeModalConfirm}
+                                className={styles.modalButtonCanc}
+                            >
                                 Cancelar
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {showModal && (
-                <ModalConfirmar 
-                    show={showModal} 
-                    onClose={() => setShowModal(false)} 
+            {showModalConfirm && (
+                <ModalConfirmar
+                    show={showModalConfirm}
+                    onClose={closeModalConfirm}
+                    onConfirm={handleConfirm}
                 />
             )}
         </>

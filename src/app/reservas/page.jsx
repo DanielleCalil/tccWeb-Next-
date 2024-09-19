@@ -3,6 +3,8 @@ import { useState } from "react";
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
@@ -31,11 +33,14 @@ const searchOptions = [
 export default function Reservas() {
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const router = useRouter();
 
     const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => {
-        setShowModalConfirm(false);
-        onClose();
+    const closeModalConfirm = () => setShowModalConfirm(false);
+
+    const handleConfirm = () => {
+        setShowModalConfirm(false); // Fecha o modal
+        router.push('/reservas');
     };
 
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
@@ -124,7 +129,11 @@ export default function Reservas() {
                     ))}
                 </div>
             </div>
-            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
+            <ModalConfirmar
+                show={showModalConfirm}
+                onClose={closeModalConfirm}
+                onConfirm={handleConfirm}
+            />
         </main>
     );
 }

@@ -4,7 +4,7 @@ import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoSearchOutline } from "react-icons/io5";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { IoEye, IoEyeOff  } from "react-icons/io5";
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
@@ -59,10 +59,9 @@ export default function SignUp() {
                                     onClick={togglePasswordVisibility}
                                     className={styles.eyeIcon}
                                 >
-                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    {showPassword ? <IoEyeOff /> : <IoEye />}
                                 </span>
-                            </div>
-                            <div className={styles.passwordContainer}>
+                            </div><div className={styles.passwordContainer}>
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     placeholder="Confirmar senha"
@@ -72,7 +71,7 @@ export default function SignUp() {
                                     onClick={toggleConfirmPasswordVisibility}
                                     className={styles.eyeIcon}
                                 >
-                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                    {showConfirmPassword ? <IoEyeOff /> : <IoEye />}
                                 </span>
                             </div>
                         </div>

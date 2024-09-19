@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
@@ -41,11 +42,18 @@ const searchOptions = [
 ];
 
 export default function Solicitacao() {
-  const [showModalConfirm, setShowModalConfirm] = useState(false);
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
+
+  const [showModalConfirm, setShowModalConfirm] = useState(false);
+  const router = useRouter();
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
+
+  const handleConfirm = () => {
+    setShowModalConfirm(false); // Fecha o modal
+    router.push('../solicitacao');
+  };
 
   async function listaLivros() {
     const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
@@ -122,7 +130,11 @@ export default function Solicitacao() {
                     <option value="professor(a)">Professor(a)</option>
                     <option value="aluno(a)">Aluno(a)</option>
                   </select>
-                  <button type="submit" onClick={openModalConfirm} className={styles.confirmButton}>
+                  <button
+                    type="submit"
+                    onClick={openModalConfirm}
+                    className={styles.confirmButton}
+                  >
                     Confirmar
                   </button>
                 </div>
@@ -131,7 +143,11 @@ export default function Solicitacao() {
           ))}
         </div>
       </div>
-      <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
+      <ModalConfirmar
+        show={showModalConfirm}
+        onClose={closeModalConfirm}
+        onConfirm={handleConfirm}
+      />
     </main>
   );
 }

@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import styles from "./page.module.css";
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
@@ -121,10 +123,14 @@ export default function GerenciarLivroExistente() {
     };
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const router = useRouter();
+
     const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => {
-        setShowModalConfirm(false);
-        onClose();
+    const closeModalConfirm = () => setShowModalConfirm(false);
+
+    const handleConfirm = () => {
+        setShowModalConfirm(false); // Fecha o modal
+        router.push('../biblioteca');
     };
 
     // Função para ativar/inativar um livro pelo título
@@ -220,11 +226,19 @@ export default function GerenciarLivroExistente() {
                 </div>
             </div>
             <div className={styles.editar}>
-                <button onClick={openModalConfirm} className={styles.addButton}>
+                <button
+                    type="submit"
+                    onClick={openModalConfirm}
+                    className={styles.addButton}
+                >
                     Salvar Alterações
                 </button>
             </div>
-            <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
+            <ModalConfirmar
+                show={showModalConfirm}
+                onClose={closeModalConfirm}
+                onConfirm={handleConfirm}
+            />
         </main>
     );
 }

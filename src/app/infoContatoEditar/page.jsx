@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 const infoContat = [
@@ -13,20 +15,22 @@ const infoContat = [
 ];
 
 export default function InfoContatoEditar() {
-
   const [showModalConfirm, setShowModalConfirm] = useState(false);
+  const router = useRouter();
 
   const openModalConfirm = () => setShowModalConfirm(true);
-  const closeModalConfirm = () => {
-    setShowModalConfirm(false);
-    onClose();
+  const closeModalConfirm = () => setShowModalConfirm(false);
+
+  const handleConfirm = () => {
+    setShowModalConfirm(false); // Fecha o modal
+    router.push('../infoContato');
   };
 
-  const [text, setText] = useState(informacoes.infos);
+  const [text, setText] = useState('');
 
-    const handleChange = (event) => {
-        setText(event.target.value);
-    };
+  const handleChange = (event) => {
+    setText(event.target.value);
+  };
 
   return (
     <main className={styles.main}>
@@ -70,7 +74,7 @@ export default function InfoContatoEditar() {
               </form>
             </div>
           </div>
-       
+        </div>
         <div className={styles.editar}>
           <button
             type="submit"
@@ -81,7 +85,11 @@ export default function InfoContatoEditar() {
           </button>
         </div>
       </div>
-      <ModalConfirmar show={showModalConfirm} onClose={closeModalConfirm} />
+      <ModalConfirmar
+        show={showModalConfirm}
+        onClose={closeModalConfirm}
+        onConfirm={handleConfirm}
+      />
     </main>
   );
 }

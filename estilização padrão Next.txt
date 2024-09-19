@@ -12,18 +12,8 @@ buttons
 
 disabled selected //usar em input selecionável na opção que não pode selecionar
 
-colocar a função de colocar a foto de capa do livro - feito
-colocar os livros para ser visualizado em ordem alfabética - feito
-colocar um toggle para ativar e inativar os livros já existentes - feito
-fazer teste de função do usuário para mostrar as telas que podem ser mostradas para ele
-  - Aluno
-  - Professor
-  - Funcionário
-  - ADM
-ver com o alan como eu faço a pesquisa
-tirar oo defeitinho do radio button - feito
-arrumar a tela de cadastro
 
+arrumar a tela de 'editarInfoLivro'
 
 
 "use client";

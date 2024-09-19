@@ -27,7 +27,7 @@ export default function EsqueceuSenha1() {
                             className={styles.inputField}
                         />
                         <div className={styles.logar}>
-                            Já tem uma conta? <Link href="/login/">Faça login</Link>
+                            Já tem uma conta? <Link href="/usuarios/login">Faça login</Link>
                         </div>
                         <Link href="/usuarios/esqueceuSenha2">
                             <button className={styles.redefinirButton}>Redefinir</button>

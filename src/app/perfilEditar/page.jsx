@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router';
+"use client"
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { useState } from 'react';
 import styles from "./page.module.css";
@@ -8,20 +9,20 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 export default function PerfilEditar() {
     const [profileImage, setProfileImage] = useState('/Icons TCC/perfil.jpg'); // Imagem padrão
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
-    const router = useRouter(); // Hook do router
 
     const handleFileSelect = (imageUrl) => {
         setProfileImage(imageUrl);
     };
 
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const router = useRouter();
+
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
 
-    const handleModalConfirm = () => {
-        console.log('Modal confirmado'); // Verifique se isso aparece no console
-        closeModalConfirm();
-        router.push('/perfil'); // Substitua '/paginaDesejada' pela rota para a qual deseja redirecionar
+    const handleConfirm = () => {
+        setShowModalConfirm(false); // Fecha o modal
+        router.push('../perfil');
     };
 
     return (
@@ -112,20 +113,22 @@ export default function PerfilEditar() {
                     </div>
                 </div>
                 <div className={styles.redefinir}>
-                    <Link href="/esqueceuSenha1/">Esqueceu a senha?</Link>
+                    <Link href="/usuarios/esqueceuSenha1">Esqueceu a senha?</Link>
                 </div>
                 <div className={styles.editar}>
-                    <button type="submit" onClick={openModalConfirm} className={styles.saveButton}>
+                    <button
+                        type="submit"
+                        onClick={openModalConfirm}
+                        className={styles.saveButton}
+                    >
                         Salvar
                     </button>
                 </div>
-                <button onClick={() => router.push('/infoContato')}>Teste Redirecionamento</button>
-
             </div>
             <ModalConfirmar
                 show={showModalConfirm}
                 onClose={closeModalConfirm}
-                onConfirm={handleModalConfirm} // Passando a função corretamente
+                onConfirm={handleConfirm}
             />
         </main>
     );

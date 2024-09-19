@@ -18,9 +18,9 @@ export default function EsqueceuSenha2() {
                             height={384}
                         />
                     </div>
+                    <h1 class={styles.redefinirSenha}>Redefinir senha</h1>
+                    <text class={styles.texto}>Por favor, insira no campo abaixo o código de ativação que você recebeu por e-mail e redefina uma nova senha.</text>
                     <div class={styles.conteudo}>
-                        <h1 class={styles.redefinirSenha}>Redefinir senha</h1>
-                        <text class={styles.texto}>Por favor, insira no campo abaixo o código de ativação que você recebeu por e-mail e redefina uma nova senha.</text>
                         <div class={styles.containerInput}>
                             <input
                                 type="number"

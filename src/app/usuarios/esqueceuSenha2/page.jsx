@@ -1,10 +1,24 @@
+"use client"
+import { useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IoEye, IoEyeOff  } from "react-icons/io5";
 
 import { IoSearchOutline } from "react-icons/io5";
 
 export default function EsqueceuSenha2() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
     return (
         <div className="containerGlobal">
             <div class={styles.background}>
@@ -27,16 +41,32 @@ export default function EsqueceuSenha2() {
                                 placeholder="Código"
                                 class={styles.inputField}
                             />
-                            <input
-                                type="password"
-                                placeholder="Senha"
-                                class={styles.inputField}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Confirme a nova senha"
-                                class={styles.inputField}
-                            />
+                            <div className={styles.passwordContainer}>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Senha"
+                                    className={`${styles.inputField} ${styles.senhaField}`}
+                                />
+                                <span
+                                    onClick={togglePasswordVisibility}
+                                    className={styles.eyeIcon}
+                                >
+                                    {showPassword ? <IoEyeOff /> : <IoEye />}
+                                </span>
+                            </div>
+                            <div className={styles.passwordContainer}>
+                                <input
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    placeholder="Confirme a nova senha"
+                                    className={`${styles.inputField} ${styles.senhaField}`}
+                                />
+                                <span
+                                    onClick={toggleConfirmPasswordVisibility}
+                                    className={styles.eyeIcon}
+                                >
+                                    {showConfirmPassword ? <IoEyeOff /> : <IoEye />}
+                                </span>
+                            </div>
                         </div>
                         <Link href="/usuarios/login">
                             <button class={styles.redefinirButton}>Redefinir senha</button>

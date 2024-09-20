@@ -55,7 +55,8 @@
 }
 
 .inputField {
-    width: 35%;
+    width: 100%;
+    max-width: 35%;
     height: 4.6rem;
     padding: 1rem 2rem;
     margin: 0.5rem 0;
@@ -72,6 +73,30 @@
     font-style: normal;
     opacity: 1;
     font-size: 1.4rem;
+}
+
+.passwordContainer {
+    position: relative;
+    flex: 0 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.passwordContainer input {
+    width: 100%;
+    max-width: 35%;
+}
+
+.eyeIcon {
+    position: absolute;
+    right: 275px; /* Ajuste conforme necessário */
+    top: 54%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #000;
+    font-size: 2rem; /* Ajuste conforme necessário */
 }
 
 /* Remove as setas do input de número */

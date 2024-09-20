@@ -32,12 +32,12 @@ const infoUsuario = [
 const situacao = [
   'Todos',
   'Ativo',
-  'Inativo',
+  'Pendente',
 ];
 
 const searchOptions = [
-  { value: 'usu_nome', label: 'Autor' },
-  { value: 'usu_cad', label: 'Usuário' },
+  { value: 'usu_cad', label: 'Data de cadastro' },
+  { value: 'usu_nome', label: 'Usuário' },
   { value: 'usu_rm', label: 'RM' },
 ];
 
@@ -101,7 +101,7 @@ export default function Solicitacao() {
               onClick={() => setSelectedGenre(status)}
             >
               <Image
-                src={`/requisicoes/${status.replace(/\s+/g, '_')}.png`}
+                src={`/solicitacoes/${status.replace(/\s+/g, '_')}.png`}
                 alt={status}
                 width={512}
                 height={512}

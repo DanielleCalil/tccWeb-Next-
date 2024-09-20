@@ -6,26 +6,29 @@ import styles from './page.module.css';
 import FileInput from '@/componentes/FileInput/page';
 import api from '@/services/api';
 
-export default function EditarInformacoesLivro() {
+export default function EditarInformacoesLivro({ initialData }) {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(true);
-    const [title, setTitle] = useState(liv_nome);
-    const [availableQuantity, setAvailableQuantity] = useState(5);
-    const [summary, setSummary] = useState(liv_desc);
-    const [author, setAuthor] = useState(aut_nome);
-    const [publisher, setPublisher] = useState(edt_nome);
-    const [genre, setGenre] = useState(generos);
-    const [imageSrc, setImageSrc] = useState(liv_foto_capa);
+    const [title, setTitle] = useState(initialData?.liv_nome || ''); // Certifique-se de que isso é fornecido
+    const [availableQuantity, setAvailableQuantity] = useState(initialData?.availableQuantity || '');
+    const [summary, setSummary] = useState(initialData?.liv_desc || '');
+    const [author, setAuthor] = useState(initialData?.aut_nome || '');
+    const [publisher, setPublisher] = useState(initialData?.edt_nome || '');
+    const [genre, setGenre] = useState(initialData?.generos || '');
+    const [imageSrc, setImageSrc] = useState(initialData?.liv_foto_capa || '');
 
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
     };
 
-    const handleSave = () => {
-        // Aqui você pode implementar a lógica para salvar os dados em algum backend ou estado global
-
-        // Exemplo de redirecionamento para a tela de informações do livro
-        router.push('/infoLivroBiblioteca');
+    const handleSave = async () => {
+        try {
+            // Implementar a lógica de salvar aqui
+            await api.saveBookInfo({ title, availableQuantity, summary, author, publisher, genre, imageSrc });
+            router.push('/infoLivroBiblioteca');
+        } catch (error) {
+            console.error("Erro ao salvar informações do livro:", error);
+        }
     };
 
     return (
@@ -94,67 +97,67 @@ export default function EditarInformacoesLivro() {
                                 </div>
                             </div>
                             <div className={styles.infoContainer}>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Autor(a)</span>
-                                            <Image
-                                                src="/Icons TCC/autor.png"
-                                                alt="Autor"
-                                                width={1080}
-                                                height={980}
-                                                className={styles.imgIcons}
-                                            />
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={author}
-                                                    onChange={(e) => setAuthor(e.target.value)}
-                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
-                                                />
-                                            ) : (
-                                                <span className={styles.titleInferior}>{author}</span>
-                                            )}
-                                        </div>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Editora</span>
-                                            <Image
-                                                src="/Icons TCC/editora.png"
-                                                alt="Editora"
-                                                width={1080}
-                                                height={980}
-                                                className={styles.imgIcons}
-                                            />
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={publisher}
-                                                    onChange={(e) => setPublisher(e.target.value)}
-                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
-                                                />
-                                            ) : (
-                                                <span className={styles.titleInferior}>{publisher}</span>
-                                            )}
-                                        </div>
-                                        <div className={styles.infoBox}>
-                                            <span className={styles.titleSuperior}>Gênero</span>
-                                            <Image
-                                                src="/Icons TCC/genero.png"
-                                                alt="Gênero"
-                                                width={1080}
-                                                height={980}
-                                                className={styles.imgIcons}
-                                            />
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={genre}
-                                                    onChange={(e) => setGenre(e.target.value)}
-                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
-                                                />
-                                            ) : (
-                                                <span className={styles.titleInferior}>{genre}</span>
-                                            )}
-                                        </div>
-                                    </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Autor(a)</span>
+                                    <Image
+                                        src="/Icons TCC/autor.png"
+                                        alt="Autor"
+                                        width={1080}
+                                        height={980}
+                                        className={styles.imgIcons}
+                                    />
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={author}
+                                            onChange={(e) => setAuthor(e.target.value)}
+                                            className={`${styles.editInputIcons} ${styles.editInput}`}
+                                        />
+                                    ) : (
+                                        <span className={styles.titleInferior}>{author}</span>
+                                    )}
+                                </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Editora</span>
+                                    <Image
+                                        src="/Icons TCC/editora.png"
+                                        alt="Editora"
+                                        width={1080}
+                                        height={980}
+                                        className={styles.imgIcons}
+                                    />
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={publisher}
+                                            onChange={(e) => setPublisher(e.target.value)}
+                                            className={`${styles.editInputIcons} ${styles.editInput}`}
+                                        />
+                                    ) : (
+                                        <span className={styles.titleInferior}>{publisher}</span>
+                                    )}
+                                </div>
+                                <div className={styles.infoBox}>
+                                    <span className={styles.titleSuperior}>Gênero</span>
+                                    <Image
+                                        src="/Icons TCC/genero.png"
+                                        alt="Gênero"
+                                        width={1080}
+                                        height={980}
+                                        className={styles.imgIcons}
+                                    />
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={genre}
+                                            onChange={(e) => setGenre(e.target.value)}
+                                            className={`${styles.editInputIcons} ${styles.editInput}`}
+                                        />
+                                    ) : (
+                                        <span className={styles.titleInferior}>{genre}</span>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {isEditing && (

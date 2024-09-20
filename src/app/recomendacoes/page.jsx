@@ -21,6 +21,7 @@ const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
+    { value: 'generos', label: 'Gênero' },
     { value: 'liv_cod', label: 'Código' },
     { value: 'curso', label: 'Curso' },
 ];
@@ -80,13 +81,9 @@ export default function Recomendacoes() {
     }
 
     const [books, setBooks] = useState([]);
-    const [selectedGenre, setSelectedGenre] = useState('Todos');
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
 
-    // Filtra os livros com base no gênero selecionado
-    const filteredBooks = selectedGenre === 'Todos'
-        ? books
-        : books.filter(book => book.generos === selectedGenre);
+    const filteredBooks = books;
 
     // Ordena os livros pelo título em ordem alfabética
     const sortedBooks = filteredBooks.sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
@@ -136,25 +133,6 @@ export default function Recomendacoes() {
                             />
                             {option.label}
                         </label>
-                    ))}
-                </div>
-
-                <div className={styles.genreButtons}>
-                    {genres.map((generos) => (
-                        <div
-                            key={generos}
-                            className={styles.bookGenre}
-                            onClick={() => setSelectedGenre(generos)}
-                        >
-                            <Image
-                                src={`/Icons TCC/${generos.replace(/\s+/g, '_')}.png`}
-                                alt={generos}
-                                width={512}
-                                height={512}
-                                className={styles.icon}
-                            />
-                            <p className={styles.textIcon}>{generos}</p>
-                        </div>
                     ))}
                 </div>
 

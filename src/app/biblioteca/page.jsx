@@ -12,7 +12,7 @@ const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
-    { value: 'generos', label: 'Gênero' },
+    { value: 'gen_nome', label: 'Gênero' },
     { value: 'liv_cod', label: 'Código' },
 ];
 

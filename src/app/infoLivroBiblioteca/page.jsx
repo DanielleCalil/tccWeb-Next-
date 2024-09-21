@@ -25,7 +25,8 @@ function Livro({ codLivro }) {
         "liv_nome": "",
         "liv_desc": "",
         "edt_cod": "",
-        "liv_foto_capa": ""
+        "liv_foto_capa": "",
+        "disponivel":""
     });
     // const [qtd, setQtd] = useState(1);
     // const [total, setTotal] = useState(0);
@@ -111,7 +112,7 @@ function Livro({ codLivro }) {
                                                     <div className={styles.smallLineSquare}>
                                                         <div className={styles.text}>
                                                             <span className={styles.disponivel}>Disponíveis</span>
-                                                            <span className={styles.quant}>{livro.quant_disp}</span>
+                                                            <span className={styles.quant}>{livro.disponivel}</span>
                                                         </div>
                                                     </div>
                                                 </div>

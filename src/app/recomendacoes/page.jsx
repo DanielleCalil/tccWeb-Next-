@@ -6,17 +6,6 @@ import Link from 'next/link';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import api from '@/services/api';
 
-const genres = [
-    'Todos',
-    'Policial e Suspense',
-    'Terror',
-    'Ação e Aventura',
-    'Autobiografia',
-    'Fantasia',
-    'Ficção Científica',
-    'Romance'
-];
-
 const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
@@ -83,10 +72,8 @@ export default function Recomendacoes() {
     const [books, setBooks] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
 
-    const filteredBooks = books;
-
     // Ordena os livros pelo título em ordem alfabética
-    const sortedBooks = filteredBooks.sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
+    const sortedBooks = books.sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
 
     const [livNome, setlivNome] = useState('')
 
@@ -101,7 +88,7 @@ export default function Recomendacoes() {
     async function listaLivros() {
         const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
         try {
-            const response = await api.post('/livros', dados);
+            const response = await api.post('/recomendacao', dados);
             console.log(response.data.dados);
             setBooks(response.data.dados);
         } catch (error) {

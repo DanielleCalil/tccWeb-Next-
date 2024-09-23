@@ -10,7 +10,7 @@ const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
-    { value: 'generos', label: 'Gênero' },
+    { value: 'gen_nome', label: 'Gênero' },
     { value: 'liv_cod', label: 'Código' },
     { value: 'curso', label: 'Curso' },
 ];
@@ -125,26 +125,26 @@ export default function Recomendacoes() {
 
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {sortedBooks.map((book) => (
-                            <Link
-                                key={book.liv_nome}
-                                href="/infoLivroRecomendacao/"
-                                className={styles.bookItem}
-                            >
-                                <p className={styles.bookCourse}>{book.course}</p>
-                                <Image
-                                    loader={imageLoader} /* Quando imagem vem por url */
-                                    src={book.liv_foto_capa}
-                                    alt={book.liv_nome}
-                                    width={100}
-                                    height={150}
-                                    className={styles.bookImage}
-                                />
-                                <div className={styles.bookInfo}>
-                                    <h2 className={styles.bookTitle}>{book.liv_nome}</h2>
-                                    <p className={styles.bookAuthor}>{book.aut_nome}</p>
-                                </div>
-                            </Link>
+                        {sortedBooks.map(livro => (
+                            <div className={styles.bookItem} key={livro.liv_nome}>
+                                <Link href={`/recomendacao/${livro.liv_cod}`}>
+                                    <div>
+                                        <p className={styles.bookCourse}>{livro.course}</p>
+                                        <Image
+                                            loader={imageLoader} /* Quando imagem vem por url */
+                                            src={livro.liv_foto_capa}
+                                            alt={livro.liv_nome}
+                                            width={100}
+                                            height={150}
+                                            className={styles.bookImage}
+                                        />
+                                        <div className={styles.bookInfo}>
+                                            <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
+                                            <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
                         ))}
                     </div>
                 </div>

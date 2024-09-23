@@ -26,18 +26,14 @@ function Livro({ codLivro }) {
         "liv_desc": "",
         "edt_cod": "",
         "liv_foto_capa": "",
-        "disponivel":""
+        "disponivel":"",
     });
-    // const [qtd, setQtd] = useState(1);
-    // const [total, setTotal] = useState(0);
 
     const router = useRouter();
-    // const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
 
         handleCarregaLivro();
-        // setTotal(livro.liv_cod);
 
         async function handleCarregaLivro() {
             const dadosApi = {

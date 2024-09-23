@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
+import api from '@/services/api';
 
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import Recomendacoes from "@/componentes/recomendacoes/page";
@@ -10,6 +11,7 @@ const searchOptions = [
   { value: 'liv_nome', label: 'Livro' },
   { value: 'aut_nome', label: 'Autor' },
   { value: 'edt_nome', label: 'Editora' },
+  { value: 'gen_nome', label: 'Gênero'},
   { value: 'liv_cod', label: 'Código' },
   { value: 'curso', label: 'Curso' },
 ];
@@ -24,13 +26,11 @@ export default function Home() {
   }
 
   const [books, setBooks] = useState([]);
-
   const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
-
   const [livNome, setlivNome] = useState('')
 
   function atLivNome(nome) {
-    setlivNome(nome)
+    setlivNome(nome) //Atualiza o estado livNome com o nome do livro que está sendo pesquisado.
   }
 
   useEffect(() => {
@@ -38,9 +38,13 @@ export default function Home() {
   }, []);
 
   async function listaLivros() {
-    const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+    const dados = { 
+      [selectedSearchOption]: livNome, // Dinamicamente envia o campo baseado no radio button
+      liv_nome:livNome
+    }; 
+    
     try {
-      const response = await api.post('/livros', dados);
+      const response = await api.post('/recomendacao', dados);
       console.log(response.data.dados);
       setBooks(response.data.dados);
     } catch (error) {

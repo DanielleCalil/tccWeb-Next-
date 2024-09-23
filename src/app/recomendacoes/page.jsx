@@ -11,8 +11,8 @@ const searchOptions = [
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
     { value: 'gen_nome', label: 'Gênero' },
-    { value: 'liv_cod', label: 'Código' },
-    { value: 'curso', label: 'Curso' },
+    { value: 'rcm_cod', label: 'Código' },
+    { value: 'cur_nome', label: 'Curso' },
 ];
 
 // const books = [
@@ -66,8 +66,11 @@ export default function Recomendacoes() {
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
     const imageLoader = ({ src, width, quality }) => {
-        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`
+
+    
+        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
     }
+    
 
     const [books, setBooks] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
@@ -86,9 +89,12 @@ export default function Recomendacoes() {
     }, []);
 
     async function listaLivros() {
-        const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+        // const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+        const dados = {
+            cur_cod: 98
+        }
         try {
-            const response = await api.post('/recomendacao', dados);
+            const response = await api.post('/listarrecomendacao', dados);
             console.log(response.data.dados);
             setBooks(response.data.dados);
         } catch (error) {
@@ -129,7 +135,7 @@ export default function Recomendacoes() {
                             <div className={styles.bookItem} key={livro.liv_nome}>
                                 <Link href={`/recomendacao/${livro.liv_cod}`}>
                                     <div>
-                                        <p className={styles.bookCourse}>{livro.course}</p>
+                                        <p className={styles.bookCourse}>{livro.cur_nome}</p>
                                         <Image
                                             loader={imageLoader} /* Quando imagem vem por url */
                                             src={livro.liv_foto_capa}

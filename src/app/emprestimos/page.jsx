@@ -22,10 +22,10 @@ const infoEmprestimo = [
 ];
 
 const searchOptions = [
-  { value: 'liv_nome', label: 'Livro' },
-  { value: 'usu_nome', label: 'Autor' },
-  { value: 'usu_cad', label: 'Usuário' },
+  { value: 'usu_nome', label: 'Usuário' },
   { value: 'dataEmprestimo', label: 'Data da reserva' },
+  { value: 'liv_nome', label: 'Livro' },
+  { value: 'aut_nome', label: 'Autor' },
 ];
 
 export default function Emprestimos() {

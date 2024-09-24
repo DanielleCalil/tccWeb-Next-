@@ -1,11 +1,11 @@
-import { useState } from 'react'; // Importar o useState
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
-const ModalAddAutor = ({ show }) => {
+const ModalAddAutor = ({ show, onClose }) => {
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const router = useRouter();
 
@@ -18,7 +18,6 @@ const ModalAddAutor = ({ show }) => {
         setShowModalConfirm(false);
         router.push('/biblioteca');
     };
-
 
     return (
         <>
@@ -41,8 +40,8 @@ const ModalAddAutor = ({ show }) => {
                                 Adicionar
                             </button>
                             <button
-                                type="submit"
-                                onClick={closeModalConfirm}
+                                type="button" // Alterar o tipo do botão
+                                onClick={onClose} // Fechar o modal principal
                                 className={styles.modalButtonCanc}
                             >
                                 Cancelar

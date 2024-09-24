@@ -231,7 +231,7 @@ export default function SignUp() {
 
             try {
                 let confirmaCad;
-                const response = await api.post('/clientes', usuario);
+                const response = await api.post('/usuarios', usuario);
                 confirmaCad = response.data.sucesso;
                 // const idUsu = confirmaCad;
                 // alert(idUsu);
@@ -283,7 +283,8 @@ export default function SignUp() {
                                 }
                             </div>
 
-                            <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome">
+                            {/* estiliza o campo de acordo com o estado da validação (visual feedback) */}
+                            <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome"> 
                                 <div className={styles.divInput}>
                                     <input
                                         type="text"
@@ -296,7 +297,7 @@ export default function SignUp() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.nome.mensagem.map(mens => <small key={mens} id="nome" className={styles.small}>{mens}</small>)
+                                    valida.nome.mensagem.map(mens => <small key={mens} id="nome" className={styles.small}>{mens}</small>) //exibe as mensagens de erro ou sucesso para o usuário.
                                 }
                             </div>
 

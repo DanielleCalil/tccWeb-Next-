@@ -15,29 +15,38 @@ export default function Login() {
     const [senha, setSenha] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
+    const valDefault = styles.formControl;
+    const valSucesso = styles.formControl + ' ' + styles.success;
+    const valErro = styles.formControl + ' ' + styles.error;
+
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
     function handleSubmit(event) {
         event.preventDefault();
-        logar();
+        const validRM = validaRM();
+        const validSenha = validaSenha();
+
+        if (validRM && validSenha) {
+            logar();
+        }
     }
 
     async function logar() {
 
         try {
             const dados = {
-                usu_email: login,
+                usu_rm: login,
                 usu_senha: senha
             }
 
-            const response = await api.post('/usuarios/login', dados);
+            const response = await api.post('/usuarios', dados);
 
             if (response.data.sucesso == true) {
                 const usuario = response.data.dados;
                 const objLogado = {
-                    "id": usuario.usu_id,
+                    "cod": usuario.usu_cod,
                     "nome": usuario.usu_nome,
                     "acesso": usuario.usu_tipo
                 };
@@ -62,6 +71,62 @@ export default function Login() {
         }
     }
 
+    // validação
+    const [valida, setValida] = useState({
+        login: {
+            validado: valDefault,
+            mensagem: []
+        },
+        senha: {
+            validado: valDefault,
+            mensagem: []
+        },
+    });
+
+    function validaRM() {
+        let objTemp = {
+            validado: valSucesso,
+            mensagem: []
+        };
+
+        if (login === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Preencha o campo RM');
+        } else if (login.length < 6) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('RM incorreto');
+        }
+
+        setValida(prevState => ({
+            ...prevState,
+            login: objTemp
+        }));
+
+        return objTemp.mensagem.length === 0;
+    }
+
+    function validaSenha() {
+        let objTemp = {
+            validado: valSucesso,
+            mensagem: []
+        };
+
+        if (senha === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Preencha o campo senha');
+        } else if (senha.length < 6) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Senha incorreta');
+        }
+
+        setValida(prevState => ({
+            ...prevState,
+            senha: objTemp
+        }));
+
+        return objTemp.mensagem.length === 0;
+    }
+
     return (
         <div className="containerGlobal">
             <div className={styles.background}>
@@ -80,15 +145,18 @@ export default function Login() {
                         <input
                             type="number"
                             placeholder="RM"
-                            className={styles.inputField}
-                            onChange={v => setLogin(v.target.value)}
+                            className={`${styles.inputField} ${valida.login.validado}`}
+                            onChange={v => setLogin(v.target.value)} //v: evento de mudança
                             value={login}
                         />
+                         {valida.login.mensagem.length > 0 && (
+                            <span className={styles.errorMessage}>{valida.login.mensagem[0]}</span>
+                        )}
                         <div className={styles.passwordContainer}>
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Senha"
-                                className={styles.inputField}
+                                className={`${styles.inputField} ${valida.senha.validado}`}
                                 onChange={v => setSenha(v.target.value)}
                                 value={senha}
                             />
@@ -99,6 +167,9 @@ export default function Login() {
                                 {showPassword ? <IoEyeOff /> : <IoEye />}
                             </span>
                         </div>
+                        {valida.senha.mensagem.length > 0 && (
+                            <span className={styles.errorMessage}>{valida.senha.mensagem[0]}</span>
+                        )}
                         <div className={styles.cadastre}>
                             Não tem cadastro? <Link href="/usuarios/signUp">Cadastre-se</Link>
                         </div>

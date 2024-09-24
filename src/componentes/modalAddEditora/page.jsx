@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
-const ModalAddEditora = ({ show }) => {
+const ModalAddEditora = ({ show, onClose }) => {
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const router = useRouter();
 
@@ -40,8 +40,8 @@ const ModalAddEditora = ({ show }) => {
                                 Adicionar
                             </button>
                             <button
-                                type="submit"
-                                onClick={closeModalConfirm}
+                                type="button"
+                                onClick={onClose}
                                 className={styles.modalButtonCanc}
                             >
                                 Cancelar

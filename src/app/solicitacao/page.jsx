@@ -42,7 +42,7 @@ const searchOptions = [
 ];
 
 export default function Solicitacao() {
-  const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
+  const [selectedSearchOption, setSelectedSearchOption] = useState('usu_cad');
 
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();

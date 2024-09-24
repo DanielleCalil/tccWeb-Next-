@@ -27,7 +27,6 @@ export default function AddLivroNovo() {
     const openModalAutor = () => setShowModalAutor(true);
     const closeModalAutor = () => setShowModalAutor(false);
     const handleAutor = () => {
-        console.log('handleAutor foi chamado');
         setShowModalAutor(false);
         router.push('../gerenciarLivroExistente');
     };

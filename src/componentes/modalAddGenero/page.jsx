@@ -40,8 +40,8 @@ const ModalAddGenero = ({ show, onClose }) => {
                                 Adicionar
                             </button>
                             <button
-                                type="submit"
-                                onClick={closeModalConfirm}
+                                type="button"
+                                onClick={onClose}
                                 className={styles.modalButtonCanc}
                             >
                                 Cancelar

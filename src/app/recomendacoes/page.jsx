@@ -94,7 +94,7 @@ export default function Recomendacoes() {
             cur_cod: 98
         }
         try {
-            const response = await api.post('/listarrecomendacao', dados);
+            const response = await api.post('/rec_listar', dados);
             console.log(response.data.dados);
             setBooks(response.data.dados);
         } catch (error) {

@@ -43,12 +43,12 @@ const SplashScreen = ({ finishLoading }) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             animate();
-        }, 500); // Pequeno atraso para garantir que a imagem seja carregada
+        }, 100); // Pequeno atraso para garantir que a imagem seja carregada
         return () => clearTimeout(timeout);
     }, []);
 
     return (
-        <div className="flex h-screen w-full items-center justify-center" style={{ height: '100vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Image id="logo" src="/imgs/Escrita.png" alt="Logo" width={200} height={220} />
         </div>
     );

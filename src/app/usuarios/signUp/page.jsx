@@ -68,6 +68,45 @@ export default function SignUp() {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
+    const [select1, setSelect1] = useState('');
+    const [select2, setSelect2] = useState('');
+
+    const handleSelect1Change = (e) => {
+        setSelect1(e.target.value);
+        setSelect2(''); // Limpa o segundo select se algo for selecionado no primeiro
+        setError('');
+    };
+
+    const handleSelect2Change = (e) => {
+        setSelect2(e.target.value);
+        setSelect1(''); // Limpa o primeiro select se algo for selecionado no segundo
+        setError('');
+    };
+
+    function validaSelect() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (!select1 && !select2) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Por favor, selecione uma opção em um dos campos.');
+        } else if (select1 && select2) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Não é permitido selecionar opções em ambos os campos.');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            opcao: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
     function validaNome() {
 
         let objTemp = {
@@ -220,13 +259,14 @@ export default function SignUp() {
         itensValidados += validaNome();
         itensValidados += validaRM();
         itensValidados += validaEmail();
+        itensValidados += validaSelect();
         itensValidados += validaSexo();
         itensValidados += validaSenha();
         itensValidados += validaConfSenha();
 
         // salvar quando atingir o número de itens a serem validados
         // alert(itensValidados);
-        if (itensValidados === 6) {
+        if (itensValidados === 7) {
             // alert('chama api');            
 
             try {
@@ -284,7 +324,7 @@ export default function SignUp() {
                             </div>
 
                             {/* estiliza o campo de acordo com o estado da validação (visual feedback) */}
-                            <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome"> 
+                            <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome">
                                 <div className={styles.divInput}>
                                     <input
                                         type="text"
@@ -316,6 +356,44 @@ export default function SignUp() {
                                 {
                                     valida.email.mensagem.map(mens => <small key={mens} id="email" className={styles.small}>{mens}</small>)
                                 }
+                            </div>
+
+                            <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect1">
+                                <div className={styles.divInput}>
+                                    <select id="options" defaultValue="" value={select1} onChange={handleSelect1Change} className={styles.opcao}>
+                                        <option value="" disabled>Curso Técnico</option>
+                                        <option value="opcao1">Opção 1</option>
+                                        <option value="opcao2">Opção 2</option>
+                                        <option value="opcao3">Opção 3</option>
+                                    </select>
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
+                                        <small key={mens} id="select" className={styles.small}>{mens}</small>
+                                    ))
+                                }
+
+                            </div>
+
+                            <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect2">
+                                <div className={styles.divInput}>
+                                    <select id="options" defaultValue="" value={select2} onChange={handleSelect2Change} className={styles.opcao}>
+                                        <option value="" disabled style={{ color: '#ccc' }}>Ensino Médio</option>
+                                        <option value="opcao1">Opção 1</option>
+                                        <option value="opcao2">Opção 2</option>
+                                        <option value="opcao3">Opção 3</option>
+                                    </select>
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
+                                        <small key={mens} id="select" className={styles.small}>{mens}</small>
+                                    ))
+                                }
+
                             </div>
 
                             <div className={styles.doisItens}>
@@ -384,7 +462,7 @@ export default function SignUp() {
                                                     name="usu_sexo"
                                                     value={sexo}
                                                     defaultChecked={usuario.usu_sexo === sexo}
-                                                    
+
                                                 />
                                                 {sexo.charAt(0).toUpperCase() + sexo.slice(1)}
                                             </label>

@@ -25,10 +25,10 @@ export default function Login() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const validRM = validaRM();
+        const validLogin = validaLogin();
         const validSenha = validaSenha();
 
-        if (validRM && validSenha) {
+        if (validLogin && validSenha) {
             logar();
         }
     }
@@ -37,7 +37,7 @@ export default function Login() {
 
         try {
             const dados = {
-                usu_rm: login,
+                usu_email_rm: login,
                 usu_senha: senha
             }
 
@@ -83,7 +83,7 @@ export default function Login() {
         },
     });
 
-    function validaRM() {
+    function validaLogin() {
         let objTemp = {
             validado: valSucesso,
             mensagem: []
@@ -91,10 +91,10 @@ export default function Login() {
 
         if (login === '') {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('Preencha o campo RM');
+            objTemp.mensagem.push('Preencha o campo com RM ou E-mail');
         } else if (login.length < 6) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('RM incorreto');
+            objTemp.mensagem.push('Informação incorreta');
         }
 
         setValida(prevState => ({
@@ -143,8 +143,8 @@ export default function Login() {
                     <form id="form" className={styles.conteudo} onSubmit={handleSubmit}>
                         <h1 className={styles.login}>Login</h1>
                         <input
-                            type="number"
-                            placeholder="RM"
+                            type="text"
+                            placeholder="RM ou E-mail"
                             className={`${styles.inputField} ${valida.login.validado}`}
                             onChange={v => setLogin(v.target.value)} //v: evento de mudança
                             value={login}

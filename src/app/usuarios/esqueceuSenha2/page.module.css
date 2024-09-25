@@ -12,6 +12,8 @@
 }
 
 .container {
+    width: 100%;
+    max-width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,7 +26,7 @@
 
 .imgEsqSenha {
     width: 35rem;
-    height: 35rem;
+    height: auto;
 }
 
 .conteudo {
@@ -47,6 +49,12 @@
     margin-bottom: 1.5rem;
 }
 
+.codigo {
+    width: 100%;
+    max-width: 40%;
+    display: flow-root;
+}
+
 .containerInput {
     flex-direction: column;
     align-items: center;
@@ -57,16 +65,15 @@
 
 .inputField {
     width: 100%;
-    max-width: 40%;
     height: 4.6rem;
     padding: 1rem 2rem;
-    margin: 0.5rem 0;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 3rem;
     box-sizing: border-box;
     font-size: 1.4rem;
     max-width: none;
-    display: block;
 }
 
 .inputField::placeholder {
@@ -80,8 +87,6 @@
 
 .passwordContainer {
     position: relative;
-    flex: 0 1 auto;
-    display: block;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -94,9 +99,9 @@
 
 .eyeIcon {
     position: absolute;
-    right: 275px; /* Ajuste conforme necessário */
-    top: 54%;
-    transform: translateY(-50%);
+    right: 30px; /* Ajuste conforme necessário */
+    /* top: 54%; */
+    transform: translateY(40%);
     cursor: pointer;
     color: #000;
     font-size: 2rem; /* Ajuste conforme necessário */
@@ -152,16 +157,6 @@
     align-items: center;
     width: 100%;
   }
-
-  .formControl .divRadio {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 2rem;
-    margin-bottom: 1rem;
-  }
-  
 
 
   .small {

@@ -175,21 +175,23 @@ export default function EsqueceuSenha2() {
 
                         <form id="form" onSubmit={handleSubmit}>
                             <div class={styles.containerInput}>
-                                <div className={valida.codigo.validado + ' ' + styles.valCodigo} id="valCodigo">
-                                    <div className={styles.divInput}>
-                                        <input
-                                            type="number"
-                                            name="codigo"
-                                            placeholder="Código"
-                                            class={styles.inputField}
-                                            onChange={handleChange}
-                                        />
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
+                                <div className={styles.codigo}>
+                                    <div className={valida.codigo.validado + ' ' + styles.valCodigo} id="valCodigo">
+                                        <div className={styles.divInput}>
+                                            <input
+                                                type="number"
+                                                name="codigo"
+                                                placeholder="Código"
+                                                class={styles.inputField}
+                                                onChange={handleChange}
+                                            />
+                                            <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                            <IoAlertCircleOutline className={styles.erro} />
+                                        </div>
+                                        {
+                                            valida.codigo.mensagem.map(mens => <small key={mens} id="codigo" className={styles.small}>{mens}</small>)
+                                        }
                                     </div>
-                                    {
-                                        valida.codigo.mensagem.map(mens => <small key={mens} id="codigo" className={styles.small}>{mens}</small>)
-                                    }
                                 </div>
 
                                 <div className={styles.passwordContainer}>

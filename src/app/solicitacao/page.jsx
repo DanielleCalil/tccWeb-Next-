@@ -43,7 +43,8 @@ const searchOptions = [
 
 export default function Solicitacao() {
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_cad');
-
+  const [selectedUsers, setSelectedUsers] = useState(new Set());
+  const [selectedUsuario, setSelectedUsuario] = useState('Todos');
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();
 
@@ -51,25 +52,21 @@ export default function Solicitacao() {
   const closeModalConfirm = () => setShowModalConfirm(false);
 
   const handleConfirm = () => {
+    // Aqui você pode lidar com a lógica de atribuição de nível de acesso
+    console.log("Usuários selecionados:", Array.from(selectedUsers));
     setShowModalConfirm(false); // Fecha o modal
     router.push('../solicitacao');
   };
 
-  async function listaLivros() {
-    const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
-    try {
-      const response = await api.post('/livros', dados);
-      console.log(response.data.dados);
-      setBooks(response.data.dados);
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-      } else {
-        alert('Erro no front-end' + '\n' + error);
-      }
+  const toggleUserSelection = (usu_rm) => {
+    const updatedSelection = new Set(selectedUsers);
+    if (updatedSelection.has(usu_rm)) {
+      updatedSelection.delete(usu_rm); // Remove o usuário se já estiver selecionado
+    } else {
+      updatedSelection.add(usu_rm); // Adiciona o usuário se não estiver selecionado
     }
-  }
-  // console.log(livNome)
+    setSelectedUsers(updatedSelection);
+  };
 
   return (
     <main className={styles.main}>
@@ -98,7 +95,7 @@ export default function Solicitacao() {
             <div
               className={styles.situacao}
               key={status}
-              onClick={() => setSelectedGenre(status)}
+              onClick={() => setSelectedUsuario(status)}
             >
               <Image
                 src={`/solicitacoes/${status.replace(/\s+/g, '_')}.png`}
@@ -111,34 +108,45 @@ export default function Solicitacao() {
             </div>
           ))}
         </div>
+
+        <div className={styles.opcao}>
+          <select id="options" className={styles.selectInput} defaultValue="">
+            <option value="" disabled>
+              Selecione uma opção
+            </option>
+            <option value="funcionario(a)ADM">Funcionário(a) - ADM</option>
+            <option value="professor(a)">Professor(a)</option>
+            <option value="aluno(a)">Aluno(a)</option>
+          </select>
+          <button
+            type="submit"
+            onClick={openModalConfirm}
+            className={styles.confirmButton}
+          >
+            Confirmar
+          </button>
+        </div>
+
         <div className={styles.container}>
           {infoUsuario.map((usuario) => (
             <div key={usuario.usu_rm} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
+
                 <p className={styles.info}>Cadastro realizado no dia: {usuario.usu_cad}</p>
                 <p className={styles.info}>Nome: {usuario.usu_nome}</p>
                 <p className={styles.info}>RM: {usuario.usu_rm}</p>
                 <p className={styles.info}>E-mail: {usuario.usu_email}</p>
-                <div className={styles.line}></div>
-                <p className={styles.pUsuario}> Confirmar nível do usuário</p>
-                <div className={styles.opcao}>
-                  <select id="options" className={styles.selectInput} defaultValue="">
-                    <option value="" disabled>
-                      Selecione uma opção
-                    </option>
-                    <option value="funcionario(a)ADM">Funcionário(a) - ADM</option>
-                    <option value="professor(a)">Professor(a)</option>
-                    <option value="aluno(a)">Aluno(a)</option>
-                  </select>
-                  <button
-                    type="submit"
-                    onClick={openModalConfirm}
-                    className={styles.confirmButton}
-                  >
-                    Confirmar
-                  </button>
+                <div className={styles.box}>
+                  <input
+                    type="checkbox"
+                    id={`checkbox-${usuario.usu_rm}`} // Adiciona um ID único
+                    checked={selectedUsers.has(usuario.usu_rm)}
+                    onChange={() => toggleUserSelection(usuario.usu_rm)}
+                  />
+                  <label htmlFor={`checkbox-${usuario.usu_rm}`} className={styles.customCheckbox}></label> {/* Checkbox personalizado */}
                 </div>
               </div>
+
             </div>
           ))}
         </div>

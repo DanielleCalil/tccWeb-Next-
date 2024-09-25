@@ -94,7 +94,7 @@ export default function Login() {
             objTemp.mensagem.push('Preencha o campo com RM ou E-mail');
         } else if (login.length < 6) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('Informação incorreta');
+            objTemp.mensagem.push('Informação inválida');
         }
 
         setValida(prevState => ({
@@ -116,7 +116,7 @@ export default function Login() {
             objTemp.mensagem.push('Preencha o campo senha');
         } else if (senha.length < 6) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('Senha incorreta');
+            objTemp.mensagem.push('Senha inválida');
         }
 
         setValida(prevState => ({

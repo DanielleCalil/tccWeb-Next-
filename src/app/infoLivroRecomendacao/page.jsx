@@ -15,36 +15,36 @@ import api from '@/services/api';
 //     generos: 'Autobiográfico',
 // };
 
-function Livro({ codLivro }) {
+function LivroRec({ codLivroRec }) {
 
-    const [livro, setLivro] = useState({
+    const [livroRec, setLivroRec] = useState({
+        "rcm_cod": "",
+        "cur_nome": "",
         "liv_cod": "",
-        "liv_pha_cod": "",
-        "liv_categ_cod": "",
+        "liv_foto_capa": "",
         "liv_nome": "",
         "liv_desc": "",
-        "edt_cod": "",
-        "liv_foto_capa": "",
+        "aut_nome": "",
+        "gen_nome": "",
+        "edt_nome": "",
         "disponivel": "",
     });
 
-    const router = useRouter();
-
     useEffect(() => {
 
-        handleCarregaLivro();
+        handleCarregaLivroRec();
 
-        async function handleCarregaLivro() {
+        async function handleCarregaLivroRec() {
             const dadosApi = {
-                liv_cod: codLivro
+                rcm_cod: codLivroRec
             }
             try {
-                const response = await api.post('/recomendacao', dadosApi);
+                const response = await api.post('/rec_listar', dadosApi);
                 const confirmaAcesso = response.data.sucesso;
                 if (confirmaAcesso) {
                     const livroApi = response.data.dados[0];
                     if (response.data.dados.length > 0) {
-                        setLivro(livroApi);
+                        setLivroRec(livroApi);
                     }
                 }
             } catch (error) {
@@ -75,14 +75,15 @@ function Livro({ codLivro }) {
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.container}>
                     {
-                        livro.liv_cod !== '' ?
+                        livroRec.rcm_cod !== '' ?
                             <>
                                 <div className={styles.lineSquare}>
                                     <div className={styles.inputContainer}>
                                         <div className={styles.infoBookReserva}>
                                             <Image
-                                                src={livro.liv_foto_capa}
-                                                alt={livro.liv_nome}
+                                                loader={imageLoader}
+                                                src={livroRec.liv_foto_capa}
+                                                alt={livroRec.liv_nome}
                                                 width={667}
                                                 height={1000}
                                                 className={styles.imgReserva}
@@ -91,16 +92,16 @@ function Livro({ codLivro }) {
                                                 <div className={styles.headerLineSquare}>
                                                     <div className={styles.title}>
                                                         <p className={styles.geral}>Visão geral</p>
-                                                        <p className={styles.livro}>{livro.liv_nome}</p>
+                                                        <p className={styles.livro}>{livroRec.liv_nome}</p>
                                                     </div>
                                                     <div className={styles.smallLineSquare}>
                                                         <div className={styles.text}>
                                                             <span className={styles.disponivel}>Disponíveis</span>
-                                                            <span className={styles.quant}>{livro.disponivel}</span>
+                                                            <span className={styles.quant}>{livroRec.disponivel}</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <p className={styles.resumo}>{livro.liv_desc}</p>
+                                                <p className={styles.resumo}>{livroRec.liv_desc}</p>
                                             </div>
                                         </div>
                                         <div className={styles.infoContainer}>
@@ -113,7 +114,7 @@ function Livro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <span className={styles.titleInferior}>{livro.aut_nome}</span>
+                                                <span className={styles.titleInferior}>{livroRec.aut_nome}</span>
                                             </div>
                                             <div className={styles.infoBox}>
                                                 <span className={styles.titleSuperior}>Editora</span>
@@ -124,7 +125,7 @@ function Livro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <span className={styles.titleInferior}>{livro.edt_nome}</span>
+                                                <span className={styles.titleInferior}>{livroRec.edt_nome}</span>
                                             </div>
                                             <div className={styles.infoBox}>
                                                 <span className={styles.titleSuperior}>Gênero</span>
@@ -135,12 +136,12 @@ function Livro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <span className={styles.titleInferior}>{livro.generos}</span>
+                                                <span className={styles.titleInferior}>{livroRec.generos}</span>
                                             </div>
                                         </div>
                                         <div className={styles.line}></div>
                                         <p className={styles.descProf}>Recomendado para:</p>
-                                        <p className={styles.descProfCurso}>{livro.curso}</p>
+                                        <p className={styles.descProfCurso}>{livroRec.curso}</p>
                                         <form className={styles.moduloForm}>
                                             <label>
                                                 <input
@@ -192,4 +193,4 @@ function Livro({ codLivro }) {
     );
 }
 
-export default Livro;
+export default LivroRec;

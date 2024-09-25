@@ -66,11 +66,8 @@ export default function Recomendacoes() {
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
     const imageLoader = ({ src, width, quality }) => {
-
-    
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
     }
-    
 
     const [books, setBooks] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
@@ -91,7 +88,7 @@ export default function Recomendacoes() {
     async function listaLivros() {
         // const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
         const dados = {
-            cur_cod: 98
+            usu_cod: 24
         }
         try {
             const response = await api.post('/rec_listar', dados);
@@ -131,22 +128,22 @@ export default function Recomendacoes() {
 
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {sortedBooks.map(livro => (
-                            <div className={styles.bookItem} key={livro.liv_nome}>
-                                <Link href={`/recomendacao/${livro.liv_cod}`}>
+                        {sortedBooks.map(livroRec => (
+                            <div className={styles.bookItem} key={livroRec.liv_nome}>
+                                <Link href={`/recomendacao/${livroRec.rcm_cod}`}>
                                     <div>
-                                        <p className={styles.bookCourse}>{livro.cur_nome}</p>
+                                        <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
                                         <Image
                                             loader={imageLoader} /* Quando imagem vem por url */
-                                            src={livro.liv_foto_capa}
-                                            alt={livro.liv_nome}
+                                            src={livroRec.liv_foto_capa}
+                                            alt={livroRec.liv_nome}
                                             width={100}
                                             height={150}
                                             className={styles.bookImage}
                                         />
                                         <div className={styles.bookInfo}>
-                                            <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
-                                            <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                                            <h2 className={styles.bookTitle}>{livroRec.liv_nome}</h2>
+                                            <p className={styles.bookAuthor}>{livroRec.aut_nome}</p>
                                         </div>
                                     </div>
                                 </Link>

@@ -44,7 +44,7 @@ export default function Home() {
     }; 
     
     try {
-      const response = await api.post('/recomendacao', dados);
+      const response = await api.post('/rec_listar', dados);
       console.log(response.data.dados);
       setBooks(response.data.dados);
     } catch (error) {

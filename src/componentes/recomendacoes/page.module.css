@@ -1,5 +1,5 @@
 .bookSection {
-    max-width: 65%;
+    width: 100%;
     margin: 0 auto;
     padding-top: 2rem;
     padding-bottom: 1rem;
@@ -29,11 +29,15 @@
     width: 100%;
 }
 
+.bookList a {
+    text-decoration: none;
+    color: #000;
+}
+
 .bookItem {
     width: 20rem;
     height: auto;
     box-sizing: border-box;
-    max-width: calc(16.66% - 1.25rem);
     background: #FFF;
     padding: 0.25rem;
     border-radius: 0.8rem;
@@ -63,7 +67,7 @@
 }
 
 .bookInfo {
-    padding: 0.1rem;
+    padding: 1px;
 }
 
 .bookTitle {

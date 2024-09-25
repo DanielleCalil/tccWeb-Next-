@@ -20,6 +20,7 @@ function LivroRec({ codLivroRec }) {
     const [livroRec, setLivroRec] = useState({
         "rcm_cod": "",
         "cur_nome": "",
+        "cur_cod": "",
         "liv_cod": "",
         "liv_foto_capa": "",
         "liv_nome": "",
@@ -27,8 +28,10 @@ function LivroRec({ codLivroRec }) {
         "aut_nome": "",
         "gen_nome": "",
         "edt_nome": "",
-        "disponivel": "",
+        "disponivel": "",        
     });
+
+    const router = useRouter();
 
     useEffect(() => {
 
@@ -36,8 +39,9 @@ function LivroRec({ codLivroRec }) {
 
         async function handleCarregaLivroRec() {
             const dadosApi = {
-                rcm_cod: codLivroRec
-            }
+                liv_cod: codLivroRec // ou qualquer nome correto que a API espera
+            };
+            
             try {
                 const response = await api.post('/rec_listar', dadosApi);
                 const confirmaAcesso = response.data.sucesso;
@@ -75,7 +79,7 @@ function LivroRec({ codLivroRec }) {
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.container}>
                     {
-                        livroRec.rcm_cod !== '' ?
+                        livroRec.cur_cod !== '' ?
                             <>
                                 <div className={styles.lineSquare}>
                                     <div className={styles.inputContainer}>
@@ -141,7 +145,7 @@ function LivroRec({ codLivroRec }) {
                                         </div>
                                         <div className={styles.line}></div>
                                         <p className={styles.descProf}>Recomendado para:</p>
-                                        <p className={styles.descProfCurso}>{livroRec.curso}</p>
+                                        <p className={styles.descProfCurso}>{livroRec.cur_nome}</p>
                                         <form className={styles.moduloForm}>
                                             <label>
                                                 <input

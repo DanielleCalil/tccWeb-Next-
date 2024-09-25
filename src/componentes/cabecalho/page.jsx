@@ -91,7 +91,7 @@ export default function Cabecalho() {
                     <Link
                         href="/biblioteca"
                         className={rota === "/biblioteca" ||
-                            rota === "/infoLivroBiblioteca" ||
+                            rota === "/livros/" ||
                             rota === "/editarInfoLivro" ||
                             rota === "/gerenciarLivroExistente" ||
                             rota === "/reservarLivro" ||

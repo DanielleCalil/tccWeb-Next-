@@ -76,11 +76,11 @@ export default function Recomendacoes() {
     }, []);
 
     async function listaLivros() {
-        const dados = { 
-            liv_nome:livNome
-          }; 
+        const dados = {
+            cur_cod: 85
+        }
         try {
-            const response = await api.post('/recomendacao', dados);
+            const response = await api.post('/rec_listar', dados);
             console.log(response.data.dados);
             setBooks(response.data.dados);
         } catch (error) {
@@ -100,22 +100,22 @@ export default function Recomendacoes() {
                 </div>
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {sortedBooks.map(livro => (
-                            <div className={styles.bookItem} key={livro.liv_nome}>
-                                <Link href={`/recomendacao${livro.liv_cod}`}>
+                        {sortedBooks.map(livroRec => (
+                            <div className={styles.bookItem} key={livroRec.liv_nome}>
+                                <Link href={`/rec_listar/${livroRec.rcm_cod}`}>
                                     <div>
-                                        <p className={styles.bookCourse}>{livro.course}</p>
+                                        <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
                                         <Image
                                             loader={imageLoader} /* Quando imagem vem por url */
-                                            src={livro.liv_foto_capa}
-                                            alt={livro.liv_nome}
+                                            src={livroRec.liv_foto_capa}
+                                            alt={livroRec.liv_nome}
                                             width={100}
                                             height={150}
                                             className={styles.bookImage}
                                         />
                                         <div className={styles.bookInfo}>
-                                            <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
-                                            <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                                            <h2 className={styles.bookTitle}>{livroRec.liv_nome}</h2>
+                                            <p className={styles.bookAuthor}>{livroRec.aut_nome}</p>
                                         </div>
                                     </div>
                                 </Link>

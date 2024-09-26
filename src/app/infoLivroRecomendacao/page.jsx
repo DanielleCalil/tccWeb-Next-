@@ -17,6 +17,9 @@ import api from '@/services/api';
 
 function LivroRec({ codLivroRec }) {
 
+    const modulo1 = true; 
+    const modulo2 = false; 
+    
     const [livroRec, setLivroRec] = useState({
         "rcm_cod": "",
         "cur_nome": "",
@@ -39,7 +42,7 @@ function LivroRec({ codLivroRec }) {
 
         async function handleCarregaLivroRec() {
             const dadosApi = {
-                liv_cod: codLivroRec // ou qualquer nome correto que a API espera
+                rcm_cod: codLivroRec // ou qualquer nome correto que a API espera
             };
             
             try {
@@ -79,7 +82,7 @@ function LivroRec({ codLivroRec }) {
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.container}>
                     {
-                        livroRec.cur_cod !== '' ?
+                        livroRec.rcm_cod !== '' ?
                             <>
                                 <div className={styles.lineSquare}>
                                     <div className={styles.inputContainer}>
@@ -168,6 +171,7 @@ function LivroRec({ codLivroRec }) {
                                                     type="radio"
                                                     name="opcao"
                                                     value="3º modulo"
+                                                    checked={modulo1 ? true : false}
                                                 />
                                                 3º Módulo
                                             </label>
@@ -176,6 +180,7 @@ function LivroRec({ codLivroRec }) {
                                                     type="radio"
                                                     name="opcao"
                                                     value="4º modulo"
+                                                    checked={modulo1 ? true : false}
                                                 />
                                                 4º Módulo
                                             </label>

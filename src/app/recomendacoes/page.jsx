@@ -87,7 +87,6 @@ export default function Recomendacoes() {
     }, []);
 
     async function listaLivros() {
-        console.log("Função listaLivros foi chamada"); // Para verificar se a função está sendo executada
         const dados = {
             cur_cod: 85,
             [selectedSearchOption]: livNome
@@ -104,8 +103,8 @@ export default function Recomendacoes() {
             }
         }
     }
-    
-    
+
+
     // console.log(livNome)
 
     return (
@@ -132,47 +131,28 @@ export default function Recomendacoes() {
 
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                    {sortedBooks.map(livroRec => (
-    <div className={styles.bookItem} key={livroRec.liv_nome}>
-        {livroRec.cur_cod ? (
-            <Link href={`/rec_listar/${livroRec.liv_cod}`}>
+                        {sortedBooks.map(livroRec => (
+                            <div className={styles.bookItem} key={livroRec.liv_nome}>
+                                <Link href={`/recomendacoes/${livroRec.liv_cod}`}>
 
-                <div>
-                    <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
-                    <Image
-                        loader={imageLoader} /* Quando imagem vem por url */
-                        src={livroRec.liv_foto_capa}
-                        alt={livroRec.liv_nome}
-                        width={100}
-                        height={150}
-                        className={styles.bookImage}
-                    />
-                    <div className={styles.bookInfo}>
-                        <h2 className={styles.bookTitle}>{livroRec.liv_nome}</h2>
-                        <p className={styles.bookAuthor}>{livroRec.aut_nome}</p>
-                    </div>
-                </div>
-            </Link>
-        ) : (
-            <div>
-                <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
-                <Image
-                    loader={imageLoader} /* Quando imagem vem por url */
-                    src={livroRec.liv_foto_capa}
-                    alt={livroRec.liv_nome}
-                    width={100}
-                    height={150}
-                    className={styles.bookImage}
-                />
-                <div className={styles.bookInfo}>
-                    <h2 className={styles.bookTitle}>{livroRec.liv_nome}</h2>
-                    <p className={styles.bookAuthor}>{livroRec.aut_nome}</p>
-                </div>
-            </div>
-        )}
-    </div>
-))}
-
+                                    <div>
+                                        <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
+                                        <Image
+                                            loader={imageLoader} /* Quando imagem vem por url */
+                                            src={livroRec.liv_foto_capa}
+                                            alt={livroRec.liv_nome}
+                                            width={100}
+                                            height={150}
+                                            className={styles.bookImage}
+                                        />
+                                        <div className={styles.bookInfo}>
+                                            <h2 className={styles.bookTitle}>{livroRec.liv_nome}</h2>
+                                            <p className={styles.bookAuthor}>{livroRec.aut_nome}</p>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

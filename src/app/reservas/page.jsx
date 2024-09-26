@@ -16,7 +16,7 @@ const infoReserva = [
             liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
         },
         usu_nome: "Clara Oliveira da Silva",
-        dataReserva: "12/03/2024",
+        emp_data_emp: "12/03/2024",
         periodo: {
             inicio: "12/03/2024",
             fim: "27/03/2024"
@@ -27,7 +27,7 @@ const infoReserva = [
 const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
-    { value: 'dataReserva', label: 'Data da reserva' },
+    { value: 'emp_data_emp', label: 'Data da reserva' },
 ];
 
 export default function Reservas() {
@@ -102,7 +102,7 @@ export default function Reservas() {
                                 </div>
                                 <div className={styles.line}></div>
                                 <p className={styles.info}>Reservado por: {reserva.usu_nome}</p>
-                                <p className={styles.info}>Reserva realizada no dia: {reserva.dataReserva}</p>
+                                <p className={styles.info}>Reserva realizada no dia: {reserva.emp_data_emp}</p>
                                 <p className={styles.info}>Período da reserva: {reserva.periodo?.inicio} até {reserva.periodo?.fim || 'Data não disponível'}</p>
                                 <div className={styles.line}></div>
                                 <p className={styles.pUsuario}>Confirmar retirada do livro</p>

@@ -13,7 +13,7 @@ const infoEmprestimo = [
       liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
     },
     usu_nome: "Clara Oliveira da Silva",
-    dataEmprestimo: "12/03/2024",
+    emp_data_emp: "12/03/2024",
     periodo: {
       inicio: "12/03/2024",
       fim: "27/03/2024"
@@ -23,7 +23,7 @@ const infoEmprestimo = [
 
 const searchOptions = [
   { value: 'usu_nome', label: 'Usuário' },
-  { value: 'dataEmprestimo', label: 'Data da reserva' },
+  { value: 'emp_data_emp', label: 'Data da reserva' },
   { value: 'liv_nome', label: 'Livro' },
   { value: 'aut_nome', label: 'Autor' },
 ];
@@ -89,7 +89,7 @@ export default function Emprestimos() {
                 </div>
                 <div className={styles.line}></div>
                 <p className={styles.info}>Reservado por: {emprestimo.usu_nome}</p>
-                <p className={styles.info}>Reserva realizada no dia: {emprestimo.dataEmprestimo}</p>
+                <p className={styles.info}>Reserva realizada no dia: {emprestimo.emp_data_emp}</p>
                 <p className={styles.info}>Período da reserva: {emprestimo.periodo?.inicio} até {emprestimo.periodo?.fim || 'Data não disponível'}</p>
               </div>
             </div>

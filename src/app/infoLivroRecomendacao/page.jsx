@@ -17,9 +17,11 @@ import api from '@/services/api';
 
 function LivroRec({ codLivroRec }) {
 
-    const modulo1 = true; 
-    const modulo2 = false; 
-    
+    const [modulo1, setModulo1] = useState(false);
+    const [modulo2, setModulo2] = useState(false);
+    const [modulo3, setModulo3] = useState(false);
+    const [modulo4, setModulo4] = useState(false);
+
     const [livroRec, setLivroRec] = useState({
         "rcm_cod": "",
         "cur_nome": "",
@@ -31,7 +33,7 @@ function LivroRec({ codLivroRec }) {
         "aut_nome": "",
         "gen_nome": "",
         "edt_nome": "",
-        "disponivel": "",        
+        "disponivel": "",
     });
 
     const router = useRouter();
@@ -42,14 +44,20 @@ function LivroRec({ codLivroRec }) {
 
         async function handleCarregaLivroRec() {
             const dadosApi = {
-                rcm_cod: codLivroRec // ou qualquer nome correto que a API espera
+                liv_cod: codLivroRec
             };
-            
+
             try {
                 const response = await api.post('/rec_listar', dadosApi);
                 const confirmaAcesso = response.data.sucesso;
                 if (confirmaAcesso) {
                     const livroApi = response.data.dados[0];
+
+                    setModulo1(livroApi.rcm_mod1 === 1);
+                    setModulo2(livroApi.rcm_mod2 === 1);
+                    setModulo3(livroApi.rcm_mod3 === 1);
+                    setModulo4(livroApi.rcm_mod4 === 1);
+
                     if (response.data.dados.length > 0) {
                         setLivroRec(livroApi);
                     }
@@ -62,10 +70,6 @@ function LivroRec({ codLivroRec }) {
                 }
             }
         }
-
-        // const [infoLivros, setInfoLivros] = useState([]);
-        // const router = useRouter();
-
     }, []);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -82,7 +86,7 @@ function LivroRec({ codLivroRec }) {
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.container}>
                     {
-                        livroRec.rcm_cod !== '' ?
+                        livroRec.liv_cod !== '' ?
                             <>
                                 <div className={styles.lineSquare}>
                                     <div className={styles.inputContainer}>
@@ -152,35 +156,45 @@ function LivroRec({ codLivroRec }) {
                                         <form className={styles.moduloForm}>
                                             <label>
                                                 <input
-                                                    type="radio"
-                                                    name="opcao"
+                                                    type="checkbox"
+                                                    name="modulo1"
                                                     value="1º modulo"
+                                                    checked={modulo1}
+                                                    onChange={() => setModulo1(!modulo1)}
+                                                    disabled={true}
                                                 />
                                                 1º Módulo
                                             </label>
                                             <label>
                                                 <input
-                                                    type="radio"
-                                                    name="opcao"
+                                                    type="checkbox"
+                                                    name="modulo2"
                                                     value="2º modulo"
+                                                    checked={modulo2}
+                                                    onChange={() => setModulo2(!modulo2)}
+                                                    disabled={true}
                                                 />
                                                 2º Módulo
                                             </label>
                                             <label>
                                                 <input
-                                                    type="radio"
-                                                    name="opcao"
+                                                    type="checkbox"
+                                                    name="modulo3"
                                                     value="3º modulo"
-                                                    checked={modulo1 ? true : false}
+                                                    checked={modulo3}
+                                                    onChange={() => setModulo3(!modulo3)}
+                                                    disabled={true}
                                                 />
                                                 3º Módulo
                                             </label>
                                             <label>
                                                 <input
-                                                    type="radio"
-                                                    name="opcao"
+                                                    type="checkbox"
+                                                    name="modulo4"
                                                     value="4º modulo"
-                                                    checked={modulo1 ? true : false}
+                                                    checked={modulo4}
+                                                    onChange={() => setModulo4(!modulo4)}
+                                                    disabled={true}
                                                 />
                                                 4º Módulo
                                             </label>
@@ -189,7 +203,9 @@ function LivroRec({ codLivroRec }) {
                                 </div>
                                 <div className={styles.editar}>
                                     <Link href="/reservarLivro">
-                                        <span className={styles.reservButton}>Reservar livro</span>
+                                        <span>
+                                            <button className={styles.reservButton}>Reservar livro</button>
+                                        </span>
                                     </Link>
                                 </div>
                             </>

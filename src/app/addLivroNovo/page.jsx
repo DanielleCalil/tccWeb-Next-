@@ -55,7 +55,7 @@ export default function AddLivroNovo() {
     const [selectedAutor, setSelectedAutor] = useState('');
     const [selectedEditora, setSelectedEditora] = useState('');
     const [selectedGenero, setSelectedGenero] = useState('');
-    
+
     const [autores, setAutores] = useState([]);
     const [editoras, setEditoras] = useState([]);
     const [generos, setGeneros] = useState([]);
@@ -158,7 +158,7 @@ export default function AddLivroNovo() {
                                     ))}
                                 </select>
                             </div>
-                            
+
                             <div className={styles.inputGroup}>
                                 <p className={styles.textInput}>Resumo:</p>
                                 <textarea

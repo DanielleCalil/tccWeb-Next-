@@ -18,12 +18,12 @@ export default function Perfil() {
 
     const [perfil, setPerfil] = useState({
         "usu_cod": "",
-        "usu_rm": "", 
-        "usu_nome": "", 
-        "usu_email": "", 
-        "usu_senha": "", 
+        "usu_rm": "",
+        "usu_nome": "",
+        "usu_email": "",
+        "usu_senha": "",
         "usu_sexo": "",
-        "usu_foto": "", 
+        "usu_foto": "",
         "usu_ativo": "1",
     });
 

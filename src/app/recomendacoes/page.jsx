@@ -105,8 +105,6 @@ export default function Recomendacoes() {
     }
 
 
-    // console.log(livNome)
-
     return (
         <main className={styles.main}>
             <div className="containerGlobal">

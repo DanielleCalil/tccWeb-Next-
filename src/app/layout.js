@@ -5,7 +5,7 @@ import Cabecalho from "@/componentes/cabecalho/page";
 import Rodape from "@/componentes/rodape/page";
 import SplashScreen from "../componentes/splashScreen/splashScreen";
 import { usePathname } from "next/navigation";
-import Image from 'next/image';
+import Image from "next/image";
 import { path } from "animejs";
 
 // export const metadata = {
@@ -25,12 +25,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
       <head>
-        <title>SmoakBook</title> 
+        <title>SmoakBook</title>
         <link rel="icon" href="/Icons TCC/favicon.ico" />
       </head>
       <body className="bg-white">
         {isLoading && isHome ? (
-          <SplashScreen finishLoading={() => setIsLoading(false)}/>
+          <SplashScreen finishLoading={() => setIsLoading(false)} />
         ) : (
           <>
             <div className="layout">

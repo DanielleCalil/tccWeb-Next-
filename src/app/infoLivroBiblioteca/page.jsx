@@ -26,7 +26,7 @@ export default function InfoLivroBiblioteca({ codLivro }) {
         "liv_desc": "",
         "edt_cod": "",
         "liv_foto_capa": "",
-        "disponivel":"",
+        "disponivel": "",
     });
 
     const router = useRouter();

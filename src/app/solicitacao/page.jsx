@@ -58,13 +58,13 @@ export default function Solicitacao() {
   const router = useRouter();
 
   const [solicitacao, setSolicitacao] = useState({
-    "usu_rm":"", 
-    "usu_nome":"", 
-    "usu_email":"", 
-    "usu_senha":"", 
-    "usu_sexo":"", 
-    "cur_nome":"",
-    "usu_cod":"",
+    "usu_rm": "",
+    "usu_nome": "",
+    "usu_email": "",
+    "usu_senha": "",
+    "usu_sexo": "",
+    "cur_nome": "",
+    "usu_cod": "",
     "sol_ativo": "0",
   })
 

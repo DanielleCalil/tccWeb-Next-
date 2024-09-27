@@ -2,7 +2,7 @@
 import styles from './page.module.css';
 import { IoSearchOutline } from 'react-icons/io5';
 
-export default function BarraPesquisa({livNome, atLivNome, listaLivros}) {
+export default function BarraPesquisa({ livNome, atLivNome, listaLivros }) {
     return (
         <div className="containerGlobal">
             <div className={styles.searchContainer}>

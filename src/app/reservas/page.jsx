@@ -46,11 +46,11 @@ export default function Reservas() {
     const [livNome, setlivNome] = useState('')
 
     function atLivNome(nome) {
-      setlivNome(nome)
+        setlivNome(nome)
     }
-  
+
     useEffect(() => {
-      listaLivros();
+        listaLivros();
     }, []);
 
     async function listaLivros() {

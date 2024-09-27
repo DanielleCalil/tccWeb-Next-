@@ -9,13 +9,13 @@ const SplashScreen = ({ finishLoading }) => {
         anime.timeline({
             complete: () => finishLoading(),
         })
-        .add({
-            targets: "#logo",
-            delay: 0,
-            scale: 1,
-            duration: 500,
-            easing: "easeInOutExpo",
-        })
+            .add({
+                targets: "#logo",
+                delay: 0,
+                scale: 1,
+                duration: 500,
+                easing: "easeInOutExpo",
+            })
             .add({
                 targets: "#logo",
                 delay: 0,

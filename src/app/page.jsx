@@ -11,7 +11,7 @@ const searchOptions = [
   { value: 'liv_nome', label: 'Livro' },
   { value: 'aut_nome', label: 'Autor' },
   { value: 'edt_nome', label: 'Editora' },
-  { value: 'gen_nome', label: 'Gênero'},
+  { value: 'gen_nome', label: 'Gênero' },
   { value: 'liv_cod', label: 'Código' },
   { value: 'curso', label: 'Curso' },
 ];
@@ -38,11 +38,11 @@ export default function Home() {
   }, []);
 
   async function listaLivros() {
-    const dados = { 
+    const dados = {
       [selectedSearchOption]: livNome, // Dinamicamente envia o campo baseado no radio button
-      liv_nome:livNome
-    }; 
-    
+      liv_nome: livNome
+    };
+
     try {
       const response = await api.post('/rec_listar', dados);
       console.log(response.data.dados);

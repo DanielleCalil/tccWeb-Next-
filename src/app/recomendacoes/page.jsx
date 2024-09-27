@@ -88,7 +88,7 @@ export default function Recomendacoes() {
 
     async function listaLivros() {
         const dados = {
-            cur_cod: 85,
+            cur_cod: 88,
             [selectedSearchOption]: livNome
         };
         try {
@@ -132,7 +132,6 @@ export default function Recomendacoes() {
                         {sortedBooks.map(livroRec => (
                             <div className={styles.bookItem} key={livroRec.liv_nome}>
                                 <Link href={`/recLivro/${livroRec.liv_cod}`}>
-
                                     <div>
                                         <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
                                         <Image

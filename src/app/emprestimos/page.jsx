@@ -24,7 +24,7 @@ import api from '@/services/api';
 
 const searchOptions = [
   { value: 'usu_nome', label: 'Usuário' },
-  { value: 'emp_data_emp', label: 'Data da reserva' },
+  { value: 'Empréstimo', label: 'Data da reserva' },
   { value: 'liv_nome', label: 'Livro' },
   { value: 'aut_nome', label: 'Autor' },
 ];
@@ -109,7 +109,7 @@ export default function Emprestimos() {
                 </div>
                 <div className={styles.line}></div>
                 <p className={styles.info}>Reservado por: {emp.usu_nome}</p>
-                <p className={styles.info}>Reserva realizada no dia: {emp.emp_data_emp}</p>
+                <p className={styles.info}>Reserva realizada no dia: {emp.Empréstimo}</p>
                 <p className={styles.info}>Período da reserva: {emp.periodo?.inicio || 'Data não disponível'} até {emp.periodo?.fim || 'Data não disponível'}</p>
               </div>
             </div>

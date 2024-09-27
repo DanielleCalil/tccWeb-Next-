@@ -6,8 +6,6 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import api from '@/services/api';
 
-import InfoLivroBiblioteca from '../infoLivroBiblioteca/page';
-
 // const infoLivros = {
 //     aut_nome: 'Anne Frank',
 //     liv_nome: 'O Diário de Anne Frank',
@@ -48,9 +46,11 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
             const dadosApi = {
                 liv_cod: codLivroRec
             };
+            console.log("Dados enviados para API:", dadosApi);
 
             try {
                 const response = await api.post('/rec_listar', dadosApi);
+                console.log("Resposta da API:", response);
                 const confirmaAcesso = response.data.sucesso;
                 if (confirmaAcesso) {
                     const livroApi = response.data.dados[0];
@@ -82,58 +82,140 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
     };
 
     return (
-        <div className={styles.livroContainer}>
-            <InfoLivroBiblioteca />
-            <div className={styles.line}></div>
-            <p className={styles.descProf}>Recomendado para:</p>
-            <p className={styles.descProfCurso}>{livroRec.cur_nome}</p>
-            <form className={styles.moduloForm}>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="modulo1"
-                        value="1º modulo"
-                        checked={modulo1}
-                        onChange={() => setModulo1(!modulo1)}
-                        disabled={true}
-                    />
-                    1º Módulo
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="modulo2"
-                        value="2º modulo"
-                        checked={modulo2}
-                        onChange={() => setModulo2(!modulo2)}
-                        disabled={true}
-                    />
-                    2º Módulo
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="modulo3"
-                        value="3º modulo"
-                        checked={modulo3}
-                        onChange={() => setModulo3(!modulo3)}
-                        disabled={true}
-                    />
-                    3º Módulo
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="modulo4"
-                        value="4º modulo"
-                        checked={modulo4}
-                        onChange={() => setModulo4(!modulo4)}
-                        disabled={true}
-                    />
-                    4º Módulo
-                </label>
-            </form>
-        </div>
+        <main className={styles.main}>
+            <div className="containerGlobal">
+                <h1 className={styles.informacoes}>Informações do livro</h1>
+                <div className={styles.container}>
+                    {
+                        livroRec.liv_cod !== '' ?
+                            <>
+                                <div className={styles.lineSquare}>
+                                    <div className={styles.inputContainer}>
+                                        <div className={styles.infoBookReserva}>
+                                            <Image
+                                                loader={imageLoader}
+                                                src={livroRec.liv_foto_capa}
+                                                alt={livroRec.liv_nome}
+                                                width={667}
+                                                height={1000}
+                                                className={styles.imgReserva}
+                                            />
+                                            <div className={styles.livroInfo}>
+                                                <div className={styles.headerLineSquare}>
+                                                    <div className={styles.title}>
+                                                        <p className={styles.geral}>Visão geral</p>
+                                                        <p className={styles.livro}>{livroRec.liv_nome}</p>
+                                                    </div>
+                                                    <div className={styles.smallLineSquare}>
+                                                        <div className={styles.text}>
+                                                            <span className={styles.disponivel}>Disponíveis</span>
+                                                            <span className={styles.quant}>{livroRec.disponivel}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p className={styles.resumo}>{livroRec.liv_desc}</p>
+                                            </div>
+                                        </div>
+                                        <div className={styles.infoContainer}>
+                                            <div className={styles.infoBox}>
+                                                <span className={styles.titleSuperior}>Autor(a)</span>
+                                                <Image
+                                                    src="/Icons TCC/autor.png"
+                                                    alt="Autor(a)"
+                                                    width={1080}
+                                                    height={980}
+                                                    className={styles.imgIcons}
+                                                />
+                                                <span className={styles.titleInferior}>{livroRec.aut_nome}</span>
+                                            </div>
+                                            <div className={styles.infoBox}>
+                                                <span className={styles.titleSuperior}>Editora</span>
+                                                <Image
+                                                    src="/Icons TCC/editora.png"
+                                                    alt="Editora"
+                                                    width={1080}
+                                                    height={980}
+                                                    className={styles.imgIcons}
+                                                />
+                                                <span className={styles.titleInferior}>{livroRec.edt_nome}</span>
+                                            </div>
+                                            <div className={styles.infoBox}>
+                                                <span className={styles.titleSuperior}>Gênero</span>
+                                                <Image
+                                                    src="/Icons TCC/genero.png"
+                                                    alt="Gênero"
+                                                    width={1080}
+                                                    height={980}
+                                                    className={styles.imgIcons}
+                                                />
+                                                <span className={styles.titleInferior}>{livroRec.generos}</span>
+                                            </div>
+                                        </div>
+                                        <div className={styles.line}></div>
+                                        <p className={styles.descProf}>Recomendado para:</p>
+                                        <p className={styles.descProfCurso}>{livroRec.cur_nome}</p>
+                                        <form className={styles.moduloForm}>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="modulo1"
+                                                    value="1º modulo"
+                                                    checked={modulo1}
+                                                    onChange={() => setModulo1(!modulo1)}
+                                                    disabled={true}
+                                                />
+                                                1º Módulo
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="modulo2"
+                                                    value="2º modulo"
+                                                    checked={modulo2}
+                                                    onChange={() => setModulo2(!modulo2)}
+                                                    disabled={true}
+                                                />
+                                                2º Módulo
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="modulo3"
+                                                    value="3º modulo"
+                                                    checked={modulo3}
+                                                    onChange={() => setModulo3(!modulo3)}
+                                                    disabled={true}
+                                                />
+                                                3º Módulo
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="modulo4"
+                                                    value="4º modulo"
+                                                    checked={modulo4}
+                                                    onChange={() => setModulo4(!modulo4)}
+                                                    disabled={true}
+                                                />
+                                                4º Módulo
+                                            </label>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className={styles.editar}>
+                                    <Link href="/reservarLivro">
+                                        <span>
+                                            <button className={styles.reservButton}>Reservar livro</button>
+                                        </span>
+                                    </Link>
+                                </div>
+                            </>
+                            :
+                            <h1>Não há resultados para a requisição</h1>
+                    }
+                </div>
+            </div>
+        </main>
     );
 }
 

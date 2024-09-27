@@ -36,6 +36,44 @@ export default function SignUp() {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
+    async function logar() {
+
+        try {
+            const dados = {
+                usu_email_rm: login,
+                usu_senha: senha
+            }
+
+            const response = await api.post('/usuarios', dados);
+
+            if (response.data.sucesso == true) {
+                const usuario = response.data.dados;
+                const objLogado = {
+                    "cod": usuario.usu_cod,
+                    "nome": usuario.usu_nome,
+                    "acesso": usuario.usu_tipo
+                };
+                // signin(JSON.stringify(objLogado));                
+                localStorage.clear();
+                localStorage.setItem('user', JSON.stringify(objLogado));
+                router.push('/'); // é possível direcionar de acordo com a situação
+
+            } else {
+                alert('Erro: ' + response.data.mensagem + '\n' + response.data.dados)
+            }
+
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.dados == null ?
+                    error.response.data.mensagem
+                    :
+                    error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
+
     // validação
     const [valida, setValida] = useState({
         nome: {

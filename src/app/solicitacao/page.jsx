@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
@@ -57,16 +57,7 @@ export default function Solicitacao() {
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();
 
-  const [solicitacao, setSolicitacao] = useState({
-    "usu_rm": "",
-    "usu_nome": "",
-    "usu_email": "",
-    "usu_senha": "",
-    "usu_sexo": "",
-    "cur_nome": "",
-    "usu_cod": "",
-    "sol_ativo": "0",
-  })
+  const [solicita, setSolicita] = useState([])
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -101,9 +92,9 @@ export default function Solicitacao() {
   async function listaLivros() {
     const dados = { [selectedSearchOption]: livNome };
     try {
-      const response = await api.post('/solicitacoes', dados);
+      const response = await api.post('/sol_listar', dados);
       console.log(response.data.dados);
-      setSolicitacao(response.data.dados);
+      setSolicita(response.data.dados);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -173,7 +164,7 @@ export default function Solicitacao() {
         </div>
 
         <div className={styles.container}>
-          {solicitacao.map(solicit => (
+          {solicita.map(solicit => (
             <div key={solicit.usu_rm} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
 

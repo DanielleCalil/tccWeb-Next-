@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
-    { value: 'emp_data_emp', label: 'Data da reserva' },
+    { value: 'Empréstimo', label: 'Data da reserva' },
 ];
 
 export default function Reservas() {
@@ -122,8 +122,8 @@ export default function Reservas() {
                                 </div>
                                 <div className={styles.line}></div>
                                 <p className={styles.info}>Reservado por: {reserv.usu_nome}</p>
-                                <p className={styles.info}>Reserva realizada no dia: {reserv.emp_data_emp}</p>
-                                <p className={styles.info}>Período da reserva: {reserv.periodo?.inicio} até {reserv.periodo?.fim || 'Data não disponível'}</p>
+                                <p className={styles.info}>Reserva realizada no dia: {reserv.Empréstimo}</p>
+                                <p className={styles.info}>Período da reserva: {reserv.periodo?.inicio || 'Data não disponível'} até {reserv.periodo?.fim || 'Data não disponível'}</p>
                                 <div className={styles.line}></div>
                                 <p className={styles.pUsuario}>Confirmar retirada do livro</p>
                                 <div className={styles.opcao}>

@@ -41,7 +41,7 @@ export default function Login() {
                 usu_senha: senha
             }
 
-            const response = await api.post('/usuarios', dados);
+            const response = await api.patch('/usu_login', dados);
 
             if (response.data.sucesso == true) {
                 const usuario = response.data.dados;

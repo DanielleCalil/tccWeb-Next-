@@ -38,7 +38,8 @@ export default function InfoLivroBiblioteca({ codLivro }) {
         async function handleCarregaLivro() {
             const dadosApi = {
                 liv_cod: codLivro
-            }
+            };
+            
             try {
                 const response = await api.post('/livros', dadosApi);
                 const confirmaAcesso = response.data.sucesso;

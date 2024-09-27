@@ -16,7 +16,7 @@ import api from '@/services/api';
 //     generos: 'Autobiográfico',
 // };
 
-function Livro({ codLivro }) {
+export default function InfoLivroBiblioteca({ codLivro }) {
 
     const [livro, setLivro] = useState({
         "liv_cod": "",
@@ -168,5 +168,3 @@ function Livro({ codLivro }) {
         </main>
     );
 }
-
-export default Livro;

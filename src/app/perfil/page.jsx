@@ -1,8 +1,46 @@
+"use client";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
+import { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import Link from "next/link";
+import api from '@/services/api';
 
 export default function Perfil() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+    const imageLoader = ({ src, width, quality }) => {
+        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
+    };
+
+    const router = useRouter();
+
+    const [perfil, setPerfil] = useState({
+        "usu_cod": "",
+        "usu_rm": "", 
+        "usu_nome": "", 
+        "usu_email": "", 
+        "usu_senha": "", 
+        "usu_sexo": "",
+        "usu_foto": "", 
+        "usu_ativo": "1",
+    });
+
+    // Busca os dados do perfil ao montar o componente
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await api.get('/usuarios'); // Ajuste o endpoint conforme necessário
+                setPerfil(response.data);
+            } catch (error) {
+                console.error("Erro ao buscar dados do perfil:", error);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -13,84 +51,69 @@ export default function Perfil() {
                             <div className={styles.profileContainer}>
                                 <div className={styles.imgContainer}>
                                     <Image
-                                        src="/Icons TCC/perfil.jpg"
+                                        src={perfil.usu_foto || "/Icons TCC/perfil.jpg"}
                                         alt="Foto de perfil padrão"
                                         width={512}
                                         height={512}
+                                        loader={imageLoader} // Usa o carregador de imagem personalizado
                                     />
                                 </div>
                             </div>
                             <div className={styles.inputContainer}>
                                 <div className={styles.inputGroup}>
-                                    <p className={styles.textInput}>RM:</p>
+                                    <label htmlFor="rm" className={styles.textInput}>RM:</label>
                                     <input
+                                        id="rm"
                                         type="number"
                                         className={styles.inputField}
+                                        value={perfil.usu_rm}
                                         disabled
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
-                                    <p className={styles.textInput}>Nome social:</p>
+                                    <label htmlFor="nomeSocial" className={styles.textInput}>Nome social:</label>
                                     <input
+                                        id="nomeSocial"
                                         type="text"
                                         className={styles.inputField}
+                                        value={perfil.usu_nome}
                                         disabled
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
-                                    <p className={styles.textInput}>Nome completo:</p>
+                                    <label htmlFor="nomeCompleto" className={styles.textInput}>Nome completo:</label>
                                     <input
+                                        id="nomeCompleto"
                                         type="text"
                                         className={styles.inputField}
+                                        value={perfil.usu_nome_completo}
                                         disabled
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
-                                    <text className={styles.textInput}>E-mail:</text>
+                                    <label htmlFor="email" className={styles.textInput}>E-mail:</label>
                                     <input
+                                        id="email"
                                         type="email"
                                         className={styles.inputField}
+                                        value={perfil.usu_email}
                                         disabled
                                     />
                                 </div>
                                 <form className={styles.sexoForm}>
                                     <legend>Sexo:</legend>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="opcao"
-                                            value="feminino"
-                                            disabled
-                                        />
-                                        Feminino
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="opcao"
-                                            value="masculino"
-                                            disabled
-                                        />
-                                        Masculino
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="opcao"
-                                            value="neutro"
-                                            disabled
-                                        />
-                                        Neutro
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="opcao"
-                                            value="padrao"
-                                            disabled
-                                        />
-                                        Padrão
-                                    </label>
+                                    {["feminino", "masculino", "neutro", "padrao"].map((opcao) => (
+                                        <label key={opcao}>
+                                            <input
+                                                type="radio"
+                                                name="opcao"
+                                                value={opcao}
+                                                checked={perfil.usu_sexo === opcao}
+                                                disabled
+                                            />
+                                            {opcao.charAt(0).toUpperCase() + opcao.slice(1)}
+                                        </label>
+                                    ))}
                                 </form>
                             </div>
                         </div>

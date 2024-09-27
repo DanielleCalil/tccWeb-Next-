@@ -1,9 +1,10 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import api from '@/services/api';
 
 import FileInput from '@/componentes/FileInput/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
@@ -31,7 +32,6 @@ export default function AddLivroNovo() {
         router.push('../gerenciarLivroExistente');
     };
 
-
     const [showModalEditora, setShowModalEditora] = useState(false);
     const openModalEditora = () => setShowModalEditora(true);
     const closeModalEditora = () => setShowModalEditora(false);
@@ -52,11 +52,47 @@ export default function AddLivroNovo() {
         setCapaImage(imageUrl);
     };
 
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedAutor, setSelectedAutor] = useState('');
+    const [selectedEditora, setSelectedEditora] = useState('');
+    const [selectedGenero, setSelectedGenero] = useState('');
+    
+    const [autores, setAutores] = useState([]);
+    const [editoras, setEditoras] = useState([]);
+    const [generos, setGeneros] = useState([]);
 
-    const handleChange = (event) => {
-        setSelectedOption(event.target.value);
+    const handleChangeAutor = (event) => {
+        setSelectedAutor(event.target.value);
     };
+
+    const handleChangeEditora = (event) => {
+        setSelectedEditora(event.target.value);
+    };
+
+    const handleChangeGenero = (event) => {
+        setSelectedGenero(event.target.value);
+    };
+
+    useEffect(() => {
+        const fetchOptions = async () => {
+            try {
+                const autoresResponse = await fetch('/autores'); // Substitua pela URL da sua API
+                const editorasResponse = await fetch('/editoras'); // Substitua pela URL da sua API
+                const generosResponse = await fetch('/generos'); // Substitua pela URL da sua API
+
+                const autoresData = await autoresResponse.json();
+                const editorasData = await editorasResponse.json();
+                const generosData = await generosResponse.json();
+
+                setAutores(autoresData);
+                setEditoras(editorasData);
+                setGeneros(generosData);
+            } catch (error) {
+                console.error('Erro ao buscar opções:', error);
+            }
+        };
+
+        fetchOptions();
+    }, []);
 
     return (
         <main className={styles.main}>
@@ -94,36 +130,33 @@ export default function AddLivroNovo() {
                                 />
                             </div>
                             <div className={styles.inputGroup}>
-                                <label htmlFor="options" className={styles.textInput}>Autor:</label>
-                                <select id="options" value={selectedOption} onChange={handleChange} className={styles.inputField}>
+                                <label htmlFor="autores" className={styles.textInput}>Autor:</label>
+                                <select id="autores" value={selectedAutor} onChange={handleChangeAutor} className={styles.inputField}>
                                     <option value="">Selecione...</option>
-                                    <option value="opcao1">Opção 1</option>
-                                    <option value="opcao2">Opção 2</option>
-                                    <option value="opcao3">Opção 3</option>
+                                    {autores.map(autor => (
+                                        <option key={autor.id} value={autor.id}>{autor.nome}</option>
+                                    ))}
                                 </select>
-                                {selectedOption && <p>Opção selecionada: {selectedOption}</p>}
                             </div>
 
                             <div className={styles.inputGroup}>
-                                <label htmlFor="options" className={styles.textInput}>Editora:</label>
-                                <select id="options" value={selectedOption} onChange={handleChange} className={styles.inputField}>
+                                <label htmlFor="editoras" className={styles.textInput}>Editora:</label>
+                                <select id="editoras" value={selectedEditora} onChange={handleChangeEditora} className={styles.inputField}>
                                     <option value="">Selecione...</option>
-                                    <option value="opcao1">Opção 1</option>
-                                    <option value="opcao2">Opção 2</option>
-                                    <option value="opcao3">Opção 3</option>
+                                    {editoras.map(editora => (
+                                        <option key={editora.id} value={editora.id}>{editora.nome}</option>
+                                    ))}
                                 </select>
-                                {selectedOption && <p>Opção selecionada: {selectedOption}</p>}
                             </div>
 
                             <div className={styles.inputGroup}>
-                                <label htmlFor="options" className={styles.textInput}>Gênero:</label>
-                                <select id="options" value={selectedOption} onChange={handleChange} className={styles.selectCustom}>
+                                <label htmlFor="generos" className={styles.textInput}>Gênero:</label>
+                                <select id="generos" value={selectedGenero} onChange={handleChangeGenero} className={styles.inputField}>
                                     <option value="">Selecione...</option>
-                                    <option value="opcao1">Opção 1</option>
-                                    <option value="opcao2">Opção 2</option>
-                                    <option value="opcao3">Opção 3</option>
+                                    {generos.map(genero => (
+                                        <option key={genero.id} value={genero.id}>{genero.nome}</option>
+                                    ))}
                                 </select>
-                                {selectedOption && <p>Opção selecionada: {selectedOption}</p>}
                             </div>
                             
                             <div className={styles.inputGroup}>
@@ -137,7 +170,7 @@ export default function AddLivroNovo() {
                             <div className={styles.tresModais}>
                                 {/* Modal para adicionar autor */}
                                 <button
-                                    type="submit"
+                                    type="button"
                                     onClick={openModalAutor}
                                     className={styles.addButton}
                                 >
@@ -151,7 +184,7 @@ export default function AddLivroNovo() {
 
                                 {/* Modal para adicionar editora */}
                                 <button
-                                    type="submit"
+                                    type="button"
                                     onClick={openModalEditora}
                                     className={styles.addButton}
                                 >
@@ -165,7 +198,7 @@ export default function AddLivroNovo() {
 
                                 {/* Modal para adicionar gênero */}
                                 <button
-                                    type="submit"
+                                    type="button"
                                     onClick={openModalGenero}
                                     className={styles.addButton}
                                 >
@@ -176,7 +209,6 @@ export default function AddLivroNovo() {
                                     onClose={closeModalGenero}
                                     onConfirm={handleGenero}
                                 />
-
                             </div>
                             <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
                         </div>
@@ -184,7 +216,7 @@ export default function AddLivroNovo() {
 
                     <div className={styles.editar}>
                         <button
-                            type="submit"
+                            type="button"
                             onClick={openModalConfirm}
                             className={styles.addButtonPrinc}
                         >

@@ -4,30 +4,31 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import api from '@/services/api';
 
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
-const infoUsuario = [
-  {
-    usu_nome: 'Clara Oliveira da Silva',
-    usu_email: 'clara.oliveira.silva@example.com',
-    usu_rm: '550726',
-    usu_cad: '13/03/2024',
-  },
-  {
-    usu_nome: 'Ana Beatriz Silva',
-    usu_email: 'ana.silva@example.com',
-    usu_rm: '782134',
-    usu_cad: '15/03/2024',
-  },
-  {
-    usu_nome: 'Ana Carolina Silva',
-    usu_email: 'ana.carolina@exemplo.com',
-    usu_rm: '483726',
-    usu_cad: '18/03/2024',
-  }
-];
+// const infoUsuario = [
+//   {
+//     usu_nome: 'Clara Oliveira da Silva',
+//     usu_email: 'clara.oliveira.silva@example.com',
+//     usu_rm: '550726',
+//     usu_cad: '13/03/2024',
+//   },
+//   {
+//     usu_nome: 'Ana Beatriz Silva',
+//     usu_email: 'ana.silva@example.com',
+//     usu_rm: '782134',
+//     usu_cad: '15/03/2024',
+//   },
+//   {
+//     usu_nome: 'Ana Carolina Silva',
+//     usu_email: 'ana.carolina@exemplo.com',
+//     usu_rm: '483726',
+//     usu_cad: '18/03/2024',
+//   }
+// ];
 
 const situacao = [
   'Todos',
@@ -42,11 +43,30 @@ const searchOptions = [
 ];
 
 export default function Solicitacao() {
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+  const imageLoader = ({ src, width, quality }) => {
+    return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`
+  }
+
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_cad');
   const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [selectedUsuario, setSelectedUsuario] = useState('Todos');
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();
+
+  const [solicitacao, setSolicitacao] = useState({
+    "usu_rm":"", 
+    "usu_nome":"", 
+    "usu_email":"", 
+    "usu_senha":"", 
+    "usu_sexo":"", 
+    "cur_nome":"",
+    "usu_cod":"",
+    "sol_ativo": "0",
+  })
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -67,6 +87,31 @@ export default function Solicitacao() {
     }
     setSelectedUsers(updatedSelection);
   };
+
+  const [livNome, setlivNome] = useState('')
+
+  function atLivNome(nome) {
+    setlivNome(nome)
+  }
+
+  useEffect(() => {
+    listaLivros();
+  }, []);
+
+  async function listaLivros() {
+    const dados = { [selectedSearchOption]: livNome };
+    try {
+      const response = await api.post('/solicitacoes', dados);
+      console.log(response.data.dados);
+      setSolicitacao(response.data.dados);
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+      } else {
+        alert('Erro no front-end' + '\n' + error);
+      }
+    }
+  }
 
   return (
     <main className={styles.main}>
@@ -128,22 +173,22 @@ export default function Solicitacao() {
         </div>
 
         <div className={styles.container}>
-          {infoUsuario.map((usuario) => (
-            <div key={usuario.usu_rm} className={styles.lineSquare}>
+          {solicitacao.map(solicit => (
+            <div key={solicit.usu_rm} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
 
-                <p className={styles.info}>Cadastro realizado no dia: {usuario.usu_cad}</p>
-                <p className={styles.info}>Nome: {usuario.usu_nome}</p>
-                <p className={styles.info}>RM: {usuario.usu_rm}</p>
-                <p className={styles.info}>E-mail: {usuario.usu_email}</p>
+                <p className={styles.info}>Cadastro realizado no dia: {solicit.usu_cad}</p>
+                <p className={styles.info}>Nome: {solicit.usu_nome}</p>
+                <p className={styles.info}>RM: {solicit.usu_rm}</p>
+                <p className={styles.info}>E-mail: {solicit.usu_email}</p>
                 <div className={styles.box}>
                   <input
                     type="checkbox"
-                    id={`checkbox-${usuario.usu_rm}`} // Adiciona um ID único
-                    checked={selectedUsers.has(usuario.usu_rm)}
-                    onChange={() => toggleUserSelection(usuario.usu_rm)}
+                    id={`checkbox-${solicit.usu_rm}`} // Adiciona um ID único
+                    checked={selectedUsers.has(solicit.usu_rm)}
+                    onChange={() => toggleUserSelection(solicit.usu_rm)}
                   />
-                  <label htmlFor={`checkbox-${usuario.usu_rm}`} className={styles.customCheckbox}></label> {/* Checkbox personalizado */}
+                  <label htmlFor={`checkbox-${solicit.usu_rm}`} className={styles.customCheckbox}></label> {/* Checkbox personalizado */}
                 </div>
               </div>
 

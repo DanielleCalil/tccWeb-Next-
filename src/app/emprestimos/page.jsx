@@ -39,7 +39,7 @@ export default function Emprestimos() {
   }
 
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
-  const [emp, setEmp] = useState([]);
+  const [emprestimo, setEmprestimo] = useState([]);
 
   const [livNome, setlivNome] = useState('')
 
@@ -56,7 +56,7 @@ export default function Emprestimos() {
     try {
       const response = await api.post('/emprestimos', dados);
       console.log(response.data.dados);
-      setEmp(response.data.dados);
+      setEmprestimo(response.data.dados);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -90,27 +90,27 @@ export default function Emprestimos() {
         </div>
 
         <div className={styles.container}>
-          {emp.map(emprestimo => (
-            <div key={emprestimo.usu_nome} className={styles.lineSquare}>
+          {emprestimo.map(emp => (
+            <div key={emp.usu_nome} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
                 <div className={styles.infoBookReserva}>
                   <Image
                     loader={imageLoader}
-                    src={emprestimo.liv_foto_capa}
-                    alt={emprestimo.liv_nome}
+                    src={emp.liv_foto_capa}
+                    alt={emp.liv_nome}
                     className={styles.imgReserva}
                     width={667}
                     height={1000}
                   />
                   <div className={styles.livroInfo}>
-                    <p>{emprestimo.liv_nome}</p>
-                    <p>Por: {emprestimo.aut_nome}</p>
+                    <p>{emp.liv_nome}</p>
+                    <p>Por: {emp.aut_nome}</p>
                   </div>
                 </div>
                 <div className={styles.line}></div>
-                <p className={styles.info}>Reservado por: {emprestimo.usu_nome}</p>
-                <p className={styles.info}>Reserva realizada no dia: {emprestimo.emp_data_emp}</p>
-                <p className={styles.info}>Período da reserva: {emprestimo.periodo?.inicio} até {emprestimo.periodo?.fim || 'Data não disponível'}</p>
+                <p className={styles.info}>Reservado por: {emp.usu_nome}</p>
+                <p className={styles.info}>Reserva realizada no dia: {emp.emp_data_emp}</p>
+                <p className={styles.info}>Período da reserva: {emp.periodo?.inicio || 'Data não disponível'} até {emp.periodo?.fim || 'Data não disponível'}</p>
               </div>
             </div>
           ))}

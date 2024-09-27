@@ -1,25 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
+import api from '@/services/api';
 
-const infoEmprestimo = [
-  {
-    livro: {
-      liv_nome: "O Diário de Anne Frank",
-      aut_nome: "Anne Frank",
-      liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
-    },
-    usu_nome: "Clara Oliveira da Silva",
-    emp_data_emp: "12/03/2024",
-    periodo: {
-      inicio: "12/03/2024",
-      fim: "27/03/2024"
-    },
-  },
-];
+// const infoEmprestimo = [
+//   {
+//     livro: {
+//       liv_nome: "O Diário de Anne Frank",
+//       aut_nome: "Anne Frank",
+//       liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
+//     },
+//     usu_nome: "Clara Oliveira da Silva",
+//     emp_data_emp: "12/03/2024",
+//     periodo: {
+//       inicio: "12/03/2024",
+//       fim: "27/03/2024"
+//     },
+//   },
+// ];
 
 const searchOptions = [
   { value: 'usu_nome', label: 'Usuário' },
@@ -30,14 +31,32 @@ const searchOptions = [
 
 export default function Emprestimos() {
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+  const imageLoader = ({ src, width, quality }) => {
+    return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`
+  }
+
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
+  const [emp, setEmp] = useState([]);
+
+  const [livNome, setlivNome] = useState('')
+
+  function atLivNome(nome) {
+    setlivNome(nome)
+  }
+
+  useEffect(() => {
+    listaLivros();
+  }, []);
 
   async function listaLivros() {
-    const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+    const dados = { [selectedSearchOption]: livNome };
     try {
-      const response = await api.post('/livros', dados);
+      const response = await api.post('/emprestimos', dados);
       console.log(response.data.dados);
-      setBooks(response.data.dados);
+      setEmp(response.data.dados);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -46,13 +65,13 @@ export default function Emprestimos() {
       }
     }
   }
-  // console.log(livNome)
+
 
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.emprestimo}>Empréstimos</h1>
-        <BarraPesquisa />
+        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
 
         {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>
@@ -71,20 +90,21 @@ export default function Emprestimos() {
         </div>
 
         <div className={styles.container}>
-          {infoEmprestimo.map((emprestimo, index) => (
-            <div key={index} className={styles.lineSquare}>
+          {emp.map(emprestimo => (
+            <div key={emprestimo.usu_nome} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
                 <div className={styles.infoBookReserva}>
                   <Image
-                    src={emprestimo.livro.liv_foto_capa}
-                    alt={emprestimo.livro.liv_nome}
+                    loader={imageLoader}
+                    src={emprestimo.liv_foto_capa}
+                    alt={emprestimo.liv_nome}
                     className={styles.imgReserva}
                     width={667}
                     height={1000}
                   />
                   <div className={styles.livroInfo}>
-                    <p>{emprestimo.livro.liv_nome}</p>
-                    <p>Por: {emprestimo.livro.aut_nome}</p>
+                    <p>{emprestimo.liv_nome}</p>
+                    <p>Por: {emprestimo.aut_nome}</p>
                   </div>
                 </div>
                 <div className={styles.line}></div>

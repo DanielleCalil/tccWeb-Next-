@@ -4,6 +4,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import api from '@/services/api';
 
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
@@ -24,11 +25,22 @@ const infoReserva = [
     },
 ];
 
+const [reserva, setReserva] = useState({
+    
+})
+
 const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
     { value: 'emp_data_emp', label: 'Data da reserva' },
 ];
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+const imageLoader = ({ src, width, quality }) => {
+    return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
+};
 
 export default function Reservas() {
 
@@ -89,6 +101,7 @@ export default function Reservas() {
                             <div className={styles.inputContainer}>
                                 <div className={styles.infoBookReserva}>
                                     <Image
+                                        loader={imageLoader}
                                         src={reserva.livro.liv_foto_capa}
                                         alt={reserva.livro.liv_nome}
                                         className={styles.imgReserva}

@@ -40,9 +40,9 @@ function LivroRec({ codLivroRec }) {
 
     useEffect(() => {
 
-        handleCarregaLivroRec();
+        handleCarregaLivro();
 
-        async function handleCarregaLivroRec() {
+        async function handleCarregaLivro() {
             const dadosApi = {
                 liv_cod: codLivroRec
             };

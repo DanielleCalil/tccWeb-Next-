@@ -12,7 +12,7 @@ const searchOptions = [
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
     { value: 'gen_nome', label: 'Gênero' },
-    { value: 'rcm_cod', label: 'Código' },
+    { value: 'liv_cod', label: 'Código' },
     { value: 'cur_nome', label: 'Curso' },
 ];
 

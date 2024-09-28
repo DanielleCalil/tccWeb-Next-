@@ -90,27 +90,27 @@ export default function Emprestimos() {
         </div>
 
         <div className={styles.container}>
-          {emprestimo.map(emp => (
-            <div key={emp.usu_nome} className={styles.lineSquare}>
+          {emprestimo.map(liv => (
+            <div key={liv.usu_nome} className={styles.lineSquare}>
               <div className={styles.inputContainer}>
                 <div className={styles.infoBookReserva}>
                   <Image
                     loader={imageLoader}
-                    src={emp.liv_foto_capa}
-                    alt={emp.liv_nome}
+                    src={liv.liv_foto_capa}
+                    alt={liv.liv_nome}
                     className={styles.imgReserva}
                     width={667}
                     height={1000}
                   />
                   <div className={styles.livroInfo}>
-                    <p>{emp.liv_nome}</p>
-                    <p>Por: {emp.aut_nome}</p>
+                    <p>{liv.liv_nome}</p>
+                    <p>Por: {liv.aut_nome}</p>
                   </div>
                 </div>
                 <div className={styles.line}></div>
-                <p className={styles.info}>Reservado por: {emp.usu_nome}</p>
-                <p className={styles.info}>Reserva realizada no dia: {emp.Empréstimo}</p>
-                <p className={styles.info}>Período da reserva: {emp.periodo?.inicio || 'Data não disponível'} até {emp.periodo?.fim || 'Data não disponível'}</p>
+                <p className={styles.info}>Reservado por: {liv.usu_nome}</p>
+                <p className={styles.info}>Reserva realizada no dia: {liv.Empréstimo}</p>
+                <p className={styles.info}>Período da reserva: {liv.periodo?.inicio || 'Data não disponível'} até {liv.periodo?.fim || 'Data não disponível'}</p>
               </div>
             </div>
           ))}

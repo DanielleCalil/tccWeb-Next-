@@ -67,6 +67,9 @@ export default function EditarInformacoesLivro({ initialData }) {
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Editar informações do livro</h1>
                 <div className={styles.container}>
+                {
+                        livro.liv_cod !== '' ?
+                            <>
                     <div className={styles.lineSquare}>
                         <div className={styles.inputContainer}>
                             <div className={styles.infoBookReserva}>
@@ -204,6 +207,10 @@ export default function EditarInformacoesLivro({ initialData }) {
                             </div>
                         </div>
                     </div>
+                    </>
+                            :
+                            <h1>Não há resultados para a requisição</h1>
+                    }
                 </div>
             </div>
         </main>

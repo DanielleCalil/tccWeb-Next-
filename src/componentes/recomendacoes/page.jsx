@@ -102,7 +102,7 @@ export default function Recomendacoes() {
                     <div className={styles.bookList}>
                         {sortedBooks.map(livroRec => (
                             <div className={styles.bookItem} key={livroRec.liv_nome}>
-                                <Link href={`/rec_listar/${livroRec.rcm_cod}`}>
+                                <Link href={`/recLivro/${livroRec.liv_cod}`}>
                                     <div>
                                         <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
                                         <Image

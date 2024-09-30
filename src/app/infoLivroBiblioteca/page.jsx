@@ -39,7 +39,7 @@ export default function InfoLivroBiblioteca({ codLivro }) {
             const dadosApi = {
                 liv_cod: codLivro
             };
-            
+
             try {
                 const response = await api.post('/livros', dadosApi);
                 const confirmaAcesso = response.data.sucesso;
@@ -78,12 +78,13 @@ export default function InfoLivroBiblioteca({ codLivro }) {
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.contButton}>
-                    <Link href="/editarInfoLivro">
-                        <button className={styles.ButtonEditar} onClick={handleEdit}>
-                            <IoPencilSharp className={styles.tpiconEditar} />
-                            Editar
-                        </button>
-                    </Link>
+                    <button className={styles.ButtonEditar} onClick={() => {
+                        handleEdit();
+                        router.push(`/livros/${livro.liv_cod}`);
+                    }}>
+                        <IoPencilSharp className={styles.tpiconEditar} />
+                        Editar
+                    </button>
                 </div>
                 <div className={styles.container}>
                     {

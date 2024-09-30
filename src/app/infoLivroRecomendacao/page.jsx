@@ -32,6 +32,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
         "liv_desc": "",
         "aut_nome": "",
         "gen_nome": "",
+        "generos": "",
         "edt_nome": "",
         "disponivel": "",
     });
@@ -47,7 +48,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
             const dadosApi = {
                 liv_cod: codLivroRec
             };
-            console.log("Dados enviados para API:", dadosApi);
+            // console.log("Dados enviados para API:", dadosApi);
 
             try {
                 const response = await api.post('/rec_listar', dadosApi);
@@ -149,7 +150,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <span className={styles.titleInferior}>{livroRec.generos}</span>
+                                                <span className={styles.titleInferior}>{livroRec.gen_nome}</span>
                                             </div>
                                         </div>
                                         <div className={styles.line}></div>

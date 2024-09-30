@@ -41,14 +41,15 @@ export default function Login() {
                 usu_senha: senha
             }
 
-            const response = await api.patch('/usu_login', dados);
+            const response = await api.post('/usu_login', dados);
 
             if (response.data.sucesso == true) {
                 const usuario = response.data.dados;
                 const objLogado = {
                     "cod": usuario.usu_cod,
                     "nome": usuario.usu_nome,
-                    "acesso": usuario.usu_tipo
+                    "acesso": usuario.usu_tipo,
+                    "curso": usuario.cur_cod,
                 };
                 // signin(JSON.stringify(objLogado));                
                 localStorage.clear();

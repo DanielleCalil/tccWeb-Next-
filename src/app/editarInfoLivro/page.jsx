@@ -5,137 +5,204 @@ import { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import Link from "next/link";
 import api from '@/services/api';
+import FileInput from '@/componentes/FileInput/page';
+import ModalConfirmar from '@/componentes/modalConfirmar/page'
 
-export default function Perfil() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
-
-    const imageLoader = ({ src, width, quality }) => {
-        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
-    };
-
+export default function EditarInformacoesLivro({ initialData }) {
     const router = useRouter();
+    const [isEditing, setIsEditing] = useState(true);
+    const [livro, setLivro] = useState(initialData?.liv_nome || '');
+    const [quantidade, setQuantidade] = useState(initialData?.disponivel || '');
+    const [resumo, setResumo] = useState(initialData?.liv_desc || '');
+    const [autor, setAutor] = useState(initialData?.aut_nome || '');
+    const [editora, setEditora] = useState(initialData?.edt_nome || '');
+    const [genero, setGenero] = useState(initialData?.generos || '');
+    const [imageSrc, setImageSrc] = useState(initialData?.liv_foto_capa || '');
 
-    const [perfil, setPerfil] = useState({
-        "usu_cod": "",
-        "usu_rm": "",
-        "usu_nome": "",
-        "usu_email": "",
-        "usu_senha": "",
-        "usu_sexo": "",
-        "usu_foto": "",
-        "usu_ativo": "1",
-    });
-
-    const [isEditing, setIsEditing] = useState(false); // Estado para controlar a edição
-
-    // Busca os dados do perfil ao montar o componente
+    // Função para buscar os dados do perfil ao montar o componente
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await api.get('/usuarios'); // Ajuste o endpoint conforme necessário
+                const response = await api.get('/usuarios');
                 setPerfil(response.data);
             } catch (error) {
                 console.error("Erro ao buscar dados do perfil:", error);
             }
         };
-
         fetchProfile();
     }, []);
 
+
     const handleSave = async () => {
-        try {
-            await api.put(`/usuarios/${perfil.usu_cod}`, perfil); // Ajuste o endpoint para atualizar os dados do perfil
-            setIsEditing(false); // Finaliza a edição após salvar
-        } catch (error) {
-            console.error("Erro ao salvar dados do perfil:", error);
+        if (!livro || !quantidade || !resumo || !autor || !editora || !genero) {
+            alert('Todos os campos devem ser preenchidos');
+            return;
         }
+        try {
+            await api.saveBookInfo({ livro, quantidade, resumo, autor, editora, genero, imageSrc });
+            router.push('/infoLivroBiblioteca');
+        } catch (error) {
+            console.error("Erro ao salvar informações do livro:", error);
+        }
+    };
+
+
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
+
+    const openModalConfirm = () => setShowModalConfirm(true);
+    const closeModalConfirm = () => setShowModalConfirm(false);
+
+    const handleConfirm = () => {
+        setShowModalConfirm(false); // Fecha o modal
+        router.push('../biblioteca');
+    };
+
+
+    const handleImageChange = (imageURL) => {
+        setImageSrc(imageURL);
     };
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
-                <div className={styles.contentWrapper}>
-                    <h1 className={styles.perfil}>Perfil</h1>
-                    <div className={styles.parentContainer}>
-                        <div className={styles.PIContainer}>
-                            <div className={styles.profileContainer}>
-                                <div className={styles.imgContainer}>
-                                    <Image
-                                        src={perfil.usu_foto || "/Icons TCC/perfil.jpg"}
-                                        alt="Foto de perfil padrão"
-                                        width={512}
-                                        height={512}
-                                        loader={imageLoader} // Usa o carregador de imagem personalizado
-                                    />
+                <h1 className={styles.informacoes}>Editar informações do livro</h1>
+                <div className={styles.container}>
+                    <div className={styles.lineSquare}>
+                        <div className={styles.inputContainer}>
+                            <div className={styles.infoBookReserva}>
+                                <div className={styles.imgBook}>
+                                    <div className={styles.imagePreview}>
+                                        <Image
+                                            src={imageSrc}
+                                            alt={livro}
+                                            width={667}
+                                            height={1000}
+                                            className={styles.imgReserva}
+                                        />
+                                    </div>
+                                    {isEditing && (
+                                        <FileInput onFileSelect={handleImageChange} />
+                                    )}
                                 </div>
-                            </div>
-                            <div className={styles.inputContainer}>
-                                <div className={styles.inputGroup}>
-                                    <label htmlFor="rm" className={styles.textInput}>RM:</label>
-                                    <input
-                                        id="rm"
-                                        type="number"
-                                        className={styles.inputField}
-                                        value={perfil.usu_rm}
-                                        disabled
-                                    />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label htmlFor="nomeSocial" className={styles.textInput}>Nome social:</label>
-                                    <input
-                                        id="nomeSocial"
-                                        type="text"
-                                        className={styles.inputField}
-                                        value={perfil.usu_nome}
-                                        onChange={(e) => setPerfil({ ...perfil, usu_nome: e.target.value })}
-                                        disabled={!isEditing} // Habilita o campo apenas se estiver editando
-                                    />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label htmlFor="email" className={styles.textInput}>E-mail:</label>
-                                    <input
-                                        id="email"
-                                        type="email"
-                                        className={styles.inputField}
-                                        value={perfil.usu_email}
-                                        onChange={(e) => setPerfil({ ...perfil, usu_email: e.target.value })}
-                                        disabled={!isEditing} // Habilita o campo apenas se estiver editando
-                                    />
-                                </div>
-                                <form className={styles.sexoForm}>
-                                    <legend>Sexo:</legend>
-                                    {["feminino", "masculino", "neutro", "padrao"].map((opcao) => (
-                                        <label key={opcao}>
-                                            <input
-                                                type="radio"
-                                                name="opcao"
-                                                value={opcao}
-                                                checked={perfil.usu_sexo === opcao}
-                                                onChange={(e) => setPerfil({ ...perfil, usu_sexo: e.target.value })}
-                                                disabled={!isEditing} // Habilita o campo apenas se estiver editando
+                                <div className={styles.livroInfo}>
+                                    <div className={styles.headerLineSquare}>
+                                        <div className={styles.title}>
+                                            <p className={styles.geral}>Visão geral</p>
+                                            {isEditing ? (
+                                                <input
+                                                    type="text"
+                                                    value={livro}
+                                                    onChange={(e) => setLivro(e.target.value)}
+                                                    className={`${styles.editInputTittle} ${styles.editInput}`}
+                                                />
+                                            ) : (
+                                                <p className={styles.livro}>{livro}</p>
+                                            )}
+                                        </div>
+                                        <div className={styles.smallLineSquare}>
+                                            <div className={styles.quantidade}>
+                                                <span className={styles.disponivel}>Disponíveis</span>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="number"
+                                                        value={quantidade}
+                                                        onChange={(e) => setQuantidade(Number(e.target.value))}
+                                                        className={`${styles.editInputQuant} ${styles.editInput}`}
+                                                    />
+                                                ) : (
+                                                    <span className={styles.quant}>{quantidade}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {isEditing ? (
+                                        <textarea
+                                            value={resumo}
+                                            onChange={(e) => setResumo(e.target.value)}
+                                            className={styles.inputResumo}
+                                        />
+                                    ) : (
+                                        <p className={styles.resumo}>{resumo}</p>
+                                    )}
+                                    <div className={styles.infoContainer}>
+                                        <div className={styles.infoBox}>
+                                            <span className={styles.titleSuperior}>Autor(a)</span>
+                                            <Image
+                                                src="/Icons TCC/autor.png"
+                                                alt="Autor"
+                                                width={1080}
+                                                height={980}
+                                                className={styles.imgIcons}
                                             />
-                                            {opcao.charAt(0).toUpperCase() + opcao.slice(1)}
-                                        </label>
-                                    ))}
-                                </form>
+                                            {isEditing ? (
+                                                <input
+                                                    type="text"
+                                                    value={autor}
+                                                    onChange={(e) => setAutor(e.target.value)}
+                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
+                                                />
+                                            ) : (
+                                                <span className={styles.titleInferior}>{autor}</span>
+                                            )}
+                                        </div>
+                                        <div className={styles.infoBox}>
+                                            <span className={styles.titleSuperior}>Editora</span>
+                                            <Image
+                                                src="/Icons TCC/editora.png"
+                                                alt="Editora"
+                                                width={1080}
+                                                height={980}
+                                                className={styles.imgIcons}
+                                            />
+                                            {isEditing ? (
+                                                <input
+                                                    type="text"
+                                                    value={editora}
+                                                    onChange={(e) => setEditora(e.target.value)}
+                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
+                                                />
+                                            ) : (
+                                                <span className={styles.titleInferior}>{editora}</span>
+                                            )}
+                                        </div>
+                                        <div className={styles.infoBox}>
+                                            <span className={styles.titleSuperior}>Gênero</span>
+                                            <Image
+                                                src="/Icons TCC/genero.png"
+                                                alt="Gênero"
+                                                width={1080}
+                                                height={980}
+                                                className={styles.imgIcons}
+                                            />
+                                            {isEditing ? (
+                                                <input
+                                                    type="text"
+                                                    value={genero}
+                                                    onChange={(e) => setGenero(e.target.value)}
+                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
+                                                />
+                                            ) : (
+                                                <span className={styles.titleInferior}>{genero}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className={styles.editar}>
+                                        <button
+                                            type="submit"
+                                            onClick={openModalConfirm}
+                                            className={styles.saveButton}
+                                        >
+                                            Salvar Alterações
+                                        </button>
+                                    </div>
+                                    <ModalConfirmar
+                                        show={showModalConfirm}
+                                        onClose={closeModalConfirm}
+                                        onConfirm={handleConfirm}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={styles.redefinir}>
-                        <Link href="/usuarios/esqueceuSenha1">Esqueceu a senha?</Link>
-                    </div>
-                    <div className={styles.editar}>
-                        {isEditing ? (
-                            <>
-                                <button onClick={handleSave} className={styles.saveButton}>Salvar</button>
-                                <button onClick={() => setIsEditing(false)} className={styles.cancelButton}>Cancelar</button>
-                            </>
-                        ) : (
-                            <button onClick={() => setIsEditing(true)} className={styles.editarButton}>
-                                Editar
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>

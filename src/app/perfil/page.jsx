@@ -31,7 +31,7 @@ export default function Perfil() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await api.get('/usuarios'); // Ajuste o endpoint conforme necessário
+                const response = await api.post('/usuarios'); // Ajuste o endpoint conforme necessário
                 setPerfil(response.data);
             } catch (error) {
                 console.error("Erro ao buscar dados do perfil:", error);

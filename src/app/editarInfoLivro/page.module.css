@@ -28,7 +28,7 @@
 }
 
 .lineSquare {
-    width: 50%;
+    width: auto;
     height: auto;
     box-sizing: border-box;
     border: 1px solid black;

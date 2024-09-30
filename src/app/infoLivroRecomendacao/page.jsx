@@ -42,6 +42,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
 
         handleCarregaLivro();
 
+        // Função para carregar os dados do livro
         async function handleCarregaLivro() {
             const dadosApi = {
                 liv_cod: codLivroRec

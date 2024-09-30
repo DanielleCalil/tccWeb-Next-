@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
 import api from '@/services/api';
 
 import FileInput from '@/componentes/FileInput/page';
@@ -15,6 +16,24 @@ import ModalAddGenero from '@/componentes/modalAddGenero/page';
 export default function AddLivroNovo() {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const router = useRouter();
+
+    const [livro, setLivro] = useState({
+        liv_cod: '',
+        liv_pha_cod: '',
+        liv_categ_cod: '',
+        liv_nome: '',
+        liv_desc: '',
+        edt_nome: '',
+        liv_foto_capa: '',
+        aut_nome: '',
+        liv_desc: '',
+        disponivel: '',
+        generos: '',
+    });
+
+    const valDefault = styles.formControl;
+    const valSucesso = styles.formControl + ' ' + styles.success;
+    const valErro = styles.formControl + ' ' + styles.error;
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const openModalConfirm = () => setShowModalConfirm(true);
@@ -94,6 +113,222 @@ export default function AddLivroNovo() {
         fetchOptions();
     }, []);
 
+    // validação
+    const [valida, setValida] = useState({
+        nome: {
+            validado: valDefault,
+            mensagem: []
+        },
+        autor: {
+            validado: valDefault,
+            mensagem: []
+        },
+        editora: {
+            validado: valDefault,
+            mensagem: []
+        },
+        genero: {
+            validado: valDefault,
+            mensagem: []
+        },
+        resumo: {
+            validado: valDefault,
+            mensagem: []
+        },
+        capa: {
+            validado: valDefault,
+            mensagem: []
+        },
+        quantdade: {
+            validado: valDefault,
+            mensagem: []
+        }
+    });
+
+    const handleChange = (e) => {
+        setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+
+    function validaNome() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.liv_nome === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O nome do livro é obrigatório');
+        } else if (livro.liv_nome.length < 5) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Insira o nome do livro');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            nome: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaAutor() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.aut_nome === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O nome do autor é obrigatório');
+        } else if (livro.aut_nome.length < 5) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Selecione o nome do autor');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            autor: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaEditora() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.edt_nome === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O nome da editora é obrigatório');
+        } else if (livro.edt_nome.length < 4) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Selecione o nome da editora');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            editora: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaGenero() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.gen_nome === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O gênero do livro é obrigatório');
+        } else if (livro.gen_nome.length < 5) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Selecione o gênero do livro');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            genero: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaResumo() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.liv_desc === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O resumo do livro é obrigatório');
+        } else if (livro.liv_desc.length < 5) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Insira o resumo do livro');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            resumo: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaQuant() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.disponivel === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('A quantidade de livros é obrigatória');
+        } else if (livro.disponivel.length > 1) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('A quantidade de livros deve ser maior que 1');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            quant: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        let itensValidados = 0;
+        itensValidados += validaNome();
+        itensValidados += validaAutor();
+        itensValidados += validaEditora();
+        itensValidados += validaGenero();
+        itensValidados += validaResumo();
+        itensValidados += validaQuant();
+        // itensValidados += validaCapa();
+
+        // salvar quando atingir o número de itens a serem validados
+        // alert(itensValidados);
+        if (itensValidados === 7) {
+            // alert('chama api');            
+
+            try {
+                let confirmaCad;
+                const response = await api.post('/livros', livro);
+                confirmaCad = response.data.sucesso;
+                // const idUsu = confirmaCad;
+                // alert(idUsu);
+                if (confirmaCad) {
+                    router.push('/biblioteca')
+                }
+            } catch (error) {
+                if (error.response) {
+                    alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+                } else {
+                    alert('Erro no front-end' + '\n' + error);
+                }
+            }
+        }
+    }
+
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -113,6 +348,9 @@ export default function AddLivroNovo() {
                                 </div>
                                 <FileInput onFileSelect={handleFileSelect} />
                             </div>
+                        </div>
+                        <div className={styles.inputContainer}>
+
                             <div className={styles.inputGroup}>
                                 <p className={styles.textInput}>Quantidade:</p>
                                 <input
@@ -120,15 +358,24 @@ export default function AddLivroNovo() {
                                     className={styles.inputQuant}
                                 />
                             </div>
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <div className={styles.inputGroup}>
-                                <p className={styles.textInput}>Nome:</p>
-                                <input
-                                    type="text"
-                                    className={styles.inputField}
-                                />
+
+                            <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome">
+                                <div className={styles.divInput}>
+                                    <p className={styles.textInput}>Nome:</p>
+                                    <input
+                                        type="text"
+                                        name="liv_nome"
+                                        className={styles.inputField}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.nome.mensagem.map(mens => <small key={mens} id="nome" className={styles.small}>{mens}</small>) //exibe as mensagens de erro ou sucesso para o usuário.
+                                }
                             </div>
+
                             <div className={styles.inputGroup}>
                                 <label htmlFor="autores" className={styles.textInput}>Autor:</label>
                                 <select id="autores" value={selectedAutor} onChange={handleChangeAutor} className={styles.inputField}>
@@ -214,15 +461,14 @@ export default function AddLivroNovo() {
                         </div>
                     </div>
 
-                    <div className={styles.editar}>
-                        <button
-                            type="button"
-                            onClick={openModalConfirm}
-                            className={styles.addButtonPrinc}
-                        >
-                            Adicionar
-                        </button>
-                    </div>
+                    <button
+                        type="submit"
+                        onClick={openModalConfirm}
+                        className={styles.addButtonPrinc}
+                    >
+                        Adicionar
+                    </button>
+
                 </div>
             </div>
             <ModalConfirmar

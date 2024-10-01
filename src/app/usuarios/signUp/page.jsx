@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 // import InputMask from 'react-input-mask';
 import styles from './page.module.css';
@@ -11,6 +11,8 @@ import api from '@/services/api';
 
 export default function SignUp() {
     const router = useRouter();
+    const [cursosTec, setCursosTec] = useState([]);
+    const [medio, setMedio] = useState([]);
 
     const [usuario, setUsuario] = useState({
         usu_rm: '',
@@ -19,6 +21,7 @@ export default function SignUp() {
         usu_senha: '',
         confSenha: '',
         usu_sexo: '',
+        cur_nome: '',
     });
 
     const valDefault = styles.formControl;
@@ -36,43 +39,41 @@ export default function SignUp() {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
-    async function logar() {
+    useEffect(() => {
+        listaCursosTec();
+    }, []);
 
+    useEffect(() => {
+        listaEnsMedio();
+    }, []);
+
+    async function listaCursosTec() {
         try {
-            const dados = {
-                usu_email_rm: login,
-                usu_senha: senha
-            }
-
-            const response = await api.post('/usuarios', dados);
-
-            if (response.data.sucesso == true) {
-                const usuario = response.data.dados;
-                const objLogado = {
-                    "cod": usuario.usu_cod,
-                    "nome": usuario.usu_nome,
-                    "acesso": usuario.usu_tipo
-                };
-                // signin(JSON.stringify(objLogado));                
-                localStorage.clear();
-                localStorage.setItem('user', JSON.stringify(objLogado));
-                router.push('/'); // é possível direcionar de acordo com a situação
-
-            } else {
-                alert('Erro: ' + response.data.mensagem + '\n' + response.data.dados)
-            }
-
+            const response = await api.post('/usuarios');
+            setCursosTec(response.data.dados);
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.dados == null ?
-                    error.response.data.mensagem
-                    :
-                    error.response.data.mensagem + '\n' + error.response.data.dados);
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
             } else {
                 alert('Erro no front-end' + '\n' + error);
             }
         }
     }
+
+    async function listaEnsMedio() {
+        try {
+            const response = await api.post('/usuarios');
+            setMedio(response.data.dados);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
+
+
 
     // validação
     const [valida, setValida] = useState({
@@ -398,18 +399,20 @@ export default function SignUp() {
 
                             <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect1">
                                 <div className={styles.divInput}>
-                                    <select id="options" defaultValue="" value={select1} onChange={handleSelect1Change} className={styles.opcao}>
-                                        <option value="" disabled>Curso Técnico</option>
-                                        <option value="opcao1">Opção 1</option>
-                                        <option value="opcao2">Opção 2</option>
-                                        <option value="opcao3">Opção 3</option>
+                                    <select id="cursosTecnico" name="cursosTec" defaultValue={usuario.select1} onChange={handleSelect1Change} className={styles.opcao}>
+                                        <option value="" disabled style={{ color: '#ccc' }}>Sel. Curso Técnico</option>
+                                        {
+                                            cursosTec.map(curso => (
+                                                <option key={curso.cur_nome} value={curso.cur_nome}>{curso.cur_nome}</option>
+                                            ))
+                                        }
                                     </select>
                                     <IoCheckmarkCircleOutline className={styles.sucesso} />
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
                                     valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
-                                        <small key={mens} id="select" className={styles.small}>{mens}</small>
+                                        <small key={mens} id="cursosTecnico" className={styles.small}>{mens}</small>
                                     ))
                                 }
 
@@ -417,18 +420,20 @@ export default function SignUp() {
 
                             <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect2">
                                 <div className={styles.divInput}>
-                                    <select id="options" defaultValue="" value={select2} onChange={handleSelect2Change} className={styles.opcao}>
-                                        <option value="" disabled style={{ color: '#ccc' }}>Ensino Médio</option>
-                                        <option value="opcao1">Opção 1</option>
-                                        <option value="opcao2">Opção 2</option>
-                                        <option value="opcao3">Opção 3</option>
+                                    <select id="ensinoMedio" name="ensMedio" defaultValue={usuario.select2} onChange={handleSelect2Change} className={styles.opcao}>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Sel. Ensino Médio</option>
+                                        {
+                                            medio.map(med => (
+                                                <option key={med.med_nome} value={med.med_nome}>{med.med_nome}</option>
+                                            ))
+                                        }
                                     </select>
                                     <IoCheckmarkCircleOutline className={styles.sucesso} />
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
                                     valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
-                                        <small key={mens} id="select" className={styles.small}>{mens}</small>
+                                        <small key={mens} id="ensinoMedio" className={styles.small}>{mens}</small>
                                     ))
                                 }
 

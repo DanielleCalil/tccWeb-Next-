@@ -129,7 +129,7 @@
 .eyeIcon {
   position: absolute;
   right: 55px;
-  /* top: 50%; */
+  top: 40%;
   /* transform: translateY(-50%); */
   cursor: pointer;
   color: #000;
@@ -230,14 +230,14 @@
   width: 100%;
 }
 
-.formControl .divInput {
+ .divInput {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.formControl .divRadio {
+ .divRadio {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -259,7 +259,7 @@
 
 .select {
   padding: 0 1rem;
-  width: 100%;
+  width: 90%;
   font-size: 1.4rem;
   height: 5rem;
   border-radius: 1rem;
@@ -283,11 +283,6 @@
   outline: 0;
   border-color: #B71C1C;
 }
-
-.valNome {
-  width: 100%;
-}
-
 
 /* Error and Success */
 .formControl.success input {

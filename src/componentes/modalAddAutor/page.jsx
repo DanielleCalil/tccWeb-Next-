@@ -6,6 +6,7 @@ import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
 const ModalAddAutor = ({ show, onClose }) => {
+    const [autor, setAutor] = useState(''); // Estado para armazenar o nome do autor
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const router = useRouter();
 
@@ -14,9 +15,28 @@ const ModalAddAutor = ({ show, onClose }) => {
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
 
-    const handleConfirm = () => {
-        setShowModalConfirm(false);
-        router.push('/biblioteca');
+    // Função para enviar o autor ao backend
+    const handleConfirm = async () => {
+        try {
+            // Faz a requisição para adicionar o autor ao banco
+            const response = await fetch('/autores', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome: autor }), // Envia o nome do autor no corpo da requisição
+            });
+
+            if (response.ok) {
+                // Se o envio for bem-sucedido, fecha o modal e redireciona
+                setShowModalConfirm(false);
+                router.push('/gerenciarLivroBiblioteca'); // Redireciona para a biblioteca
+            } else {
+                console.error('Erro ao adicionar o autor');
+            }
+        } catch (error) {
+            console.error('Erro ao conectar ao servidor:', error);
+        }
     };
 
     return (
@@ -29,6 +49,8 @@ const ModalAddAutor = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
+                                value={autor} // Vínculo do estado ao input
+                                onChange={(e) => setAutor(e.target.value)} // Atualiza o estado conforme o usuário digita
                             />
                         </div>
                         <div className={styles.buttonsContainer}>
@@ -54,7 +76,7 @@ const ModalAddAutor = ({ show, onClose }) => {
                 <ModalConfirmar
                     show={showModalConfirm}
                     onClose={closeModalConfirm}
-                    onConfirm={handleConfirm}
+                    onConfirm={handleConfirm} // Chama a função para adicionar o autor
                 />
             )}
         </>

@@ -103,50 +103,54 @@ export default function Reservas() {
                 </div>
 
                 <div className={styles.container}>
-                    {reserva.map(reserv => (
-                        <div key={reserv.usu_nome} className={styles.lineSquare}>
-                            <div className={styles.inputContainer}>
-                                <div className={styles.infoBookReserva}>
-                                    <Image
-                                        loader={imageLoader}
-                                        src={reserv.liv_foto_capa}
-                                        alt={reserv.liv_nome}
-                                        className={styles.imgReserva}
-                                        width={200}
-                                        height={300}
-                                    />
-                                    <div className={styles.livroInfo}>
-                                        <p>{reserv.liv_nome}</p>
-                                        <p>Por: {reserv.aut_nome}</p>
+                    {reserva.length > 0 ? (
+                        reserva.map(reserv => (
+                            <div key={reserv.usu_nome} className={styles.lineSquare}>
+                                <div className={styles.inputContainer}>
+                                    <div className={styles.infoBookReserva}>
+                                        <Image
+                                            loader={imageLoader}
+                                            src={reserv.liv_foto_capa}
+                                            alt={reserv.liv_nome}
+                                            className={styles.imgReserva}
+                                            width={200}
+                                            height={300}
+                                        />
+                                        <div className={styles.livroInfo}>
+                                            <p>{reserv.liv_nome}</p>
+                                            <p>Por: {reserv.aut_nome}</p>
+                                        </div>
                                     </div>
+                                    <div className={styles.line}></div>
+                                    <p className={styles.info}>Reservado por: {reserv.usu_nome}</p>
+                                    <p className={styles.info}>Reserva realizada no dia: {reserv.Empréstimo}</p>
+                                    <p className={styles.info}>Período da reserva: {reserv.periodo?.inicio || 'Data não disponível'} até {reserv.periodo?.fim || 'Data não disponível'}</p>
+                                    <div className={styles.line}></div>
+                                    <p className={styles.pUsuario}>Confirmar retirada do livro</p>
+                                    <div className={styles.opcao}>
+                                        <button
+                                            type="button"
+                                            onClick={openModalConfirm}
+                                            className={styles.confirmButton}>
+                                            Retirada confirmada
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={openModalConfirm}
+                                            className={styles.cancelButton}>
+                                            Cancelar retirada
+                                        </button>
+                                    </div>
+                                    <p className={styles.obs}>
+                                        OBS: se após 3 dias da data inicial da reserva não for declarada nenhuma informação a respeito da retirada,
+                                        a reserva será automaticamente cancelada.
+                                    </p>
                                 </div>
-                                <div className={styles.line}></div>
-                                <p className={styles.info}>Reservado por: {reserv.usu_nome}</p>
-                                <p className={styles.info}>Reserva realizada no dia: {reserv.Empréstimo}</p>
-                                <p className={styles.info}>Período da reserva: {reserv.periodo?.inicio || 'Data não disponível'} até {reserv.periodo?.fim || 'Data não disponível'}</p>
-                                <div className={styles.line}></div>
-                                <p className={styles.pUsuario}>Confirmar retirada do livro</p>
-                                <div className={styles.opcao}>
-                                    <button
-                                        type="button"
-                                        onClick={openModalConfirm}
-                                        className={styles.confirmButton}>
-                                        Retirada confirmada
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={openModalConfirm}
-                                        className={styles.cancelButton}>
-                                        Cancelar retirada
-                                    </button>
-                                </div>
-                                <p className={styles.obs}>
-                                    OBS: se após 3 dias da data inicial da reserva não for declarada nenhuma informação a respeito da retirada,
-                                    a reserva será automaticamente cancelada.
-                                </p>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <h1>Nenhum livro reservado foi encontrado.</h1>
+                    )}
                 </div>
             </div>
             <ModalConfirmar

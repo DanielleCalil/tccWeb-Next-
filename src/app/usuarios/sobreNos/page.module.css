@@ -20,6 +20,10 @@
   justify-content: center; 
 }
 
+.titulo {
+  color: #000;
+}
+
 .conteudo {
   align-items: center;
   display: flex;

@@ -134,12 +134,23 @@ export default function GerenciarLivroExistente() {
     };
 
     // Função para ativar/inativar um livro pelo título
-    const toggleBookStatus = (liv_nome) => {
+    const toggleBookStatus = async (liv_nome) => {
         const updatedBooks = books.map(book =>
             book.liv_nome === liv_nome ? { ...book, active: !book.active } : book
         );
         setBooks(updatedBooks);
+
+        // Atualiza o status no backend
+        try {
+            const book = updatedBooks.find(b => b.liv_nome === liv_nome);
+            await api.patch(`/livros/${liv_nome}`, { active: book.active });
+        } catch (error) {
+            console.error('Erro ao atualizar o status do livro:', error);
+            // Reverte a mudança em caso de erro
+            setBooks(books);
+        }
     };
+
 
     // Ordenar livros em ordem alfabética pelo título
     const sortedBooks = [...books].sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
@@ -191,37 +202,41 @@ export default function GerenciarLivroExistente() {
                         ))}
                     </div>
                     <div className={styles.bookList}>
-                        {sortedBooks.map(livro => (
-                            <div
-                                className={`${styles.bookItem} ${!livro.active ? styles.inactive : ""}`}
-                                key={livro.liv_nome}
-                            >
-                                <div>
-                                    <Image
-                                        loader={imageLoader} /* Quando imagem vem por URL */
-                                        src={livro.liv_foto_capa}
-                                        alt={livro.liv_nome}
-                                        width={100}
-                                        height={150}
-                                        className={styles.bookImage}
-                                    />
-                                    <div className={styles.bookInfo}>
-                                        <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
-                                        <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                        {sortedBooks.length > 0 ? (
+                            sortedBooks.map(livro => (
+                                <div
+                                    className={`${styles.bookItem} ${!livro.active ? styles.inactive : ""}`}
+                                    key={livro.liv_nome}
+                                >
+                                    <div>
+                                        <Image
+                                            loader={imageLoader} /* Quando imagem vem por URL */
+                                            src={livro.liv_foto_capa}
+                                            alt={livro.liv_nome}
+                                            width={100}
+                                            height={150}
+                                            className={styles.bookImage}
+                                        />
+                                        <div className={styles.bookInfo}>
+                                            <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
+                                            <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.toggleContainer}>
+                                        <label className={styles.switch}>
+                                            <input
+                                                type="checkbox"
+                                                checked={livro.active}
+                                                onChange={() => toggleBookStatus(livro.liv_nome)}
+                                            />
+                                            <span className={`${styles.slider} ${styles.round}`}></span>
+                                        </label>
                                     </div>
                                 </div>
-                                <div className={styles.toggleContainer}>
-                                    <label className={styles.switch}>
-                                        <input
-                                            type="checkbox"
-                                            checked={livro.active}
-                                            onChange={() => toggleBookStatus(livro.liv_nome)}
-                                        />
-                                        <span className={`${styles.slider} ${styles.round}`}></span>
-                                    </label>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <h1>Nenhum livro foi encontrado.</h1>
+                        )}
                     </div>
                 </div>
             </div>

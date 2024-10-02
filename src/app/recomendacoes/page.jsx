@@ -129,7 +129,8 @@ export default function Recomendacoes() {
 
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {sortedBooks.map(livroRec => (
+                        {sortedBooks.length > 0 ? (
+                        sortedBooks.map(livroRec => (
                             <div className={styles.bookItem} key={livroRec.liv_nome}>
                                 <Link href={`/recLivro/${livroRec.liv_cod}`}>
                                     <div>
@@ -149,7 +150,10 @@ export default function Recomendacoes() {
                                     </div>
                                 </Link>
                             </div>
-                        ))}
+                        ))
+                        ) : (
+                            <h1>Nenhuma recomendação encontrada.</h1>
+                        )}
                     </div>
                 </div>
             </div>

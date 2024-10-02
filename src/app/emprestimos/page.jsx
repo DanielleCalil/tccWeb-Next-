@@ -90,30 +90,34 @@ export default function Emprestimos() {
         </div>
 
         <div className={styles.container}>
-          {emprestimo.map(liv => (
-            <div key={liv.usu_nome} className={styles.lineSquare}>
-              <div className={styles.inputContainer}>
-                <div className={styles.infoBookReserva}>
-                  <Image
-                    loader={imageLoader}
-                    src={liv.liv_foto_capa}
-                    alt={liv.liv_nome}
-                    className={styles.imgReserva}
-                    width={667}
-                    height={1000}
-                  />
-                  <div className={styles.livroInfo}>
-                    <p>{liv.liv_nome}</p>
-                    <p>Por: {liv.aut_nome}</p>
+          {emprestimo.map > 0 ? (
+            emprestimo.map(liv => (
+              <div key={liv.usu_nome} className={styles.lineSquare}>
+                <div className={styles.inputContainer}>
+                  <div className={styles.infoBookReserva}>
+                    <Image
+                      loader={imageLoader}
+                      src={liv.liv_foto_capa}
+                      alt={liv.liv_nome}
+                      className={styles.imgReserva}
+                      width={667}
+                      height={1000}
+                    />
+                    <div className={styles.livroInfo}>
+                      <p>{liv.liv_nome}</p>
+                      <p>Por: {liv.aut_nome}</p>
+                    </div>
                   </div>
+                  <div className={styles.line}></div>
+                  <p className={styles.info}>Reservado por: {liv.usu_nome}</p>
+                  <p className={styles.info}>Reserva realizada no dia: {liv.Empréstimo}</p>
+                  <p className={styles.info}>Período da reserva: {liv.periodo?.inicio || 'Data não disponível'} até {liv.periodo?.fim || 'Data não disponível'}</p>
                 </div>
-                <div className={styles.line}></div>
-                <p className={styles.info}>Reservado por: {liv.usu_nome}</p>
-                <p className={styles.info}>Reserva realizada no dia: {liv.Empréstimo}</p>
-                <p className={styles.info}>Período da reserva: {liv.periodo?.inicio || 'Data não disponível'} até {liv.periodo?.fim || 'Data não disponível'}</p>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <h1>Nenhum livro reservado foi encontrado.</h1>
+          )}
         </div>
       </div>
     </main>

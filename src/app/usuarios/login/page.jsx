@@ -117,7 +117,7 @@ export default function Login() {
             objTemp.mensagem.push('Preencha o campo senha');
         } else if (senha.length < 6) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('Senha inválida');
+            objTemp.mensagem.push('Número de caracteres inválido');
         }
 
         setValida(prevState => ({

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IoSearchOutline } from "react-icons/io5";
 import { IoEye, IoEyeOff, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
 import api from '@/services/api';
 
@@ -15,13 +14,13 @@ export default function SignUp() {
     const [medio, setMedio] = useState([]);
 
     const [usuario, setUsuario] = useState({
-        usu_rm: '',
-        usu_nome: '',
-        usu_email: '',
-        usu_senha: '',
-        confSenha: '',
-        usu_sexo: '',
-        cur_nome: '',
+        "usu_rm": '',
+        "usu_nome": '',
+        "usu_email": '',
+        "usu_senha": '',
+        "confSenha": '',
+        "usu_sexo": '',
+        "cur_nome": '',
     });
 
     const valDefault = styles.formControl;
@@ -225,28 +224,31 @@ export default function SignUp() {
     }
 
     function validaSenha() {
-
         let objTemp = {
             validado: valSucesso,
             mensagem: []
         };
-
+    
+        // Expressão regular para validar a senha
+        const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    
         if (usuario.usu_senha === '') {
             objTemp.validado = valErro;
             objTemp.mensagem.push('O preenchimento da senha é obrigatório');
-        } else if (usuario.usu_senha.length < 3) {
+        } else if (!senhaForteRegex.test(usuario.usu_senha)) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('A senha deve ter pelo menos 3 caracteres');
+            objTemp.mensagem.push('A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.');
         }
-
+    
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            senha: objTemp // atualiza apenas o campo 'nome'
+            senha: objTemp // atualiza apenas o campo 'senha'
         }));
-
+    
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
         return testeResult;
     }
+    
 
     function validaConfSenha() {
 
@@ -376,7 +378,7 @@ export default function SignUp() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.nome.mensagem.map(mens => <small key={mens} id="nome" className={styles.small}>{mens}</small>) //exibe as mensagens de erro ou sucesso para o usuário.
+                                    valida.nome.mensagem.map(mens => <small key={mens} id="nome" className={styles.small}>{mens}</small>)
                                 }
                             </div>
 
@@ -400,7 +402,7 @@ export default function SignUp() {
                             <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect1">
                                 <div className={styles.divInput}>
                                     <select id="cursosTecnico" name="cursosTec" defaultValue={usuario.select1} onChange={handleSelect1Change} className={styles.opcao}>
-                                        <option value="" disabled style={{ color: '#ccc' }}>Sel. Curso Técnico</option>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Sel. Curso Técnico</option>
                                         {
                                             cursosTec.map(curso => (
                                                 <option key={curso.cur_nome} value={curso.cur_nome}>{curso.cur_nome}</option>
@@ -525,7 +527,8 @@ export default function SignUp() {
 
                             <button
                                 type="submit"
-                                className={styles.cadastroButton}>
+                                className={styles.cadastroButton}
+                            >
                                 Fazer cadastro
                             </button>
                         </form>

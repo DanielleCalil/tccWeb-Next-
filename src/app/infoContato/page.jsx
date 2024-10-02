@@ -42,30 +42,34 @@ export default function InfoContato() {
             height={2000}
           />
         </div>
-        {infoContat.map((informacoes, index) => (
-          <div key={index} className={styles.informacoes}>
-            <p className={styles.escola}>{informacoes.esc_nome}</p>
-            {/* Divide o texto de `infos` por quebras de linha */}
-            {informacoes.infos.split('\n').map((line, i) => (
-              <p key={i} className={styles.infos}>{line}</p>
-            ))}
-            <div className={styles.editar}>
-              <Link href="/infoContatoEditar/">
-                <button
-                  type="submit"
-                  className={styles.editarButton}
-                >
-                  <Image
-                    src="/imagens_telas/editar_perfil.png"
-                    alt="Imagem de Perfil Padrão"
-                    width={500}
-                    height={500}
-                  />
-                </button>
-              </Link>
+        {infoContat.length > 0 ? (
+          infoContat.map((informacoes, index) => (
+            <div key={index} className={styles.informacoes}>
+              <p className={styles.escola}>{informacoes.esc_nome}</p>
+              {/* Divide o texto de `infos` por quebras de linha */}
+              {informacoes.infos.split('\n').map((line, i) => (
+                <p key={i} className={styles.infos}>{line}</p>
+              ))}
+              <div className={styles.editar}>
+                <Link href="/infoContatoEditar/">
+                  <button
+                    type="submit"
+                    className={styles.editarButton}
+                  >
+                    <Image
+                      src="/imagens_telas/editar_perfil.png"
+                      alt="Imagem de Perfil Padrão"
+                      width={500}
+                      height={500}
+                    />
+                  </button>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <h1>Nenhuma informação de contato encontrada.</h1>
+        )}
       </div>
     </main>
   );

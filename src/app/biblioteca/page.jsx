@@ -89,26 +89,30 @@ export default function Biblioteca() {
                 </div>
                 <div className={styles.container}>
                     <div className={styles.bookList}>
-                        {sortedBooks.map(livro => (
-                            <div className={styles.bookItem} key={livro.liv_nome}>
-                                <Link href={`/livros/${livro.liv_cod}`}>
-                                    <div>
-                                        <Image
-                                            loader={imageLoader} /* Quando imagem vem por url */
-                                            src={livro.liv_foto_capa}
-                                            alt={livro.liv_nome}
-                                            width={100}
-                                            height={150}
-                                            className={styles.bookImage}
-                                        />
-                                        <div className={styles.bookInfo}>
-                                            <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
-                                            <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                        {sortedBooks.length > 0 ? (
+                            sortedBooks.map(livro => (
+                                <div className={styles.bookItem} key={livro.liv_nome}>
+                                    <Link href={`/livros/${livro.liv_cod}`}>
+                                        <div>
+                                            <Image
+                                                loader={imageLoader} /* Quando imagem vem por url */
+                                                src={livro.liv_foto_capa}
+                                                alt={livro.liv_nome}
+                                                width={100}
+                                                height={150}
+                                                className={styles.bookImage}
+                                            />
+                                            <div className={styles.bookInfo}>
+                                                <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
+                                                <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            </div>
-                        ))}
+                                    </Link>
+                                </div>
+                            ))
+                        ) : (
+                            <h1>Nenhum livro foi encontrado.</h1>
+                        )}
                     </div>
                 </div>
             </div>

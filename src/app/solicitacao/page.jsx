@@ -127,7 +127,7 @@ export default function Solicitacao() {
         </div>
 
         <div className={styles.situacaoButtons}>
-          {situacao.map((status) => (
+          {situacao.map(status => (
             <div
               className={styles.situacao}
               key={status}
@@ -164,27 +164,31 @@ export default function Solicitacao() {
         </div>
 
         <div className={styles.container}>
-          {solicita.map(solicit => (
-            <div key={solicit.usu_rm} className={styles.lineSquare}>
-              <div className={styles.inputContainer}>
+          {solicita.length > 0 ? (
+            solicita.map((solicit) => (
+              <div key={solicit.usu_rm} className={styles.lineSquare}>
+                <div className={styles.inputContainer}>
 
-                <p className={styles.info}>Cadastro realizado no dia: {solicit.usu_cad}</p>
-                <p className={styles.info}>Nome: {solicit.usu_nome}</p>
-                <p className={styles.info}>RM: {solicit.usu_rm}</p>
-                <p className={styles.info}>E-mail: {solicit.usu_email}</p>
-                <div className={styles.box}>
-                  <input
-                    type="checkbox"
-                    id={`checkbox-${solicit.usu_rm}`} // Adiciona um ID único
-                    checked={selectedUsers.has(solicit.usu_rm)}
-                    onChange={() => toggleUserSelection(solicit.usu_rm)}
-                  />
-                  <label htmlFor={`checkbox-${solicit.usu_rm}`} className={styles.customCheckbox}></label> {/* Checkbox personalizado */}
+                  <p className={styles.info}>Cadastro realizado no dia: {solicit.usu_cad}</p>
+                  <p className={styles.info}>Nome: {solicit.usu_nome}</p>
+                  <p className={styles.info}>RM: {solicit.usu_rm}</p>
+                  <p className={styles.info}>E-mail: {solicit.usu_email}</p>
+                  <div className={styles.box}>
+                    <input
+                      type="checkbox"
+                      id={`checkbox-${solicit.usu_rm}`} // Adiciona um ID único
+                      checked={selectedUsers.has(solicit.usu_rm)}
+                      onChange={() => toggleUserSelection(solicit.usu_rm)}
+                    />
+                    <label htmlFor={`checkbox-${solicit.usu_rm}`} className={styles.customCheckbox}></label> {/* Checkbox personalizado */}
+                  </div>
                 </div>
-              </div>
 
-            </div>
-          ))}
+              </div>
+            ))
+          ) : (
+            <h1>Nenhuma solicitação encontrada.</h1>
+          )}
         </div>
       </div>
       <ModalConfirmar

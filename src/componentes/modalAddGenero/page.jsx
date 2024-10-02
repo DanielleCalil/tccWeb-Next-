@@ -14,9 +14,26 @@ const ModalAddGenero = ({ show, onClose }) => {
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
 
-    const handleConfirm = () => {
-        setShowModalConfirm(false);
-        router.push('/biblioteca');
+    const handleConfirm = async () => {
+        try {
+            const response = await fetch('/editoras', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome: autor }),
+            });
+
+            if (response.ok) {
+                setShowModalConfirm(false);
+                router.push('gerenciarLivroBiblioteca');
+
+            } else {
+                console.error('Erro ao adicionar');
+            }
+        } catch (error) {
+            console.error('Erro ao conectar ao servidor:', error);
+        }
     };
 
     return (

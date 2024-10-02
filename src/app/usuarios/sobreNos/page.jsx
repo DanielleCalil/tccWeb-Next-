@@ -10,7 +10,9 @@ export default function SobreNos() {
           <div className={styles.conteudo}>
             <div className={styles.card}>
               <div className={styles.header}>
-                <h1>Sobre Nós</h1>
+                <Link href="/" className={styles.titulo}>
+                  <h1>Sobre Nós</h1>
+                </Link>
                 <p>Danikawari é a junsão dos nomes das três ingrantes que unidas pelo interesse comum em desenvolver e pela T.I.,
                   criaram a SmoakBook, um aplicativo que visa favorecer alunos e professores em prol da educação, atualizando o
                   sistema de bibliotecas, visualmente mais atrativo e sendo mais prático à todos.

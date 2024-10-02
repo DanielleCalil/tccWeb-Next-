@@ -18,17 +18,16 @@ export default function AddLivroNovo() {
     const router = useRouter();
 
     const [livro, setLivro] = useState({
-        liv_cod: '',
-        liv_pha_cod: '',
-        liv_categ_cod: '',
-        liv_nome: '',
-        liv_desc: '',
-        edt_nome: '',
-        liv_foto_capa: '',
-        aut_nome: '',
-        liv_desc: '',
-        disponivel: '',
-        generos: '',
+        "liv_cod": '',
+        "liv_pha_cod": '',
+        "liv_categ_cod": '',
+        "liv_nome": '',
+        "liv_desc": '',
+        "edt_nome": '',
+        "liv_foto_capa": '',
+        "aut_nome": '',
+        "disponivel": '',
+        "generos": '',
     });
 
     const valDefault = styles.formControl;
@@ -91,12 +90,13 @@ export default function AddLivroNovo() {
         setSelectedGenero(event.target.value);
     };
 
+
     useEffect(() => {
         const fetchOptions = async () => {
             try {
-                const autoresResponse = await fetch('/autores'); // Substitua pela URL da sua API
-                const editorasResponse = await fetch('/editoras'); // Substitua pela URL da sua API
-                const generosResponse = await fetch('/generos'); // Substitua pela URL da sua API
+                const autoresResponse = await api.fetch('/autores'); // Substitua pela URL da sua API
+                const editorasResponse = await api.fetch('/editoras'); // Substitua pela URL da sua API
+                const generosResponse = await api.fetch('/generos'); // Substitua pela URL da sua API
 
                 const autoresData = await autoresResponse.json();
                 const editorasData = await editorasResponse.json();
@@ -155,9 +155,9 @@ export default function AddLivroNovo() {
         if (livro.disponivel === '') {
             objTemp.validado = valErro;
             objTemp.mensagem.push('A quantidade de livros é obrigatória');
-        } else if (livro.disponivel.length > 1) {
+        } else if (livro.disponivel.length <= 0) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('A quantidade de livros deve ser maior que 1');
+            objTemp.mensagem.push('A quantidade de livros deve ser maior que 0');
         }
 
         setValida(prevState => ({
@@ -292,21 +292,21 @@ export default function AddLivroNovo() {
     async function handleSubmit(event) {
         event.preventDefault();
         let itensValidados = 0;
-        
+
         // Validar campos
+        itensValidados += validaQuant();
         itensValidados += validaNome();
         itensValidados += validaAutor();
         itensValidados += validaEditora();
         itensValidados += validaGenero();
         itensValidados += validaResumo();
-        itensValidados += validaQuant();
-    
+
         // Verificar se todos os campos estão validados
         if (itensValidados === 6) {
             try {
-                const response = await api.post('/livros', livro);
-                const confirmaCad = response.data.sucesso;
-    
+                let confirmaCad;
+                const response = await api.post('/liv_cadastrar', livro);
+                confirmaCad = response.data.sucesso;
                 if (confirmaCad) {
                     router.push('/biblioteca');
                 }
@@ -319,199 +319,206 @@ export default function AddLivroNovo() {
             }
         }
     }
-    
+
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setLivro((prev) => ({
-            ...prev,
-            [name]: value,
-            aut_nome: selectedAutor,  // Atualiza o autor selecionado
-            edt_nome: selectedEditora, // Atualiza a editora selecionada
-            gen_nome: selectedGenero,   // Atualiza o gênero selecionado
-        }));
-    };
-    
+        setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.addLivroNovo}>Adicionar livro novo</h1>
-                <div className={styles.container}>
-                    <form id="form" onSubmit={handleSubmit} className={styles.formControl}>
-                        <div className={styles.inputTotal}>
-                            <div className={styles.inputImgContainer}>
-                                <div className={styles.imgBook}>
-                                    <p className={styles.textInput}>Capa:</p>
-                                    <div className={styles.imagePreview}>
-                                        <Image
-                                            src={capaImage}
-                                            alt="Capa do livro"
-                                            width={150}
-                                            height={200}
-                                        />
-                                    </div>
-                                    <FileInput onFileSelect={handleFileSelect} />
-                                </div>
-                            </div>
-                            <div className={styles.inputContainer}>
-                                <div className={valida.quant.validado + ' ' + styles.valQuant} id="valQuant">
-                                    <label className={styles.textInput}>Quantidade:</label>
-                                    <div className={styles.divInput}>
-                                        <input
-                                            type="number"
-                                            name="disponivel"
-                                            className={styles.inputQuant}
-                                            onChange={handleChange}
-                                        />
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
-                                    </div>
-                                    {valida.quant.mensagem.map(mens => (
-                                        <small key={mens} id="quant" className={styles.small}>{mens}</small>
-                                    ))}
-                                </div>
-    
-                                <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome">
-                                    <label className={styles.textInput}>Nome:</label>
-                                    <div className={styles.divInput}>
-                                        <input
-                                            type="text"
-                                            name="liv_nome"
-                                            className={styles.inputField}
-                                            onChange={handleChange}
-                                        />
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
-                                    </div>
-                                    {valida.nome.mensagem.map(mens => (
-                                        <small key={mens} id="nome" className={styles.small}>{mens}</small>
-                                    ))}
-                                </div>
-    
-                                <div className={valida.autor.validado + ' ' + styles.valAutor} id="valAutor">
-                                    <label htmlFor="autores" className={styles.textInput}>Autor:</label>
-                                    <div className={styles.divInput}>
-                                        <select id="autores" value={selectedAutor} onChange={handleChange} className={styles.inputField}>
-                                            <option value="0" disabled>Selecione...</option>
-                                            {autores.map(autor => (
-                                                <option key={autor.id} value={autor.id}>{autor.nome}</option>
-                                            ))}
-                                        </select>
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
-                                    </div>
-                                    {valida.autor.mensagem.map(mens => (
-                                        <small key={mens} id="autor" className={styles.small}>{mens}</small>
-                                    ))}
-                                </div>
-    
-                                <div className={valida.editora.validado + ' ' + styles.valEditora} id="valEditora">
-                                    <label htmlFor="editoras" className={styles.textInput}>Editora:</label>
-                                    <div className={styles.divInput}>
-                                        <select id="editoras" value={selectedEditora} onChange={handleChange} className={styles.inputField}>
-                                            <option value="0" disabled>Selecione...</option>
-                                            {editoras.map(editora => (
-                                                <option key={editora.id} value={editora.id}>{editora.nome}</option>
-                                            ))}
-                                        </select>
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
-                                    </div>
-                                    {valida.editora.mensagem.map(mens => (
-                                        <small key={mens} id="editora" className={styles.small}>{mens}</small>
-                                    ))}
-                                </div>
-    
-                                <div className={valida.genero.validado + ' ' + styles.valGenero} id="valGenero">
-                                    <label htmlFor="generos" className={styles.textInput}>Gênero:</label>
-                                    <div className={styles.divInput}>
-                                        <select id="generos" value={selectedGenero} onChange={handleChange} className={styles.inputField}>
-                                            <option value="0" disabled>Selecione...</option>
-                                            {generos.map(genero => (
-                                                <option key={genero.id} value={genero.id}>{genero.nome}</option>
-                                            ))}
-                                        </select>
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
-                                    </div>
-                                    {valida.genero.mensagem.map(mens => (
-                                        <small key={mens} id="genero" className={styles.small}>{mens}</small>
-                                    ))}
-                                </div>
-    
-                                <div className={valida.resumo.validado + ' ' + styles.valResumo} id="valResumo">
-                                    <p className={styles.textInput}>Resumo:</p>
-                                    <div className={styles.divInput}>
-                                        <textarea
-                                            id="resumo"
-                                            name="liv_desc"
-                                            className={styles.inputResumo}
-                                            onChange={handleChange}
-                                        />
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
-                                    </div>
-                                    {valida.resumo.mensagem.map(mens => (
-                                        <small key={mens} id="resumo" className={styles.small}>{mens}</small>
-                                    ))}
-                                </div>
-    
-                                <div className={styles.tresModais}>
-                                    {/* Modal para adicionar autor */}
-                                    <button
-                                        type="button"
-                                        onClick={openModalAutor}
-                                        className={styles.addButton}
-                                    >
-                                        Adicionar Autor(a)
-                                    </button>
-                                    <ModalAddAutor
-                                        show={showModalAutor}
-                                        onClose={closeModalAutor}
-                                        onConfirm={handleAutor}
-                                    />
-    
-                                    {/* Modal para adicionar editora */}
-                                    <button
-                                        type="button"
-                                        onClick={openModalEditora}
-                                        className={styles.addButton}
-                                    >
-                                        Adicionar Editora
-                                    </button>
-                                    <ModalAddEditora
-                                        show={showModalEditora}
-                                        onClose={closeModalEditora}
-                                        onConfirm={handleEditora}
-                                    />
-    
-                                    {/* Modal para adicionar gênero */}
-                                    <button
-                                        type="button"
-                                        onClick={openModalGenero}
-                                        className={styles.addButton}
-                                    >
-                                        Adicionar Gênero
-                                    </button>
-                                    <ModalAddGenero
-                                        show={showModalGenero}
-                                        onClose={closeModalGenero}
-                                        onConfirm={handleGenero}
+                <form id="form" className={styles.container} onSubmit={handleSubmit}>
+                    <div className={styles.inputTotal}>
+                        <div className={styles.inputImgContainer}>
+                            <div className={styles.imgBook}>
+                                <p className={styles.textInput}>Capa:</p>
+                                <div className={styles.imagePreview}>
+                                    <Image
+                                        src={capaImage}
+                                        alt="Capa do livro"
+                                        width={150}
+                                        height={200}
                                     />
                                 </div>
-                                <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
+                                <FileInput onFileSelect={handleFileSelect} />
                             </div>
                         </div>
-    
-                        <div className={styles.editar}>
-                            <button
-                                type="submit"
-                                className={styles.addButtonPrinc}
-                            >
-                                Adicionar
-                            </button>
+                        <div className={styles.inputContainer}>
+
+                            <div className={valida.quant.validado + ' ' + styles.valQuant} id="valQuant">
+                                <label className={styles.textInput}>Quantidade:</label>
+                                <div className={styles.divInput}>
+                                    <input
+                                        type="number"
+                                        name="disponivel"
+                                        value={livro.disponivel}
+                                        className={styles.inputQuant}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.quant.mensagem.map(mens => <small key={mens} id="quant" className={styles.small}>{mens}</small>)
+                                }
+                            </div>
+
+                            <div className={valida.nome.validado + ' ' + styles.valNome} id="valNome">
+                                <label className={styles.textInput}>Nome:</label>
+                                <div className={styles.divInput}>
+                                    <input
+                                        type="text"
+                                        name="liv_nome"
+                                        value={livro.liv_nome}
+                                        className={styles.inputField}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.nome.mensagem.map(mens => <small key={mens} id="nome" className={styles.small}>{mens}</small>)
+                                }
+                            </div>
+
+                            <div className={valida.autor.validado + ' ' + styles.valAutor} id="valAutor">
+                                <label className={styles.textInput}>Autor:</label>
+                                <div className={styles.divInput}>
+                                    <select id="autores" name="autor" defaultValue={livro.selectedAutor} onChange={handleChangeAutor} className={styles.inputField}>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
+                                        {
+                                            autores.map(aut => (
+                                                <option key={aut.aut_nome} value={aut.aut_nome}>{aut.aut_nome}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.autor.mensagem.map(mens => (
+                                        <small key={mens} id="autores" className={styles.small}>{mens}</small>
+                                    ))
+                                }
+                            </div>
+
+                            <div className={valida.editora.validado + ' ' + styles.valEditora} id="valEditora">
+                                <label className={styles.textInput}>Editora:</label>
+                                <div className={styles.divInput}>
+                                    <select id="editoras" name="editora" defaultValue={livro.selectedEditora} onChange={handleChangeEditora} className={styles.inputField}>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
+                                        {
+                                            editoras.map(edt => (
+                                                <option key={edt.edt_nome} value={edt.edt_nome}>{edt.edt_nome}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.editora.mensagem.map(mens => (
+                                        <small key={mens} id="editoras" className={styles.small}>{mens}</small>
+                                    ))
+                                }
+                            </div>
+
+                            <div className={valida.genero.validado + ' ' + styles.valGenero} id="valGenero">
+                                <label className={styles.textInput}>Gênero:</label>
+                                <div className={styles.divInput}>
+                                    <select id="generos" name="genero" defaultValue={livro.selectedGenero} onChange={handleChangeGenero} className={styles.inputField}>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
+                                        {
+                                            generos.map(gen => (
+                                                <option key={gen.gen_nome} value={gen.gen_nome}>{gen.gen_nome}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.genero.mensagem.map(mens => (
+                                        <small key={mens} id="generos" className={styles.small}>{mens}</small>
+                                    ))
+                                }
+                            </div>
+
+                            <div className={valida.resumo.validado + ' ' + styles.valResumo} id="valResumo">
+                                <p className={styles.textInput}>Resumo:</p>
+                                <div className={styles.divInput}>
+                                    <textarea
+                                        id="resumo"
+                                        name="liv_desc"
+                                        value={livro.liv_desc}
+                                        className={styles.inputResumo}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.resumo.mensagem.map(mens => <small key={mens} id="resumo" className={styles.small}>{mens}</small>)
+                                }
+                            </div>
+
+                            <div className={styles.tresModais}>
+                                {/* Modal para adicionar autor */}
+                                <button
+                                    type="button"
+                                    onClick={openModalAutor}
+                                    className={styles.addButton}
+                                >
+                                    Adicionar Autor(a)
+                                </button>
+                                <ModalAddAutor
+                                    show={showModalAutor}
+                                    onClose={closeModalAutor}
+                                    onConfirm={handleAutor}
+                                />
+
+                                {/* Modal para adicionar editora */}
+                                <button
+                                    type="button"
+                                    onClick={openModalEditora}
+                                    className={styles.addButton}
+                                >
+                                    Adicionar Editora
+                                </button>
+                                <ModalAddEditora
+                                    show={showModalEditora}
+                                    onClose={closeModalEditora}
+                                    onConfirm={handleEditora}
+                                />
+
+                                {/* Modal para adicionar gênero */}
+                                <button
+                                    type="button"
+                                    onClick={openModalGenero}
+                                    className={styles.addButton}
+                                >
+                                    Adicionar Gênero
+                                </button>
+                                <ModalAddGenero
+                                    show={showModalGenero}
+                                    onClose={closeModalGenero}
+                                    onConfirm={handleGenero}
+                                />
+                            </div>
+                            <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div className={styles.editar}>
+                        <button
+                            type="submit"
+                            className={styles.addButtonPrinc}
+                        >
+                            Adicionar
+                        </button>
+                    </div>
+                </form>
             </div>
             <ModalConfirmar
                 show={showModalConfirm}

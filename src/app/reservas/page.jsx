@@ -54,9 +54,12 @@ export default function Reservas() {
     }, []);
 
     async function listaLivros() {
-        const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+        const dados = { 
+            usu_cod: 18,
+            [selectedSearchOption]: livNome 
+        };
         try {
-            const response = await api.post('/emprestimos', dados);
+            const response = await api.post('/reservas', dados);
             console.log(response.data.dados);
             setReserva(response.data.dados);
         } catch (error) {

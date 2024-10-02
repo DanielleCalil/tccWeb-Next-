@@ -23,8 +23,8 @@ import api from '@/services/api';
 // ];
 
 const searchOptions = [
-  { value: 'usu_nome', label: 'Usuário' },
-  { value: 'Empréstimo', label: 'Data da reserva' },
+  { value: 'usu_cod', label: 'Usuário' },
+  { value: 'emp_data_emp', label: 'Data da reserva' },
   { value: 'liv_nome', label: 'Livro' },
   { value: 'aut_nome', label: 'Autor' },
 ];

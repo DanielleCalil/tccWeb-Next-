@@ -21,8 +21,11 @@ export default function Perfil() {
     // Busca os dados do perfil ao montar o componente
     useEffect(() => {
         const fetchProfile = async () => {
+            const dados = {
+                usu_cod: 18,
+            }
             try {
-                const response = await api.post('/usuarios'); // Ajuste o endpoint conforme necessário
+                const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
                 setPerfil(response.data);
             } catch (error) {
                 console.error("Erro ao buscar dados do perfil:", error);

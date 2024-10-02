@@ -10,8 +10,7 @@ import api from '@/services/api';
 
 export default function SignUp() {
     const router = useRouter();
-    const [cursosTec, setCursosTec] = useState([]);
-    const [medio, setMedio] = useState([]);
+    const [cursos, setCursos] = useState([]);
 
     const [usuario, setUsuario] = useState({
         "usu_rm": '',
@@ -19,7 +18,7 @@ export default function SignUp() {
         "usu_email": '',
         "usu_senha": '',
         "confSenha": '',
-        "usu_sexo": '',
+        "usu_sexo": 0,
         "cur_nome": '',
     });
 
@@ -39,17 +38,14 @@ export default function SignUp() {
     };
 
     useEffect(() => {
-        listaCursosTec();
+        listaCursos();
     }, []);
 
-    useEffect(() => {
-        listaEnsMedio();
-    }, []);
-
-    async function listaCursosTec() {
+    async function listaCursos() {
         try {
-            const response = await api.post('/usuarios');
-            setCursosTec(response.data.dados);
+            const response = await api.post('/cursos');
+            setCursos(response.data.dados);
+            console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -58,21 +54,6 @@ export default function SignUp() {
             }
         }
     }
-
-    async function listaEnsMedio() {
-        try {
-            const response = await api.post('/usuarios');
-            setMedio(response.data.dados);
-        } catch (error) {
-            if (error.response) {
-                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-            } else {
-                alert('Erro no front-end' + '\n' + error);
-            }
-        }
-    }
-
-
 
     // validação
     const [valida, setValida] = useState({
@@ -106,19 +87,10 @@ export default function SignUp() {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const [select1, setSelect1] = useState('');
-    const [select2, setSelect2] = useState('');
-
-    const handleSelect1Change = (e) => {
-        setSelect1(e.target.value);
-        setSelect2(''); // Limpa o segundo select se algo for selecionado no primeiro
-        setError('');
-    };
-
-    const handleSelect2Change = (e) => {
-        setSelect2(e.target.value);
-        setSelect1(''); // Limpa o primeiro select se algo for selecionado no segundo
-        setError('');
+    const [select, setSelect] = useState('');
+    const handleSelectChange = (e) => {
+        setSelect(e.target.value);
+        setError(''); // Limpa o erro se necessário
     };
 
     function validaSelect() {
@@ -128,12 +100,9 @@ export default function SignUp() {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!select1 && !select2) {
+        if (!select) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('Por favor, selecione uma opção em um dos campos.');
-        } else if (select1 && select2) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Não é permitido selecionar opções em ambos os campos.');
+            objTemp.mensagem.push('Por favor, selecione uma opção no campo.');
         }
 
         setValida(prevState => ({
@@ -314,6 +283,8 @@ export default function SignUp() {
                 let confirmaCad;
                 const response = await api.post('/usuarios', usuario);
                 confirmaCad = response.data.sucesso;
+                console.log(response.data);
+
                 // const idUsu = confirmaCad;
                 // alert(idUsu);
                 if (confirmaCad) {
@@ -399,13 +370,13 @@ export default function SignUp() {
                                 }
                             </div>
 
-                            <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect1">
+                            <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect">
                                 <div className={styles.divInput}>
-                                    <select id="cursosTecnico" name="cursosTec" defaultValue={usuario.select1} onChange={handleSelect1Change} className={styles.opcao}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Sel. Curso Técnico</option>
+                                    <select id="cursos" name="curso" defaultValue={usuario.select} onChange={handleSelectChange} className={styles.opcao}>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Sel. Curso Técnico ou Médio</option>
                                         {
-                                            cursosTec.map(curso => (
-                                                <option key={curso.cur_nome} value={curso.cur_nome}>{curso.cur_nome}</option>
+                                            cursos.map(cur => (
+                                                <option key={cur.cur_nome} value={cur.cur_nome}>{cur.cur_nome}</option>
                                             ))
                                         }
                                     </select>
@@ -414,28 +385,7 @@ export default function SignUp() {
                                 </div>
                                 {
                                     valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
-                                        <small key={mens} id="cursosTecnico" className={styles.small}>{mens}</small>
-                                    ))
-                                }
-
-                            </div>
-
-                            <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect2">
-                                <div className={styles.divInput}>
-                                    <select id="ensinoMedio" name="ensMedio" defaultValue={usuario.select2} onChange={handleSelect2Change} className={styles.opcao}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Sel. Ensino Médio</option>
-                                        {
-                                            medio.map(med => (
-                                                <option key={med.med_nome} value={med.med_nome}>{med.med_nome}</option>
-                                            ))
-                                        }
-                                    </select>
-                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                    <IoAlertCircleOutline className={styles.erro} />
-                                </div>
-                                {
-                                    valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
-                                        <small key={mens} id="ensinoMedio" className={styles.small}>{mens}</small>
+                                        <small key={mens} id="cursos" className={styles.small}>{mens}</small>
                                     ))
                                 }
 

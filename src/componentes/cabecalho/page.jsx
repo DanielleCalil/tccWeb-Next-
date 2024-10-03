@@ -92,10 +92,10 @@ export default function Cabecalho() {
                         href="/biblioteca"
                         className={rota === "/biblioteca" ||
                             rota === "/livros/" ||
-                            rota === "/editarInfoLivro" ||
-                            rota === "/gerenciarLivroExistente" ||
-                            rota === "/reservarLivro" ||
-                            rota === "/addLivroNovo" ? styles.active : ""}>
+                            rota === "/editarInfoLivro/" ||
+                            rota === "/gerenciarLivroExistente/" ||
+                            rota === "/reservarLivro/" ||
+                            rota === "/addLivroNovo/" ? styles.active : ""}>
                         <IoBookOutline className={styles.tpicon} />
                         Biblioteca
                     </Link>

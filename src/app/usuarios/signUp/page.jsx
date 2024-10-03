@@ -6,6 +6,8 @@ import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoEye, IoEyeOff, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+
+import ModalAvisoCadastro from '@/componentes/modalAvisoCadastro/page';
 import api from '@/services/api';
 
 export default function SignUp() {
@@ -36,6 +38,16 @@ export default function SignUp() {
 
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const [showModalAvisoCad, setShowModalAvisoCad] = useState(false);
+
+    const openModalAvisoCad = () => setShowModalAvisoCad(true);
+    const closeModalAvisoCad = () => setShowModalAvisoCad(false);
+
+    const handleAvisoCad = () => {
+        setShowModalAvisoCad(false); // Fecha o modal
+        router.push('../../usuarios/login');
     };
 
     useEffect(() => {
@@ -85,7 +97,11 @@ export default function SignUp() {
         confSenha: {
             validado: valDefault,
             mensagem: []
-        }
+        },
+        select: {
+            validado: valDefault,
+            mensagem: []
+        },
     });
 
     const handleChange = (e) => {
@@ -97,40 +113,6 @@ export default function SignUp() {
         setSelect(e.target.value);
         setError(''); // Limpa o erro se necessário
     };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setUsuario(prev => ({ ...prev, usu_foto: reader.result }));
-            };
-            reader.readAsDataURL(file);
-        } else {
-            // Se nenhum arquivo for selecionado, limpa o estado da foto
-            setUsuario(prev => ({ ...prev, usu_foto: '' }));
-        }
-    };
-
-    function validaFoto() {
-        let objTemp = {
-            validado: valSucesso,
-            mensagem: []
-        };
-
-        if (usuario.usu_foto) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('A foto do usuário é obrigatória');
-        }
-
-        setValida(prevState => ({
-            ...prevState,
-            foto: objTemp
-        }));
-
-        return objTemp.mensagem.length === 0 ? 1 : 0;
-    }
-
 
     function validaSelect() {
 
@@ -146,7 +128,7 @@ export default function SignUp() {
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            opcao: objTemp // atualiza apenas o campo 'nome'
+            select: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -312,16 +294,14 @@ export default function SignUp() {
         itensValidados += validaSexo();
         itensValidados += validaSenha();
         itensValidados += validaConfSenha();
-        itensValidados += validaFoto(); // Adiciona validação da foto
 
-        if (itensValidados === 8) { // Atualize para 8
+        if (itensValidados === 7) { // Atualize para 8
             try {
                 const formData = new FormData();
                 formData.append('usu_rm', usuario.usu_rm);
                 formData.append('usu_nome', usuario.usu_nome);
                 formData.append('usu_email', usuario.usu_email);
                 formData.append('usu_senha', usuario.usu_senha);
-                formData.append('usu_foto', usuario.usu_foto);
 
                 const response = await api.post('/usuarios', formData, {
                     headers: {
@@ -329,7 +309,7 @@ export default function SignUp() {
                     },
                 });
                 if (response.data.sucesso) {
-                    router.push('/');
+                    openModalAvisoCad();
                 }
             } catch (error) {
                 if (error.response) {
@@ -358,21 +338,6 @@ export default function SignUp() {
                     <div className={styles.conteudo}>
                         <h1 className={styles.cadastro}>Cadastro</h1>
                         <form id="form" onSubmit={handleSubmit}>
-
-                            <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto">
-                                <div className={styles.divInput}>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        name="usu_foto"
-                                        onChange={handleFileChange} // Aqui está a chamada para handleFileChange
-                                        className={styles.formControl}
-                                    />
-                                </div>
-                                {
-                                    valida.foto.mensagem.map(mens => <small key={mens} className={styles.small}>{mens}</small>)
-                                }
-                            </div>
 
                             <div className={valida.rm.validado + ' ' + styles.valRM} id="valRM">
                                 <div className={styles.divInput}>
@@ -426,10 +391,10 @@ export default function SignUp() {
                                 }
                             </div>
 
-                            <div className={(valida.opcao && valida.opcao.validado ? valida.opcao.validado : '') + ' ' + styles.valNome} id="valSelect">
+                            <div className={valida.select.validado + ' ' + styles.valSelect} id="valSelect">
                                 <div className={styles.divInput}>
                                     <select id="cursos" name="curso" defaultValue={usuario.select} onChange={handleSelectChange} className={styles.opcao}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Sel. Curso Técnico ou Médio</option>
+                                        <option value="0" disabled style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
                                         {
                                             cursos.map(cur => (
                                                 <option key={cur.cur_nome} value={cur.cur_nome}>{cur.cur_nome}</option>
@@ -440,7 +405,7 @@ export default function SignUp() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.opcao && valida.opcao.mensagem && valida.opcao.mensagem.map(mens => (
+                                    valida.select.mensagem.map(mens => (
                                         <small key={mens} id="cursos" className={styles.small}>{mens}</small>
                                     ))
                                 }
@@ -533,6 +498,7 @@ export default function SignUp() {
 
                             <button
                                 type="submit"
+                                onClick={handleSubmit}
                                 className={styles.cadastroButton}
                             >
                                 Fazer cadastro
@@ -541,6 +507,11 @@ export default function SignUp() {
                     </div>
                 </div>
             </div>
+            <ModalAvisoCadastro
+                show={showModalAvisoCad}
+                onClose={closeModalAvisoCad}
+                onConfirm={handleAvisoCad}
+            />
         </div>
     );
 }

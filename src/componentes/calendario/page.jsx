@@ -31,8 +31,8 @@ const Calendario = () => {
     const selectedDate = new Date(info.date);
     const finalDate = addDays(selectedDate, 15);
 
-    const formattedStartDate = format(selectedDate, 'yyyy-MM-dd');
-    const formattedEndDate = format(finalDate, 'yyyy-MM-dd');
+    const formattedStartDate = format(selectedDate, 'dd-MM-yyyy');
+    const formattedEndDate = format(finalDate, 'dd-MM-yyyy');
 
     setStartDate(formattedStartDate);
     setEndDate(formattedEndDate);
@@ -44,14 +44,14 @@ const Calendario = () => {
 
     setEvents([
       {
-        start: formattedStartDate,
-        end: formattedStartDate,
+        start: format(selectedDate, 'yyyy-MM-dd'),
+        end: format(selectedDate, 'yyyy-MM-dd'),
         color: '#FF735C', // Cor vibrante para a data inicial
         display: 'background',
       },
       {
-        start: formattedEndDate,
-        end: formattedEndDate,
+        start: format(finalDate, 'yyyy-MM-dd'),
+        end: format(finalDate, 'yyyy-MM-dd'),
         color: '#FF735C', // Cor vibrante para a data final
         display: 'background',
       },

@@ -12,4 +12,42 @@ buttons
 
 disabled selected //usar em input selecionável na opção que não pode selecionar
 
-criar uma rota para enviar emails
+
+
+
+
+O QUE ESTA FALTANDO?
+
+SIGNUP
+- realizar o cadastro
+- colocar a cor do curso no select em preto
+
+ESQUECEU A SENHA
+- ser possível enviar um email para o email fornecido com um código para poder mudar a senha
+- fazer a mudança dessa senha na api
+
+SOLICITAÇÕES
+- fazer elas aparecerem corretamente
+- colocar um filtro
+- definir o tipo de usuário pela tela
+
+RECOMENDAÇÕES
+- tentar mudar a cor do checked para laranja(verificar se  funcionou)
+- realizar a reserva da recomendação
+- aparecer o nome do usuário que fez a recomendação
+
+BIBLIOTECA
+- realizar a reserva
+- adicionar um livro novo
+- ativar e desativar o livro da biblioteca pelo toggle
+
+RESERVAS
+- colocar ações no botão de 'retirada confirmada' e 'cancelar retirada'
+- ter uma contagem na tela com os dias que faltam de acordo com o período
+- pegar a data de período selecionada no calendário
+
+INFORMAÇÕES DE CONTATO E EDITAR
+- ver onde na api essas infos se encontram
+- rederizar na tela e poder editar
+
+

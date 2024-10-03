@@ -26,11 +26,6 @@ export default function ReservarLivro() {
         <h1 className={styles.informacoes}>Reservar livro</h1>
         <div className={styles.container}>
           <Calendario />
-          <div className={styles.observacao}>
-            <p className={styles.obs}>
-              OBS: a data esta sendo exibida respectivamente como ano - mês - dia
-            </p>
-          </div>
           <div className={styles.editar}>
             <button
               type="submit"

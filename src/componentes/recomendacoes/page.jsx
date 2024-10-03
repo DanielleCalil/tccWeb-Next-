@@ -123,7 +123,7 @@ export default function Recomendacoes() {
                                 </div>
                             ))
                         ) : (
-                            <h1>Não há resultados para a requisição</h1>
+                            <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
                         )}
                     </div>
                 </div>

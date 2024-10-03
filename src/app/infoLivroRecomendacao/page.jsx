@@ -157,7 +157,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                         <p className={styles.descProf}>Recomendado para:</p>
                                         <p className={styles.descProfCurso}>{livroRec.cur_nome}</p>
                                         <form className={styles.moduloForm}>
-                                            <label>
+                                            <label className={styles.customCheckbox}>
                                                 <input
                                                     type="checkbox"
                                                     name="modulo1"
@@ -168,7 +168,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                                 />
                                                 1º Módulo
                                             </label>
-                                            <label>
+                                            <label className={styles.customCheckbox}>
                                                 <input
                                                     type="checkbox"
                                                     name="modulo2"
@@ -179,7 +179,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                                 />
                                                 2º Módulo
                                             </label>
-                                            <label>
+                                            <label className={styles.customCheckbox}>
                                                 <input
                                                     type="checkbox"
                                                     name="modulo3"
@@ -190,7 +190,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                                 />
                                                 3º Módulo
                                             </label>
-                                            <label>
+                                            <label className={styles.customCheckbox}>
                                                 <input
                                                     type="checkbox"
                                                     name="modulo4"

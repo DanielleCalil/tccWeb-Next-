@@ -17,6 +17,8 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
     };
     
     const router = useRouter();
+    const [error, setError] = useState(null);
+    const [isSaving, setIsSaving] = useState(null);
     const [livro, setLivro] = useState(initialData || {
         "liv_cod": '',
         "liv_nome": '',
@@ -28,9 +30,11 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
         "liv_foto_capa": '',
         "generos": ''
     });
+
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [imageSrc, setImageSrc] = useState(initialData?.liv_foto_capa || '');
 
+    
     useEffect(() => {
         console.log("Dados iniciais:", initialData);
         if (!initialData) {
@@ -44,27 +48,6 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
     const handleConfirm = async () => {
         closeModalConfirm();
         await handleSave();
-    };
-
-    const handleSave = async () => {
-        const { liv_nome, disponivel, liv_desc, aut_nome, edt_nome, gen_nome } = livro;
-
-        if (!liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome || !gen_nome) {
-            alert('Todos os campos devem ser preenchidos');
-            return;
-        }
-
-        setIsSaving(true); // Inicia o salvamento
-
-        try {
-            await api.saveBookInfo({ ...livro, liv_foto_capa: imageSrc });
-            router.push('/infoLivroBiblioteca');
-        } catch (error) {
-            console.error("Erro ao salvar informações do livro:", error);
-            alert('Erro ao salvar informações. Tente novamente.');
-        } finally {
-            setIsSaving(false); // Finaliza o salvamento
-        }
     };
 
     useEffect(() => {
@@ -91,6 +74,34 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
         setLivro((prev) => ({ ...prev, liv_foto_capa: imageURL }));
+    };
+
+    const handleSave = async () => {
+        const { liv_nome, disponivel, liv_desc, aut_nome, edt_nome, gen_nome } = livro;
+
+        if (!liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome || !gen_nome) {
+            alert('Todos os campos devem ser preenchidos');
+            return;
+        }
+
+        setIsSaving(true); // Inicia o salvamento
+
+        try {
+            const response = await api.patch(`/livros/${livro.liv_cod}`, {
+                ...livro,
+                liv_foto_capa: imageSrc,
+            });
+
+            if (response.data.sucesso) {
+                alert('Livro atualizado com sucesso!');
+                router.push('/infoLivroBiblioteca'); // Redireciona após o sucesso
+            }
+        } catch (error) {
+            console.error("Erro ao salvar informações do livro:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao salvar informações. Tente novamente.');
+        } finally {
+            setIsSaving(false); // Finaliza o salvamento
+        }
     };
 
     return (
@@ -209,7 +220,7 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
                                                 onClick={openModalConfirm}
                                                 className={styles.saveButton}
                                             >
-                                                Salvar alterações
+                                                {isSaving ? 'Salvando...' : 'Salvar alterações'}
                                             </button>
                                         </div>
                                         <ModalConfirmar

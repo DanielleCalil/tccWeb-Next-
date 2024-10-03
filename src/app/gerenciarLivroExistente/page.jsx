@@ -232,6 +232,15 @@ export default function GerenciarLivroExistente() {
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>
                                     </div>
+                                    <div className={styles.editar}>
+                                        <button
+                                            type="submit"
+                                            onClick={openModalConfirm}
+                                            className={styles.addButton}
+                                        >
+                                            Salvar Alterações
+                                        </button>
+                                    </div>
                                 </div>
                             ))
                         ) : (
@@ -239,15 +248,6 @@ export default function GerenciarLivroExistente() {
                         )}
                     </div>
                 </div>
-            </div>
-            <div className={styles.editar}>
-                <button
-                    type="submit"
-                    onClick={openModalConfirm}
-                    className={styles.addButton}
-                >
-                    Salvar Alterações
-                </button>
             </div>
             <ModalConfirmar
                 show={showModalConfirm}

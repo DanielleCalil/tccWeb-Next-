@@ -104,6 +104,16 @@ export default function Solicitacao() {
     }
   }
 
+  // Função para filtrar usuários com base na situação selecionada
+  const filtrarSolicitacoes = () => {
+    if (selectedUsuario === 'Todos') {
+      return solicita; // Retorna todos os usuários
+    }
+    return solicita.filter((solicit) => solicit.situacao === selectedUsuario);
+  };
+
+  const solicitacoesFiltradas = filtrarSolicitacoes();
+
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
@@ -164,8 +174,8 @@ export default function Solicitacao() {
         </div>
 
         <div className={styles.container}>
-          {solicita.length > 0 ? (
-            solicita.map((solicit) => (
+          {solicitacoesFiltradas.length > 0 ? (
+            solicitacoesFiltradas.map((solicit) => (
               <div key={solicit.usu_rm} className={styles.lineSquare}>
                 <div className={styles.inputContainer}>
 

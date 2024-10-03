@@ -8,6 +8,14 @@ import { IoPencilSharp } from "react-icons/io5";
 import api from '@/services/api';
 
 export default function InfoLivroBiblioteca({ codLivro }) {
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
+    const imageLoader = ({ src, width, quality }) => {
+        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
+    };
+
     const [livro, setLivro] = useState(null);
     const [error, setError] = useState(null);
     const router = useRouter();
@@ -26,27 +34,18 @@ export default function InfoLivroBiblioteca({ codLivro }) {
                 }
             } catch (error) {
                 setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
-            } 
+            }
         };
 
         handleCarregaLivro();
     }, [codLivro]);
-
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
-
-    const imageLoader = ({ src, width, quality }) => {
-        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
-    };
-
-    if (error) return <p>{error}</p>;
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.contButton}>
-                <Link href={`/infoLivroBiblioteca/${livro?.liv_cod}`}>
+                    <Link href={`/infoLivroBiblioteca/${livro?.liv_cod}`}>
                         <button className={styles.ButtonEditar}>
                             <IoPencilSharp className={styles.tpiconEditar} />
                             Editar

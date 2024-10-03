@@ -1,0 +1,73 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    position: relative;
+  }
+
+  .sucess {
+    font-weight: 400;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 2.6rem;
+    cursor: pointer;
+  }
+
+  .text {
+    margin-top: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 2rem;
+  }
+  
+  .modalButtonSim {
+    background-color: #FF735C;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3rem;
+    cursor: pointer;
+    font-size: 1.4rem;
+    width: 8rem;
+    height: auto;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    justify-content: flex-end;
+  }
+  
+  .modalButtonSim:hover,
+  .modalButtonNao:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+  }
+  

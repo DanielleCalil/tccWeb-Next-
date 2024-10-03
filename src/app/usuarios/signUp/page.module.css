@@ -63,14 +63,22 @@
   border-radius: 3rem;
   box-sizing: border-box;
   font-size: 1.4rem;
-  color: #999;
+  color: #000;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
-.opcao option {
-  color: #000
+.opcao option:focus {
+  color: #fff;
+  background-color: #FF735C;
+}
+
+/* Remove as setas do input de número */
+.conteudo input[type=number]::-webkit-outer-spin-button,
+.conteudo input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .inputField::placeholder {

@@ -17,31 +17,28 @@ export default function Perfil() {
     const router = useRouter();
 
     const [perfil, setPerfil] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // Busca os dados do perfil ao montar o componente
     useEffect(() => {
-        const fetchProfile = async () => {
-            const dados = { usu_cod: 18 };
+        const handleCarregaPerfil = async () => {
+            const dadosApi = { usu_cod: 18 };
+
             try {
-                const response = await api.post('/usuarios', dados);
-                console.log(response.data); // Adicione este log para verificar a resposta
-                setPerfil(response.data[0]); // Ajuste conforme a estrutura da resposta
+                const response = await api.post('/usuarios', dadosApi);
+                if (response.data.sucesso) {
+                    const usuApi = response.data.dados[0];
+                    setPerfil(usuApi);
+                } else {
+                    setError(response.data.mensagem);
+                }
             } catch (error) {
-                console.error("Erro ao buscar dados do perfil:", error);
-                setError("Falha ao buscar dados do perfil.");
-            } finally {
-                setLoading(false);
+                setError(error.response ? error.response.data.mensagem : "Erro no front-end");
             }
         };
-    
-        fetchProfile();
-    }, []);
-    
 
-    if (loading) return <h1 className={styles.aviso}>Carregando...</h1>;
-    if (error) return <h1 className={styles.aviso}>{error}</h1>;
+        handleCarregaPerfil();
+    }, []);
 
     return (
         <main className={styles.main}>
@@ -49,80 +46,86 @@ export default function Perfil() {
                 <div className={styles.contentWrapper}>
                     <h1 className={styles.perfil}>Perfil</h1>
                     {perfil ? (
-                        <div className={styles.parentContainer}>
-                            <Link href={`/perfil/${perfil.usu_cod}`}>
-                                <div className={styles.PIContainer}>
-                                    <div className={styles.profileContainer}>
-                                        <div className={styles.imgContainer}>
-                                            <Image
-                                                src={perfil.usu_foto || "/Icons TCC/perfil.jpg"}
-                                                alt="Foto de perfil"
-                                                width={512}
-                                                height={512}
-                                                loader={imageLoader}
-                                            />
+                        <>
+                            <div className={styles.parentContainer}>
+                                <Link href={`/perfil/${perfil?.usu_cod}`}>
+                                    <div className={styles.PIContainer}>
+                                        <div className={styles.profileContainer}>
+                                            <div className={styles.imgContainer}>
+                                                <Image
+                                                    src={perfil.usu_foto}
+                                                    alt="Foto de perfil"
+                                                    width={512}
+                                                    height={512}
+                                                    loader={imageLoader}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className={styles.inputContainer}>
+                                            <div className={styles.inputGroup}>
+                                                <label className={styles.textInput}>RM:</label>
+                                                <p>{perfil.usu_rm}</p>
+                                                <input
+                                                    id="rm"
+                                                    type="number"
+                                                    className={styles.inputField}
+                                                    value={perfil.usu_rm}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className={styles.inputGroup}>
+                                                <label className={styles.textInput}>Nome social:</label>
+                                                <p>{perfil.usu_nome}</p>
+                                                <input
+                                                    id="nomeSocial"
+                                                    type="text"
+                                                    className={styles.inputField}
+                                                    value={perfil.usu_nome}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className={styles.inputGroup}>
+                                                <label className={styles.textInput}>Nome completo:</label>
+                                                <p>{perfil.usu_nome_completo}</p>
+                                                <input
+                                                    id="nomeCompleto"
+                                                    type="text"
+                                                    className={styles.inputField}
+                                                    value={perfil.usu_nome_completo}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className={styles.inputGroup}>
+                                                <label className={styles.textInput}>E-mail:</label>
+                                                <p>{perfil.usu_email}</p>
+                                                <input
+                                                    id="email"
+                                                    type="email"
+                                                    className={styles.inputField}
+                                                    value={perfil.usu_email}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <form className={styles.sexoForm}>
+                                                <legend>Sexo:</legend>
+                                                {["feminino", "masculino", "neutro", "padrao"].map((opcao) => (
+                                                    <label key={opcao}>
+                                                        <input
+                                                            type="radio"
+                                                            name="opcao"
+                                                            value={opcao}
+                                                            checked={perfil.usu_sexo === opcao}
+                                                            disabled
+                                                        />
+                                                        {opcao.charAt(0).toUpperCase() + opcao.slice(1)}
+                                                    </label>
+                                                ))}
+                                            </form>
                                         </div>
                                     </div>
-                                    <div className={styles.inputContainer}>
-                                        <div className={styles.inputGroup}>
-                                            <label htmlFor="rm" className={styles.textInput}>RM:</label>
-                                            <input
-                                                id="rm"
-                                                type="number"
-                                                className={styles.inputField}
-                                                value={perfil.usu_rm}
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className={styles.inputGroup}>
-                                            <label htmlFor="nomeSocial" className={styles.textInput}>Nome social:</label>
-                                            <input
-                                                id="nomeSocial"
-                                                type="text"
-                                                className={styles.inputField}
-                                                value={perfil.usu_nome}
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className={styles.inputGroup}>
-                                            <label htmlFor="nomeCompleto" className={styles.textInput}>Nome completo:</label>
-                                            <input
-                                                id="nomeCompleto"
-                                                type="text"
-                                                className={styles.inputField}
-                                                value={perfil.usu_nome_completo}
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className={styles.inputGroup}>
-                                            <label htmlFor="email" className={styles.textInput}>E-mail:</label>
-                                            <input
-                                                id="email"
-                                                type="email"
-                                                className={styles.inputField}
-                                                value={perfil.usu_email}
-                                                disabled
-                                            />
-                                        </div>
-                                        <form className={styles.sexoForm}>
-                                            <legend>Sexo:</legend>
-                                            {["feminino", "masculino", "neutro", "padrao"].map((opcao) => (
-                                                <label key={opcao}>
-                                                    <input
-                                                        type="radio"
-                                                        name="opcao"
-                                                        value={opcao}
-                                                        checked={perfil.usu_sexo === opcao}
-                                                        disabled
-                                                    />
-                                                    {opcao.charAt(0).toUpperCase() + opcao.slice(1)}
-                                                </label>
-                                            ))}
-                                        </form>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
+                                </Link>
+                            </div>
+                        </>
                     ) : (
                         <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
                     )}
@@ -131,7 +134,7 @@ export default function Perfil() {
                     </div>
                     <div className={styles.editar}>
                         <Link href="/perfilEditar">
-                            <button type="submit" className={styles.editarButton}>
+                            <button className={styles.editarButton}>
                                 <Image
                                     src="/imagens_telas/editar_perfil.png"
                                     width={500}

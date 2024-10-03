@@ -92,7 +92,7 @@ export default function Biblioteca() {
                         {sortedBooks.length > 0 ? (
                             sortedBooks.map(livro => (
                                 <div className={styles.bookItem} key={livro.liv_nome}>
-                                    <Link href={`/livros/${livro.liv_cod}`}>
+                                    <Link href={`/biblioteca/${livro.liv_cod}`}>
                                         <div>
                                             <Image
                                                 loader={imageLoader} /* Quando imagem vem por url */
@@ -111,7 +111,7 @@ export default function Biblioteca() {
                                 </div>
                             ))
                         ) : (
-                            <h1>Nenhum livro foi encontrado.</h1>
+                            <h1>Não há resultados para a requisição</h1>
                         )}
                     </div>
                 </div>

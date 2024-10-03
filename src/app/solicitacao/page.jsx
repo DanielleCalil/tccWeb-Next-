@@ -187,7 +187,7 @@ export default function Solicitacao() {
               </div>
             ))
           ) : (
-            <h1>Nenhuma solicitação encontrada.</h1>
+            <h1>Não há resultados para a requisição</h1>
           )}
         </div>
       </div>

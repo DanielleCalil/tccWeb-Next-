@@ -1,6 +1,6 @@
 
 // import { produtos } from '../../../mocks/dados';
-import Livro from '../../infoLivroBiblioteca/page';
+import InfoLivroBiblioteca from '../../infoLivroBiblioteca/page';
 
 export default function LivrosCod({ params }) {
 
@@ -8,7 +8,7 @@ export default function LivrosCod({ params }) {
 
     return (
 
-        <Livro codLivro={codLivro} />
+        <InfoLivroBiblioteca codLivro={codLivro} />
 
     );
 }

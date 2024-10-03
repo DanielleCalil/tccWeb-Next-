@@ -103,7 +103,7 @@ export default function Recomendacoes() {
                         {sortedBooks.length > 0 ? (
                             sortedBooks.map(livroRec => (
                                 <div className={styles.bookItem} key={livroRec.liv_nome}>
-                                    <Link href={`/recLivro/${livroRec.liv_cod}`}>
+                                    <Link href={`/recomendacoes/${livroRec.liv_cod}`}>
                                         <div>
                                             <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
                                             <Image
@@ -123,7 +123,7 @@ export default function Recomendacoes() {
                                 </div>
                             ))
                         ) : (
-                            <h1>Nenhuma recomendação encontrada.</h1>
+                            <h1>Não há resultados para a requisição</h1>
                         )}
                     </div>
                 </div>

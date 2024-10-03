@@ -152,7 +152,7 @@ export default function Reservas() {
                             </div>
                         ))
                     ) : (
-                        <h1>Nenhum livro reservado foi encontrado.</h1>
+                        <h1>Não há resultados para a requisição</h1>
                     )}
                 </div>
             </div>

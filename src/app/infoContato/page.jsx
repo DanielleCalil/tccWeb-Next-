@@ -68,7 +68,7 @@ export default function InfoContato() {
             </div>
           ))
         ) : (
-          <h1>Nenhuma informação de contato encontrada.</h1>
+          <h1>Não há resultados para a requisição</h1>
         )}
       </div>
     </main>

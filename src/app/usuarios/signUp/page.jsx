@@ -20,6 +20,7 @@ export default function SignUp() {
         "confSenha": '',
         "usu_sexo": 0,
         "cur_nome": '',
+        "usu_foto": '',
     });
 
     const valDefault = styles.formControl;
@@ -57,6 +58,10 @@ export default function SignUp() {
 
     // validação
     const [valida, setValida] = useState({
+        foto: {
+            validado: valDefault,
+            mensagem: []
+        },
         nome: {
             validado: valDefault,
             mensagem: []
@@ -92,6 +97,40 @@ export default function SignUp() {
         setSelect(e.target.value);
         setError(''); // Limpa o erro se necessário
     };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUsuario(prev => ({ ...prev, usu_foto: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Se nenhum arquivo for selecionado, limpa o estado da foto
+            setUsuario(prev => ({ ...prev, usu_foto: '' }));
+        }
+    };
+
+    function validaFoto() {
+        let objTemp = {
+            validado: valSucesso,
+            mensagem: []
+        };
+
+        if (usuario.usu_foto) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('A foto do usuário é obrigatória');
+        }
+
+        setValida(prevState => ({
+            ...prevState,
+            foto: objTemp
+        }));
+
+        return objTemp.mensagem.length === 0 ? 1 : 0;
+    }
+
 
     function validaSelect() {
 
@@ -197,10 +236,10 @@ export default function SignUp() {
             validado: valSucesso,
             mensagem: []
         };
-    
+
         // Expressão regular para validar a senha
         const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    
+
         if (usuario.usu_senha === '') {
             objTemp.validado = valErro;
             objTemp.mensagem.push('O preenchimento da senha é obrigatório');
@@ -208,16 +247,16 @@ export default function SignUp() {
             objTemp.validado = valErro;
             objTemp.mensagem.push('A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.');
         }
-    
+
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
             senha: objTemp // atualiza apenas o campo 'senha'
         }));
-    
+
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
         return testeResult;
     }
-    
+
 
     function validaConfSenha() {
 
@@ -273,22 +312,24 @@ export default function SignUp() {
         itensValidados += validaSexo();
         itensValidados += validaSenha();
         itensValidados += validaConfSenha();
+        itensValidados += validaFoto(); // Adiciona validação da foto
 
-        // salvar quando atingir o número de itens a serem validados
-        // alert(itensValidados);
-        if (itensValidados === 7) {
-            // alert('chama api');            
-
+        if (itensValidados === 8) { // Atualize para 8
             try {
-                let confirmaCad;
-                const response = await api.post('/usuarios', usuario);
-                confirmaCad = response.data.sucesso;
-                console.log(response.data);
+                const formData = new FormData();
+                formData.append('usu_rm', usuario.usu_rm);
+                formData.append('usu_nome', usuario.usu_nome);
+                formData.append('usu_email', usuario.usu_email);
+                formData.append('usu_senha', usuario.usu_senha);
+                formData.append('usu_foto', usuario.usu_foto);
 
-                // const idUsu = confirmaCad;
-                // alert(idUsu);
-                if (confirmaCad) {
-                    router.push('/')
+                const response = await api.post('/usuarios', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                if (response.data.sucesso) {
+                    router.push('/');
                 }
             } catch (error) {
                 if (error.response) {
@@ -317,6 +358,21 @@ export default function SignUp() {
                     <div className={styles.conteudo}>
                         <h1 className={styles.cadastro}>Cadastro</h1>
                         <form id="form" onSubmit={handleSubmit}>
+
+                            <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto">
+                                <div className={styles.divInput}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        name="usu_foto"
+                                        onChange={handleFileChange} // Aqui está a chamada para handleFileChange
+                                        className={styles.formControl}
+                                    />
+                                </div>
+                                {
+                                    valida.foto.mensagem.map(mens => <small key={mens} className={styles.small}>{mens}</small>)
+                                }
+                            </div>
 
                             <div className={valida.rm.validado + ' ' + styles.valRM} id="valRM">
                                 <div className={styles.divInput}>

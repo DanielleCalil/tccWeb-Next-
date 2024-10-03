@@ -150,7 +150,7 @@ export default function PerfilEditar() {
                         </div>
                     </div>
                 ) : (
-                    <h1>Nenhum usuário encontrado.</h1>
+                    <h1>Não há resultados para a requisição</h1>
                 )}
                 <ModalConfirmar
                     show={showModalConfirm}

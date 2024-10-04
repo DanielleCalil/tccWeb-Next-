@@ -17,6 +17,10 @@ export default function AddLivroNovo() {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const router = useRouter();
 
+    const [autor, setAutor] = useState([]);
+    const [editora, setEditora] = useState([]);
+    const [genero, setGenero] = useState([]);
+
     const [livro, setLivro] = useState({
         "liv_cod": '',
         "liv_pha_cod": '',
@@ -79,7 +83,7 @@ export default function AddLivroNovo() {
     async function listaAutores() {
         try {
             const response = await api.post('/autores');
-            setLivro(response.data.dados);
+            setAutor(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -93,7 +97,7 @@ export default function AddLivroNovo() {
     async function listaEditoras() {
         try {
             const response = await api.post('/editoras');
-            setLivro(response.data.dados);
+            setEditora(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -107,7 +111,7 @@ export default function AddLivroNovo() {
     async function listaGeneros() {
         try {
             const response = await api.post('/generos');
-            setLivro(response.data.dados);
+            setGenero(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -117,24 +121,6 @@ export default function AddLivroNovo() {
             }
         }
     }
-
-    const [selectAut, setSelectAut] = useState('');
-    const handleSelectAutChange = (e) => {
-        setSelectAut(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
-
-    const [selectEdt, setSelectEdt] = useState('');
-    const handleSelectEdtChange = (e) => {
-        setSelectEdt(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
-
-    const [selectGen, setSelectGen] = useState('');
-    const handleSelectGenChange = (e) => {
-        setSelectGen(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
 
     // validação
     const [valida, setValida] = useState({
@@ -165,8 +151,98 @@ export default function AddLivroNovo() {
         quant: {
             validado: valDefault,
             mensagem: []
+        },
+        resumo: {
+            validado: valDefault,
+            mensagem: []
         }
     });
+
+    const handleChange = (e) => {
+        setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+
+    const [selectAut, setSelectAut] = useState('');
+    const handleSelectAutChange = (e) => {
+        setSelectAut(e.target.value);
+        setError(''); // Limpa o erro se necessário
+    };
+
+    const [selectEdt, setSelectEdt] = useState('');
+    const handleSelectEdtChange = (e) => {
+        setSelectEdt(e.target.value);
+        setError(''); // Limpa o erro se necessário
+    };
+
+    const [selectGen, setSelectGen] = useState('');
+    const handleSelectGenChange = (e) => {
+        setSelectGen(e.target.value);
+        setError(''); // Limpa o erro se necessário
+    };
+
+    function validaSelectAutor() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (!selectAut) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Por favor, selecione o nome do autor.');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            selectAut: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaSelectEditora() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (!selectEdt) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Por favor, selecione o nome da editora.');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            selectEdt: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaSelectGenero() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (!selectGen) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Por favor, selecione o gênero.');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            selectGen: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
 
     function validaQuant() {
 
@@ -216,69 +292,6 @@ export default function AddLivroNovo() {
         return testeResult;
     }
 
-    function validaAutor() {
-
-        let objTemp = {
-            validado: valSucesso, // css referente ao estado de validação
-            mensagem: [] // array de mensagens de validação
-        };
-
-        if (!selectAut) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Por favor, selecione o nome do autor.');
-        }
-
-        setValida(prevState => ({
-            ...prevState, // mantém os valores anteriores
-            selectAut: objTemp // atualiza apenas o campo 'nome'
-        }));
-
-        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-        return testeResult;
-    }
-
-    function validaEditora() {
-
-        let objTemp = {
-            validado: valSucesso, // css referente ao estado de validação
-            mensagem: [] // array de mensagens de validação
-        };
-
-        if (!selectEdt) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Por favor, selecione o nome da editora.');
-        }
-
-        setValida(prevState => ({
-            ...prevState, // mantém os valores anteriores
-            selectEdt: objTemp // atualiza apenas o campo 'nome'
-        }));
-
-        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-        return testeResult;
-    }
-
-    function validaGenero() {
-
-        let objTemp = {
-            validado: valSucesso, // css referente ao estado de validação
-            mensagem: [] // array de mensagens de validação
-        };
-
-        if (!selectGen) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Por favor, selecione o gênero.');
-        }
-
-        setValida(prevState => ({
-            ...prevState, // mantém os valores anteriores
-            selectGen: objTemp // atualiza apenas o campo 'nome'
-        }));
-
-        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-        return testeResult;
-    }
-
     function validaResumo() {
 
         let objTemp = {
@@ -310,9 +323,9 @@ export default function AddLivroNovo() {
         // Validar campos
         itensValidados += validaQuant();
         itensValidados += validaNome();
-        itensValidados += validaAutor();
-        itensValidados += validaEditora();
-        itensValidados += validaGenero();
+        itensValidados += validaSelectAutor();
+        itensValidados += validaSelectEditora();
+        itensValidados += validaSelectGenero();
         itensValidados += validaResumo();
 
         // Verificar se todos os campos estão validados
@@ -340,10 +353,6 @@ export default function AddLivroNovo() {
                 }
             }
         }
-    }
-
-    const handleChange = (e) => {
-        setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
     return (
@@ -410,7 +419,7 @@ export default function AddLivroNovo() {
                                     <select id="autores" name="autor" defaultValue={livro.SelectAut} onChange={handleSelectAutChange} className={styles.inputField}>
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
                                         {
-                                            autores.map(aut => (
+                                            autor.map(aut => (
                                                 <option key={aut.aut_nome} value={aut.aut_nome}>{aut.aut_nome}</option>
                                             ))
                                         }
@@ -431,7 +440,7 @@ export default function AddLivroNovo() {
                                     <select id="editoras" name="editora" defaultValue={livro.selectEdt} onChange={handleSelectEdtChange} className={styles.inputField}>
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
                                         {
-                                            editoras.map(edt => (
+                                            editora.map(edt => (
                                                 <option key={edt.edt_nome} value={edt.edt_nome}>{edt.edt_nome}</option>
                                             ))
                                         }
@@ -452,7 +461,7 @@ export default function AddLivroNovo() {
                                     <select id="generos" name="genero" defaultValue={livro.selectGen} onChange={handleSelectGenChange} className={styles.inputField}>
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
                                         {
-                                            generos.map(gen => (
+                                            genero.map(gen => (
                                                 <option key={gen.gen_nome} value={gen.gen_nome}>{gen.gen_nome}</option>
                                             ))
                                         }
@@ -468,7 +477,7 @@ export default function AddLivroNovo() {
                             </div>
 
                             <div className={valida.resumo.validado + ' ' + styles.valResumo} id="valResumo">
-                                <p className={styles.textInput}>Resumo:</p>
+                                <label className={styles.textInput}>Resumo:</label>
                                 <div className={styles.divInput}>
                                     <textarea
                                         id="resumo"

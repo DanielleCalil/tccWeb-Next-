@@ -1,6 +1,8 @@
+"use client"
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import api from '@/services/api';
 
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
@@ -19,15 +21,11 @@ const ModalAddAutor = ({ show, onClose }) => {
     const handleConfirm = async () => {
         try {
             // Faz a requisição para adicionar o autor ao banco
-            const response = await fetch('/autores', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ nome: autor }), // Envia o nome do autor no corpo da requisição
+            const response = await api.post('/autores', {
+                aut_nome: autor
             });
 
-            if (response.ok) {
+            if (response.status) {
                 // Se o envio for bem-sucedido, fecha o modal e redireciona
                 setShowModalConfirm(false);
                 router.push('/gerenciarLivroBiblioteca'); // Redireciona para a biblioteca
@@ -49,7 +47,7 @@ const ModalAddAutor = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
-                                value={autor} // Vínculo do estado ao input
+                                value={autor.aut_nome} // Vínculo do estado ao input
                                 onChange={(e) => setAutor(e.target.value)} // Atualiza o estado conforme o usuário digita
                             />
                         </div>

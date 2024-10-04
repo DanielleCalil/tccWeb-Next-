@@ -61,6 +61,12 @@ export default function SobreNos() {
                   </text>
                 </div>
               </div>
+              <div className={styles.suporte}>
+                <text>Entre em contato:  </text>
+                <Link href="mailto:danikawari@gmail.com" className={styles.email}>
+                  danikawari@gmail.com
+                </Link>
+              </div>
             </div>
           </div>
         </div>

@@ -70,14 +70,17 @@ export default function Solicitacao() {
   };
 
   const toggleUserSelection = (usu_rm) => {
-    const updatedSelection = new Set(selectedUsers);
-    if (updatedSelection.has(usu_rm)) {
-      updatedSelection.delete(usu_rm); // Remove o usuário se já estiver selecionado
-    } else {
-      updatedSelection.add(usu_rm); // Adiciona o usuário se não estiver selecionado
-    }
-    setSelectedUsers(updatedSelection);
+    setSelectedUsers((prevSelectedUsers) => {
+      const updatedSelection = new Set(prevSelectedUsers); // Cria uma nova instância do Set
+      if (updatedSelection.has(usu_rm)) {
+        updatedSelection.delete(usu_rm); // Remove o usuário se já estiver selecionado
+      } else {
+        updatedSelection.add(usu_rm); // Adiciona o usuário se não estiver selecionado
+      }
+      return updatedSelection; // Retorna o novo Set para atualizar o estado
+    });
   };
+  
 
   const [livNome, setlivNome] = useState('')
 
@@ -118,7 +121,7 @@ export default function Solicitacao() {
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.selecao}>Solicitações de usuários</h1>
-        <BarraPesquisa />
+        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
 
         {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>

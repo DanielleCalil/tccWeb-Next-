@@ -1,11 +1,13 @@
 import { useState } from 'react'; // Importar o useState
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import api from '@/services/api';
 
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
 const ModalAddEditora = ({ show, onClose }) => {
+    const [editora, setEditora] = useState('');
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const router = useRouter();
 
@@ -16,19 +18,15 @@ const ModalAddEditora = ({ show, onClose }) => {
 
     const handleConfirm = async () => {
        try {
-        const response = await fetch('/editoras', {
-            method: 'POST',
-            headers: {
-                'content-Type' : 'application/json',
-            },
-            body: JSON.stringify({ nome: autor }),
+        const response = await api.post('/editoras', {
+           edt_nome: editora
         });
 
-        if (response.ok) {
+        if (response.status) {
             setShowModalConfirm(false);
             router.push('/gerenciarLivroBiblioteca');
         } else {
-            console.error('Erro ao adicionar o autor');
+            console.error('Erro ao adicionar a editora');
         }
        } catch (error) {
         console.error('Erro ao conectar ao servidor:', error)
@@ -45,6 +43,8 @@ const ModalAddEditora = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
+                                value={editora.edt_nome}
+                                onChange={(e) => setEditora(e.target.value)}
                             />
                         </div>
                         <div className={styles.buttonsContainer}>

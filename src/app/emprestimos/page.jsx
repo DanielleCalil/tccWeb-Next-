@@ -90,7 +90,7 @@ export default function Emprestimos() {
         </div>
 
         <div className={styles.container}>
-          {emprestimo.map > 0 ? (
+          {emprestimo.length > 0 ? (
             emprestimo.map(liv => (
               <div key={liv.usu_nome} className={styles.lineSquare}>
                 <div className={styles.inputContainer}>

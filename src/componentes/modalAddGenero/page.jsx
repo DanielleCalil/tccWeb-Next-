@@ -1,11 +1,13 @@
 import { useState } from 'react'; // Importar o useState
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import api from '@/services/api';
 
 import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
 const ModalAddGenero = ({ show, onClose }) => {
+    const [genero, setGenero] = useState('');
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const router = useRouter();
 
@@ -16,20 +18,16 @@ const ModalAddGenero = ({ show, onClose }) => {
 
     const handleConfirm = async () => {
         try {
-            const response = await fetch('/editoras', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ nome: autor }),
+            const response = await api.post('/editoras', {
+                gen_nome: genero
             });
 
-            if (response.ok) {
+            if (response.genero) {
                 setShowModalConfirm(false);
                 router.push('gerenciarLivroBiblioteca');
 
             } else {
-                console.error('Erro ao adicionar');
+                console.error('Erro ao adicionar o gênero');
             }
         } catch (error) {
             console.error('Erro ao conectar ao servidor:', error);
@@ -46,6 +44,8 @@ const ModalAddGenero = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
+                                value={genero.gen_nome}
+                                onChange={(e) => setGenero(e.target.value)}
                             />
                         </div>
                         <div className={styles.buttonsContainer}>

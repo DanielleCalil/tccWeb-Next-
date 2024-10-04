@@ -98,7 +98,7 @@ export default function SignUp() {
             validado: valDefault,
             mensagem: []
         },
-        select: {
+        selectCursos: {
             validado: valDefault,
             mensagem: []
         },
@@ -108,27 +108,27 @@ export default function SignUp() {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const [select, setSelect] = useState('');
-    const handleSelectChange = (e) => {
-        setSelect(e.target.value);
+    const [selectCursos, setSelectCursos] = useState('');
+    const handleSelectCursosChange = (e) => {
+        setSelectCursos(e.target.value);
         setError(''); // Limpa o erro se necessário
     };
 
-    function validaSelect() {
+    function validaSelectCursos() {
 
         let objTemp = {
             validado: valSucesso, // css referente ao estado de validação
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!select) {
+        if (!selectCursos) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Por favor, selecione uma opção no campo.');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            select: objTemp // atualiza apenas o campo 'nome'
+            selectCursos: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -227,7 +227,7 @@ export default function SignUp() {
             objTemp.mensagem.push('O preenchimento da senha é obrigatório');
         } else if (!senhaForteRegex.test(usuario.usu_senha)) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.');
+            objTemp.mensagem.push('Use uma senha forte com pelo menos 8 caracteres, combinando letras, números e símbolos.');
         }
 
         setValida(prevState => ({
@@ -290,12 +290,12 @@ export default function SignUp() {
         itensValidados += validaNome();
         itensValidados += validaRM();
         itensValidados += validaEmail();
-        itensValidados += validaSelect();
+        itensValidados += validaSelectCursos();
         itensValidados += validaSexo();
         itensValidados += validaSenha();
         itensValidados += validaConfSenha();
 
-        if (itensValidados === 7) { // Atualize para 8
+        if (itensValidados === 7) {
             try {
                 const formData = new FormData();
                 formData.append('usu_rm', usuario.usu_rm);
@@ -391,9 +391,9 @@ export default function SignUp() {
                                 }
                             </div>
 
-                            <div className={valida.select.validado + ' ' + styles.valSelect} id="valSelect">
+                            <div className={valida.selectCursos.validado + ' ' + styles.valSelectCursos} id="valSelectCursos">
                                 <div className={styles.divInput}>
-                                    <select id="cursos" name="curso" defaultValue={usuario.select} onChange={handleSelectChange} className={styles.opcao}>
+                                    <select id="cursos" name="curso" defaultValue={usuario.selectCursos} onChange={handleSelectCursosChange} className={styles.opcao}>
                                         <option value="0" disabled style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
                                         {
                                             cursos.map(cur => (
@@ -405,7 +405,7 @@ export default function SignUp() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.select.mensagem.map(mens => (
+                                    valida.selectCursos.mensagem.map(mens => (
                                         <small key={mens} id="cursos" className={styles.small}>{mens}</small>
                                     ))
                                 }

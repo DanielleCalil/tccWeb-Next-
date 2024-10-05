@@ -10,6 +10,7 @@ import { IoEye, IoEyeOff, IoCheckmarkCircleOutline, IoAlertCircleOutline } from 
 import ModalAvisoCadastro from '@/componentes/modalAvisoCadastro/page';
 import api from '@/services/api';
 
+
 export default function SignUp() {
     const router = useRouter();
     const [cursos, setCursos] = useState([]);
@@ -21,8 +22,8 @@ export default function SignUp() {
         "usu_senha": '',
         "confSenha": '',
         "usu_sexo": 0,
-        "cur_nome": '',
-        "usu_foto": '',
+        "cur_cod": 0,
+        "usu_foto": '',         
     });
 
     const valDefault = styles.formControl;
@@ -98,7 +99,7 @@ export default function SignUp() {
             validado: valDefault,
             mensagem: []
         },
-        selectCursos: {
+        cur_cod: {
             validado: valDefault,
             mensagem: []
         },
@@ -121,14 +122,14 @@ export default function SignUp() {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!selectCursos) {
+        if (!usuario.cur_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Por favor, selecione uma opção no campo.');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            selectCursos: objTemp // atualiza apenas o campo 'nome'
+            cur_cod: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -297,17 +298,7 @@ export default function SignUp() {
 
         if (itensValidados === 7) {
             try {
-                const formData = new FormData();
-                formData.append('usu_rm', usuario.usu_rm);
-                formData.append('usu_nome', usuario.usu_nome);
-                formData.append('usu_email', usuario.usu_email);
-                formData.append('usu_senha', usuario.usu_senha);
-
-                const response = await api.post('/usuarios', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                const response = await api.post('/usuarios', usuario);
                 if (response.data.sucesso) {
                     openModalAvisoCad();
                 }
@@ -320,6 +311,7 @@ export default function SignUp() {
             }
         }
     }
+console.log(usuario);
 
 
     return (
@@ -391,13 +383,13 @@ export default function SignUp() {
                                 }
                             </div>
 
-                            <div className={valida.selectCursos.validado + ' ' + styles.valSelectCursos} id="valSelectCursos">
+                            <div className={valida.cur_cod.validado + ' ' + styles.valSelectCursos} id="valSelectCursos">
                                 <div className={styles.divInput}>
-                                    <select id="cursos" name="curso" defaultValue={usuario.selectCursos} onChange={handleSelectCursosChange} className={styles.opcao}>
-                                        <option value="0" disabled style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
+                                    <select id="cur_cod" name="cur_cod" defaultValue={usuario.selectCursos} onChange={handleChange} className={styles.opcao}>
+                                        <option value="0" style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
                                         {
                                             cursos.map(cur => (
-                                                <option key={cur.cur_nome} value={cur.cur_nome}>{cur.cur_nome}</option>
+                                                <option key={cur.cur_cod} value={cur.cur_cod}>{cur.cur_nome}</option>
                                             ))
                                         }
                                     </select>
@@ -405,7 +397,7 @@ export default function SignUp() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.selectCursos.mensagem.map(mens => (
+                                    valida.cur_cod.mensagem.map(mens => (
                                         <small key={mens} id="cursos" className={styles.small}>{mens}</small>
                                     ))
                                 }
@@ -467,7 +459,7 @@ export default function SignUp() {
                                 </div>
                             </div>
 
-                            <form className={styles.sexoForm} name="sexo" id="sexo" onChange={handleChange} defaultValue={usuario.usu_sexo}>
+                            <div className={styles.sexoForm} name="sexo" id="sexo" onChange={handleChange} defaultValue={usuario.usu_sexo}>
                                 <div className={valida.sexo.validado + ' ' + styles.valSexo} id="valSexo">
                                     <div className={styles.divRadio}>
                                         <legend>Sexo:</legend>
@@ -491,7 +483,7 @@ export default function SignUp() {
                                     }
 
                                 </div>
-                            </form>
+                            </div>
                             <div className={styles.logar}>
                                 Já tem uma conta? <Link href="/usuarios/login">Faça login</Link>
                             </div>

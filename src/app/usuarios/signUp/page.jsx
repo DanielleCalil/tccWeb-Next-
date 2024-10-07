@@ -23,7 +23,7 @@ export default function SignUp() {
         "confSenha": '',
         "usu_sexo": 0,
         "cur_cod": 0,
-        "usu_foto": '',         
+        "usu_foto": '',
     });
 
     const valDefault = styles.formControl;
@@ -311,7 +311,7 @@ export default function SignUp() {
             }
         }
     }
-console.log(usuario);
+    console.log(usuario);
 
 
     return (
@@ -385,7 +385,7 @@ console.log(usuario);
 
                             <div className={valida.cur_cod.validado + ' ' + styles.valSelectCursos} id="valSelectCursos">
                                 <div className={styles.divInput}>
-                                    <select id="cur_cod" name="cur_cod" defaultValue={usuario.selectCursos} onChange={handleChange} className={styles.opcao}>
+                                    <select id="cur_cod" name="cur_cod" defaultValue={usuario.cur_cod} onChange={handleChange} className={styles.opcao}>
                                         <option value="0" style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
                                         {
                                             cursos.map(cur => (
@@ -463,27 +463,33 @@ console.log(usuario);
                                 <div className={valida.sexo.validado + ' ' + styles.valSexo} id="valSexo">
                                     <div className={styles.divRadio}>
                                         <legend>Sexo:</legend>
-                                        {['feminino', 'masculino', 'neutro', 'padrao'].map((sexo) => (
-                                            <label key={sexo} className={styles.buttonRadio}>
+                                        {[
+                                            { label: 'Feminino', value: '0' },
+                                            { label: 'Masculino', value: '1' },
+                                            { label: 'Neutro', value: '2' },
+                                            { label: 'Padrão', value: '3' }
+                                        ].map((sexo) => (
+                                            <label key={sexo.value} className={styles.buttonRadio}>
                                                 <input
                                                     type="radio"
                                                     name="usu_sexo"
-                                                    value={sexo}
-                                                    defaultChecked={usuario.usu_sexo === sexo}
-
+                                                    value={sexo.value}
+                                                    defaultChecked={usuario.usu_sexo === sexo.value}
                                                 />
-                                                {sexo.charAt(0).toUpperCase() + sexo.slice(1)}
+                                                {sexo.label.charAt(0).toUpperCase() + sexo.label.slice(1)}
                                             </label>
                                         ))}
                                         <IoCheckmarkCircleOutline className={styles.sucesso} />
                                         <IoAlertCircleOutline className={styles.erro} />
                                     </div>
-                                    {
-                                        valida.sexo.mensagem.map(mens => <small key={mens} id="sexo" className={styles.small}>{mens}</small>)
-                                    }
-
+                                    {valida.sexo.mensagem.map((mens) => (
+                                        <small key={mens} id="sexo" className={styles.small}>
+                                            {mens}
+                                        </small>
+                                    ))}
                                 </div>
                             </div>
+
                             <div className={styles.logar}>
                                 Já tem uma conta? <Link href="/usuarios/login">Faça login</Link>
                             </div>

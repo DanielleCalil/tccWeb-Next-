@@ -1,3 +1,5 @@
+// array checkbox usuário ativos, inativos e pendentes
+
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -35,12 +37,14 @@ const situacao = [
   'Ativo',
   'Pendente',
 ];
+//adicionar inativo
 
 const searchOptions = [
   { value: 'usu_cad', label: 'Data de cadastro' },
   { value: 'usu_nome', label: 'Usuário' },
   { value: 'usu_rm', label: 'RM' },
 ];
+//adicionar usu_tipo ao inves de usu_cad e colocar um select para filtar por tipo
 
 export default function Solicitacao() {
 
@@ -57,7 +61,7 @@ export default function Solicitacao() {
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();
 
-  const [solicita, setSolicita] = useState([])
+  const [listaUsuarios, setListaUsuarios] = useState([])
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -89,15 +93,15 @@ export default function Solicitacao() {
   }
 
   useEffect(() => {
-    listaLivros();
+    handleListaUsuarios();
   }, []);
 
-  async function listaLivros() {
-    const dados = { [selectedSearchOption]: livNome };
+  async function handleListaUsuarios() {
+    // const dados = { [selectedSearchOption]: livNome };
     try {
-      const response = await api.post('/sol_listar', dados);
+      const response = await api.get('/usuarios');
       console.log(response.data.dados);
-      setSolicita(response.data.dados);
+      setListaUsuarios(response.data.dados);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -108,20 +112,20 @@ export default function Solicitacao() {
   }
 
   // Função para filtrar usuários com base na situação selecionada
-  const filtrarSolicitacoes = () => {
-    if (selectedUsuario === 'Todos') {
-      return solicita; // Retorna todos os usuários
-    }
-    return solicita.filter((solicit) => solicit.situacao === selectedUsuario);
-  };
+  // const filtrarSolicitacoes = () => {
+  //   if (selectedUsuario === 'Todos') {
+  //     return solicita; // Retorna todos os usuários
+  //   }
+  //   return solicita.filter((solicit) => solicit.situacao === selectedUsuario);
+  // };
 
-  const solicitacoesFiltradas = filtrarSolicitacoes();
+  // const solicitacoesFiltradas = filtrarSolicitacoes();
 
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.selecao}>Solicitações de usuários</h1>
-        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
+        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={handleListaUsuarios} />
 
         {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>
@@ -177,12 +181,12 @@ export default function Solicitacao() {
         </div>
 
         <div className={styles.container}>
-          {solicitacoesFiltradas.length > 0 ? (
-            solicitacoesFiltradas.map((solicit) => (
-              <div key={solicit.usu_rm} className={styles.lineSquare}>
+          {listaUsuarios.length > 0 ? (
+            listaUsuarios.map((solicit) => (
+              <div key={solicit.usu_cod} className={styles.lineSquare}>
                 <div className={styles.inputContainer}>
 
-                  <p className={styles.info}>Cadastro realizado no dia: {solicit.usu_cad}</p>
+                  {/* <p className={styles.info}>Cadastro realizado no dia: {solicit.usu_cad}</p> */}
                   <p className={styles.info}>Nome: {solicit.usu_nome}</p>
                   <p className={styles.info}>RM: {solicit.usu_rm}</p>
                   <p className={styles.info}>E-mail: {solicit.usu_email}</p>

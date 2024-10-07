@@ -22,16 +22,19 @@ export default function AddLivroNovo() {
     const [genero, setGenero] = useState([]);
 
     const [livro, setLivro] = useState({
-        "liv_cod": '',
+        "liv_cod": 0,
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "liv_nome": '',
         "liv_desc": '',
         "edt_nome": '',
+        "edt_cod": 0,
         "liv_foto_capa": '',
         "aut_nome": '',
+        "aut_cod": 0,
         "disponivel": '',
         "generos": '',
+        "gen_cod": 0,
     });
 
     const valDefault = styles.formControl;
@@ -128,19 +131,15 @@ export default function AddLivroNovo() {
             validado: valDefault,
             mensagem: []
         },
-        autor: {
+        aut_cod: {
             validado: valDefault,
             mensagem: []
         },
-        selectAut: {
+        edt_cod: {
             validado: valDefault,
             mensagem: []
         },
-        selectEdt: {
-            validado: valDefault,
-            mensagem: []
-        },
-        selectGen: {
+        gen_cod: {
             validado: valDefault,
             mensagem: []
         },
@@ -162,24 +161,6 @@ export default function AddLivroNovo() {
         setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const [selectAut, setSelectAut] = useState('');
-    const handleSelectAutChange = (e) => {
-        setSelectAut(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
-
-    const [selectEdt, setSelectEdt] = useState('');
-    const handleSelectEdtChange = (e) => {
-        setSelectEdt(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
-
-    const [selectGen, setSelectGen] = useState('');
-    const handleSelectGenChange = (e) => {
-        setSelectGen(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
-
     function validaSelectAutor() {
 
         let objTemp = {
@@ -187,14 +168,14 @@ export default function AddLivroNovo() {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!selectAut) {
+        if (!livro.aut_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Por favor, selecione o nome do autor.');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            selectAut: objTemp // atualiza apenas o campo 'nome'
+            aut_cod: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -208,14 +189,14 @@ export default function AddLivroNovo() {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!selectEdt) {
+        if (!livro.edt_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Por favor, selecione o nome da editora.');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            selectEdt: objTemp // atualiza apenas o campo 'nome'
+            edt_cod: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -229,14 +210,14 @@ export default function AddLivroNovo() {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!selectGen) {
+        if (!livro.gen_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Por favor, selecione o gênero.');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            selectGen: objTemp // atualiza apenas o campo 'nome'
+            gen_cod: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -331,19 +312,9 @@ export default function AddLivroNovo() {
         // Verificar se todos os campos estão validados
         if (itensValidados === 6) {
             try {
-                const formData = new FormData();
-                formData.append('disponivel', livro.disponivel);
-                formData.append('liv_nome', livro.liv_nome);
-                formData.append('liv_desc', livro.liv_desc);
-
-                const response = await api.post('/liv_cadastrar', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-
+                const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
-                    router.push('/biblioteca');
+                    router.push('biblioteca');
                 }
             } catch (error) {
                 if (error.response) {
@@ -354,6 +325,7 @@ export default function AddLivroNovo() {
             }
         }
     }
+    console.log(livro);
 
     return (
         <main className={styles.main}>
@@ -413,14 +385,14 @@ export default function AddLivroNovo() {
                                 }
                             </div>
 
-                            <div className={valida.selectAut.validado + ' ' + styles.valSelectAut} id="valSelectAut">
+                            <div className={valida.aut_cod.validado + ' ' + styles.valSelectAut} id="valSelectAut">
                                 <label className={styles.textInput}>Autor:</label>
                                 <div className={styles.divInput}>
-                                    <select id="autores" name="autor" defaultValue={livro.SelectAut} onChange={handleSelectAutChange} className={styles.inputField}>
+                                    <select id="aut_cod" name="aut_cod" defaultValue={livro.aut_cod} onChange={handleChange} className={styles.inputField}>
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
                                         {
                                             autor.map(aut => (
-                                                <option key={aut.aut_nome} value={aut.aut_nome}>{aut.aut_nome}</option>
+                                                <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_cod}</option>
                                             ))
                                         }
                                     </select>
@@ -428,20 +400,20 @@ export default function AddLivroNovo() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.selectAut.mensagem.map(mens => (
+                                    valida.aut_cod.mensagem.map(mens => (
                                         <small key={mens} id="autores" className={styles.small}>{mens}</small>
                                     ))
                                 }
                             </div>
 
-                            <div className={valida.selectEdt.validado + ' ' + styles.valSelectEdt} id="valSelectEdt">
+                            <div className={valida.edt_cod.validado + ' ' + styles.valSelectEdt} id="valSelectEdt">
                                 <label className={styles.textInput}>Editora:</label>
                                 <div className={styles.divInput}>
-                                    <select id="editoras" name="editora" defaultValue={livro.selectEdt} onChange={handleSelectEdtChange} className={styles.inputField}>
+                                    <select id="edt_cod" name="edt_cod" defaultValue={livro.edt_cod} onChange={handleChange} className={styles.inputField}>
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
                                         {
                                             editora.map(edt => (
-                                                <option key={edt.edt_nome} value={edt.edt_nome}>{edt.edt_nome}</option>
+                                                <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_cod}</option>
                                             ))
                                         }
                                     </select>
@@ -449,20 +421,20 @@ export default function AddLivroNovo() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.selectEdt.mensagem.map(mens => (
+                                    valida.edt_cod.mensagem.map(mens => (
                                         <small key={mens} id="editoras" className={styles.small}>{mens}</small>
                                     ))
                                 }
                             </div>
 
-                            <div className={valida.selectGen.validado + ' ' + styles.valSelectGen} id="valSelectGen">
+                            <div className={valida.gen_cod.validado + ' ' + styles.valSelectGen} id="valSelectGen">
                                 <label className={styles.textInput}>Gênero:</label>
                                 <div className={styles.divInput}>
-                                    <select id="generos" name="genero" defaultValue={livro.selectGen} onChange={handleSelectGenChange} className={styles.inputField}>
+                                    <select id="gen_cod" name="gen_cod" defaultValue={livro.gen_cod} onChange={handleChange} className={styles.inputField}>
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
                                         {
                                             genero.map(gen => (
-                                                <option key={gen.gen_nome} value={gen.gen_nome}>{gen.gen_nome}</option>
+                                                <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_cod}</option>
                                             ))
                                         }
                                     </select>
@@ -470,7 +442,7 @@ export default function AddLivroNovo() {
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.selectGen.mensagem.map(mens => (
+                                    valida.gen_cod.mensagem.map(mens => (
                                         <small key={mens} id="generos" className={styles.small}>{mens}</small>
                                     ))
                                 }

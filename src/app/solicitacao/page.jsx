@@ -33,14 +33,13 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 // ];
 
 const situacao = [
-  'Todos',
-  'Ativo',
+  'Aprovado',
+  'Negado',
   'Pendente',
 ];
-//adicionar inativo
 
 const searchOptions = [
-  { value: 'usu_cad', label: 'Data de cadastro' },
+  { value: 'usu_tipo', label: 'Tipo do usuário' },
   { value: 'usu_nome', label: 'Usuário' },
   { value: 'usu_rm', label: 'RM' },
 ];
@@ -73,13 +72,13 @@ export default function Solicitacao() {
     router.push('../solicitacao');
   };
 
-  const toggleUserSelection = (usu_rm) => {
+  const toggleUserSelection = (usu_cod) => {
     setSelectedUsers((prevSelectedUsers) => {
       const updatedSelection = new Set(prevSelectedUsers); // Cria uma nova instância do Set
-      if (updatedSelection.has(usu_rm)) {
-        updatedSelection.delete(usu_rm); // Remove o usuário se já estiver selecionado
+      if (updatedSelection.has(usu_cod)) {
+        updatedSelection.delete(usu_cod); // Remove o usuário se já estiver selecionado
       } else {
-        updatedSelection.add(usu_rm); // Adiciona o usuário se não estiver selecionado
+        updatedSelection.add(usu_cod); // Adiciona o usuário se não estiver selecionado
       }
       return updatedSelection; // Retorna o novo Set para atualizar o estado
     });
@@ -170,6 +169,7 @@ export default function Solicitacao() {
             <option value="funcionario(a)ADM">Funcionário(a) - ADM</option>
             <option value="professor(a)">Professor(a)</option>
             <option value="aluno(a)">Aluno(a)</option>
+            <option value="rejeitar">Negar acesso</option>
           </select>
           <button
             type="submit"

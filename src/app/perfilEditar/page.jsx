@@ -21,13 +21,13 @@ export default function PerfilEditar({ codUsu }) {
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
     const [perfilEdt, setPerfilEdt] = useState({
-        "usu_cod": "",
-        "usu_rm": "",
-        "usu_nome": "",
-        "usu_email": "",
-        "usu_senha": "",
-        "usu_sexo": "",
-        "usu_foto": "",
+        "usu_cod": 0,
+        "usu_rm": '',
+        "usu_nome": '',
+        "usu_email": '',
+        "usu_senha": '',
+        "usu_sexo": 0,
+        "usu_foto": '',
         "usu_ativo": 0,
     });
 
@@ -49,10 +49,10 @@ export default function PerfilEditar({ codUsu }) {
     // Busca os dados do perfil ao montar o componente
     useEffect(() => {
         const handleCarregaPerfil = async () => {
-            const dadosApi = { usu_cod: codUsu }
+            const dados = { usu_cod: codUsu }
 
             try {
-                const response = await api.post('/usuarios', dadosApi); // Ajuste o endpoint conforme necessário
+                const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);

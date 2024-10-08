@@ -288,6 +288,7 @@ export default function SignUp() {
     async function handleSubmit(event) {
         event.preventDefault();
         let itensValidados = 0;
+        
         itensValidados += validaNome();
         itensValidados += validaRM();
         itensValidados += validaEmail();

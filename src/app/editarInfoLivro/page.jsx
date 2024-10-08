@@ -7,7 +7,7 @@ import FileInput from '@/componentes/FileInput/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
 
-export default function EditarInformacoesLivro({ initialData, codLivro }) {
+export default function EditarInformacoesLivro({ codLivro }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
@@ -19,7 +19,7 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
-    const [livro, setLivro] = useState(initialData || {
+    const [livro, setLivro] = useState({
         "liv_cod": '',
         "liv_nome": '',
         "disponivel": '',
@@ -32,15 +32,7 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
     });
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
-    const [imageSrc, setImageSrc] = useState(initialData?.liv_foto_capa || '');
-
-    
-    useEffect(() => {
-        console.log("Dados iniciais:", initialData);
-        if (!initialData) {
-            console.warn("Nenhum dado inicial encontrado.");
-        }
-    }, [initialData]);
+    const [imageSrc, setImageSrc] = useState('');
 
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
@@ -59,6 +51,7 @@ export default function EditarInformacoesLivro({ initialData, codLivro }) {
                 if (response.data.sucesso) {
                     const livroApi = response.data.dados[0];
                     setLivro(livroApi);
+                    setImageSrc(livroApi.liv_foto_capa);
                 } else {
                     setError(response.data.mensagem);
                 }

@@ -17,7 +17,7 @@ export default function Perfil() {
     const router = useRouter();
 
     const [perfil, setPerfil] = useState([]);
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
 
     useEffect(() => {
         carregaPerfil();
@@ -28,7 +28,7 @@ export default function Perfil() {
 
         try {
             const response = await api.post('/usuarios', dados);
-            console.log(response.data.dados);
+            console.log(response.data);
             setPerfil(response.data.dados);
         } catch (error) {
             if (error.response) {
@@ -78,16 +78,21 @@ export default function Perfil() {
                                         </div>
                                         <form className={styles.sexoForm}>
                                             <legend>Sexo:</legend>
-                                            {["feminino", "masculino", "neutro", "padrao"].map((opcao) => (
-                                                <label key={opcao}>
+                                            {[
+                                                { label: 'Feminino', value: '0' },
+                                                { label: 'Masculino', value: '1' },
+                                                { label: 'Neutro', value: '2' },
+                                                { label: 'Padrão', value: '3' }
+                                            ].map((opcao) => (
+                                                <label key={opcao.value}>
                                                     <input
                                                         type="radio"
-                                                        name="opcao"
-                                                        value={opcao}
-                                                        checked={infoUsu.usu_sexo === opcao}
+                                                        name="usu_sexo"
+                                                        value={opcao.value}
+                                                        checked={infoUsu.usu_sexo === opcao.value}
                                                         disabled
                                                     />
-                                                    {opcao.charAt(0).toUpperCase() + opcao.slice(1)}
+                                                    {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
                                                 </label>
                                             ))}
                                         </form>

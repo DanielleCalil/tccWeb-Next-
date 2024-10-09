@@ -15,10 +15,11 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const imageLoader = ({ src, width, quality }) => {
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
     };
-    
+
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
+
     const [livro, setLivro] = useState({
         "liv_cod": '',
         "liv_nome": '',
@@ -29,7 +30,19 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "gen_nome": '',
         "liv_foto_capa": '',
         "generos": ''
+
+        // "liv_pha_cod": "D738p",
+        // "liv_categ_cod": "0.810",
+        // "liv_nome": "A Garota do Lago 3",
+        // "liv_desc": "A Garota do Lago é um thriller que se passa em uma pequena cidade montanhosa chamada Summit Lake, onde a repórter Kelsey Castle investiga o brutal assassinato da estudante de direito Becca Eckersley. Becca, filha de um advogado influente, foi morta em sua casa, deixando a comunidade em choque. Enquanto Kelsey segue as pistas do caso, ela se conecta intimamente com a vítima e descobre segredos sombrios sobre sua vida. A selvageria do crime e os esforços para abafar o caso indicam que pode não ter sido um ataque aleatório. Conforme Kelsey desvenda os segredos de Becca, ela também confronta seu próprio passado obscuro.",
+        // "edt_cod": "27",
+        // "liv_foto_capa": "a garota do lago.jpg"    
+
     });
+
+    const [autor, setAutor] = useState([]);
+    const [editora, setEditora] = useState([]);
+    const [genero, setGenero] = useState([]);
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
@@ -41,6 +54,54 @@ export default function EditarInformacoesLivro({ codLivro }) {
         closeModalConfirm();
         await handleSave();
     };
+
+    useEffect(() => {
+        listaAutor();
+        listaEditora();
+        listaGenero();
+    }, []);
+
+    async function listaAutor() {
+        try {
+            const response = await api.get('/autores');
+            setAutor(response.data.dados);
+            console.log(response.data);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
+
+    async function listaEditora() {
+        try {
+            const response = await api.get('/editoras');
+            setEditora(response.data.dados);
+            console.log(response.data);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
+
+    async function listaGenero() {
+        try {
+            const response = await api.get('/generos');
+            setGenero(response.data.dados);
+            console.log(response.data);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
 
     useEffect(() => {
         const handleCarregaLivro = async () => {
@@ -57,11 +118,17 @@ export default function EditarInformacoesLivro({ codLivro }) {
                 }
             } catch (error) {
                 setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
-            } 
+            }
         };
 
         handleCarregaLivro();
     }, [codLivro]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setLivro(prev => ({ ...prev, [name]: value }));
+    };
+    
 
 
     const handleImageChange = (imageURL) => {
@@ -96,6 +163,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
+console.log(livro);
 
     return (
         <main className={styles.main}>
@@ -164,13 +232,19 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <input
+                                                <select id="aut_cod" name="aut_cod" value={livro.aut_cod} onChange={handleChange} className={styles.opcao}>
+                                                    <option value="0" style={{ color: '#999' }}>Selecione Autor(a)</option>
+                                                    {autor.map(aut => (
+                                                        <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_nome}</option>
+                                                    ))}
+                                                </select>
+                                                {/* <input
                                                     type="text"
                                                     value={livro.aut_nome}
                                                     onChange={(e) => setLivro({ ...livro, aut_nome: e.target.value })}
                                                     className={`${styles.editInputIcons} ${styles.editInput}`}
                                                     aria-label="Nome do autor"
-                                                />
+                                                /> */}
                                             </div>
                                             <div className={styles.infoBox}>
                                                 <span className={styles.titleSuperior}>Editora</span>
@@ -181,13 +255,19 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <input
+                                                <select id="edt_cod" name="edt_cod" value={livro.edt_cod} onChange={handleChange} className={styles.opcao}>
+                                                    <option value="0" style={{ color: '#999' }}>Selecione a Editora</option>
+                                                    {editora.map(edt => (
+                                                        <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_nome}</option>
+                                                    ))}
+                                                </select>
+                                                {/* <input
                                                     type="text"
                                                     value={livro.edt_nome}
                                                     onChange={(e) => setLivro({ ...livro, edt_nome: e.target.value })}
                                                     className={`${styles.editInputIcons} ${styles.editInput}`}
                                                     aria-label="Nome da editora"
-                                                />
+                                                /> */}
                                             </div>
                                             <div className={styles.infoBox}>
                                                 <span className={styles.titleSuperior}>Gênero</span>
@@ -198,13 +278,19 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <input
+                                                <select id="gen_cod" name="gen_cod" value={livro.gen_cod} onChange={handleChange} className={styles.opcao}>
+                                                    <option value="0" style={{ color: '#999' }}>Selecione o gênero</option>
+                                                    {genero.map(gen => (
+                                                        <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
+                                                    ))}
+                                                </select>
+                                                {/* <input
                                                     type="text"
                                                     value={livro.gen_nome}
                                                     onChange={(e) => setLivro({ ...livro, gen_nome: e.target.value })}
                                                     className={`${styles.editInputIcons} ${styles.editInput}`}
                                                     aria-label="Gênero do livro"
-                                                />
+                                                /> */}
                                             </div>
                                         </div>
                                         <div className={styles.editar}>

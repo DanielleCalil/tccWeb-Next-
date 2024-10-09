@@ -85,7 +85,7 @@ export default function AddLivroNovo() {
 
     async function listaAutores() {
         try {
-            const response = await api.post('/autores');
+            const response = await api.get('/autores');
             setAutor(response.data.dados);
             console.log(response.data);
         } catch (error) {
@@ -99,7 +99,7 @@ export default function AddLivroNovo() {
 
     async function listaEditoras() {
         try {
-            const response = await api.post('/editoras');
+            const response = await api.get('/editoras');
             setEditora(response.data.dados);
             console.log(response.data);
         } catch (error) {
@@ -113,7 +113,7 @@ export default function AddLivroNovo() {
 
     async function listaGeneros() {
         try {
-            const response = await api.post('/generos');
+            const response = await api.get('/generos');
             setGenero(response.data.dados);
             console.log(response.data);
         } catch (error) {
@@ -389,10 +389,10 @@ export default function AddLivroNovo() {
                                 <label className={styles.textInput}>Autor:</label>
                                 <div className={styles.divInput}>
                                     <select id="aut_cod" name="aut_cod" defaultValue={livro.aut_cod} onChange={handleChange} className={styles.inputField}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione autor(a)</option>
                                         {
                                             autor.map(aut => (
-                                                <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_cod}</option>
+                                                <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_nome}</option>
                                             ))
                                         }
                                     </select>
@@ -410,10 +410,10 @@ export default function AddLivroNovo() {
                                 <label className={styles.textInput}>Editora:</label>
                                 <div className={styles.divInput}>
                                     <select id="edt_cod" name="edt_cod" defaultValue={livro.edt_cod} onChange={handleChange} className={styles.inputField}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione editora</option>
                                         {
                                             editora.map(edt => (
-                                                <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_cod}</option>
+                                                <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_nome}</option>
                                             ))
                                         }
                                     </select>
@@ -431,10 +431,10 @@ export default function AddLivroNovo() {
                                 <label className={styles.textInput}>Gênero:</label>
                                 <div className={styles.divInput}>
                                     <select id="gen_cod" name="gen_cod" defaultValue={livro.gen_cod} onChange={handleChange} className={styles.inputField}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione...</option>
+                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione gênero</option>
                                         {
                                             genero.map(gen => (
-                                                <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_cod}</option>
+                                                <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
                                             ))
                                         }
                                     </select>

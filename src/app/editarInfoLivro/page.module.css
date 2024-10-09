@@ -151,13 +151,14 @@
 
 .inputResumo {
     width: 70rem;
-    height: 13.5rem;
+    height: 16rem;
     padding: 1.5rem;
     margin: 0.625rem 0;
     font-size: 1.25rem;
     border: 1px solid #ccc;
     border-radius: 1.875rem;
     box-sizing: border-box; 
+    font-family: "Poppins", sans-serif;
 }
 
 .resumo {
@@ -198,6 +199,26 @@
     height: auto;
     width: 3.5rem;
 }
+
+.opcao {
+    width: 100%;
+    height: 3.5rem;
+    padding: 0.5rem 0.8rem;
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    border-radius: 3rem;
+    box-sizing: border-box;
+    font-size: 1.3rem;
+    color: #000;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .opcao option:focus {
+    color: #fff;
+    background-color: #FF735C;
+  }
 
 .editar {
     display: flex;

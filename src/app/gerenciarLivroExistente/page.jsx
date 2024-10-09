@@ -232,20 +232,20 @@ export default function GerenciarLivroExistente() {
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>
                                     </div>
-                                    <div className={styles.editar}>
-                                        <button
-                                            type="submit"
-                                            onClick={openModalConfirm}
-                                            className={styles.addButton}
-                                        >
-                                            Salvar Alterações
-                                        </button>
-                                    </div>
                                 </div>
                             ))
                         ) : (
                             <h1>Não há resultados para a requisição</h1>
                         )}
+                    </div>
+                    <div className={styles.editar}>
+                        <button
+                            type="submit"
+                            onClick={openModalConfirm}
+                            className={styles.addButton}
+                        >
+                            Salvar Alterações
+                        </button>
                     </div>
                 </div>
             </div>

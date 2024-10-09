@@ -16,7 +16,8 @@ export default function Perfil() {
 
     const router = useRouter();
 
-    const [perfil, setPerfil] = useState([]);
+    const [perfil, setPerfil] = useState([]); // Inicializa como um array vazio
+    const [carregando, setCarregando] = useState(true); // Estado de carregamento
     // const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -24,27 +25,31 @@ export default function Perfil() {
     }, []);
 
     async function carregaPerfil() {
-        const dados = { usu_cod: 18 };
+        const params = { usu_cod: 18 };
 
         try {
-            const response = await api.post('/usuarios', dados);
+            const response = await api.get('/usuarios', { params }); // Corrigido para passar como objeto
             console.log(response.data);
-            setPerfil(response.data.dados);
+            setPerfil(response.data.dados); // Corrigido para acessar os dados corretamente
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.mensagem + '\n' + error.response.data.dados)
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
             } else {
                 alert('Erro no front-end' + '\n' + error);
             }
+        } finally {
+            setCarregando(false); // Define carregando como falso após a tentativa de carregamento
         }
-    };
+    }
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <div className={styles.contentWrapper}>
                     <h1 className={styles.perfil}>Perfil</h1>
-                    {perfil.length > 0 ? (
+                    {carregando ? (
+                        <p>Carregando...</p> // Mensagem de carregamento
+                    ) : perfil.length > 0 ? (
                         perfil.map(infoUsu => (
                             <div key={infoUsu.cod_usu} className={styles.parentContainer}>
                                 <div className={styles.PIContainer}>
@@ -105,6 +110,7 @@ export default function Perfil() {
                                                 src="/imagens_telas/editar_perfil.png"
                                                 width={500}
                                                 height={500}
+                                                alt="Editar perfil"
                                             />
                                         </button>
                                     </Link>

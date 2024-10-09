@@ -111,8 +111,11 @@ const searchOptions = [
 
 export default function GerenciarLivroExistente() {
 
+    const [books, setBooks] = useState({
+        "liv_cod": 0,
+        "liv_ativo": ''
+    });
 
-    const [books, setBooks] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -122,38 +125,19 @@ export default function GerenciarLivroExistente() {
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
     };
 
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    // const [showModalConfirm, setShowModalConfirm] = useState(false);
     const router = useRouter();
 
-    const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => setShowModalConfirm(false);
+    // const openModalConfirm = () => setShowModalConfirm(true);
+    // const closeModalConfirm = () => setShowModalConfirm(false);
 
-    const handleConfirm = () => {
-        setShowModalConfirm(false); // Fecha o modal
-        router.push('../biblioteca');
-    };
-
-    // Função para ativar/inativar um livro pelo título
-    const toggleBookStatus = async (liv_nome) => {
-        const updatedBooks = books.map(book =>
-            book.liv_nome === liv_nome ? { ...book, active: !book.active } : book
-        );
-        setBooks(updatedBooks);
-
-        // Atualiza o status no backend
-        try {
-            const book = updatedBooks.find(b => b.liv_nome === liv_nome);
-            await api.patch(`/livros/${liv_nome}`, { active: book.active });
-        } catch (error) {
-            console.error('Erro ao atualizar o status do livro:', error);
-            // Reverte a mudança em caso de erro
-            setBooks(books);
-        }
-    };
-
+    // const handleConfirm = () => {
+    //     setShowModalConfirm(false); // Fecha o modal
+    //     router.push('../biblioteca');
+    // };
 
     // Ordenar livros em ordem alfabética pelo título
-    const sortedBooks = [...books].sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
+    // const sortedBooks = [...books].sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
 
     const [livNome, setLivNome] = useState('');
 
@@ -166,7 +150,7 @@ export default function GerenciarLivroExistente() {
     }, []);
 
     async function listaLivros() {
-        const dados = { [selectedSearchOption]: livNome }; // Dinamicamente envia o campo baseado no radio button
+        const dados = { [selectedSearchOption]: livNome };
         try {
             const response = await api.post('/livros', dados);
             console.log(response.data.dados);
@@ -179,6 +163,71 @@ export default function GerenciarLivroExistente() {
             }
         }
     }
+    
+    // const toggleBookStatus = async (liv_cod) => {
+    //     const updatedBooks = books.map(book =>
+    //         book.liv_cod === liv_cod ? { ...book, active: book.active === 1 ? 0 : 1 } : book
+    //     );
+    //     setBooks(updatedBooks);
+    
+    //     try {
+    //         const book = updatedBooks.find(b => b.liv_cod === liv_cod);
+    //         // await api.patch(`/liv_inativar/${liv_cod}`, { active: book.active });
+
+    //         const response = await api.patch('/liv_inativar', books);
+    //             if (response.data.sucesso) {
+                    
+    //             }
+    
+    //         // console.log(`Status do livro ${liv_cod} atualizado para ${book.active === 1 ? 1 : 0}`);
+    //     } catch (error) {
+    //         console.error('Erro ao atualizar o status do livro:', error);
+    
+    //         // Se houver erro, reverte a mudança no estado local
+    //         const revertedBooks = books.map(book =>
+    //             book.liv_cod === liv_cod ? { ...book, active: book.active === 1 ? 0 : 1 } : book
+    //         );
+    //         setBooks(revertedBooks);
+    
+    //         alert('Erro ao atualizar o status do livro. Tente novamente.');
+    //     }
+    // };
+
+    const toggleBookStatus = async (liv_cod) => {
+        const updatedBooks = books.map(book =>
+            book.liv_cod === liv_cod ? { ...book, active: book.active === 1 ? 0 : 1 } : book
+        );
+        setBooks(updatedBooks);
+        
+        try {
+            const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
+            
+            // Criar o objeto a ser enviado para a API
+            const payload = {
+                liv_cod: bookToUpdate.liv_cod, // Enviando o código do livro
+                liv_ativo: bookToUpdate.active === 1 ? 1 : 0 // O novo status ativo
+            };
+    
+            const response = await api.patch('/liv_inativar', payload);
+            
+            if (response.data.sucesso) {
+                console.log(`Status do livro ${liv_cod} atualizado com sucesso.`);
+            } else {
+                throw new Error("Erro ao atualizar o status do livro.");
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar o status do livro:', error);
+            
+            // Reverte a mudança no estado local
+            const revertedBooks = books.map(book =>
+                book.liv_cod === liv_cod ? { ...book, active: book.active === 1 ? 1 : 0 } : book
+            );
+            setBooks(revertedBooks);
+            
+            alert('Erro ao atualizar o status do livro. Tente novamente.');
+        }
+    };
+    
 
     return (
         <main className={styles.main}>
@@ -202,11 +251,11 @@ export default function GerenciarLivroExistente() {
                         ))}
                     </div>
                     <div className={styles.bookList}>
-                        {sortedBooks.length > 0 ? (
-                            sortedBooks.map(livro => (
+                        {books.length > 0 ? (
+                            books.map(livro => (
                                 <div
                                     className={`${styles.bookItem} ${!livro.active ? styles.inactive : ""}`}
-                                    key={livro.liv_nome}
+                                    key={livro.liv_cod}
                                 >
                                     <div>
                                         <Image
@@ -226,19 +275,20 @@ export default function GerenciarLivroExistente() {
                                         <label className={styles.switch}>
                                             <input
                                                 type="checkbox"
-                                                checked={livro.active}
-                                                onChange={() => toggleBookStatus(livro.liv_nome)}
+                                                checked={livro.active === 1}
+                                                onChange={() => toggleBookStatus(livro.liv_cod)} // Alterna o estado
                                             />
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>
                                     </div>
+
                                 </div>
                             ))
                         ) : (
                             <h1>Não há resultados para a requisição</h1>
                         )}
                     </div>
-                    <div className={styles.editar}>
+                    {/* <div className={styles.editar}>
                         <button
                             type="submit"
                             onClick={openModalConfirm}
@@ -246,14 +296,14 @@ export default function GerenciarLivroExistente() {
                         >
                             Salvar Alterações
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-            <ModalConfirmar
+            {/* <ModalConfirmar
                 show={showModalConfirm}
                 onClose={closeModalConfirm}
                 onConfirm={handleConfirm}
-            />
+            /> */}
         </main>
     );
 }

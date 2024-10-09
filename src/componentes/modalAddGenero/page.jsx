@@ -7,31 +7,43 @@ import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
 const ModalAddGenero = ({ show, onClose }) => {
-    const [genero, setGenero] = useState('');
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const [novoGenero, setNovoGenero] = useState({
+        "gen_nome": '',
+        "gen_cod": '',
+    });
+
     const router = useRouter();
 
     if (!show) return null;
 
-    const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => setShowModalConfirm(false);
-
     const handleConfirm = async () => {
+        if (novoGenero.gen_nome.trim() === "") {
+            alert("O nome do gênero é obrigatório.");
+            return; // Não deixa adicionar autor sem nome
+        }
+
         try {
-            const response = await api.post('/editoras', {
-                gen_nome: genero
+            // Faz a requisição para adicionar o autor ao banco
+            const response = await api.post('/generos', {
+                gen_nome: novoAutor.gen_nome,
             });
 
-            if (response.genero) {
-                setShowModalConfirm(false);
-                router.push('gerenciarLivroBiblioteca');
-
+            if (response.status === 200) {
+                alert("Gênero adicionado com sucesso!")
+                setTimeout(() => {
+                    onClose(); // Fecha o modal após 2 segundos
+                }, 2000);
             } else {
-                console.error('Erro ao adicionar o gênero');
+                alert("Erro ao adicionar o gênero. Tente novamente.");
             }
         } catch (error) {
-            console.error('Erro ao conectar ao servidor:', error);
+            alert("Erro ao conectar ao servidor. Tente novamente."); // Mensagem de erro
+            console.error("Erro ao conectar ao servidor:", error);
         }
+    };
+
+    const handleInputChange = (e) => {
+        setNovoGenero({ ...novoGenero, gen_nome: e.target.value });
     };
 
     return (
@@ -44,14 +56,14 @@ const ModalAddGenero = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
-                                value={genero.gen_nome}
-                                onChange={(e) => setGenero(e.target.value)}
+                                value={novoGenero.gen_nome}
+                                onChange={handleInputChange}
                             />
                         </div>
                         <div className={styles.buttonsContainer}>
                             <button
-                                type="submit"
-                                onClick={openModalConfirm}
+                                type="button"
+                                onClick={handleConfirm}
                                 className={styles.modalButtonAdd}
                             >
                                 Adicionar
@@ -67,13 +79,6 @@ const ModalAddGenero = ({ show, onClose }) => {
                     </div>
                 </div>
             </div>
-            {showModalConfirm && (
-                <ModalConfirmar
-                    show={showModalConfirm}
-                    onClose={closeModalConfirm}
-                    onConfirm={handleConfirm}
-                />
-            )}
         </>
     );
 };

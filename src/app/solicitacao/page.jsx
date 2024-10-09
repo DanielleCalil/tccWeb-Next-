@@ -33,8 +33,8 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 // ];
 
 const situacao = [
-  'Aprovado',
-  'Negado',
+  'Ativo',
+  'Inativo',
   'Pendente',
 ];
 
@@ -190,14 +190,15 @@ export default function Solicitacao() {
                   <p className={styles.info}>Nome: {solicit.usu_nome}</p>
                   <p className={styles.info}>RM: {solicit.usu_rm}</p>
                   <p className={styles.info}>E-mail: {solicit.usu_email}</p>
+                  <p className={styles.info}>Curso técnico ou médio: {solicit.cur_nome}</p>
                   <div className={styles.box}>
                     <input
                       type="checkbox"
-                      id={`checkbox-${solicit.usu_rm}`} // Adiciona um ID único
-                      checked={selectedUsers.has(solicit.usu_rm)}
-                      onChange={() => toggleUserSelection(solicit.usu_rm)}
+                      id={`checkbox-${solicit.usu_cod}`} // Adiciona um ID único
+                      checked={selectedUsers.has(solicit.usu_cod)}
+                      onChange={() => toggleUserSelection(solicit.usu_cod)}
                     />
-                    <label htmlFor={`checkbox-${solicit.usu_rm}`} className={styles.customCheckbox}></label> {/* Checkbox personalizado */}
+                    <label htmlFor={`checkbox-${solicit.usu_cod}`} className={styles.customCheckbox}></label>
                   </div>
                 </div>
 

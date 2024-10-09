@@ -16,7 +16,7 @@ const FileInput = ({ onFileSelect }) => {
         type="file"
         id="fileInput"
         name="profileImage"
-        accept="image/*"
+        accept="image/png, image/jpeg, image/jpg"
         onChange={handleFileChange}
         style={{ display: 'none' }} // Hide the default file input
       />

@@ -111,6 +111,33 @@ export default function AddLivroNovo() {
         }
     }
 
+        if (!validFileTypes.includes(file.type)) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O formato do arquivo deve ser PNG ou JPEG."] },
+            }));
+            return;
+        }
+
+        // Verifica o tamanho do arquivo (limite de 5MB, por exemplo)
+        const maxSizeInBytes = 5 * 1024 * 1024;
+        if (file.size > maxSizeInBytes) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O tamanho do arquivo deve ser menor que 5MB."] },
+            }));
+            return;
+        }
+
+        // Se o arquivo for válido
+        setUsuario((prev) => ({ ...prev, usu_foto: file }));
+        setValida((prevState) => ({
+            ...prevState,
+            foto: { validado: valSucesso, mensagem: [] },
+        }));
+    };
+
+
     async function listaGeneros() {
         try {
             const response = await api.get('/generos');
@@ -154,11 +181,35 @@ export default function AddLivroNovo() {
         resumo: {
             validado: valDefault,
             mensagem: []
+        },
+        foto: {
+            validado: valDefault,
+            mensagem: []
         }
     });
 
     const handleChange = (e) => {
         setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+
+    function validaFoto() {
+        let objTemp = {
+            validado: valSucesso,
+            mensagem: []
+        };
+
+        if (!usuario.usu_foto) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push("A foto do livro é obrigatória");
+        }
+
+        setValida((prevState) => ({
+            ...prevState,
+            foto: objTemp,
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
     }
 
     function validaSelectAutor() {
@@ -308,9 +359,10 @@ export default function AddLivroNovo() {
         itensValidados += validaSelectEditora();
         itensValidados += validaSelectGenero();
         itensValidados += validaResumo();
+        itensValidados += validaFoto();
 
         // Verificar se todos os campos estão validados
-        if (itensValidados === 6) {
+        if (itensValidados === 7) {
             try {
                 const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
@@ -333,18 +385,26 @@ export default function AddLivroNovo() {
                 <h1 className={styles.addLivroNovo}>Adicionar livro novo</h1>
                 <form id="form" className={styles.container} onSubmit={handleSubmit}>
                     <div className={styles.inputTotal}>
+
                         <div className={styles.inputImgContainer}>
                             <div className={styles.imgBook}>
-                                <p className={styles.textInput}>Capa:</p>
-                                <div className={styles.imagePreview}>
-                                    <Image
-                                        src={capaImage}
-                                        alt="Capa do livro"
-                                        width={150}
-                                        height={200}
-                                    />
+                                <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto">
+                                    <p className={styles.textInput}>Capa:</p>
+                                    <div className={styles.imagePreview}>
+                                        <Image
+                                            src={capaImage}
+                                            alt="Capa do livro"
+                                            width={150}
+                                            height={200}
+                                        />
+                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                        <IoAlertCircleOutline className={styles.erro} />
+                                    </div>
+                                    <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
+                                    {
+                                        valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
+                                    }
                                 </div>
-                                <FileInput onFileSelect={handleFileSelect} />
                             </div>
                         </div>
                         <div className={styles.inputContainer}>
@@ -470,7 +530,7 @@ export default function AddLivroNovo() {
                                 {/* Modal para adicionar autor */}
                                 <button
                                     type="button"
-                                    onClick={openModalAutor}
+                                    onClick={handleAddAutor}
                                     className={styles.addButton}
                                 >
                                     Adicionar Autor(a)

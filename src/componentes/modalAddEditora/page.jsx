@@ -7,30 +7,42 @@ import styles from './page.module.css'; // Estilos CSS
 import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
 
 const ModalAddEditora = ({ show, onClose }) => {
-    const [editora, setEditora] = useState('');
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const [novaEditora, setNovaEditora] = useState({
+        "edt_nome": "",
+        "edt_cod": "",
+    });
+
     const router = useRouter();
 
     if (!show) return null;
 
-    const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => setShowModalConfirm(false);
-
     const handleConfirm = async () => {
-       try {
-        const response = await api.post('/editoras', {
-           edt_nome: editora
-        });
-
-        if (response.status) {
-            setShowModalConfirm(false);
-            router.push('/gerenciarLivroBiblioteca');
-        } else {
-            console.error('Erro ao adicionar a editora');
+        if (novaEditora.edt_nome.trim() === "") {
+            alert("O nome da editora é obrigatório.");
+            return;
         }
-       } catch (error) {
-        console.error('Erro ao conectar ao servidor:', error)
-       }
+
+        try {
+            const response = await api.post('/editoras', {
+                edt_nome: novaEditora.edt_nome,
+            });
+
+            if (response.status === 200) {
+                alert("Editora adicionada com sucesso!")
+                setTimeout(() => {
+                    onClose(); // Fecha o modal após 2 segundos
+                }, 2000);
+            } else {
+                alert("Erro ao adicionar a editora. Tente novamente.");
+            }
+        } catch (error) {
+            alert("Erro ao conectar ao servidor. Tente novamente."); // Mensagem de erro
+            console.error("Erro ao conectar ao servidor:", error);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setNovaEditora({ ...novaEditora, edt_nome: e.target.value });
     };
 
     return (
@@ -43,14 +55,14 @@ const ModalAddEditora = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
-                                value={editora.edt_nome}
-                                onChange={(e) => setEditora(e.target.value)}
+                                value={novaEditora.edt_nome}
+                                onChange={handleInputChange}
                             />
                         </div>
                         <div className={styles.buttonsContainer}>
                             <button
-                                type="submit"
-                                onClick={openModalConfirm}
+                                type="button"
+                                onClick={handleConfirm}
                                 className={styles.modalButtonAdd}
                             >
                                 Adicionar
@@ -66,13 +78,6 @@ const ModalAddEditora = ({ show, onClose }) => {
                     </div>
                 </div>
             </div>
-            {showModalConfirm && (
-                <ModalConfirmar
-                    show={showModalConfirm}
-                    onClose={closeModalConfirm}
-                    onConfirm={handleConfirm}
-                />
-            )}
         </>
     );
 };

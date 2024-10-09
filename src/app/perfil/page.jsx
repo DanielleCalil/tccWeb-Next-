@@ -15,9 +15,9 @@ export default function Perfil() {
     };
 
     const router = useRouter();
-
+    const [error, setError] = useState(null);
+    // const [cursos, setCursos] = useState([]);
     const [perfil, setPerfil] = useState([]); // Inicializa como um array vazio
-    const [carregando, setCarregando] = useState(true); // Estado de carregamento
     // const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -25,33 +25,72 @@ export default function Perfil() {
     }, []);
 
     async function carregaPerfil() {
-        const params = { usu_cod: 18 };
+        const dados = {
+            usu_cod: 18
+        };
 
         try {
-            const response = await api.get('/usuarios', { params }); // Corrigido para passar como objeto
-            console.log(response.data);
-            setPerfil(response.data.dados); // Corrigido para acessar os dados corretamente
+            const response = await api.get('/usuarios', dados);
+            console.log(response.data.dados);
+            setPerfil(response.data.dados);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
             } else {
                 alert('Erro no front-end' + '\n' + error);
             }
-        } finally {
-            setCarregando(false); // Define carregando como falso após a tentativa de carregamento
         }
     }
+
+    // useEffect(() => {
+    //     listaCursos();
+    // }, []);
+
+    // async function listaCursos() {
+    //     try {
+    //         const response = await api.post('/cursos');
+    //         setCursos(response.data.dados);
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         if (error.response) {
+    //             alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+    //         } else {
+    //             alert('Erro no front-end' + '\n' + error);
+    //         }
+    //     }
+    // }
+
+    useEffect(() => {
+        const handleCarregaPerfil = async () => {
+            const dados = { usu_cod };
+
+            try {
+                const response = await api.get('/usuarios', dados);
+                if (response.data.sucesso) {
+                    const dadosApi = response.data.dados[0];
+                    setPerfil(dadosApi);
+                } else {
+                    setPerfil(response.data.mensagem);
+                }
+            } catch (error) {
+                setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
+            }
+        };
+        handleCarregaPerfil();
+    }, []);
+
+    // const handleChange = (e) => {
+    //     setPerfil(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    // }
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <div className={styles.contentWrapper}>
                     <h1 className={styles.perfil}>Perfil</h1>
-                    {carregando ? (
-                        <p>Carregando...</p> // Mensagem de carregamento
-                    ) : perfil.length > 0 ? (
+                    {perfil.length > 0 ? (
                         perfil.map(infoUsu => (
-                            <div key={infoUsu.cod_usu} className={styles.parentContainer}>
+                            <div key={infoUsu.usu_nome} className={styles.parentContainer}>
                                 <div className={styles.PIContainer}>
                                     <div className={styles.profileContainer}>
                                         <div className={styles.imgContainer}>
@@ -81,6 +120,10 @@ export default function Perfil() {
                                             <label className={styles.textInput}>E-mail:</label>
                                             <p>{infoUsu.usu_email}</p>
                                         </div>
+                                        <div className={styles.inputGroup}>
+                                            <label className={styles.textInput}>Curso técnico ou médio:</label>
+                                            <p>{infoUsu.cur_nome}</p>
+                                        </div>
                                         <form className={styles.sexoForm}>
                                             <legend>Sexo:</legend>
                                             {[
@@ -104,7 +147,7 @@ export default function Perfil() {
                                     </div>
                                 </div>
                                 <div className={styles.editar}>
-                                    <Link href={`/perfil/${infoUsu.cod_usu}`}>
+                                    <Link href={`/perfil/${infoUsu.usu_cod}`}>
                                         <button className={styles.editarButton}>
                                             <Image
                                                 src="/imagens_telas/editar_perfil.png"

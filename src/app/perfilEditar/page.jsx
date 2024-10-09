@@ -20,15 +20,19 @@ export default function PerfilEditar({ codUsu }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
+    const [cursos, setCursos] = useState([]);
+
     const [perfilEdt, setPerfilEdt] = useState({
-        "usu_cod": 0,
+        "usu_cod": '',
         "usu_rm": '',
         "usu_nome": '',
         "usu_email": '',
         "usu_senha": '',
-        "usu_sexo": 0,
+        "usu_sexo": '',
         "usu_foto": '',
-        "usu_ativo": 0,
+        "usu_ativo": '',
+        "cur_cod" : '',
+        "cur_nome" : '',
     });
 
     const handleFileSelect = (imageUrl) => {
@@ -46,13 +50,31 @@ export default function PerfilEditar({ codUsu }) {
         await handleSave();
     };
 
+    useEffect(() => {
+        listaCursos();
+    }, []);
+
+    async function listaCursos() {
+        try {
+            const response = await api.post('/cursos');
+            setCursos(response.data.dados);
+            console.log(response.data);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
+
     // Busca os dados do perfil ao montar o componente
     useEffect(() => {
         const handleCarregaPerfil = async () => {
             const dados = { usu_cod: codUsu }
 
             try {
-                const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
+                const response = await api.get('/usuarios', dados); // Ajuste o endpoint conforme necessário
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);
@@ -65,7 +87,7 @@ export default function PerfilEditar({ codUsu }) {
         };
 
         handleCarregaPerfil();
-    }, [codUsu]);
+    }, []);
 
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
@@ -73,9 +95,9 @@ export default function PerfilEditar({ codUsu }) {
     };
 
     const handleSave = async () => {
-        const { usu_rm, usu_nome, usu_nome_completo, usu_email, usu_sexo } = perfilEdt;
+        const { usu_rm, usu_nome, usu_nome_completo, usu_email, cur_nome, usu_sexo } = perfilEdt;
 
-        if (!usu_rm || !usu_nome || !usu_nome_completo || !usu_email || !usu_sexo) {
+        if (!usu_rm || !usu_nome || !usu_nome_completo || !usu_email || !cur_nome || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
@@ -99,105 +121,123 @@ export default function PerfilEditar({ codUsu }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
+    console.log(livro);
+
+    const handleChange = (e) => {
+        setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.perfil}>Perfil</h1>
                 {perfilEdt ? (
-                    <>
-                        <div className={styles.parentContainer}>
-                            <div className={styles.PIContainer}>
-                                <div className={styles.profileContainer}>
-                                    <div className={styles.imgContainer}>
-                                        <Image
-                                            src={imageSrc || perfilEdt.usu_foto}
-                                            alt="Foto de perfil"
-                                            width={512}
-                                            height={512}
-                                            loader={imageLoader}
-                                            priority
-                                        />
-                                    </div>
-                                    <FileInput onFileSelect={handleImageChange} />
+                    <div className={styles.parentContainer}>
+                        <div className={styles.PIContainer}>
+                            <div className={styles.profileContainer}>
+                                <div className={styles.imgContainer}>
+                                    <Image
+                                        src={imageSrc || perfilEdt.usu_foto}
+                                        alt="Foto de perfil"
+                                        width={512}
+                                        height={512}
+                                        loader={imageLoader}
+                                        priority
+                                    />
                                 </div>
+                                <FileInput onFileSelect={handleImageChange} />
+                            </div>
 
-                                <div className={styles.inputContainer}>
-                                    <div className={styles.inputGroup}>
-                                        <p className={styles.textInput}>RM:</p>
-                                        <input
-                                            type="number"
-                                            id="rm"
-                                            value={perfilEdt.usu_rm}
-                                            onChange={(e) => {
-                                                const value = Number(e.target.value);
-                                                setPerfilEdt({ ...perfilEdt, usu_rm: isNaN(value) ? 0 : value });
-                                            }}
-                                            className={`${styles.inputField} ${styles.inputRm}`}
-                                            aria-label="Registro de matrícula"
-                                            disabled
-                                        />
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <p className={styles.textInput}>Nome social:</p>
-                                        <input
-                                            type="text"
-                                            id="nomeSocial"
-                                            value={perfilEdt.usu_nome}
-                                            onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome: e.target.value })}
-                                            className={styles.inputField}
-                                            aria-label="Nome Social"
-                                        />
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <p className={styles.textInput}>Nome completo:</p>
-                                        <input
-                                            type="text"
-                                            id="nomeCompleto"
-                                            value={perfilEdt.usu_nome_completo}
-                                            onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome_completo: e.target.value })}
-                                            className={styles.inputField}
-                                            aria-label="Nome Completo"
-                                            disabled
-                                        />
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <label className={styles.textInput}>E-mail:</label>
-                                        <input
-                                            type="email"
-                                            id="usu_email"
-                                            value={perfilEdt.usu_email}
-                                            onChange={(e) => setPerfilEdt({ ...PerfilEditar, usu_email: e.target.value })}
-                                            className={styles.inputField}
-                                            aria-label="E-mail"
-                                        />
-                                    </div>
-                                    <form className={styles.sexoForm}>
-                                        <legend>Sexo:</legend>
-                                        {["feminino", "masculino", "neutro", "padrao"].map((opcao) => (
-                                            <label key={opcao}>
-                                                <input
-                                                    type="radio"
-                                                    name="opcao"
-                                                    value={opcao}
-                                                    checked={perfilEdt.usu_sexo === opcao}
-                                                    onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value })}
-                                                />
-                                                {opcao.charAt(0).toUpperCase() + opcao.slice(1)}
-                                            </label>
-                                        ))}
-                                    </form>
+                            <div className={styles.inputContainer}>
+                                <div className={styles.inputGroup}>
+                                    <p className={styles.textInput}>RM:</p>
+                                    <input
+                                        type="number"
+                                        id="rm"
+                                        value={perfilEdt.usu_rm}
+                                        onChange={(e) => {
+                                            const value = Number(e.target.value);
+                                            setPerfilEdt({ ...perfilEdt, usu_rm: isNaN(value) ? 0 : value });
+                                        }}
+                                        className={`${styles.inputField} ${styles.inputRm}`}
+                                        aria-label="Registro de matrícula"
+                                        disabled
+                                    />
                                 </div>
+                                <div className={styles.inputGroup}>
+                                    <p className={styles.textInput}>Nome social:</p>
+                                    <input
+                                        type="text"
+                                        id="nomeSocial"
+                                        value={perfilEdt.usu_nome}
+                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome: e.target.value })}
+                                        className={styles.inputField}
+                                        aria-label="Nome Social"
+                                    />
+                                </div>
+                                <div className={styles.inputGroup}>
+                                    <p className={styles.textInput}>Nome completo:</p>
+                                    <input
+                                        type="text"
+                                        id="nomeCompleto"
+                                        value={perfilEdt.usu_nome_completo}
+                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome_completo: e.target.value })}
+                                        className={styles.inputField}
+                                        aria-label="Nome Completo"
+                                        disabled
+                                    />
+                                </div>
+                                <div className={styles.inputGroup}>
+                                    <label className={styles.textInput}>E-mail:</label>
+                                    <input
+                                        type="email"
+                                        id="usu_email"
+                                        value={perfilEdt.usu_email}
+                                        onChange={(e) => setPerfilEdt({ ...PerfilEditar, usu_email: e.target.value })}
+                                        className={styles.inputField}
+                                        aria-label="E-mail"
+                                    />
+                                </div>
+                                <div className={styles.inputGroup}>
+                                    <select id="cur_cod" name="cur_cod" defaultValue={perfilEdt.cur_cod} onChange={handleChange} className={styles.opcao}>
+                                        <option value="0" style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
+                                        {
+                                            cursos.map(cur => (
+                                                <option key={cur.cur_cod} value={cur.cur_cod}>{cur.cur_nome}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                                <form className={styles.sexoForm}>
+                                    <legend>Sexo:</legend>
+                                    {[
+                                        { label: 'Feminino', value: '0' },
+                                        { label: 'Masculino', value: '1' },
+                                        { label: 'Neutro', value: '2' },
+                                        { label: 'Padrão', value: '3' }
+                                    ].map((opcao) => (
+                                        <label key={opcao.value}>
+                                            <input
+                                                type="radio"
+                                                name="usu_sexo"
+                                                value={opcao.value}
+                                                checked={perfilEdt.usu_sexo === opcao.usu_sexo}
+                                                onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value })}
+                                            />
+                                            {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
+                                        </label>
+                                    ))}
+                                </form>
                             </div>
                         </div>
-                    </>
+                    </div>
                 ) : (
                     <h1>Não há resultados para a requisição</h1>
                 )}
             </div>
             <div className={styles.editar}>
                 <button
-                    type="button"
+                    type="submit"
                     onClick={openModalConfirm}
                     className={styles.saveButton}
                 >

@@ -1,40 +1,50 @@
-"use client"
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import api from '@/services/api';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/services/api";
 
-import styles from './page.module.css'; // Estilos CSS
-import ModalConfirmar from '@/componentes/modalConfirmar/page'; // Certifique-se de que o nome do componente está correto
+import styles from "./page.module.css"; // Estilos CSS
 
 const ModalAddAutor = ({ show, onClose }) => {
-    const [autor, setAutor] = useState(''); // Estado para armazenar o nome do autor
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const [novoAutor, setNovoAutor] = useState({
+        "aut_nome": "",
+        "aut_cod": "",
+    }); // Estado para armazenar o nome do autor
+
     const router = useRouter();
 
     if (!show) return null;
 
-    const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => setShowModalConfirm(false);
-
     // Função para enviar o autor ao backend
     const handleConfirm = async () => {
+        if (novoAutor.aut_nome.trim() === "") {
+            alert("O nome do autor é obrigatório.");
+            return; // Não deixa adicionar autor sem nome
+        }
+
         try {
             // Faz a requisição para adicionar o autor ao banco
             const response = await api.post('/autores', {
-                aut_nome: autor
+                aut_nome: novoAutor.aut_nome,
             });
 
-            if (response.status) {
-                // Se o envio for bem-sucedido, fecha o modal e redireciona
-                setShowModalConfirm(false);
-                router.push('/gerenciarLivroBiblioteca'); // Redireciona para a biblioteca
+            if (response.status === 200) {
+                alert("Autor adicionado com sucesso!")
+                setTimeout(() => {
+                    onClose(); // Fecha o modal após 2 segundos
+                }, 2000);
             } else {
-                console.error('Erro ao adicionar o autor');
+                alert("Erro ao adicionar o autor. Tente novamente.");
             }
         } catch (error) {
-            console.error('Erro ao conectar ao servidor:', error);
+            alert("Erro ao conectar ao servidor. Tente novamente."); // Mensagem de erro
+            console.error("Erro ao conectar ao servidor:", error);
         }
+    };
+
+    // Função para atualizar o nome do autor
+    const handleInputChange = (e) => {
+        setNovoAutor({ ...novoAutor, aut_nome: e.target.value });
     };
 
     return (
@@ -47,20 +57,20 @@ const ModalAddAutor = ({ show, onClose }) => {
                             <input
                                 type="text"
                                 className={styles.inputField}
-                                value={autor.aut_nome} // Vínculo do estado ao input
-                                onChange={(e) => setAutor(e.target.value)} // Atualiza o estado conforme o usuário digita
+                                value={novoAutor.aut_nome} // Vínculo do estado ao input
+                                onChange={handleInputChange} // Atualiza o estado conforme o usuário digita
                             />
                         </div>
                         <div className={styles.buttonsContainer}>
                             <button
-                                type="submit"
-                                onClick={openModalConfirm}
+                                type="button"
+                                onClick={handleConfirm} // Chama a função para adicionar o autor diretamente
                                 className={styles.modalButtonAdd}
                             >
                                 Adicionar
                             </button>
                             <button
-                                type="button" // Alterar o tipo do botão
+                                type="button"
                                 onClick={onClose} // Fechar o modal principal
                                 className={styles.modalButtonCanc}
                             >
@@ -70,13 +80,6 @@ const ModalAddAutor = ({ show, onClose }) => {
                     </div>
                 </div>
             </div>
-            {showModalConfirm && (
-                <ModalConfirmar
-                    show={showModalConfirm}
-                    onClose={closeModalConfirm}
-                    onConfirm={handleConfirm} // Chama a função para adicionar o autor
-                />
-            )}
         </>
     );
 };

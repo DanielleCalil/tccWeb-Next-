@@ -122,13 +122,13 @@ export default function EditarInformacoesLivro({ codLivro }) {
         };
 
         handleCarregaLivro();
-    }, [codLivro]);
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLivro(prev => ({ ...prev, [name]: value }));
     };
-    
+
 
 
     const handleImageChange = (imageURL) => {
@@ -163,7 +163,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-console.log(livro);
+    console.log(livro);
 
     return (
         <main className={styles.main}>
@@ -295,7 +295,7 @@ console.log(livro);
                                         </div>
                                         <div className={styles.editar}>
                                             <button
-                                                type="button"
+                                                type="submit"
                                                 onClick={openModalConfirm}
                                                 className={styles.saveButton}
                                             >

@@ -38,7 +38,7 @@ export default function InfoLivroBiblioteca({ codLivro }) {
         };
 
         handleCarregaLivro();
-    }, [codLivro]);
+    }, []);
 
     return (
         <main className={styles.main}>

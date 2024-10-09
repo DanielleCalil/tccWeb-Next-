@@ -109,11 +109,11 @@ export default function SignUp() {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const [selectCursos, setSelectCursos] = useState('');
-    const handleSelectCursosChange = (e) => {
-        setSelectCursos(e.target.value);
-        setError(''); // Limpa o erro se necessário
-    };
+    // const [selectCursos, setSelectCursos] = useState('');
+    // const handleSelectCursosChange = (e) => {
+    //     setSelectCursos(e.target.value);
+    //     setError(''); // Limpa o erro se necessário
+    // };
 
     function validaSelectCursos() {
 

@@ -13,14 +13,16 @@ buttons
 disabled selected //usar em input selecionável na opção que não pode selecionar
 
 
-
+na rota usuarios só tem o usu_nome mas e o nome social?
+verificar a rota da api de editar livros
+preciso da rota de editar as Informaçõesde contato
 
 
 O QUE ESTA FALTANDO?
 
 SIGNUP
-- realizar o cadastro
-- colocar a cor do curso no select em preto
+- realizar o cadastro-
+- colocar a cor do curso no select em preto-
 
 ESQUECEU A SENHA
 - ser possível enviar um email para o email fornecido com um código para poder mudar a senha

@@ -97,6 +97,11 @@ export default function AddLivroNovo() {
         }
     }
 
+    const handleAddAutor = () => {
+        event.preventDefault();
+        openModalAutor(); // Abre o modal
+      };
+
     async function listaEditoras() {
         try {
             const response = await api.get('/editoras');
@@ -111,6 +116,20 @@ export default function AddLivroNovo() {
         }
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+
+        // Verifica se o arquivo foi selecionado
+        if (!file) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["Por favor, selecione uma foto."] },
+            }));
+            return;
+        }
+
+        // Verifica o tipo do arquivo
+        const validFileTypes = ["image/jpeg", "image/png"];
         if (!validFileTypes.includes(file.type)) {
             setValida((prevState) => ({
                 ...prevState,

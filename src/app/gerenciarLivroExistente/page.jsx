@@ -220,7 +220,7 @@ export default function GerenciarLivroExistente() {
             
             // Reverte a mudança no estado local
             const revertedBooks = books.map(book =>
-                book.liv_cod === liv_cod ? { ...book, active: book.active === 1 ? 1 : 0 } : book
+                book.liv_cod === liv_cod ? { ...book, active: book.active === 1 ? 0 : 1 } : book
             );
             setBooks(revertedBooks);
             

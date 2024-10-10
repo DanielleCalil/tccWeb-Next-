@@ -29,15 +29,17 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "edt_nome": '',
         "gen_nome": '',
         "liv_foto_capa": '',
-        "generos": ''
+        "generos": '',
+        "liv_pha_cod": '',
+        "liv_categ_cod": '',
+        "edt_cod": '',
 
-        // "liv_pha_cod": "D738p",
+         // "liv_pha_cod": "D738p",
         // "liv_categ_cod": "0.810",
         // "liv_nome": "A Garota do Lago 3",
         // "liv_desc": "A Garota do Lago é um thriller que se passa em uma pequena cidade montanhosa chamada Summit Lake, onde a repórter Kelsey Castle investiga o brutal assassinato da estudante de direito Becca Eckersley. Becca, filha de um advogado influente, foi morta em sua casa, deixando a comunidade em choque. Enquanto Kelsey segue as pistas do caso, ela se conecta intimamente com a vítima e descobre segredos sombrios sobre sua vida. A selvageria do crime e os esforços para abafar o caso indicam que pode não ter sido um ataque aleatório. Conforme Kelsey desvenda os segredos de Becca, ela também confronta seu próprio passado obscuro.",
         // "edt_cod": "27",
-        // "liv_foto_capa": "a garota do lago.jpg"    
-
+        // "liv_foto_capa": "a garota do lago.jpg" 
     });
 
     const [autor, setAutor] = useState([]);
@@ -238,13 +240,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                         <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_nome}</option>
                                                     ))}
                                                 </select>
-                                                {/* <input
-                                                    type="text"
-                                                    value={livro.aut_nome}
-                                                    onChange={(e) => setLivro({ ...livro, aut_nome: e.target.value })}
-                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
-                                                    aria-label="Nome do autor"
-                                                /> */}
                                             </div>
                                             <div className={styles.infoBox}>
                                                 <span className={styles.titleSuperior}>Editora</span>
@@ -261,13 +256,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                         <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_nome}</option>
                                                     ))}
                                                 </select>
-                                                {/* <input
-                                                    type="text"
-                                                    value={livro.edt_nome}
-                                                    onChange={(e) => setLivro({ ...livro, edt_nome: e.target.value })}
-                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
-                                                    aria-label="Nome da editora"
-                                                /> */}
                                             </div>
                                             <div className={styles.infoBox}>
                                                 <span className={styles.titleSuperior}>Gênero</span>
@@ -284,13 +272,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                         <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
                                                     ))}
                                                 </select>
-                                                {/* <input
-                                                    type="text"
-                                                    value={livro.gen_nome}
-                                                    onChange={(e) => setLivro({ ...livro, gen_nome: e.target.value })}
-                                                    className={`${styles.editInputIcons} ${styles.editInput}`}
-                                                    aria-label="Gênero do livro"
-                                                /> */}
                                             </div>
                                         </div>
                                         <div className={styles.editar}>

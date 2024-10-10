@@ -5,15 +5,7 @@ import styles from "./page.module.css";
 import Link from 'next/link';
 import api from '@/services/api';
 
-// const infoContat = [
-//   {
-//     esc_nome: "ETEC PROF. MASSUYUKI KAWANO",
-//     infos: "(14) 3496 1520 - (14) 3491 5393\nRUA: BEZERRA DE MENEZES, 215\nCEP 17605-440\nE136DIR@CPS.SP.GOV.BR",
-//   },
-// ];
-
 export default function InfoContato() {
-
   const [infoContato, setInfoContato] = useState([]);
 
   useEffect(() => {
@@ -21,17 +13,14 @@ export default function InfoContato() {
   }, []);
 
   async function informacoes() {
+    const dados = { cont_cod: 1 };
     try {
-      const response = await api.get('/contatos');
-      console.log(response.data.dados);
+      const response = await api.get('/contatos', dados);
       setInfoContato(response.data.dados);
     } catch (error) {
-      if (error.response) {
-        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-      } else {
-        alert('Erro no front-end' + '\n' + error);
-      }
-    }
+      console.error(error);
+      alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
+    } 
   }
 
   return (
@@ -48,9 +37,10 @@ export default function InfoContato() {
             height={2000}
           />
         </div>
+
         {infoContato.length > 0 ? (
           infoContato.map(infoCont => (
-            <div key={infoCont} className={styles.informacoes}>
+            <div key={infoCont.cont_cod} className={styles.informacoes}>
               <p className={styles.escola}>{infoCont.esc_nome}</p>
               <p className={styles.infos}>{infoCont.esc_endereco}</p>
               <p className={styles.infos}>{infoCont.esc_tel}</p>
@@ -58,13 +48,10 @@ export default function InfoContato() {
               <p className={styles.infos}>{infoCont.esc_email}</p>
               <div className={styles.editar}>
                 <Link href="/infoContatoEditar/">
-                  <button
-                    type="submit"
-                    className={styles.editarButton}
-                  >
+                  <button type="button" className={styles.editarButton}>
                     <Image
                       src="/imagens_telas/editar_perfil.png"
-                      alt="Imagem de Perfil Padrão"
+                      alt="Ícone de editar perfil"
                       width={500}
                       height={500}
                     />

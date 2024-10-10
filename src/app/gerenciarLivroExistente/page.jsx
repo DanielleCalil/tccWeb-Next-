@@ -152,7 +152,7 @@ export default function GerenciarLivroExistente() {
     async function listaLivros() {
         const dados = { [selectedSearchOption]: livNome };
         try {
-            const response = await api.post('/livros', dados);
+            const response = await api.post('/liv_gerenciar', dados);
             console.log(response.data.dados);
             setBooks(response.data.dados);
         } catch (error) {

@@ -32,6 +32,10 @@
   width: 20%;
 }
 
+.space {
+  margin-top: 1rem;
+}
+
 .inputField input[type="file"] {
   display: none;
 }
@@ -45,9 +49,7 @@
 .inputGroup {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  max-width: 30%;
 }
 
 .inputGroup form {

@@ -15,7 +15,7 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 //   },
 // ];
 
-export default function InfoContatoEditar() {
+export default function InfoContatoEditar({ codInfo }) {
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();
 
@@ -35,7 +35,7 @@ export default function InfoContatoEditar() {
     "esc_tel": '',
     "esc_cel": '',
     "esc_email": '',
-    "esc_cod": '',
+    "cont_cod": '',
   });
 
   const handleChange = (e) => {
@@ -44,22 +44,24 @@ export default function InfoContatoEditar() {
   };
 
   useEffect(() => {
-    listaContato();
-  }, []);
+    const informacoes = async () => {
+      const dados = { cont_cod: codInfo };
 
-  async function listaContato() {
-    try {
-      const response = await api.post('/usuarios');
-      console.log(response.data.dados);
-      setPerfilEditar(response.data.dados);
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-      } else {
-        alert('Erro no front-end' + '\n' + error);
+      try {
+        const response = await api.post('/contatos', dados);
+        if (response.data.sucesso) {
+          const infoApi = response.data.dados[0];
+          setInfoContatoEdt(infoApi);
+        } else {
+          setError(response.data.mensagem)
+        }
+      } catch (error) {
+        setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
       }
-    }
-  }
+    };
+
+    informacoes();
+  }, []);
 
   const handleSave = async () => {
     const { esc_nome, esc_endereco, esc_tel, esc_cel, esc_email } = infoContatoEdt;
@@ -72,7 +74,7 @@ export default function InfoContatoEditar() {
     setIsSaving(true); // Inicia o salvamento
 
     try {
-      const response = await api.patch(`/usuarios/${infoContatoEdt.esc_cod}`, {
+      const response = await api.patch(`/contatos/${infoContatoEdt.cont_cod}`, {
         ...infoContatoEdt,
       });
 
@@ -93,8 +95,7 @@ export default function InfoContatoEditar() {
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.contato}>Informações de Contato</h1>
-        {infoContatoEdt.length > 0 ? (
-          infoContatoEdt.map(infoCont => (
+        {infoContatoEdt ? (
             <div className={styles.container}>
               <Image
                 src="/imagens_telas/contato.jpg"
@@ -106,53 +107,52 @@ export default function InfoContatoEditar() {
               <form>
                 <div className={styles.inputContainer}>
                   <div className={styles.inputGroup}>
-                    <div>
+                    <div className={styles.space}>
                       <span className={styles.titleSuperior}>Nome da escola:</span>
                       <input
                         type="text"
-                        value={infoCont.esc_nome}
-                        onChange={(e) => set({ ...infoCont, esc_nome: e.target.value })}
+                        value={infoContatoEdt.esc_nome}
+                        onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_nome: e.target.value })}
                         className={`${styles.inputField} ${styles.nomeInput}`}
                         aria-label="Nome da escola"
                       />
                     </div>
-                    <br /><br />
-                    <div>
+                    <div className={styles.space}>
                       <span className={styles.titleSuperior}>Endereço da escola:</span>
                       <input
                         type="text"
-                        value={infoCont.esc_endereco}
-                        onChange={(e) => set({ ...infoCont, esc_endereco: e.target.value })}
+                        value={infoContatoEdt.esc_endereco}
+                        onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_endereco: e.target.value })}
                         className={`${styles.inputField} ${styles.nomeInput}`}
                         aria-label="Endereço da escola"
                       />
                     </div>
-                    <div>
+                    <div className={styles.space}>
                       <span className={styles.titleSuperior}>Telefone da escola:</span>
                       <input
                         type="text"
-                        value={infoCont.esc_tel}
-                        onChange={(e) => set({ ...infoCont, esc_tel: e.target.value })}
+                        value={infoContatoEdt.esc_tel}
+                        onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_tel: e.target.value })}
                         className={`${styles.inputField} ${styles.nomeInput}`}
                         aria-label="Telefone da escola"
                       />
                     </div>
-                    <div>
+                    <div className={styles.space}>
                       <span className={styles.titleSuperior}>Celular da escola:</span>
                       <input
                         type="text"
-                        value={infoCont.esc_cel}
-                        onChange={(e) => set({ ...infoCont, esc_cel: e.target.value })}
+                        value={infoContatoEdt.esc_cel}
+                        onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_cel: e.target.value })}
                         className={`${styles.inputField} ${styles.nomeInput}`}
                         aria-label="Celular da escola"
                       />
                     </div>
-                    <div>
+                    <div className={styles.space}>
                       <span className={styles.titleSuperior}>E-mail da escola:</span>
                       <input
                         type="text"
-                        value={infoCont.esc_email}
-                        onChange={(e) => set({ ...infoCont, esc_email: e.target.value })}
+                        value={infoContatoEdt.esc_email}
+                        onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_email: e.target.value })}
                         className={`${styles.inputField} ${styles.nomeInput}`}
                         aria-label="E-mail da escola"
                       />
@@ -161,10 +161,9 @@ export default function InfoContatoEditar() {
                 </div>
               </form>
             </div>
-          ))
-        ) : (
-          <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
-        )}
+         ) : (
+          <h1>Não há resultados para a requisição</h1>
+      )}
 
         <div className={styles.editar}>
           <button

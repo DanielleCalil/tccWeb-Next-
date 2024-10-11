@@ -15,7 +15,7 @@ disabled selected //usar em input selecionável na opção que não pode selecio
 
 na rota usuarios só tem o usu_nome mas e o nome social?
 verificar a rota da api de editar livros
-preciso da rota de editar as Informaçõesde contato
+preciso da rota de editar as Informações de contato
 
 
 O QUE ESTA FALTANDO?

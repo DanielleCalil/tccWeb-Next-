@@ -149,7 +149,7 @@ export default function AddLivroNovo() {
         }
 
         // Se o arquivo for válido
-        setUsuario((prev) => ({ ...prev, usu_foto: file }));
+        setLivro((prev) => ({ ...prev, usu_foto: file }));
         setValida((prevState) => ({
             ...prevState,
             foto: { validado: valSucesso, mensagem: [] },
@@ -211,25 +211,25 @@ export default function AddLivroNovo() {
         setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    function validaFoto() {
-        let objTemp = {
-            validado: valSucesso,
-            mensagem: []
-        };
+    // function validaFoto() {
+    //     let objTemp = {
+    //         validado: valSucesso,
+    //         mensagem: []
+    //     };
 
-        if (!usuario.usu_foto) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push("A foto do livro é obrigatória");
-        }
+    //     if (!livro.usu_foto) {
+    //         objTemp.validado = valErro;
+    //         objTemp.mensagem.push("A foto do livro é obrigatória");
+    //     }
 
-        setValida((prevState) => ({
-            ...prevState,
-            foto: objTemp,
-        }));
+    //     setValida((prevState) => ({
+    //         ...prevState,
+    //         foto: objTemp,
+    //     }));
 
-        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-        return testeResult;
-    }
+    //     const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+    //     return testeResult;
+    // }
 
     function validaSelectAutor() {
 
@@ -378,10 +378,10 @@ export default function AddLivroNovo() {
         itensValidados += validaSelectEditora();
         itensValidados += validaSelectGenero();
         itensValidados += validaResumo();
-        itensValidados += validaFoto();
+        // itensValidados += validaFoto();
 
         // Verificar se todos os campos estão validados
-        if (itensValidados === 7) {
+        if (itensValidados === 6) {
             try {
                 const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
@@ -407,7 +407,7 @@ export default function AddLivroNovo() {
                         <div className={styles.inputImgContainer}>
                             <div className={styles.imgBook}>
                                 
-                                <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto">
+                                {/* <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto"> */}
                                     <p className={styles.textInput}>Capa:</p>
                                     <div className={styles.imagePreview}>
                                         <Image
@@ -416,14 +416,14 @@ export default function AddLivroNovo() {
                                             width={150}
                                             height={200}
                                         />
-                                        <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                        <IoAlertCircleOutline className={styles.erro} />
+                                        {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                        <IoAlertCircleOutline className={styles.erro} /> */}
                                     </div>
                                     <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
-                                    {
+                                    {/* {
                                         valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
                                     }
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className={styles.inputContainer}>

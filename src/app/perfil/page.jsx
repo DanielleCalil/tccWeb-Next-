@@ -24,11 +24,10 @@ export default function Perfil() {
 
     async function carregaPerfil() {
         const dados = {
-            usu_rm: 18
+            usu_rm: 11223344556
         };
-
         try {
-            const response = await api.get('/usuarios', dados);
+            const response = await api.post('/usuarios', dados);
             console.log(response.data.dados);
             setPerfil(response.data.dados);
         } catch (error) {
@@ -39,43 +38,6 @@ export default function Perfil() {
             }
         }
     }
-
-    // useEffect(() => {
-    //     listaCursos();
-    // }, []);
-
-    // async function listaCursos() {
-    //     try {
-    //         const response = await api.post('/cursos');
-    //         setCursos(response.data.dados);
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         if (error.response) {
-    //             alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-    //         } else {
-    //             alert('Erro no front-end' + '\n' + error);
-    //         }
-    //     }
-    // }
-
-    useEffect(() => {
-        const handleCarregaPerfil = async () => {
-            const dados = { usu_rm };
-
-            try {
-                const response = await api.get('/usuarios', dados);
-                if (response.data.sucesso) {
-                    const dadosApi = response.data.dados[0];
-                    setPerfil(dadosApi);
-                } else {
-                    setPerfil(response.data.mensagem);
-                }
-            } catch (error) {
-                setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
-            }
-        };
-        handleCarregaPerfil();
-    }, []);
 
     // const handleChange = (e) => {
     //     setPerfil(prev => ({ ...prev, [e.target.name]: e.target.value }));

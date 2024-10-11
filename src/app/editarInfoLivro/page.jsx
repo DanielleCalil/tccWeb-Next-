@@ -165,7 +165,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    console.log(livro);
+    // console.log(livro);
 
     return (
         <main className={styles.main}>

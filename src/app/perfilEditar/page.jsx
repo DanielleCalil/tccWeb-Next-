@@ -75,7 +75,7 @@ export default function PerfilEditar({ codUsu }) {
             const dados = { usu_cod: codUsu }
 
             try {
-                const response = await api.get('/usuarios', dados); // Ajuste o endpoint conforme necessário
+                const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);
@@ -122,7 +122,7 @@ export default function PerfilEditar({ codUsu }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    console.log(livro);
+    // console.log(livro);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -155,7 +155,7 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>RM:</p>
                                     <input
                                         type="number"
-                                        value={perfilEdt.usu_rm}
+                                        name="usu_rm"
                                         onChange={handleChange}
                                         className={`${styles.inputField} ${styles.inputRm}`}
                                         aria-label="Registro de matrícula"
@@ -166,7 +166,7 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>Nome social:</p>
                                     <input
                                         type="text"
-                                        value={perfilEdt.usu_social}
+                                        name="usu_social"
                                         onChange={handleChange}
                                         className={styles.inputField}
                                         aria-label="Nome Social"
@@ -176,7 +176,7 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>Nome completo:</p>
                                     <input
                                         type="text"
-                                        value={perfilEdt.usu_nome}
+                                        name="usu_nome"
                                         onChange={handleChange}
                                         className={styles.inputField}
                                         aria-label="Nome Completo"
@@ -187,15 +187,16 @@ export default function PerfilEditar({ codUsu }) {
                                     <label className={styles.textInput}>E-mail:</label>
                                     <input
                                         type="email"
-                                        value={perfilEdt.usu_email}
+                                        name="usu_email"
                                         onChange={handleChange}
                                         className={styles.inputField}
                                         aria-label="E-mail"
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
+                                <label className={styles.textInput}>Curso médio ou técnico:</label>
                                     <select id="cur_cod" name="cur_cod" defaultValue={perfilEdt.cur_cod} onChange={handleChange} className={styles.opcao}>
-                                        <option value="0" style={{ color: '#999' }}>Sel. Curso Técnico ou Médio</option>
+                                        <option value="0" style={{ color: '#999' }}>{cur_nome}</option>
                                         {
                                             cursos.map(cur => (
                                                 <option key={cur.cur_cod} value={cur.cur_cod}>{cur.cur_nome}</option>

@@ -44,6 +44,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  max-width: 50%;
 }
 
 .inputGroup {

@@ -9,24 +9,23 @@ export default function InfoContato() {
   const [infoContato, setInfoContato] = useState([]);
 
   useEffect(() => {
-    const informacoes = async () => {
-      const dados = { cont_cod: 1 };
-
-      try {
-        const response = await api.post('/contatos', dados);
-        if (response.data.sucesso) {
-          const infoApi = response.data.dados[0];
-          setInfoContato(infoApi);
-        } else {
-          setError(response.data.mensagem);
-        }
-      } catch (error) {
-        setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
-      }
-    };
-
     informacoes();
   }, []);
+
+  async function informacoes() {
+    const dados = { cont_cod: 1 };
+    try {
+      const response = await api.post('/contatos', dados);
+      console.log(response.data.dados);
+      setInfoContato(response.data.dados);
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+      } else {
+        alert('Erro no front-end' + '\n' + error);
+      }
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -43,17 +42,18 @@ export default function InfoContato() {
           />
         </div>
 
-        {infoContato ? (
-          <>
-            <div className={styles.informacoes}>
-              <p className={styles.escola}>{infoContato.esc_nome}</p>
-              <p className={styles.infos}>{infoContato.esc_endereco}</p>
-              <p className={styles.infos}>{infoContato.esc_tel}</p>
-              {/* <p className={styles.infos}>{infoContato.esc_cel}</p> */}
-              <p className={styles.infos}>{infoContato.esc_email}</p>
+        {infoContato.length > 0 ? (
+          infoContato.map(infoCont => (
+            <div key={infoCont.cont_cod} className={styles.informacoes}>
+              <p className={styles.escola}>{infoCont.esc_nome}</p>
+              <p className={styles.infos}>{infoCont.esc_endereco}</p>
+              <p className={styles.infos}>{infoCont.esc_tel}</p>
+              <p className={styles.infos}>{infoCont.esc_cel}</p>
+              <p className={styles.infos}>{infoCont.esc_email}</p>
+
               <div className={styles.editar}>
-                <Link href="/infoContatoEditar/">
-                  <button type="button" className={styles.editarButton}>
+                <Link href={`/infoContato/${infoCont.cont_cod}`}>
+                  <button className={styles.editarButton}>
                     <Image
                       src="/imagens_telas/editar_perfil.png"
                       alt="Ícone de editar perfil"
@@ -62,9 +62,11 @@ export default function InfoContato() {
                     />
                   </button>
                 </Link>
+
               </div>
+
             </div>
-          </>
+          ))
         ) : (
           <h1>Não há resultados para a requisição</h1>
         )}

@@ -16,9 +16,7 @@ export default function Perfil() {
 
     const router = useRouter();
     const [error, setError] = useState(null);
-    // const [cursos, setCursos] = useState([]);
-    const [perfil, setPerfil] = useState([]); // Inicializa como um array vazio
-    // const [error, setError] = useState(null);
+    const [perfil, setPerfil] = useState([]);
 
     useEffect(() => {
         carregaPerfil();
@@ -26,7 +24,7 @@ export default function Perfil() {
 
     async function carregaPerfil() {
         const dados = {
-            usu_cod: 18
+            usu_rm: 18
         };
 
         try {
@@ -62,7 +60,7 @@ export default function Perfil() {
 
     useEffect(() => {
         const handleCarregaPerfil = async () => {
-            const dados = { usu_cod };
+            const dados = { usu_rm };
 
             try {
                 const response = await api.get('/usuarios', dados);
@@ -90,7 +88,7 @@ export default function Perfil() {
                     <h1 className={styles.perfil}>Perfil</h1>
                     {perfil.length > 0 ? (
                         perfil.map(infoUsu => (
-                            <div key={infoUsu.usu_nome} className={styles.parentContainer}>
+                            <div key={infoUsu.usu_rm} className={styles.parentContainer}>
                                 <div className={styles.PIContainer}>
                                     <div className={styles.profileContainer}>
                                         <div className={styles.imgContainer}>
@@ -110,11 +108,11 @@ export default function Perfil() {
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Nome social:</label>
-                                            <p>{infoUsu.usu_nome}</p>
+                                            <p>{infoUsu.usu_social}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Nome completo:</label>
-                                            <p>{infoUsu.usu_nome_completo}</p>
+                                            <p>{infoUsu.usu_nome}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>E-mail:</label>

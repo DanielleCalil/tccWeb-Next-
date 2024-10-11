@@ -25,6 +25,7 @@ export default function PerfilEditar({ codUsu }) {
     const [perfilEdt, setPerfilEdt] = useState({
         "usu_cod": '',
         "usu_rm": '',
+        "usu_social": '',
         "usu_nome": '',
         "usu_email": '',
         "usu_senha": '',
@@ -124,8 +125,9 @@ export default function PerfilEditar({ codUsu }) {
     console.log(livro);
 
     const handleChange = (e) => {
-        setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    }
+        const { name, value } = e.target;
+        setPerfilEdt(prev => ({ ...prev, [name]: value }));
+    }    
 
     return (
         <main className={styles.main}>
@@ -153,12 +155,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>RM:</p>
                                     <input
                                         type="number"
-                                        id="rm"
                                         value={perfilEdt.usu_rm}
-                                        onChange={(e) => {
-                                            const value = Number(e.target.value);
-                                            setPerfilEdt({ ...perfilEdt, usu_rm: isNaN(value) ? 0 : value });
-                                        }}
+                                        onChange={handleChange}
                                         className={`${styles.inputField} ${styles.inputRm}`}
                                         aria-label="Registro de matrícula"
                                         disabled
@@ -168,9 +166,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>Nome social:</p>
                                     <input
                                         type="text"
-                                        id="nomeSocial"
-                                        value={perfilEdt.usu_nome}
-                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome: e.target.value })}
+                                        value={perfilEdt.usu_social}
+                                        onChange={handleChange}
                                         className={styles.inputField}
                                         aria-label="Nome Social"
                                     />
@@ -179,9 +176,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>Nome completo:</p>
                                     <input
                                         type="text"
-                                        id="nomeCompleto"
-                                        value={perfilEdt.usu_nome_completo}
-                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome_completo: e.target.value })}
+                                        value={perfilEdt.usu_nome}
+                                        onChange={handleChange}
                                         className={styles.inputField}
                                         aria-label="Nome Completo"
                                         disabled
@@ -191,9 +187,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <label className={styles.textInput}>E-mail:</label>
                                     <input
                                         type="email"
-                                        id="usu_email"
                                         value={perfilEdt.usu_email}
-                                        onChange={(e) => setPerfilEdt({ ...PerfilEditar, usu_email: e.target.value })}
+                                        onChange={handleChange}
                                         className={styles.inputField}
                                         aria-label="E-mail"
                                     />
@@ -221,8 +216,8 @@ export default function PerfilEditar({ codUsu }) {
                                                 type="radio"
                                                 name="usu_sexo"
                                                 value={opcao.value}
-                                                checked={perfilEdt.usu_sexo === opcao.usu_sexo}
-                                                onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value })}
+                                                checked={perfilEdt.usu_sexo === opcao.value}
+                                                onChange={handleChange}
                                             />
                                             {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
                                         </label>

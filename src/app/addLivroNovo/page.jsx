@@ -404,9 +404,9 @@ export default function AddLivroNovo() {
                 <h1 className={styles.addLivroNovo}>Adicionar livro novo</h1>
                 <form id="form" className={styles.container} onSubmit={handleSubmit}>
                     <div className={styles.inputTotal}>
-
                         <div className={styles.inputImgContainer}>
                             <div className={styles.imgBook}>
+                                
                                 <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto">
                                     <p className={styles.textInput}>Capa:</p>
                                     <div className={styles.imagePreview}>

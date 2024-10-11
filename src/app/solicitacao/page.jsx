@@ -1,5 +1,3 @@
-// array checkbox usuário ativos, inativos e pendentes
-
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -10,27 +8,6 @@ import api from '@/services/api';
 
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
-
-// const infoUsuario = [
-//   {
-//     usu_nome: 'Clara Oliveira da Silva',
-//     usu_email: 'clara.oliveira.silva@example.com',
-//     usu_rm: '550726',
-//     usu_cad: '13/03/2024',
-//   },
-//   {
-//     usu_nome: 'Ana Beatriz Silva',
-//     usu_email: 'ana.silva@example.com',
-//     usu_rm: '782134',
-//     usu_cad: '15/03/2024',
-//   },
-//   {
-//     usu_nome: 'Ana Carolina Silva',
-//     usu_email: 'ana.carolina@exemplo.com',
-//     usu_rm: '483726',
-//     usu_cad: '18/03/2024',
-//   }
-// ];
 
 const situacao = [
   'Ativo',
@@ -43,10 +20,8 @@ const searchOptions = [
   { value: 'usu_nome', label: 'Usuário' },
   { value: 'usu_rm', label: 'RM' },
 ];
-//adicionar usu_tipo ao inves de usu_cad e colocar um select para filtar por tipo
 
 export default function Solicitacao() {
-
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
@@ -58,37 +33,34 @@ export default function Solicitacao() {
   const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [selectedUsuario, setSelectedUsuario] = useState('Todos');
   const [showModalConfirm, setShowModalConfirm] = useState(false);
+  const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
+  const [listaUsuarios, setListaUsuarios] = useState([]);
+  const [livNome, setlivNome] = useState('');
   const router = useRouter();
-
-  const [listaUsuarios, setListaUsuarios] = useState([])
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
 
   const handleConfirm = () => {
-    // Aqui você pode lidar com a lógica de atribuição de nível de acesso
     console.log("Usuários selecionados:", Array.from(selectedUsers));
-    setShowModalConfirm(false); // Fecha o modal
+    setShowModalConfirm(false);
     router.push('../solicitacao');
   };
 
   const toggleUserSelection = (usu_cod) => {
     setSelectedUsers((prevSelectedUsers) => {
-      const updatedSelection = new Set(prevSelectedUsers); // Cria uma nova instância do Set
+      const updatedSelection = new Set(prevSelectedUsers);
       if (updatedSelection.has(usu_cod)) {
-        updatedSelection.delete(usu_cod); // Remove o usuário se já estiver selecionado
+        updatedSelection.delete(usu_cod);
       } else {
-        updatedSelection.add(usu_cod); // Adiciona o usuário se não estiver selecionado
+        updatedSelection.add(usu_cod);
       }
-      return updatedSelection; // Retorna o novo Set para atualizar o estado
+      return updatedSelection;
     });
   };
-  
-
-  const [livNome, setlivNome] = useState('')
 
   function atLivNome(nome) {
-    setlivNome(nome)
+    setlivNome(nome);
   }
 
   useEffect(() => {
@@ -96,10 +68,8 @@ export default function Solicitacao() {
   }, []);
 
   async function handleListaUsuarios() {
-    // const dados = { [selectedSearchOption]: livNome };
     try {
       const response = await api.get('/usuarios');
-      console.log(response.data.dados);
       setListaUsuarios(response.data.dados);
     } catch (error) {
       if (error.response) {
@@ -110,15 +80,11 @@ export default function Solicitacao() {
     }
   }
 
-  // Função para filtrar usuários com base na situação selecionada
-  // const filtrarSolicitacoes = () => {
-  //   if (selectedUsuario === 'Todos') {
-  //     return solicita; // Retorna todos os usuários
-  //   }
-  //   return solicita.filter((solicit) => solicit.situacao === selectedUsuario);
-  // };
-
-  // const solicitacoesFiltradas = filtrarSolicitacoes();
+  // Função para filtrar as solicitações com base na situação selecionada
+  const filtrarSolicitacoes = (situacao) => {
+    const solicitacoesFiltradas = listaUsuarios.filter((solicit) => solicit.situacao === situacao);
+    setSolicitacoesFiltradas(solicitacoesFiltradas);
+  };
 
   return (
     <main className={styles.main}>
@@ -147,7 +113,7 @@ export default function Solicitacao() {
             <div
               className={styles.situacao}
               key={status}
-              onClick={() => setSelectedUsuario(status)}
+              onClick={() => filtrarSolicitacoes(status)}
             >
               <Image
                 src={`/solicitacoes/${status.replace(/\s+/g, '_')}.png`}
@@ -166,10 +132,10 @@ export default function Solicitacao() {
             <option value="" disabled>
               Selecione uma opção
             </option>
-            <option value="funcionario(a)ADM">Funcionário(a) - ADM</option>
-            <option value="professor(a)">Professor(a)</option>
-            <option value="aluno(a)">Aluno(a)</option>
-            <option value="rejeitar">Negar acesso</option>
+            <option label="Funcionário(a) - ADM" value="2" />
+            <option label="Professor(a)" value="1" />
+            <option label="Aluno(a)" value="0" />
+            <option label="Negar acesso" value="5" />
           </select>
           <button
             type="submit"
@@ -180,13 +146,12 @@ export default function Solicitacao() {
           </button>
         </div>
 
+        {/* Exibe as solicitações filtradas */}
         <div className={styles.container}>
-          {listaUsuarios.length > 0 ? (
-            listaUsuarios.map((solicit) => (
+          {solicitacoesFiltradas.length > 0 ? (
+            solicitacoesFiltradas.map((solicit) => (
               <div key={solicit.usu_cod} className={styles.lineSquare}>
                 <div className={styles.inputContainer}>
-
-                  {/* <p className={styles.info}>Cadastro realizado no dia: {solicit.usu_cad}</p> */}
                   <p className={styles.info}>Nome: {solicit.usu_nome}</p>
                   <p className={styles.info}>RM: {solicit.usu_rm}</p>
                   <p className={styles.info}>E-mail: {solicit.usu_email}</p>
@@ -194,14 +159,13 @@ export default function Solicitacao() {
                   <div className={styles.box}>
                     <input
                       type="checkbox"
-                      id={`checkbox-${solicit.usu_cod}`} // Adiciona um ID único
+                      id={`checkbox-${solicit.usu_cod}`}
                       checked={selectedUsers.has(solicit.usu_cod)}
                       onChange={() => toggleUserSelection(solicit.usu_cod)}
                     />
                     <label htmlFor={`checkbox-${solicit.usu_cod}`} className={styles.customCheckbox}></label>
                   </div>
                 </div>
-
               </div>
             ))
           ) : (

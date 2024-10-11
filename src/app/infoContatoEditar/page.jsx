@@ -15,9 +15,22 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 //   },
 // ];
 
-export default function InfoContatoEditar() {
-  const [showModalConfirm, setShowModalConfirm] = useState(false);
+export default function InfoContatoEditar({ codInfo }) {
+
   const router = useRouter();
+  const [error, setError] = useState(null);
+  const [isSaving, setIsSaving] = useState(null);
+
+  const [infoContatoEdt, setInfoContatoEdt] = useState({
+    "cont_cod": '',
+    "esc_nome": '',
+    "esc_endereco": '',
+    "esc_tel": '',
+    "esc_cel": '',
+    "esc_email": '',
+  });
+
+  const [showModalConfirm, setShowModalConfirm] = useState(false);
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -27,39 +40,30 @@ export default function InfoContatoEditar() {
     await handleSave();
   };
 
-  const [isSaving, setIsSaving] = useState(null);
+  useEffect(() => {
+    const handleCarregainfo = async () => {
+      const dadosApi = { cont_cod: codInfo };
 
-  const [infoContatoEdt, setInfoContatoEdt] = useState({
-    "esc_nome": '',
-    "esc_endereco": '',
-    "esc_tel": '',
-    "esc_cel": '',
-    "esc_email": '',
-    "esc_cod": '',
-  });
+      try {
+        const response = await api.post('/contatos', dadosApi);
+        if (response.data.sucesso) {
+          const infoApi = response.data.dados[0];
+          setInfoContatoEdt(infoApi);
+        } else {
+          setError(response.data.mensagem)
+        }
+      } catch (error) {
+        setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
+      }
+    };
+
+    handleCarregainfo();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setLivro(prev => ({ ...prev, [name]: value }));
+    setInfoContatoEdt(prev => ({ ...prev, [name]: value }));
   };
-
-  useEffect(() => {
-    listaContato();
-  }, []);
-
-  async function listaContato() {
-    try {
-      const response = await api.post('/usuarios');
-      console.log(response.data.dados);
-      setPerfilEditar(response.data.dados);
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-      } else {
-        alert('Erro no front-end' + '\n' + error);
-      }
-    }
-  }
 
   const handleSave = async () => {
     const { esc_nome, esc_endereco, esc_tel, esc_cel, esc_email } = infoContatoEdt;
@@ -72,7 +76,7 @@ export default function InfoContatoEditar() {
     setIsSaving(true); // Inicia o salvamento
 
     try {
-      const response = await api.patch(`/usuarios/${infoContatoEdt.esc_cod}`, {
+      const response = await api.patch(`/cont_editar/${infoContatoEdt.cont_cod}`, {
         ...infoContatoEdt,
       });
 
@@ -93,94 +97,91 @@ export default function InfoContatoEditar() {
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.contato}>Informações de Contato</h1>
-        {infoContatoEdt.length > 0 ? (
-          infoContatoEdt.map(infoCont => (
-            <div className={styles.container}>
-              <Image
-                src="/imagens_telas/contato.jpg"
-                alt="Imagem tela contatos"
-                className={styles.imgContato}
-                width={3000}
-                height={2000}
-              />
-              <form>
-                <div className={styles.inputContainer}>
-                  <div className={styles.inputGroup}>
-                    <div>
-                      <span className={styles.titleSuperior}>Nome da escola:</span>
-                      <input
-                        type="text"
-                        value={infoCont.esc_nome}
-                        onChange={(e) => set({ ...infoCont, esc_nome: e.target.value })}
-                        className={`${styles.inputField} ${styles.nomeInput}`}
-                        aria-label="Nome da escola"
-                      />
-                    </div>
-                    <br /><br />
-                    <div>
-                      <span className={styles.titleSuperior}>Endereço da escola:</span>
-                      <input
-                        type="text"
-                        value={infoCont.esc_endereco}
-                        onChange={(e) => set({ ...infoCont, esc_endereco: e.target.value })}
-                        className={`${styles.inputField} ${styles.nomeInput}`}
-                        aria-label="Endereço da escola"
-                      />
-                    </div>
-                    <div>
-                      <span className={styles.titleSuperior}>Telefone da escola:</span>
-                      <input
-                        type="text"
-                        value={infoCont.esc_tel}
-                        onChange={(e) => set({ ...infoCont, esc_tel: e.target.value })}
-                        className={`${styles.inputField} ${styles.nomeInput}`}
-                        aria-label="Telefone da escola"
-                      />
-                    </div>
-                    <div>
-                      <span className={styles.titleSuperior}>Celular da escola:</span>
-                      <input
-                        type="text"
-                        value={infoCont.esc_cel}
-                        onChange={(e) => set({ ...infoCont, esc_cel: e.target.value })}
-                        className={`${styles.inputField} ${styles.nomeInput}`}
-                        aria-label="Celular da escola"
-                      />
-                    </div>
-                    <div>
-                      <span className={styles.titleSuperior}>E-mail da escola:</span>
-                      <input
-                        type="text"
-                        value={infoCont.esc_email}
-                        onChange={(e) => set({ ...infoCont, esc_email: e.target.value })}
-                        className={`${styles.inputField} ${styles.nomeInput}`}
-                        aria-label="E-mail da escola"
-                      />
-                    </div>
-                  </div>
+        {infoContatoEdt ? (
+          <div className={styles.container}>
+            <Image
+              src="/imagens_telas/contato.jpg"
+              alt="Imagem tela contatos"
+              className={styles.imgContato}
+              width={3000}
+              height={2000}
+            />
+
+            <div className={styles.inputContainer}>
+              <div className={styles.inputGroup}>
+                <div className={styles.space}>
+                  <span className={styles.titleSuperior}>Nome da escola:</span>
+                  <input
+                    type="text"
+                    value={infoContatoEdt.esc_nome}
+                    onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_nome: e.target.value })}
+                    className={`${styles.inputField} ${styles.nomeInput}`}
+                    aria-label="Nome da escola"
+                  />
                 </div>
-              </form>
+                <div className={styles.space}>
+                  <span className={styles.titleSuperior}>Endereço da escola:</span>
+                  <input
+                    type="text"
+                    value={infoContatoEdt.esc_endereco}
+                    onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_endereco: e.target.value })}
+                    className={`${styles.inputField} ${styles.nomeInput}`}
+                    aria-label="Endereço da escola"
+                  />
+                </div>
+                <div className={styles.space}>
+                  <span className={styles.titleSuperior}>Telefone da escola:</span>
+                  <input
+                    type="text"
+                    value={infoContatoEdt.esc_tel}
+                    onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_tel: e.target.value })}
+                    className={`${styles.inputField} ${styles.nomeInput}`}
+                    aria-label="Telefone da escola"
+                  />
+                </div>
+                <div className={styles.space}>
+                  <span className={styles.titleSuperior}>Celular da escola:</span>
+                  <input
+                    type="text"
+                    value={infoContatoEdt.esc_cel}
+                    onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_cel: e.target.value })}
+                    className={`${styles.inputField} ${styles.nomeInput}`}
+                    aria-label="Celular da escola"
+                  />
+                </div>
+                <div className={styles.space}>
+                  <span className={styles.titleSuperior}>E-mail da escola:</span>
+                  <input
+                    type="text"
+                    value={infoContatoEdt.esc_email}
+                    onChange={(e) => setInfoContatoEdt({ ...infoContatoEdt, esc_email: e.target.value })}
+                    className={`${styles.inputField} ${styles.nomeInput}`}
+                    aria-label="E-mail da escola"
+                  />
+                </div>
+              </div>
             </div>
-          ))
+            <div className={styles.editar}>
+              <button
+                type="submit"
+                onClick={openModalConfirm}
+                className={styles.saveButton}
+              >
+                {isSaving ? 'Salvando...' : 'Salvar alterações'}
+              </button>
+            </div>
+            <ModalConfirmar
+              show={showModalConfirm}
+              onClose={closeModalConfirm}
+              onConfirm={handleConfirm}
+            />
+          </div>
         ) : (
-          <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
+          <h1>Não há resultados para a requisição</h1>
         )}
 
-        <div className={styles.editar}>
-          <button
-            type="submit"
-            onClick={openModalConfirm}
-            className={styles.saveButton}
-          >
-            {isSaving ? 'Salvando...' : 'Salvar alterações'}
-          </button>
-        </div>
+
       </div>
-      <ModalConfirmar
-        show={showModalConfirm}
-        onClose={closeModalConfirm}
-        onConfirm={handleConfirm}
-      />
     </main>
   );
 }

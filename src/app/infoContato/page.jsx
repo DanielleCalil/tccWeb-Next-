@@ -15,13 +15,17 @@ export default function InfoContato() {
   async function informacoes() {
     const dados = { cont_cod: 1 };
     try {
-      const response = await api.get('/contatos', dados);
+      const response = await api.post('/contatos', dados);
+      console.log(response.data.dados);
       setInfoContato(response.data.dados);
     } catch (error) {
-      console.error(error);
-      alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
-    } 
-  }
+      if (error.response) {
+        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+      } else {
+        alert('Erro no front-end' + '\n' + error);
+      }
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -46,9 +50,10 @@ export default function InfoContato() {
               <p className={styles.infos}>{infoCont.esc_tel}</p>
               <p className={styles.infos}>{infoCont.esc_cel}</p>
               <p className={styles.infos}>{infoCont.esc_email}</p>
+
               <div className={styles.editar}>
-                <Link href="/infoContatoEditar/">
-                  <button type="button" className={styles.editarButton}>
+                <Link href={`/infoContato/${infoCont.cont_cod}`}>
+                  <button className={styles.editarButton}>
                     <Image
                       src="/imagens_telas/editar_perfil.png"
                       alt="Ícone de editar perfil"
@@ -57,7 +62,9 @@ export default function InfoContato() {
                     />
                   </button>
                 </Link>
+
               </div>
+
             </div>
           ))
         ) : (

@@ -24,8 +24,9 @@ export default function Perfil() {
 
     async function carregaPerfil() {
         const dados = {
-            usu_rm: 11223344556
+            usu_rm: '11223344556'
         };
+
         try {
             const response = await api.post('/usuarios', dados);
             console.log(response.data.dados);
@@ -107,7 +108,7 @@ export default function Perfil() {
                                     </div>
                                 </div>
                                 <div className={styles.editar}>
-                                    <Link href={`/perfil/${infoUsu.usu_cod}`}>
+                                    <Link href={`/perfil/${infoUsu.usu_rm}`}>
                                         <button className={styles.editarButton}>
                                             <Image
                                                 src="/imagens_telas/editar_perfil.png"

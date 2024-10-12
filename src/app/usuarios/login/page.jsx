@@ -51,6 +51,8 @@ export default function Login() {
                     "acesso": usuario.usu_tipo,
                     "curso": usuario.cur_cod,
                 };
+                console.log(objLogado);
+                
                 // signin(JSON.stringify(objLogado));                
                 localStorage.clear();
                 localStorage.setItem('user', JSON.stringify(objLogado));

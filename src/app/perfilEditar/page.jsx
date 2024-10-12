@@ -33,7 +33,7 @@ export default function PerfilEditar({ codUsu }) {
         "usu_foto": '',
         "usu_ativo": '',
         "cur_cod" : '',
-        "cur_nome" : '',
+        "cur_nome": '',
     });
 
     const handleFileSelect = (imageUrl) => {
@@ -72,7 +72,7 @@ export default function PerfilEditar({ codUsu }) {
     // Busca os dados do perfil ao montar o componente
     useEffect(() => {
         const handleCarregaPerfil = async () => {
-            const dados = { usu_cod: codUsu }
+            const dados = { usu_cod: 29 }
 
             try {
                 const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
@@ -155,8 +155,11 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>RM:</p>
                                     <input
                                         type="number"
-                                        name="usu_rm"
-                                        onChange={handleChange}
+                                        value={perfilEdt.usu_rm}
+                                        onChange={(e) => {
+                                            const value = Number(e.target.value);
+                                            setPerfilEdt({ ...perfilEdt, usu_rm: isNaN(value) ? 0 : value });
+                                        }}
                                         className={`${styles.inputField} ${styles.inputRm}`}
                                         aria-label="Registro de matrícula"
                                         disabled
@@ -166,8 +169,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>Nome social:</p>
                                     <input
                                         type="text"
-                                        name="usu_social"
-                                        onChange={handleChange}
+                                        value={perfilEdt.usu_social}
+                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_social: e.target.value })}
                                         className={styles.inputField}
                                         aria-label="Nome Social"
                                     />
@@ -176,8 +179,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <p className={styles.textInput}>Nome completo:</p>
                                     <input
                                         type="text"
-                                        name="usu_nome"
-                                        onChange={handleChange}
+                                        value={perfilEdt.usu_nome}
+                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome: e.target.value })}
                                         className={styles.inputField}
                                         aria-label="Nome Completo"
                                         disabled
@@ -187,8 +190,8 @@ export default function PerfilEditar({ codUsu }) {
                                     <label className={styles.textInput}>E-mail:</label>
                                     <input
                                         type="email"
-                                        name="usu_email"
-                                        onChange={handleChange}
+                                        value={perfilEdt.usu_email}
+                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_email: e.target.value })}
                                         className={styles.inputField}
                                         aria-label="E-mail"
                                     />
@@ -196,7 +199,7 @@ export default function PerfilEditar({ codUsu }) {
                                 <div className={styles.inputGroup}>
                                 <label className={styles.textInput}>Curso médio ou técnico:</label>
                                     <select id="cur_cod" name="cur_cod" defaultValue={perfilEdt.cur_cod} onChange={handleChange} className={styles.opcao}>
-                                        <option value="0" style={{ color: '#999' }}>{cur_nome}</option>
+                                        <option value="0" style={{ color: '#999' }}>Sel. curso técnico ou médio</option>
                                         {
                                             cursos.map(cur => (
                                                 <option key={cur.cur_cod} value={cur.cur_cod}>{cur.cur_nome}</option>

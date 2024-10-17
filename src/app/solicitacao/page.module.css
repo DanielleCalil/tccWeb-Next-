@@ -217,11 +217,11 @@
   align-items: center;
   display: flex;
   width: 100%;
-  max-width: 15.2%;
 }
 
 .selectInput {
-  width: 70%;
+  width: 100%;
+  max-width: 20rem;
   height: auto;
   padding: 0.625rem;
   border: 1px solid #CCC;

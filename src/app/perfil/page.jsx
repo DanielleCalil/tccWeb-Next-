@@ -83,7 +83,13 @@ export default function Perfil() {
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Curso técnico ou médio:</label>
-                                            <p>{infoUsu.cur_nome}</p>
+                                            {infoUsu.cursos.length > 0 ? (
+                                                infoUsu.cursos.map((curso) => (
+                                                    <p key={curso.cur_cod}>{curso.cur_nome}</p>
+                                                ))
+                                            ) : (
+                                                <p>Não há cursos registrados.</p>
+                                            )}
                                         </div>
                                         <form className={styles.sexoForm}>
                                             <legend>Sexo:</legend>

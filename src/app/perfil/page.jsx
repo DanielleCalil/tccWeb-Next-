@@ -104,7 +104,7 @@ export default function Perfil() {
                                                         type="radio"
                                                         name="usu_sexo"
                                                         value={opcao.value}
-                                                        checked={infoUsu.usu_sexo === opcao.value}
+                                                        checked={Number(infoUsu.usu_sexo) === Number(opcao.value)}
                                                         disabled
                                                     />
                                                     {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}

@@ -90,7 +90,8 @@ export default function Emprestimos() {
         </div>
 
         <div className={styles.container}>
-        {emprestimo.map(emp => (
+          {emprestimo.length > 0 ? (
+            emprestimo.map(emp => (
               <div key={emp.usu_cod} className={styles.lineSquare}>
                 <div className={styles.inputContainer}>
                   <div className={styles.infoBookReserva}>
@@ -113,7 +114,10 @@ export default function Emprestimos() {
                   <p className={styles.info}>Período da reserva: {emp.periodo?.inicio || 'Data não disponível'} até {emp.periodo?.fim || 'Data não disponível'}</p>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <h1>Não há resultados para a requisição</h1>
+          )}
         </div>
       </div>
     </main>

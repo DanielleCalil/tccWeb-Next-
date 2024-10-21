@@ -88,7 +88,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.container}>
-                    {livroRec.liv_cod !== '' ?
+                    {livroRec.liv_cod !== '' ? (
                         <>
                             <div className={styles.lineSquare}>
                                 <div className={styles.inputContainer}>
@@ -211,9 +211,9 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                 </Link>
                             </div>
                         </>
-                        :
+                    ) : (
                         <h1>Não há resultados para a requisição</h1>
-                    }
+                    )}
                 </div>
             </div>
         </main>

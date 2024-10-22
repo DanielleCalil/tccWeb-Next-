@@ -86,11 +86,36 @@ export default function Solicitacao() {
     setSolicitacoesFiltradas(filtradas);
   };
 
+  function atLivNome(nome) {
+    setlivNome(nome);
+  }
+
+  useEffect(() => {
+    listaLivros();
+  }, []);
+
+  async function listaLivros() {
+    const dados = { [selectedSearchOption]: livNome };
+    try {
+      const response = await api.post("/emprestimos", dados);
+      console.log(response.data.dados);
+      setEmprestimo(response.data.dados);
+    } catch (error) {
+      if (error.response) {
+        Alert.alert(
+          error.response.data.mensagem + "\n" + error.response.data.dados
+        );
+      } else {
+        alert("Erro no front-end" + "\n" + error);
+      }
+    }
+  }
+
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.selecao}>Solicitações de usuários</h1>
-        <BarraPesquisa livNome={livNome} atLivNome={setlivNome} />
+        <BarraPesquisa livNome={livNome} atLivNome={setlivNome} listaLivros={listaLivros}/>
 
         {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>

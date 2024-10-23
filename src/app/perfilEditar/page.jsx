@@ -32,7 +32,7 @@ export default function PerfilEditar({ codUsu }) {
         "usu_sexo": '',
         "usu_foto": '',
         "usu_ativo": '',
-        "cur_cod" : '',
+        "cur_cod": '',
         "cur_nome": '',
     });
 
@@ -127,13 +127,13 @@ export default function PerfilEditar({ codUsu }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPerfilEdt(prev => ({ ...prev, [name]: value }));
-    }    
+    }
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.perfil}>Perfil</h1>
-                {perfilEdt ? (
+                {perfilEdt.usu_cod ? (
                     <div className={styles.parentContainer}>
                         <div className={styles.PIContainer}>
                             <div className={styles.profileContainer}>
@@ -197,16 +197,28 @@ export default function PerfilEditar({ codUsu }) {
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
-                                <label className={styles.textInput}>Curso médio ou técnico:</label>
-                                    <select id="cur_cod" name="cur_cod" defaultValue={perfilEdt.cur_cod} onChange={handleChange} className={styles.opcao}>
-                                        <option value="0" style={{ color: '#999' }}>Sel. curso técnico ou médio</option>
-                                        {
-                                            cursos.map(cur => (
-                                                <option key={cur.cur_cod} value={cur.cur_cod}>{cur.cur_nome}</option>
-                                            ))
-                                        }
+                                    <label className={styles.textInput}>Curso médio ou técnico:</label>
+
+                                    <select
+                                        id="cur_cod"
+                                        name="cur_cod"
+                                        defaultValue={cursos[0].cur_cod}
+                                        onChange={handleChange}
+                                        className={styles.opcao}
+                                    >
+                                        <option value="0" disabled>
+                                            {cursos.length > 0 ? "Sel. curso técnico ou médio" : "Nenhum curso selecionado"}
+                                        </option>
+
+                                        {cursos.map((cur) => (
+                                            <option key={cur.cur_cod} value={cur.cur_cod}>
+                                                {cur.cur_nome}
+                                            </option>
+                                        ))}
                                     </select>
+
                                 </div>
+
                                 <form className={styles.sexoForm}>
                                     <legend>Sexo:</legend>
                                     {[
@@ -220,7 +232,7 @@ export default function PerfilEditar({ codUsu }) {
                                                 type="radio"
                                                 name="usu_sexo"
                                                 value={opcao.value}
-                                                checked={perfilEdt.usu_sexo === opcao.value}
+                                                checked={Number(perfilEdt.usu_sexo) === Number(opcao.value)}
                                                 onChange={handleChange}
                                             />
                                             {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
@@ -231,7 +243,7 @@ export default function PerfilEditar({ codUsu }) {
                         </div>
                     </div>
                 ) : (
-                    <h1>Não há resultados para a requisição</h1>
+                    <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
                 )}
             </div>
             <div className={styles.editar}>

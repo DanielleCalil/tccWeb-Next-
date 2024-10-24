@@ -202,7 +202,7 @@ export default function PerfilEditar({ codUsu }) {
                                     <select
                                         id="cur_cod"
                                         name="cur_cod"
-                                        defaultValue={cursos[0].cur_cod}
+                                        defaultValue={cursos.cur_cod}
                                         onChange={handleChange}
                                         className={styles.opcao}
                                     >
@@ -210,11 +210,15 @@ export default function PerfilEditar({ codUsu }) {
                                             {cursos.length > 0 ? "Sel. curso técnico ou médio" : "Nenhum curso selecionado"}
                                         </option>
 
-                                        {cursos.map((cur) => (
-                                            <option key={cur.cur_cod} value={cur.cur_cod}>
-                                                {cur.cur_nome}
-                                            </option>
-                                        ))}
+                                        {cursos.length > 0 ? (
+                                            cursos.map((cur) => (
+                                                <option key={cur.cur_cod} value={cur.cur_cod}>
+                                                    {cur.cur_nome}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <p>Não há cursos registrados.</p>
+                                        )}
                                     </select>
 
                                 </div>

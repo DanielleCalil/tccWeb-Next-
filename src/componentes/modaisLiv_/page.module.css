@@ -31,6 +31,13 @@
   justify-content: center;
 }
 
+/* Remove as setas do input de número */
+.conteudo input[type=number]::-webkit-outer-spin-button,
+.conteudo input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .inputField {
   width: 100%;
   height: 4.4rem;

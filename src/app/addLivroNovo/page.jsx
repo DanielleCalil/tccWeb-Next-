@@ -13,6 +13,8 @@ import ModalAddAutor from '@/componentes/modalAddAutor/page';
 import ModalAddEditora from '@/componentes/modalAddEditora/page';
 import ModalAddGenero from '@/componentes/modalAddGenero/page';
 
+import ModaisLiv_ from '../../componentes/modaisLiv_/page';
+
 export default function AddLivroNovo() {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const router = useRouter();
@@ -100,7 +102,7 @@ export default function AddLivroNovo() {
     const handleAddAutor = () => {
         event.preventDefault();
         openModalAutor(); // Abre o modal
-      };
+    };
 
     async function listaEditoras() {
         try {
@@ -383,6 +385,9 @@ export default function AddLivroNovo() {
         // Verificar se todos os campos estão validados
         if (itensValidados === 6) {
             try {
+                // Abrir os três modais antes de enviar
+                await openModals(); // Esta função abrirá os três modais e aguardará o fechamento deles
+
                 const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
                     router.push('biblioteca');
@@ -398,6 +403,43 @@ export default function AddLivroNovo() {
     }
     console.log(livro);
 
+    const [isModal1Open, setModal1Open] = useState(false);
+    const [isModal2Open, setModal2Open] = useState(false);
+    const [isModal3Open, setModal3Open] = useState(false);
+
+    // Função para abrir os modais e aguardar o fechamento
+    async function openModals() {
+        return new Promise((resolve) => {
+            // Supondo que você tenha funções para abrir os modais
+            openModal1().then(() => {
+                return openModal2();
+            }).then(() => {
+                return openModal3();
+            }).then(() => {
+                resolve(); // Resolve a promessa após os três modais serem fechados
+            });
+        });
+    }
+
+    // Exemplo de funções para abrir os modais
+    function openModal1() {
+        return new Promise((resolve) => {
+            setModal1Open(true);
+        });
+    }
+
+    function openModal2() {
+        return new Promise((resolve) => {
+            setModal2Open(true);
+        });
+    }
+
+    function openModal3() {
+        return new Promise((resolve) => {
+            setModal3Open(true);
+        });
+    }
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -406,21 +448,21 @@ export default function AddLivroNovo() {
                     <div className={styles.inputTotal}>
                         <div className={styles.inputImgContainer}>
                             <div className={styles.imgBook}>
-                                
+
                                 {/* <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto"> */}
-                                    <p className={styles.textInput}>Capa:</p>
-                                    <div className={styles.imagePreview}>
-                                        <Image
-                                            src={capaImage}
-                                            alt="Capa do livro"
-                                            width={150}
-                                            height={200}
-                                        />
-                                        {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                <p className={styles.textInput}>Capa:</p>
+                                <div className={styles.imagePreview}>
+                                    <Image
+                                        src={capaImage}
+                                        alt="Capa do livro"
+                                        width={150}
+                                        height={200}
+                                    />
+                                    {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
                                         <IoAlertCircleOutline className={styles.erro} /> */}
-                                    </div>
-                                    <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
-                                    {/* {
+                                </div>
+                                <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
+                                {/* {
                                         valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
                                     }
                                 </div> */}

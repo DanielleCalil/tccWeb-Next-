@@ -42,7 +42,10 @@ export default function InfoContatoEditar({ codInfo }) {
 
   useEffect(() => {
     const handleCarregainfo = async () => {
-      const dadosApi = { cont_cod: codInfo };
+      // Verifica se codInfo está definido
+    if (!codInfo) return;
+
+    const dadosApi = { cont_cod: codInfo };
 
       try {
         const response = await api.post('/contatos', dadosApi);
@@ -58,7 +61,7 @@ export default function InfoContatoEditar({ codInfo }) {
     };
 
     handleCarregainfo();
-  }, []);
+  }, [codInfo]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -198,16 +198,16 @@ export default function PerfilEditar({ codUsu }) {
                                 </div>
                                 <div className={styles.inputGroup}>
                                     <label className={styles.textInput}>Curso médio ou técnico:</label>
-
                                     <select
                                         id="cur_cod"
                                         name="cur_cod"
-                                        defaultValue={cursos.cur_cod}
+                                        value={perfilEdt.cur_cod}
                                         onChange={handleChange}
                                         className={styles.opcao}
                                     >
-                                        <option value="0" disabled>
-                                            {cursos.length > 0 ? "Sel. curso técnico ou médio" : "Nenhum curso selecionado"}
+
+                                        <option value="" disabled>
+                                            {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
                                         </option>
 
                                         {cursos.length > 0 ? (
@@ -217,10 +217,9 @@ export default function PerfilEditar({ codUsu }) {
                                                 </option>
                                             ))
                                         ) : (
-                                            <p>Não há cursos registrados.</p>
+                                            <option disabled>Nenhum curso disponível</option>
                                         )}
                                     </select>
-
                                 </div>
 
                                 <form className={styles.sexoForm}>

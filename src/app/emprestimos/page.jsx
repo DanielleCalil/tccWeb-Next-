@@ -111,6 +111,7 @@ export default function Emprestimos() {
                   <div className={styles.line}></div>
                   <p className={styles.info}>Reservado por: {emp.usu_nome}</p>
                   <p className={styles.info}>Reserva realizada no dia: {emp.emp_data_emp}</p>
+                  {/* entender sobre as datas */}
                   <p className={styles.info}>Período da reserva: {emp.periodo?.inicio || 'Data não disponível'} até {emp.periodo?.fim || 'Data não disponível'}</p>
                 </div>
               </div>

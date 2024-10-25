@@ -14,7 +14,7 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 500px;
+  width: 300px;
   text-align: center;
   position: relative;
   z-index: 1000;
@@ -35,7 +35,7 @@
   width: 100%;
   height: 4.4rem;
   padding: 0.625rem;
-  margin: 0.625rem 0rem 1rem;
+  margin: 0.625rem 0rem 0.2rem;
   border: 1px solid #ccc;
   border-radius: 3rem;
   box-sizing: border-box;
@@ -48,7 +48,8 @@
   font-size: 1.4rem;
   width: 100%;
   margin: 0 auto;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0rem;
+  margin-top: 1rem;
   text-align: left;
   margin-left: 10px;
 }
@@ -94,7 +95,7 @@
   background-color: #FF735C;
   color: white;
   border: none;
-  padding: 1.4rem 2.5rem;
+  padding: 1.4rem 2.6rem;
   border-radius: 3rem;
   cursor: pointer;
   font-size: 1.4rem;
@@ -113,7 +114,7 @@
   background-color: #FFF;
   color: black;
   border: 1px solid black;
-  padding: 1.4rem 2.5rem;
+  padding: 1.4rem 1.6rem;
   border-radius: 3rem;
   cursor: pointer;
   font-size: 1.4rem;

@@ -10,10 +10,10 @@ export default function ModaisLiv_({ show, onClose }) {
     if (!show) return null;
     const router = useRouter();
 
-    const [livAutores, setLivAutores] = useState({ "aut_cod": 0 });
-    const [livEditora, setLivEditora] = useState({ "edt_cod": 0 });
-    const [livGenero, setLivGenero] = useState({ "gen_cod": 0 });
-    const [livCod, setLivCod] = useState({ "liv_cod": 0 });
+    const [livAutores, setLivAutores] = useState({ "aut_cod": 0, "liv_cod": 0 });
+    const [livEditora, setLivEditora] = useState({ "edt_cod": 0, "liv_cod": 0 });
+    const [livGenero, setLivGenero] = useState({ "gen_cod": 0, "liv_cod": 0 });
+    // const [livCod, setLivCod] = useState({ "liv_cod": "" });
 
     // Estado para controlar qual modal está sendo exibido
     const [currentModal, setCurrentModal] = useState(1);
@@ -28,7 +28,7 @@ export default function ModaisLiv_({ show, onClose }) {
             validado: valDefault,
             mensagem: []
         },
-        liv_cod: {
+        livCodAut: {
             validado: valDefault,
             mensagem: []
         },
@@ -36,7 +36,15 @@ export default function ModaisLiv_({ show, onClose }) {
             validado: valDefault,
             mensagem: []
         },
+        livCodEdt: {
+            validado: valDefault,
+            mensagem: []
+        },
         gen_cod: {
+            validado: valDefault,
+            mensagem: []
+        },
+        livCodGen: {
             validado: valDefault,
             mensagem: []
         },
@@ -51,9 +59,9 @@ export default function ModaisLiv_({ show, onClose }) {
     const handleChangeGen = (e) => {
         setLivGenero(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
-    const handleChangeLiv = (e) => {
-        setLivCod(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    };
+    // const handleChangeLiv = (e) => {
+    //     setLivCod(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    // };
 
     function validaAutCod() {
 
@@ -62,12 +70,9 @@ export default function ModaisLiv_({ show, onClose }) {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!livAutores.aut_cod === '') {
+        if (!livAutores.aut_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('O código do autor(a) é obrigatório');
-        } else if (livAutores.aut_cod.length < 5) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Insira o código do autor(a)');
         }
 
         setValida(prevState => ({
@@ -79,24 +84,21 @@ export default function ModaisLiv_({ show, onClose }) {
         return testeResult;
     }
 
-    function validaLivCod() {
+    function validaLivCodAut() {
 
         let objTemp = {
             validado: valSucesso, // css referente ao estado de validação
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!livCod.liv_cod === '') {
+        if (!livAutores.liv_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('O código do livro é obrigatório');
-        } else if (livCod.liv_cod.length < 5) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Insira o código do livro');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
-            liv_cod: objTemp // atualiza apenas o campo 'nome'
+            livCodAut: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -110,17 +112,35 @@ export default function ModaisLiv_({ show, onClose }) {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!livEditora.edt_cod === '') {
+        if (!livEditora.edt_cod) {
             objTemp.validado = valErro;
             objTemp.mensagem.push('O código da editora é obrigatório');
-        } else if (livEditora.edt_cod.length < 5) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Insira o código da editora');
         }
 
         setValida(prevState => ({
             ...prevState, // mantém os valores anteriores
             edt_cod: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validaLivCodEdt() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (!livEditora.liv_cod) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O código do livro é obrigatório');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            livCodEdt: objTemp // atualiza apenas o campo 'nome'
         }));
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
@@ -134,12 +154,9 @@ export default function ModaisLiv_({ show, onClose }) {
             mensagem: [] // array de mensagens de validação
         };
 
-        if (!livGenero.gen_cod === '') {
+        if (!livGenero.gen_cod) {
             objTemp.validado = valErro;
-            objTemp.mensagem.push('O código do autor(a) é obrigatório');
-        } else if (livGenero.gen_cod.length < 5) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('Insira o código do autor(a)');
+            objTemp.mensagem.push('O código do gênero é obrigatório');
         }
 
         setValida(prevState => ({
@@ -151,13 +168,34 @@ export default function ModaisLiv_({ show, onClose }) {
         return testeResult;
     }
 
+    function validaLivCodGen() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (!livGenero.liv_cod) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O código do livro é obrigatório');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            livCodGen: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
 
     async function handleSubmit(event) {
         event.preventDefault();
-        let isValid;
+        let isValid = false;
 
         if (currentModal === 1) {
-            isValid = validaAutCod() && validaLivCod();
+            isValid = validaAutCod() || validaLivCodAut();
             if (isValid) {
                 try {
                     const response = await api.post("/livros_autores", livAutores);
@@ -174,7 +212,7 @@ export default function ModaisLiv_({ show, onClose }) {
                 }
             }
         } else if (currentModal === 2) {
-            isValid = validaEdtCod() && validaLivCod();
+            isValid = validaEdtCod() || validaLivCodEdt();
             if (isValid) {
                 try {
                     const response = await api.post("/livros_editoras", livEditora);
@@ -191,7 +229,7 @@ export default function ModaisLiv_({ show, onClose }) {
                 }
             }
         } else if (currentModal === 3) {
-            isValid = validaGenCod() && validaLivCod();
+            isValid = validaGenCod() || validaLivCodGen();
             if (isValid) {
                 try {
                     const response = await api.post("/livros_generos", livGenero);
@@ -215,14 +253,14 @@ export default function ModaisLiv_({ show, onClose }) {
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-                <div className={styles.conteudo} onSubmit={handleSubmit}>
+                <form className={styles.conteudo} id="form" onSubmit={handleSubmit}>
                     {currentModal === 1 && (
                         <div className={styles.inputGroup}>
                             <div className={valida.aut_cod.validado + ' ' + styles.valAutCod} id="valAutNome">
                                 <p className={styles.textInput}>Código autor(a):</p>
                                 <div className={styles.divInput}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="aut_cod"
                                         className={styles.inputField}
                                         onChange={handleChangeAut}
@@ -235,20 +273,20 @@ export default function ModaisLiv_({ show, onClose }) {
                                 }
                             </div>
 
-                            <div className={valida.liv_cod.validado + ' ' + styles.valLivCod} id="valAutNome">
+                            <div className={valida.livCodAut.validado + ' ' + styles.valLivCod} id="valAutNome">
                                 <p className={styles.textInput}>Código do livro:</p>
                                 <div className={styles.divInput}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="liv_cod"
                                         className={styles.inputField}
-                                        onChange={handleChangeLiv}
+                                        onChange={handleChangeAut}
                                     />
                                     <IoCheckmarkCircleOutline className={styles.sucesso} />
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.liv_cod.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
+                                    valida.livCodAut.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
                                 }
                             </div>
                         </div>
@@ -260,7 +298,7 @@ export default function ModaisLiv_({ show, onClose }) {
                                 <p className={styles.textInput}>Código editora:</p>
                                 <div className={styles.divInput}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="edt_cod"
                                         className={styles.inputField}
                                         onChange={handleChangeEdt}
@@ -273,20 +311,20 @@ export default function ModaisLiv_({ show, onClose }) {
                                 }
                             </div>
 
-                            <div className={valida.liv_cod.validado + ' ' + styles.valLivCod} id="valAutNome">
+                            <div className={valida.livCodEdt.validado + ' ' + styles.valLivCod} id="valAutNome">
                                 <p className={styles.textInput}>Código do livro:</p>
                                 <div className={styles.divInput}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="liv_cod"
                                         className={styles.inputField}
-                                        onChange={handleChangeLiv}
+                                        onChange={handleChangeEdt}
                                     />
                                     <IoCheckmarkCircleOutline className={styles.sucesso} />
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.liv_cod.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
+                                    valida.livCodEdt.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
                                 }
                             </div>
                         </div>
@@ -298,7 +336,7 @@ export default function ModaisLiv_({ show, onClose }) {
                                 <p className={styles.textInput}>Código gênero:</p>
                                 <div className={styles.divInput}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="gen_cod"
                                         className={styles.inputField}
                                         onChange={handleChangeGen}
@@ -311,31 +349,31 @@ export default function ModaisLiv_({ show, onClose }) {
                                 }
                             </div>
 
-                            <div className={valida.liv_cod.validado + ' ' + styles.valLivCod} id="valAutNome">
+                            <div className={valida.livCodGen.validado + ' ' + styles.valLivCod} id="valAutNome">
                                 <p className={styles.textInput}>Código do livro:</p>
                                 <div className={styles.divInput}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="liv_cod"
                                         className={styles.inputField}
-                                        onChange={handleChangeLiv}
+                                        onChange={handleChangeGen}
                                     />
                                     <IoCheckmarkCircleOutline className={styles.sucesso} />
                                     <IoAlertCircleOutline className={styles.erro} />
                                 </div>
                                 {
-                                    valida.liv_cod.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
+                                    valida.livCodGen.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
                                 }
                             </div>
                         </div>
                     )}
 
-                    <div className={styles.botaoContainer}>
-                        <button type="submit" className={styles.submitButton}>Salvar</button>
-                        <button type="button" className={styles.closeButton} onClick={onClose}>Fechar</button>
+                    <div className={styles.buttonsContainer}>
+                        <button type="submit" onClick={handleSubmit} className={styles.modalButtonAdd}>Salvar</button>
+                        <button type="button" className={styles.modalButtonCanc} onClick={onClose}>Cancelar</button>
                     </div>
 
-                </div>
+                </form>
             </div>
         </div>
     );

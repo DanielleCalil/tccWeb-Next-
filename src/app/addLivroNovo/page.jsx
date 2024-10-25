@@ -369,24 +369,32 @@ export default function AddLivroNovo() {
         return testeResult;
     }
 
+    const [showModaisLiv, setShowModaisLiv] = useState(false);
+    const openModaisLiv = () => setShowModaisLiv(true);
+    const closeModaisLiv = () => setShowModaisLiv(false);
+    const handleLiv = () => {
+        setShowModaisLiv(false);
+        router.push('../gerenciarLivroExistente');
+    };
+
     async function handleSubmit(event) {
         event.preventDefault();
         let itensValidados = 0;
 
         // Validar campos
-        itensValidados += validaQuant();
-        itensValidados += validaNome();
-        itensValidados += validaSelectAutor();
-        itensValidados += validaSelectEditora();
-        itensValidados += validaSelectGenero();
-        itensValidados += validaResumo();
+        // itensValidados += validaQuant();
+        // itensValidados += validaNome();
+        // itensValidados += validaSelectAutor();
+        // itensValidados += validaSelectEditora();
+        // itensValidados += validaSelectGenero();
+        // itensValidados += validaResumo();
         // itensValidados += validaFoto();
 
         // Verificar se todos os campos estão validados
-        if (itensValidados === 6) {
+        if (itensValidados === 0) {
             try {
                 // Abrir os três modais antes de enviar
-                await openModals(); // Esta função abrirá os três modais e aguardará o fechamento deles
+                openModaisLiv(); // Esta função abrirá os três modais e aguardará o fechamento deles
 
                 const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
@@ -402,43 +410,6 @@ export default function AddLivroNovo() {
         }
     }
     console.log(livro);
-
-    const [isModal1Open, setModal1Open] = useState(false);
-    const [isModal2Open, setModal2Open] = useState(false);
-    const [isModal3Open, setModal3Open] = useState(false);
-
-    // Função para abrir os modais e aguardar o fechamento
-    async function openModals() {
-        return new Promise((resolve) => {
-            // Supondo que você tenha funções para abrir os modais
-            openModal1().then(() => {
-                return openModal2();
-            }).then(() => {
-                return openModal3();
-            }).then(() => {
-                resolve(); // Resolve a promessa após os três modais serem fechados
-            });
-        });
-    }
-
-    // Exemplo de funções para abrir os modais
-    function openModal1() {
-        return new Promise((resolve) => {
-            setModal1Open(true);
-        });
-    }
-
-    function openModal2() {
-        return new Promise((resolve) => {
-            setModal2Open(true);
-        });
-    }
-
-    function openModal3() {
-        return new Promise((resolve) => {
-            setModal3Open(true);
-        });
-    }
 
     return (
         <main className={styles.main}>
@@ -644,6 +615,11 @@ export default function AddLivroNovo() {
                     </div>
                 </form>
             </div>
+            <ModaisLiv_
+                show={showModaisLiv}
+                onClose={closeModaisLiv}
+                onConfirm={handleLiv}
+            />
             <ModalConfirmar
                 show={showModalConfirm}
                 onClose={closeModalConfirm}

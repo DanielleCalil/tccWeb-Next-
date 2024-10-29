@@ -9,99 +9,6 @@ import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
 
-// const books = useState[
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg',
-//         liv_nome: "O diário de Anne Frank",
-//         aut_nome: "Anne Frank",
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Dom_Casmurro.jpg',
-//         liv_nome: "Dom Casmurro",
-//         aut_nome: "Machado de Assis",
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Romeu_e_Julieta.jpg',
-//         liv_nome: "Romeu e Julieta",
-//         aut_nome: "William Shakespeare",
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/1984.jpg',
-//         liv_nome: "1984",
-//         aut_nome: "George Orwell",
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Os_Miseraveis.jpg',
-//         liv_nome: "Os Miseráveis",
-//         aut_nome: "Victor Hugo",
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Orgulho_e_Preconceito.png',
-//         liv_nome: 'Orgulho e Preconceito',
-//         aut_nome: 'Jane Austen',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/heartstopper.jpg',
-//         liv_nome: 'Heartstopper',
-//         aut_nome: 'Alice Oseman',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Procure_nas_cinzas.jpg',
-//         liv_nome: 'Procure nas Cinzas',
-//         aut_nome: 'Charlie Donlea',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Os_sete_maridos_de_Evelyn_Hugo.jpg',
-//         liv_nome: 'Os Sete Maridos de Evelyn Hugo',
-//         aut_nome: 'Taylor Jenkins Reid',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/A_Garota_do_Lago.jpg',
-//         liv_nome: 'A Garota do Lago',
-//         aut_nome: 'Charlie Donlea',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/verity.jpg',
-//         liv_nome: 'Verity',
-//         aut_nome: 'Colleen Hoover',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Harry_Potter_e_a_pedra_filosofal.jpg',
-//         liv_nome: 'Harry Potter e a Pedra Filosofal',
-//         aut_nome: 'J.K. Rowling',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/A_Revolucao_dos_bichos.jpg',
-//         liv_nome: 'A Revolução dos Bichos',
-//         aut_nome: 'George Orwell',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/Deixada_para_tras.jpg',
-//         liv_nome: 'Deixada para Trás',
-//         aut_nome: 'George Orwell',
-//         liv_ativo: true
-//     },
-//     {
-//         liv_foto_capa: '/Capa_dos_livros/dracula.jpg',
-//         liv_nome: 'Drácula',
-//         aut_nome: 'Bram Stoker',
-//         liv_ativo: true
-//     },
-// ];
-
 const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
@@ -111,10 +18,7 @@ const searchOptions = [
 
 export default function GerenciarLivroExistente() {
 
-    const [books, setBooks] = useState({
-        "liv_cod": 0,
-        "liv_ativo": ''
-    });
+    const [books, setBooks] = useState([]);
 
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
 
@@ -153,22 +57,19 @@ export default function GerenciarLivroExistente() {
     }
 
     const toggleBookStatus = async (liv_cod) => {
-        const updatedBooks = books.map(book =>
-            book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
-        );
-        setBooks(updatedBooks);
-        
         try {
+            const updatedBooks = books.map(book =>
+                book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
+            );
+            setBooks(updatedBooks);
+
             const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
-            
             // Criar o objeto a ser enviado para a API
-            const payload = {
+            const response = await api.patch('/liv_inativar', {
                 liv_cod: bookToUpdate.liv_cod, // Enviando o código do livro
                 liv_ativo: bookToUpdate.liv_ativo // O novo status ativo
-            };
-    
-            const response = await api.patch('/liv_inativar', payload);
-            
+            });
+
             if (response.data.sucesso) {
                 console.log(`Status do livro ${liv_cod} atualizado com sucesso.`);
             } else {
@@ -176,17 +77,16 @@ export default function GerenciarLivroExistente() {
             }
         } catch (error) {
             console.error('Erro ao atualizar o status do livro:', error);
-            
-            // Reverte a mudança no estado local
-            const revertedBooks = books.map(book =>
-                book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
-            );
-            setBooks(revertedBooks);
-            
             alert('Erro ao atualizar o status do livro. Tente novamente.');
+            // Reverte a mudança no estado local
+            setBooks(prevBooks => 
+                prevBooks.map(book => 
+                    book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
+                )
+            );
         }
     };
-    
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">

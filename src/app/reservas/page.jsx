@@ -55,7 +55,7 @@ export default function Reservas() {
 
     async function listaLivros() {
         const dados = { 
-            usu_cod: 18,
+            usu_cod: codUsu,
             [selectedSearchOption]: livNome 
         };
         try {

@@ -131,8 +131,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
         setLivro(prev => ({ ...prev, [name]: value }));
     };
 
-
-
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
         setLivro((prev) => ({ ...prev, liv_foto_capa: imageURL }));

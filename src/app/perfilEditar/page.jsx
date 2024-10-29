@@ -37,7 +37,7 @@ export default function PerfilEditar({ codUsu }) {
     });
 
     const handleFileSelect = (imageUrl) => {
-        setProfileImage(imageUrl);
+        setImageSrc(imageUrl);
     };
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
@@ -72,7 +72,7 @@ export default function PerfilEditar({ codUsu }) {
     // Busca os dados do perfil ao montar o componente
     useEffect(() => {
         const handleCarregaPerfil = async () => {
-            const dados = { usu_cod: 29 }
+            const dados = { usu_cod: codUsu };
 
             try {
                 const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
@@ -96,9 +96,9 @@ export default function PerfilEditar({ codUsu }) {
     };
 
     const handleSave = async () => {
-        const { usu_rm, usu_nome, usu_nome_completo, usu_email, cur_nome, usu_sexo } = perfilEdt;
+        const { usu_rm, usu_nome, usu_email, cur_nome, usu_sexo } = perfilEdt;
 
-        if (!usu_rm || !usu_nome || !usu_nome_completo || !usu_email || !cur_nome || !usu_sexo) {
+        if (!usu_rm || !usu_nome || !usu_email || !cur_nome || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
@@ -210,15 +210,11 @@ export default function PerfilEditar({ codUsu }) {
                                             {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
                                         </option>
 
-                                        {cursos.length > 0 ? (
-                                            cursos.map((cur) => (
-                                                <option key={cur.cur_cod} value={cur.cur_cod}>
-                                                    {cur.cur_nome}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option disabled>Nenhum curso disponível</option>
-                                        )}
+                                        {cursos.map((cur) => (
+                                            <option key={cur.cur_cod} value={cur.cur_cod}>
+                                                {cur.cur_nome}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 

@@ -374,7 +374,7 @@ export default function AddLivroNovo() {
     const closeModaisLiv = () => setShowModaisLiv(false);
     const handleLiv = () => {
         setShowModaisLiv(false);
-        router.push('../gerenciarLivroExistente');
+        router.push('../biblioteca');
     };
 
     async function handleSubmit(event) {
@@ -440,6 +440,18 @@ export default function AddLivroNovo() {
                             </div>
                         </div>
                         <div className={styles.inputContainer}>
+                            <div>
+                                <p className={styles.textInput}>Código do livro:</p>
+                                <div className={styles.divInput}>
+                                    <input
+                                        type="number"
+                                        name='liv_cod'
+                                        value={livro.liv_cod}
+                                        className={styles.inputQuant}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
 
                             <div className={valida.quant.validado + ' ' + styles.valQuant} id="valQuant">
                                 <label className={styles.textInput}>Quantidade:</label>
@@ -484,7 +496,7 @@ export default function AddLivroNovo() {
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione autor(a)</option>
                                         {
                                             autor.map(aut => (
-                                                <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_nome}</option>
+                                                <option key={aut.aut_cod} value={aut.aut_cod}>{`${aut.aut_cod} - ${aut.aut_nome}`}</option>
                                             ))
                                         }
                                     </select>
@@ -505,7 +517,7 @@ export default function AddLivroNovo() {
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione editora</option>
                                         {
                                             editora.map(edt => (
-                                                <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_nome}</option>
+                                                <option key={edt.edt_cod} value={edt.edt_cod}>{`${edt.edt_cod} - ${edt.edt_nome}`}</option>
                                             ))
                                         }
                                     </select>
@@ -526,7 +538,7 @@ export default function AddLivroNovo() {
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione gênero</option>
                                         {
                                             genero.map(gen => (
-                                                <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
+                                                <option key={gen.gen_cod} value={gen.gen_cod}>{`${gen.gen_cod} - ${gen.gen_nome}`}</option>
                                             ))
                                         }
                                     </select>

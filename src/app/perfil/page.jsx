@@ -23,7 +23,7 @@ export default function Perfil() {
     }, []);
 
     async function carregaPerfil() {
-        const dados = { usu_cod: 29 };
+        const dados = { usu_cod: codUsu };
 
         try {
             const response = await api.post('/usuarios', dados);

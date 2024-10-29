@@ -253,7 +253,7 @@ export default function ModaisLiv_({ show, onClose }) {
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-                <form className={styles.conteudo} id="form" onSubmit={handleSubmit}>
+                <div className={styles.conteudo} id="form" onSubmit={handleSubmit}>
                     {currentModal === 1 && (
                         <div className={styles.inputGroup}>
                             <div className={valida.aut_cod.validado + ' ' + styles.valAutCod} id="valAutNome">
@@ -373,7 +373,7 @@ export default function ModaisLiv_({ show, onClose }) {
                         <button type="button" className={styles.modalButtonCanc} onClick={onClose}>Cancelar</button>
                     </div>
 
-                </form>
+                </div>
             </div>
         </div>
     );

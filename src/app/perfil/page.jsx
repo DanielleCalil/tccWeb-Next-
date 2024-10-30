@@ -15,16 +15,24 @@ export default function Perfil() {
     };
 
     const router = useRouter();
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     const [perfil, setPerfil] = useState([]);
 
-    useEffect(() => {
-        carregaPerfil();
+    useEffect(() => { 
+        const user = JSON.parse(localStorage.getItem('user')); 
+        if (!user) {
+            router.push('/login');
+        } else {
+            carregaPerfil(user.cod); 
+            // console.log(user.cod);            
+        }
+        
     }, []);
 
-    async function carregaPerfil() {
-        const dados = { usu_cod: codUsu };
+    async function carregaPerfil(user) {
 
+        const dados = { usu_cod: user };
+        
         try {
             const response = await api.post('/usuarios', dados);
             console.log(response.data.dados);

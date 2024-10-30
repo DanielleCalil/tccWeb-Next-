@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { IoMenuOutline, IoHomeOutline, IoPersonOutline, IoTrailSignOutline, IoStarOutline, IoBookOutline, IoTodayOutline, IoNotificationsOutline, IoPhonePortraitOutline, IoInformationCircleOutline, IoLogOutOutline } from "react-icons/io5";
 
@@ -14,6 +15,7 @@ export default function Cabecalho() {
     const [mobile, setMobile] = useState(false);
 
     const rota = usePathname();
+    const router = useRouter();
 
     function ativaMenu() {
         if (mobile === false) {
@@ -35,6 +37,11 @@ export default function Cabecalho() {
 
     if (validaCabRod() === true) {
         return (<></>)
+    } 
+
+    function logOff() {
+        localStorage.clear();
+        router.push('/usuarios/login');
     }
 
     return (
@@ -123,6 +130,11 @@ export default function Cabecalho() {
                         <IoInformationCircleOutline className={styles.tpicon} />
                         Informações
                     </Link>
+                    <span
+                        className={styles.sairMenuGrande}
+                        onClick={() =>logOff()}>
+                    Sair
+                    </span>
                     <Link
                         href="/usuarios/login"
                         className={styles.sairMenuGrande}>

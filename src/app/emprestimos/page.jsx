@@ -2,25 +2,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import Link from 'next/link';
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import api from '@/services/api';
-
-// const infoEmprestimo = [
-//   {
-//     livro: {
-//       liv_nome: "O Diário de Anne Frank",
-//       aut_nome: "Anne Frank",
-//       liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
-//     },
-//     usu_nome: "Clara Oliveira da Silva",
-//     emp_data_emp: "12/03/2024",
-//     periodo: {
-//       inicio: "12/03/2024",
-//       fim: "27/03/2024"
-//     },
-//   },
-// ];
 
 const searchOptions = [
   { value: 'usu_nome', label: 'Usuário' },
@@ -30,25 +13,23 @@ const searchOptions = [
 ];
 
 export default function Emprestimos() {
-
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
   const imageLoader = ({ src, width, quality }) => {
-    return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`
-  }
+    return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
+  };
 
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
-  const [emprestimo, setEmprestimo] = useState([]);
+  const [emprestimo, setEmprestimo] = useState([]); // Verifique se isso está definido corretamente
+  const [livNome, setLivNome] = useState('');
 
-  const [livNome, setlivNome] = useState('')
-
-  function atLivNome(nome) {
-    setlivNome(nome)
-  }
+  const atLivNome = (nome) => {
+    setLivNome(nome);
+  };
 
   useEffect(() => {
-    listaLivros();
+    listaLivros(); // Buscar dados quando o componente montar
   }, []);
 
   async function listaLivros() {
@@ -56,7 +37,7 @@ export default function Emprestimos() {
     try {
       const response = await api.post('/emprestimos', dados);
       console.log(response.data.dados);
-      setEmprestimo(response.data.dados);
+      setEmprestimo(response.data.dados || []); // Altere conforme necessário para acessar o array correto
     } catch (error) {
       if (error.response) {
         alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -66,14 +47,12 @@ export default function Emprestimos() {
     }
   }
 
-
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.emprestimo}>Empréstimos</h1>
         <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
 
-        {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>
           {searchOptions.map(option => (
             <label key={option.value} className={styles.radioLabel}>
@@ -91,7 +70,7 @@ export default function Emprestimos() {
 
         <div className={styles.container}>
           {emprestimo.length > 0 ? (
-            emprestimo.map(emp => (
+            emprestimo.map((emp) => (
               <div key={emp.usu_cod} className={styles.lineSquare}>
                 <div className={styles.inputContainer}>
                   <div className={styles.infoBookReserva}>
@@ -111,7 +90,7 @@ export default function Emprestimos() {
                   <div className={styles.line}></div>
                   <p className={styles.info}>Reservado por: {emp.usu_nome}</p>
                   <p className={styles.info}>Reserva realizada no dia: {emp.emp_data_emp}</p>
-                  {/* entender sobre as datas */}
+                  {/* Entender sobre as datas */}
                   <p className={styles.info}>Período da reserva: {emp.periodo?.inicio || 'Data não disponível'} até {emp.periodo?.fim || 'Data não disponível'}</p>
                 </div>
               </div>

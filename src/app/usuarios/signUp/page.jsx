@@ -21,8 +21,8 @@ export default function SignUp() {
         "usu_email": '',
         "usu_senha": '',
         "confSenha": '',
-        "usu_sexo": 0,
-        "cur_cod": 0,
+        "usu_sexo": '',
+        "cur_cod": '',
         "usu_foto": '',
     });
 

@@ -44,7 +44,7 @@ export default function InfoContatoEditar({ codInfo }) {
     if (!codInfo) return;
 
     const handleCarregainfo = async () => {
-    const dadosApi = { cont_cod: codInfo };
+    const dadosApi = { cont_cod: 1 };
 
       try {
         const response = await api.post('/contatos', dadosApi);
@@ -78,7 +78,7 @@ export default function InfoContatoEditar({ codInfo }) {
     setIsSaving(true); // Inicia o salvamento
 
     try {
-      const response = await api.patch(`/cont_editar/${infoContatoEdt.cont_cod}`, infoContatoEdt);
+      const response = await api.patch(`/cont_editar/${infoContatoEdt.cont_cod=1}`, infoContatoEdt);
 
       if (response.data.sucesso) {
         alert('Informações de contato atualizado com sucesso!');

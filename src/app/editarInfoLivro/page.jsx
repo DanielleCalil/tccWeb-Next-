@@ -18,7 +18,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
 
     const router = useRouter();
     const [error, setError] = useState(null);
-    const [isSaving, setIsSaving] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     const [livro, setLivro] = useState({
         "liv_cod": '',
@@ -106,6 +106,8 @@ export default function EditarInformacoesLivro({ codLivro }) {
     }
 
     useEffect(() => {
+        if (!codLivro) return;
+
         const handleCarregaLivro = async () => {
             const dadosApi = { liv_cod: codLivro };
 
@@ -124,7 +126,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         };
 
         handleCarregaLivro();
-    }, []);
+    }, [codLivro]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -163,7 +165,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    // console.log(livro);
+    console.log(livro);
 
     return (
         <main className={styles.main}>

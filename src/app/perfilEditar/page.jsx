@@ -21,6 +21,7 @@ export default function PerfilEditar({ codUsu }) {
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
+    const [selectedSexo, setSelectedSexo] = useState(usuario.usu_sexo);
 
     const [perfilEdt, setPerfilEdt] = useState({
         "usu_cod": '',
@@ -69,8 +70,9 @@ export default function PerfilEditar({ codUsu }) {
         }
     }
 
-    // Busca os dados do perfil ao montar o componente
     useEffect(() => {
+        if (!codUsu) return;
+
         const handleCarregaPerfil = async () => {
             const dados = { usu_cod: codUsu };
 
@@ -88,11 +90,21 @@ export default function PerfilEditar({ codUsu }) {
         };
 
         handleCarregaPerfil();
-    }, []);
+    }, [codUsu]);
 
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
         setPerfilEdt((prev) => ({ ...prev, usu_foto: imageURL }));
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setPerfilEdt(prev => ({ ...prev, [name]: value }));
+    }
+
+    const handleChangeSexo = (e) => {
+        // Atualiza o valor de 'usu_sexo' com base na seleção do usuário
+        setSelectedSexo(e.target.value);
     };
 
     const handleSave = async () => {
@@ -122,12 +134,7 @@ export default function PerfilEditar({ codUsu }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    // console.log(livro);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPerfilEdt(prev => ({ ...prev, [name]: value }));
-    }
+    console.log(perfilEdt);
 
     return (
         <main className={styles.main}>
@@ -225,16 +232,16 @@ export default function PerfilEditar({ codUsu }) {
                                         { label: 'Masculino', value: '1' },
                                         { label: 'Neutro', value: '2' },
                                         { label: 'Padrão', value: '3' }
-                                    ].map((opcao) => (
-                                        <label key={opcao.value}>
+                                    ].map((sexo) => (
+                                        <label key={sexo.value}>
                                             <input
                                                 type="radio"
                                                 name="usu_sexo"
-                                                value={opcao.value}
-                                                checked={Number(perfilEdt.usu_sexo) === Number(opcao.value)}
-                                                onChange={handleChange}
+                                                value={sexo.value}
+                                                checked={Number(selectedSexo.usu_sexo) === Number(sexo.value)}
+                                                onChange={handleChangeSexo}
                                             />
-                                            {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
+                                            {sexo.label.charAt(0).toUpperCase() + sexo.label.slice(1)}
                                         </label>
                                     ))}
                                 </form>

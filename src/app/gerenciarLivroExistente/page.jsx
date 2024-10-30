@@ -58,16 +58,17 @@ export default function GerenciarLivroExistente() {
 
     const toggleBookStatus = async (liv_cod) => {
         try {
+            // Atualiza o estado local
             const updatedBooks = books.map(book =>
                 book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
             );
             setBooks(updatedBooks);
 
+            // Envia a atualização para a API
             const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
-            // Criar o objeto a ser enviado para a API
             const response = await api.patch('/liv_inativar', {
-                liv_cod: bookToUpdate.liv_cod, // Enviando o código do livro
-                liv_ativo: bookToUpdate.liv_ativo // O novo status ativo
+                liv_cod: bookToUpdate.liv_cod,
+                liv_ativo: bookToUpdate.liv_ativo
             });
 
             if (response.data.sucesso) {
@@ -78,9 +79,10 @@ export default function GerenciarLivroExistente() {
         } catch (error) {
             console.error('Erro ao atualizar o status do livro:', error);
             alert('Erro ao atualizar o status do livro. Tente novamente.');
-            // Reverte a mudança no estado local
-            setBooks(prevBooks => 
-                prevBooks.map(book => 
+
+            // Reverte a mudança no estado local se houver erro
+            setBooks(prevBooks =>
+                prevBooks.map(book =>
                     book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
                 )
             );
@@ -112,7 +114,7 @@ export default function GerenciarLivroExistente() {
                         {books.length > 0 ? (
                             books.map(livro => (
                                 <div
-                                    className={`${styles.bookItem} ${!livro.liv_ativo ? styles.inativo : ""}`}
+                                    className={`${styles.bookItem} ${livro.liv_ativo === 0 ? styles.inativo : ""}`}
                                     key={livro.liv_cod}
                                 >
                                     <div>
@@ -134,7 +136,7 @@ export default function GerenciarLivroExistente() {
                                             <input
                                                 type="checkbox"
                                                 checked={livro.liv_ativo === 1}
-                                                onChange={() => toggleBookStatus(livro.liv_cod)} // Alterna o estado
+                                                onChange={() => toggleBookStatus(livro.liv_cod)}
                                             />
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from "next/image";
 import styles from './page.module.css';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/services/api';
 
@@ -61,6 +62,7 @@ export default function Recomendacoes() {
     }
 
     const [books, setBooks] = useState([]);
+    const router = useRouter();
 
     // Ordena os livros pelo título em ordem alfabética
     const sortedBooks = books.sort((a, b) => a.liv_nome.localeCompare(b.liv_nome));
@@ -72,13 +74,18 @@ export default function Recomendacoes() {
     }
 
     useEffect(() => {
-        listaLivros();
+        const user = JSON.parse(localStorage.getItem('user')); 
+        if (!user) {
+            router.push('/usuarios/login');
+        } else {
+            listaLivros();        
+        }
     }, []);
 
-    async function listaLivros() {
-        const dados = {
-            cur_cod: 88
-        }
+    async function listaLivros(curso) {
+
+        const dados = { cur_cod: curso }
+
         try {
             const response = await api.post('/rec_listar', dados);
             console.log(response.data.dados);

@@ -37,7 +37,7 @@ export default function Cabecalho() {
 
     if (validaCabRod() === true) {
         return (<></>)
-    } 
+    }
 
     function logOff() {
         localStorage.clear();
@@ -130,17 +130,21 @@ export default function Cabecalho() {
                         <IoInformationCircleOutline className={styles.tpicon} />
                         Informações
                     </Link>
-                    <span
-                        className={styles.sairMenuGrande}
-                        onClick={() =>logOff()}>
-                    Sair
-                    </span>
-                    <Link
+                    <div className={styles.editar}>
+                        <button
+                            className={styles.sairMenuGrande}
+                            onClick={() => logOff()}>
+                            <IoLogOutOutline className={styles.tpiconSair} />
+                            Sair
+                        </button>
+                    </div>
+                    {/* <Link
                         href="/usuarios/login"
+                        onClick={() => logOff()}
                         className={styles.sairMenuGrande}>
                         <IoLogOutOutline className={styles.tpiconSair} />
                         Sair
-                    </Link>
+                    </Link> */}
                 </nav>
             </div>
 
@@ -156,9 +160,9 @@ export default function Cabecalho() {
                     Início
                 </Link>
                 <Link
-                    href='/perfil'
+                    href="/perfil"
                     onClick={ativaMenu}
-                    className={rota === '/perfil' ? styles.active : ''}>
+                    className={rota === "/perfil" || rota === "/perfilEditar" ? styles.active : ""}>
                     <IoPersonOutline className={styles.tpicon} />
                     Perfil
                 </Link>
@@ -172,14 +176,19 @@ export default function Cabecalho() {
                 <Link
                     href='/recomendacoes'
                     onClick={ativaMenu}
-                    className={rota === '/recomendacoes' ? styles.active : ''}>
+                    className={rota === "/recomendacoes" || rota === "/infoLivroRecomendacao" ? styles.active : ""}>
                     <IoStarOutline className={styles.tpicon} />
                     Recomendações
                 </Link>
                 <Link
                     href='/biblioteca'
                     onClick={ativaMenu}
-                    className={rota === '/biblioteca' ? styles.active : ''}>
+                    className={rota === "/biblioteca" ||
+                        rota === "/livros/" ||
+                        rota === "/editarInfoLivro/" ||
+                        rota === "/gerenciarLivroExistente/" ||
+                        rota === "/reservarLivro/" ||
+                        rota === "/addLivroNovo/" ? styles.active : ""}>
                     <IoBookOutline className={styles.tpicon} />
                     Biblioteca
                 </Link>
@@ -191,13 +200,6 @@ export default function Cabecalho() {
                     Reservas
                 </Link>
                 <Link
-                    href='/notificacoes'
-                    onClick={ativaMenu}
-                    className={rota === '/notificacoes' ? styles.active : ''}>
-                    <IoNotificationsOutline className={styles.tpicon} />
-                    Notificações
-                </Link>
-                <Link
                     href='/emprestimos'
                     onClick={ativaMenu}
                     className={rota === '/emprestimos' ? styles.active : ''}>
@@ -207,17 +209,28 @@ export default function Cabecalho() {
                 <Link
                     href='/infoContato'
                     onClick={ativaMenu}
-                    className={rota === '/infoContato' ? styles.active : ''}>
+                    className={rota === "/infoContato" || rota === "/infoContatoEditar" ? styles.active : ""}>
                     <IoInformationCircleOutline className={styles.tpicon} />
                     Informações
                 </Link>
-                <Link
+                <div className={styles.editarMobile}>
+                    <button
+                        className={styles.sairMobile}
+                        onClick={() => {
+                            logOff();
+                            ativaMenu();
+                        }}>
+                        <IoLogOutOutline className={styles.tpiconSair} />
+                        Sair
+                    </button>
+                </div>
+                {/* <Link
                     href='/usuarios/login'
                     className={styles.sairMobile}
                     onClick={ativaMenu}>
                     <IoLogOutOutline className={styles.tpiconSair} />
                     Sair
-                </Link>
+                </Link> */}
             </div>
         </header >
     );

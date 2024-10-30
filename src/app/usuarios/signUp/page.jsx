@@ -14,6 +14,7 @@ import api from '@/services/api';
 export default function SignUp() {
     const router = useRouter();
     const [cursos, setCursos] = useState([]);
+    const [selectedSexo, setSelectedSexo] = useState(usuario.usu_sexo);
 
     const [usuario, setUsuario] = useState({
         "usu_rm": '',
@@ -108,6 +109,11 @@ export default function SignUp() {
     const handleChange = (e) => {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
+
+    const handleChangeSexo = (e) => {
+        // Atualiza o valor de 'usu_sexo' com base na seleção do usuário
+        setSelectedSexo(e.target.value);
+    };
 
     // const [selectCursos, setSelectCursos] = useState('');
     // const handleSelectCursosChange = (e) => {
@@ -460,7 +466,7 @@ export default function SignUp() {
                                 </div>
                             </div>
 
-                            <div className={styles.sexoForm} name="sexo" id="sexo" onChange={handleChange} defaultValue={usuario.usu_sexo}>
+                            <div className={styles.sexoForm} name="sexo" id="sexo">
                                 <div className={valida.sexo.validado + ' ' + styles.valSexo} id="valSexo">
                                     <div className={styles.divRadio}>
                                         <legend>Sexo:</legend>
@@ -475,7 +481,8 @@ export default function SignUp() {
                                                     type="radio"
                                                     name="usu_sexo"
                                                     value={sexo.value}
-                                                    defaultChecked={usuario.usu_sexo === sexo.value}
+                                                    checked={selectedSexo === sexo.value}
+                                                    onChange={handleChangeSexo}
                                                 />
                                                 {sexo.label.charAt(0).toUpperCase() + sexo.label.slice(1)}
                                             </label>

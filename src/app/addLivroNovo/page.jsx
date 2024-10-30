@@ -24,19 +24,19 @@ export default function AddLivroNovo() {
     const [genero, setGenero] = useState([]);
 
     const [livro, setLivro] = useState({
-        "liv_cod": 0,
+        "liv_cod": '',
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "liv_nome": '',
         "liv_desc": '',
         "edt_nome": '',
-        "edt_cod": 0,
+        "edt_cod": '',
         "liv_foto_capa": '',
         "aut_nome": '',
-        "aut_cod": 0,
+        "aut_cod": '',
         "disponivel": '',
         "generos": '',
-        "gen_cod": 0,
+        "gen_cod": '',
     });
 
     const valDefault = styles.formControl;
@@ -173,6 +173,21 @@ export default function AddLivroNovo() {
         }
     }
 
+    // Função para gerar o código do livro
+    const generateBookCode = () => {
+        // Aqui você pode implementar a lógica para gerar um código único para o livro.
+        // Exemplo simples de código gerado aleatoriamente.
+        return Math.floor(Math.random() * 10000); // Código aleatório entre 0 e 9999
+    };
+
+    // useEffect para definir o código do livro ao entrar na tela
+    useEffect(() => {
+        const newCode = generateBookCode(); // Gera um novo código
+        setLivro((prevLivro) => ({ ...prevLivro, liv_cod: newCode })); // Atualiza o estado do livro
+    }, []);
+
+
+
     // validação
     const [valida, setValida] = useState({
         nome: {
@@ -210,7 +225,8 @@ export default function AddLivroNovo() {
     });
 
     const handleChange = (e) => {
-        setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        setLivro((prevLivro) => ({ ...prevLivro, [name]: value }));
     }
 
     // function validaFoto() {
@@ -391,6 +407,7 @@ export default function AddLivroNovo() {
         // itensValidados += validaFoto();
 
         // Verificar se todos os campos estão validados
+        console.log('Livro a ser salvo:', livro);
         if (itensValidados === 0) {
             try {
                 // Abrir os três modais antes de enviar

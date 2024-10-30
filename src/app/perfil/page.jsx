@@ -21,7 +21,7 @@ export default function Perfil() {
     useEffect(() => { 
         const user = JSON.parse(localStorage.getItem('user')); 
         if (!user) {
-            router.push('/login');
+            router.push('/usuarios/login');
         } else {
             carregaPerfil(user.cod); 
             // console.log(user.cod);            

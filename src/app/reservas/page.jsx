@@ -108,7 +108,7 @@ export default function Reservas() {
                 <div className={styles.container}>
                     {reserva.length > 0 ? (
                         reserva.map(reserv => (
-                            <div key={reserv.usu_nome} className={styles.lineSquare}>
+                            <div key={reserv.usu_cod} className={styles.lineSquare}>
                                 <div className={styles.inputContainer}>
                                     <div className={styles.infoBookReserva}>
                                         <Image

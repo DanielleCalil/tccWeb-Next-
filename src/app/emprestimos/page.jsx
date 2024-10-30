@@ -37,7 +37,10 @@ export default function Emprestimos() {
     try {
       const response = await api.post('/emprestimos', dados);
       console.log(response.data.dados);
-      setEmprestimo(response.data.dados || []); // Altere conforme necessário para acessar o array correto
+      const emprestimos = Array.isArray(response.data.dados) 
+      ? response.data.dados.filter(item => !Buffer.isBuffer(item)) 
+      : [];
+      setEmprestimo(emprestimos);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.mensagem + '\n' + error.response.data.dados);

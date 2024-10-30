@@ -18,6 +18,7 @@ const Calendario = () => {
   const [events, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(startOfToday()); // Estado para data atual do calendário
   const calendarRef = useRef(null); // Cria uma referência para o calendário
+  const [reservaPeriodo, setReservaPeriodo] = useState('');
 
   const today = startOfToday(); // Obtém a data de hoje
 
@@ -34,9 +35,14 @@ const Calendario = () => {
     const formattedStartDate = format(selectedDate, 'dd-MM-yyyy');
     const formattedEndDate = format(finalDate, 'dd-MM-yyyy');
 
+    // Atualiza as datas de início e fim
     setStartDate(formattedStartDate);
     setEndDate(formattedEndDate);
 
+    // **Atualiza reservaPeriodo com o intervalo selecionado**
+    setReservaPeriodo(`Período de Reserva: ${formattedStartDate} até ${formattedEndDate}`);
+
+    // Cria os eventos do calendário
     const daysBetween = eachDayOfInterval({
       start: selectedDate,
       end: finalDate,
@@ -46,22 +52,27 @@ const Calendario = () => {
       {
         start: format(selectedDate, 'yyyy-MM-dd'),
         end: format(selectedDate, 'yyyy-MM-dd'),
+        // title: 'Data de Empréstimo',
         color: '#FF735C', // Cor vibrante para a data inicial
         display: 'background',
       },
       {
         start: format(finalDate, 'yyyy-MM-dd'),
         end: format(finalDate, 'yyyy-MM-dd'),
+        // title: 'Data de Devolução Prevista',
         color: '#FF735C', // Cor vibrante para a data final
         display: 'background',
       },
       ...daysBetween.map((day) => ({
         start: format(day, 'yyyy-MM-dd'),
         end: format(day, 'yyyy-MM-dd'),
+        // title: 'Período de Reserva',
         backgroundColor: '#FF735C',
         display: 'background',
       })),
     ]);
+
+    setTimeout(() => onDataSelecionada(selectedDate), 0);
   };
 
   const handlePrev = () => {
@@ -128,6 +139,8 @@ const Calendario = () => {
               Data Final:
               <input type="text" value={endDate} readOnly className={styles.dateInput} />
             </label>
+            {/* Exibe o período de reserva */}
+            <div className={styles.reservaPeriodo}>{reservaPeriodo}</div>
           </div>
         </div>
       </div>

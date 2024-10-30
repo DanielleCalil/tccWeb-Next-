@@ -9,9 +9,9 @@ import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 const situacao = [
-  'Ativo',
-  'Inativo',
-  'Pendente',
+  { value: 'Ativo', label: 'Usuários Ativos' },
+  { value: 'Inativo', label: 'Usuários Inativos' },
+  { value: 'Pendente', label: 'Usuários Pendentes' },
 ];
 
 const searchOptions = [
@@ -29,6 +29,7 @@ export default function Solicitacao() {
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [livNome, setlivNome] = useState('');
+  const [filtroSituacao, setFiltroSituacao] = useState('Pendente'); // Estado para filtro de situação
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -36,6 +37,11 @@ export default function Solicitacao() {
   const handleConfirm = async () => {
     if (selectedUsers.size === 0) {
       alert("Nenhum usuário selecionado. Por favor, selecione um usuário antes de confirmar.");
+      return;
+    }
+
+    if (!usuarioTipo) {
+      alert("Por favor, selecione um nível de acesso.");
       return;
     }
 
@@ -49,9 +55,11 @@ export default function Solicitacao() {
     try {
       await api.patch('/analizarUcu', { usuarios: updatedData });
       setShowModalConfirm(false);
+      setSelectedUsers(new Set()); // Limpa a seleção após a confirmação
+      setUsuarioTipo(""); // Limpa o tipo selecionado
       router.push('../usuarios/usu_pendentes');
     } catch (error) {
-      alert("Erro ao atualizar usuários.");
+      alert("Erro ao atualizar usuários. Por favor, tente novamente.");
       console.error(error);
     }
   };
@@ -82,9 +90,25 @@ export default function Solicitacao() {
   }, []);
 
   const filtrarSolicitacoes = (situacao) => {
-    const filtradas = listaUsuarios.filter((solicit) => solicit.situacao === situacao);
+    const filtradas = listaUsuarios.filter((solicit) => {
+      if (situacao === 'Ativo') return solicit.usu_ativo === 1; // Usuários Ativos
+      if (situacao === 'Inativo') return solicit.usu_ativo === 0; // Usuários Inativos
+      if (situacao === 'Pendente') return solicit.usu_aprovado === 0; // Usuários Pendentes
+      return true; // Se não houver filtro, retorna todos
+    });
     setSolicitacoesFiltradas(filtradas);
   };
+
+  // Mudar o filtro de situação
+  const handleFiltroChange = (event) => {
+    const selectedSituation = event.target.value;
+    setFiltroSituacao(selectedSituation);
+    filtrarSolicitacoes(selectedSituation); // Aplica o filtro ao mudar
+  };
+
+  useEffect(() => {
+    filtrarSolicitacoes(filtroSituacao);
+  }, [listaUsuarios, filtroSituacao]); // Refiltra sempre que lista de usuários ou filtro mudar
 
   function atLivNome(nome) {
     setlivNome(nome);
@@ -115,7 +139,7 @@ export default function Solicitacao() {
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.selecao}>Solicitações de usuários</h1>
-        <BarraPesquisa livNome={livNome} atLivNome={setlivNome} listaLivros={listaLivros}/>
+        <BarraPesquisa livNome={livNome} atLivNome={setlivNome} listaLivros={listaLivros} />
 
         {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>
@@ -131,6 +155,17 @@ export default function Solicitacao() {
               {option.label}
             </label>
           ))}
+        </div>
+
+        {/* Filtro de Situação */}
+        <div className={styles.filtroSituacao}>
+          <label>
+            <select value={filtroSituacao} onChange={handleFiltroChange}>
+              {situacao.map(option => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <div className={styles.opcao}>

@@ -9,9 +9,9 @@ import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 const situacao = [
-  { value: 'Ativo', label: 'Usuários Ativos' },
-  { value: 'Inativo', label: 'Usuários Inativos' },
-  { value: 'Pendente', label: 'Usuários Pendentes' },
+  { value: 'Ativo', label: 'Ativos' },
+  { value: 'Inativo', label: 'Inativos' },
+  { value: 'Pendente', label: 'Pendentes' },
 ];
 
 const searchOptions = [
@@ -29,7 +29,7 @@ export default function Solicitacao() {
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [livNome, setlivNome] = useState('');
-  const [filtroSituacao, setFiltroSituacao] = useState('Pendente'); // Estado para filtro de situação
+  const [filtroSituacao, setFiltroSituacao] = useState('');
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -81,7 +81,7 @@ export default function Solicitacao() {
       try {
         const response = await api.post('/usu_pendentes');
         setListaUsuarios(response.data.dados);
-        setSolicitacoesFiltradas(response.data.dados);
+        setSolicitacoesFiltradas(response.data.dados.filter(() => false));
       } catch (error) {
         alert('Erro ao buscar usuários pendentes.');
       }
@@ -94,7 +94,7 @@ export default function Solicitacao() {
       if (situacao === 'Ativo') return solicit.usu_ativo === 1; // Usuários Ativos
       if (situacao === 'Inativo') return solicit.usu_ativo === 0; // Usuários Inativos
       if (situacao === 'Pendente') return solicit.usu_aprovado === 0; // Usuários Pendentes
-      return true; // Se não houver filtro, retorna todos
+      return true; // Se não houver filtro, retorna nada
     });
     setSolicitacoesFiltradas(filtradas);
   };
@@ -157,15 +157,24 @@ export default function Solicitacao() {
           ))}
         </div>
 
-        {/* Filtro de Situação */}
-        <div className={styles.filtroSituacao}>
-          <label>
-            <select value={filtroSituacao} onChange={handleFiltroChange}>
-              {situacao.map(option => (
-                <option key={option.value} value={option.value}>{option.label}</option>
-              ))}
-            </select>
-          </label>
+        {/* Botões de Filtro de Situação */}
+        <div className={styles.situacaoButtons}>
+          {situacao.map(status => (
+            <div
+              key={status.value}
+              className={`${styles.situacao} ${filtroSituacao === status.value ? styles.active : ''}`}
+              onClick={() => handleFiltroChange({ target: { value: status.value } })}
+            >
+              <Image
+                src={`/solicitacoes/${status.value.replace(/\s+/g, '_')}.png`}
+                alt={status.label}
+                width={512}
+                height={512}
+                className={styles.icon}
+              />
+              <p className={styles.textIcon}>{status.label}</p>
+            </div>
+          ))}
         </div>
 
         <div className={styles.opcao}>

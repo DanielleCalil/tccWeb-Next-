@@ -14,7 +14,7 @@ import api from '@/services/api';
 export default function SignUp() {
     const router = useRouter();
     const [cursos, setCursos] = useState([]);
-    const [selectedSexo, setSelectedSexo] = useState(usuario.usu_sexo);
+    const [selectedSexo, setSelectedSexo] = useState('');
 
     const [usuario, setUsuario] = useState({
         "usu_rm": '',
@@ -110,9 +110,10 @@ export default function SignUp() {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const handleChangeSexo = (e) => {
+    const handleChangeSexo = (event) => {
         // Atualiza o valor de 'usu_sexo' com base na seleção do usuário
-        setSelectedSexo(e.target.value);
+        console.log('Valor selecionado:', event.target.value);
+        setSelectedSexo(event.target.value);
     };
 
     // const [selectCursos, setSelectCursos] = useState('');
@@ -305,7 +306,7 @@ export default function SignUp() {
 
         if (itensValidados === 7) {
             try {
-                const response = await api.post('/usuarios', usuario);
+                const response = await api.post('/usu_cadastrar', usuario);
                 if (response.data.sucesso) {
                     openModalAvisoCad();
                 }
@@ -466,7 +467,7 @@ export default function SignUp() {
                                 </div>
                             </div>
 
-                            <div className={styles.sexoForm} name="sexo" id="sexo">
+                            <div className={styles.sexoForm} name="sexo" id="sexo" onChange={handleChange} defaultValue={usuario.usu_sexo}>
                                 <div className={valida.sexo.validado + ' ' + styles.valSexo} id="valSexo">
                                     <div className={styles.divRadio}>
                                         <legend>Sexo:</legend>
@@ -481,8 +482,7 @@ export default function SignUp() {
                                                     type="radio"
                                                     name="usu_sexo"
                                                     value={sexo.value}
-                                                    checked={selectedSexo === sexo.value}
-                                                    onChange={handleChangeSexo}
+                                                    defaultChecked={usuario.usu_sexo === sexo.value}
                                                 />
                                                 {sexo.label.charAt(0).toUpperCase() + sexo.label.slice(1)}
                                             </label>

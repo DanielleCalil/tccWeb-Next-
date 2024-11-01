@@ -21,7 +21,7 @@ export default function PerfilEditar({ codUsu }) {
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
-    const [selectedSexo, setSelectedSexo] = useState(usuario.usu_sexo);
+    const [selectedSexo, setSelectedSexo] = useState('');
 
     const [perfilEdt, setPerfilEdt] = useState({
         "usu_cod": '',
@@ -48,9 +48,16 @@ export default function PerfilEditar({ codUsu }) {
     const closeModalConfirm = () => setShowModalConfirm(false);
 
     const handleConfirm = async () => {
-        closeModalConfirm();
-        await handleSave();
+        try {
+            closeModalConfirm(); // Fecha o modal de confirmação
+            await handleSave();  // Aguarda o salvamento dos dados
+        } catch (error) {
+            // Lide com erros que possam ocorrer ao tentar salvar
+            console.error("Erro ao confirmar a ação:", error);
+            alert('Ocorreu um erro ao tentar salvar. Por favor, tente novamente.'); // Mensagem para o usuário
+        }
     };
+    
 
     useEffect(() => {
         listaCursos();
@@ -81,6 +88,7 @@ export default function PerfilEditar({ codUsu }) {
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);
+                    setSelectedSexo(Number(edtPerfilApi.usu_sexo));
                 } else {
                     setError(response.data.mensagem);
                 }
@@ -109,20 +117,30 @@ export default function PerfilEditar({ codUsu }) {
 
     const handleSave = async () => {
         const { usu_rm, usu_nome, usu_email, cur_nome, usu_sexo } = perfilEdt;
-
+    
+        // Adiciona um log para ver os dados que estão sendo enviados
+        console.log("Dados a serem enviados:", {
+            usu_rm,
+            usu_nome,
+            usu_email,
+            cur_nome,
+            usu_sexo,
+            usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
+        });
+    
         if (!usu_rm || !usu_nome || !usu_email || !cur_nome || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
-
+    
         setIsSaving(true); // Inicia o salvamento
-
+    
         try {
             const response = await api.patch(`/usuarios/${perfilEdt.usu_cod}`, {
                 ...perfilEdt,
-                usu_foto: imageSrc,
+                usu_foto: imageSrc, // Inclui a foto se necessário
             });
-
+    
             if (response.data.sucesso) {
                 alert('Usuário atualizado com sucesso!');
                 router.push('/perfil'); // Redireciona após o sucesso
@@ -134,6 +152,7 @@ export default function PerfilEditar({ codUsu }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
+    
     console.log(perfilEdt);
 
     return (
@@ -232,16 +251,19 @@ export default function PerfilEditar({ codUsu }) {
                                         { label: 'Masculino', value: '1' },
                                         { label: 'Neutro', value: '2' },
                                         { label: 'Padrão', value: '3' }
-                                    ].map((sexo) => (
-                                        <label key={sexo.value}>
+                                    ].map((opcao) => (
+                                        <label key={opcao.value}>
                                             <input
                                                 type="radio"
                                                 name="usu_sexo"
-                                                value={sexo.value}
-                                                checked={Number(selectedSexo.usu_sexo) === Number(sexo.value)}
-                                                onChange={handleChangeSexo}
+                                                value={opcao.value}
+                                                defaultChecked={selectedSexo === opcao.value}
+                                                onChange={(e) => {
+                                                    setSelectedSexo(e.target.value); // Atualiza selectedSexo
+                                                    setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value }); // Atualiza perfilEdt
+                                                }}
                                             />
-                                            {sexo.label.charAt(0).toUpperCase() + sexo.label.slice(1)}
+                                            {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
                                         </label>
                                     ))}
                                 </form>

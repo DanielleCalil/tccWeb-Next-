@@ -40,7 +40,7 @@ export default function Solicitacao() {
       return;
     }
 
-    if (!usuarioTipo === usu_tipo) {
+    if (!usuarioTipo) {
       alert("Por favor, selecione um nível de acesso.");
       return;
     }
@@ -57,7 +57,6 @@ export default function Solicitacao() {
       setShowModalConfirm(false);
       setSelectedUsers(new Set()); // Limpa a seleção após a confirmação
       setUsuarioTipo(""); // Limpa o tipo selecionado
-      router.push('../usuarios/usu_pendentes');
     } catch (error) {
       alert("Erro ao atualizar usuários. Por favor, tente novamente.");
       console.error(error);

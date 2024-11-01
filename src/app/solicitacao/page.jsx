@@ -8,10 +8,10 @@ import api from '@/services/api';
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
-const situacao = [
-  { value: 'Ativo', label: 'Ativos' },
-  { value: 'Inativo', label: 'Inativos' },
-  { value: 'Pendente', label: 'Pendentes' },
+const situacaoOptions = [
+  { value: 'Aprovados', label: 'Aprovados' },
+  { value: 'Reprovados', label: 'Reprovados' },
+  { value: 'Pendentes', label: 'Pendentes' },
 ];
 
 const searchOptions = [
@@ -25,11 +25,11 @@ export default function Solicitacao() {
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_cod');
   const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [usuarioTipo, setUsuarioTipo] = useState("");
-  const [showModalConfirm, setShowModalConfirm] = useState(false);
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
-  const [livNome, setlivNome] = useState('');
   const [filtroSituacao, setFiltroSituacao] = useState('');
+
+  const [showModalConfirm, setShowModalConfirm] = useState(false);
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -40,7 +40,7 @@ export default function Solicitacao() {
       return;
     }
 
-    if (!usuarioTipo) {
+    if (!usuarioTipo === usu_tipo) {
       alert("Por favor, selecione um nível de acesso.");
       return;
     }
@@ -77,23 +77,24 @@ export default function Solicitacao() {
   };
 
   useEffect(() => {
-    async function handleListaUsuarios() {
+    async function fetchUsuariosPendentes() {
       try {
         const response = await api.post('/usu_pendentes');
-        setListaUsuarios(response.data.dados);
-        setSolicitacoesFiltradas(response.data.dados.filter(() => false));
+        const usuarios = response.data.dados;
+        setListaUsuarios(usuarios);
+        setSolicitacoesFiltradas(usuarios);
       } catch (error) {
         alert('Erro ao buscar usuários pendentes.');
       }
     }
-    handleListaUsuarios();
+    fetchUsuariosPendentes();
   }, []);
 
-  const filtrarSolicitacoes = (situacao) => {
+  const filtrarSolicitacoes = (situacaoOptions) => {
     const filtradas = listaUsuarios.filter((solicit) => {
-      if (situacao === 'Ativo') return solicit.usu_ativo === 1; // Usuários Ativos
-      if (situacao === 'Inativo') return solicit.usu_ativo === 0; // Usuários Inativos
-      if (situacao === 'Pendente') return solicit.usu_aprovado === 0; // Usuários Pendentes
+      if (situacaoOptions === 'Aprovados') return solicit.usu_aprovado === 1; // Usuários Ativos
+      if (situacaoOptions === 'Reprovados') return solicit.usu_tipo === 5; // Usuários Inativos
+      if (situacaoOptions === 'Pendentes') return solicit.usu_aprovado === 0; // Usuários Pendentes
       return true; // Se não houver filtro, retorna nada
     });
     setSolicitacoesFiltradas(filtradas);
@@ -110,6 +111,8 @@ export default function Solicitacao() {
     filtrarSolicitacoes(filtroSituacao);
   }, [listaUsuarios, filtroSituacao]); // Refiltra sempre que lista de usuários ou filtro mudar
 
+  const [livNome, setlivNome] = useState('');
+
   function atLivNome(nome) {
     setlivNome(nome);
   }
@@ -121,14 +124,12 @@ export default function Solicitacao() {
   async function listaLivros() {
     const dados = { [selectedSearchOption]: livNome };
     try {
-      const response = await api.post("/emprestimos", dados);
+      const response = await api.post("/usuarios", dados);
       console.log(response.data.dados);
-      setEmprestimo(response.data.dados);
+      setListaUsuarios(response.data.dados);
     } catch (error) {
       if (error.response) {
-        Alert.alert(
-          error.response.data.mensagem + "\n" + error.response.data.dados
-        );
+        alert(error.response.data.mensagem + "\n" + error.response.data.dados);
       } else {
         alert("Erro no front-end" + "\n" + error);
       }
@@ -139,7 +140,7 @@ export default function Solicitacao() {
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.selecao}>Solicitações de usuários</h1>
-        <BarraPesquisa livNome={livNome} atLivNome={setlivNome} listaLivros={listaLivros} />
+        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
 
         {/* Radio Buttons para selecionar o critério de pesquisa */}
         <div className={styles.searchOptions}>
@@ -159,7 +160,7 @@ export default function Solicitacao() {
 
         {/* Botões de Filtro de Situação */}
         <div className={styles.situacaoButtons}>
-          {situacao.map(status => (
+          {situacaoOptions.map(status => (
             <div
               key={status.value}
               className={`${styles.situacao} ${filtroSituacao === status.value ? styles.active : ''}`}
@@ -187,11 +188,9 @@ export default function Solicitacao() {
             <option value="2">Funcionário(a) - ADM</option>
             <option value="1">Professor(a)</option>
             <option value="0">Aluno(a)</option>
-            <option value="5">Negar acesso</option>
+            <option value="5">Acesso negado</option>
           </select>
-          <button type="submit"
-            onClick={openModalConfirm}
-            className={styles.confirmButton}>
+          <button type="submit" onClick={openModalConfirm} className={styles.confirmButton}>
             Confirmar
           </button>
         </div>
@@ -227,6 +226,7 @@ export default function Solicitacao() {
           show={showModalConfirm}
           onClose={closeModalConfirm}
           onConfirm={handleConfirm}
+          mensagem="Tem certeza que deseja aprovar as solicitações?"
         />
       </div>
     </main>

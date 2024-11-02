@@ -57,7 +57,6 @@ export default function PerfilEditar({ codUsu }) {
             alert('Ocorreu um erro ao tentar salvar. Por favor, tente novamente.'); // Mensagem para o usuário
         }
     };
-    
 
     useEffect(() => {
         listaCursos();
@@ -88,7 +87,8 @@ export default function PerfilEditar({ codUsu }) {
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);
-                    setSelectedSexo(Number(edtPerfilApi.usu_sexo));
+
+                    setSelectedSexo(edtPerfilApi.usu_sexo);
                 } else {
                     setError(response.data.mensagem);
                 }
@@ -117,7 +117,7 @@ export default function PerfilEditar({ codUsu }) {
 
     const handleSave = async () => {
         const { usu_rm, usu_nome, usu_email, cur_nome, usu_sexo } = perfilEdt;
-    
+
         // Adiciona um log para ver os dados que estão sendo enviados
         console.log("Dados a serem enviados:", {
             usu_rm,
@@ -127,20 +127,20 @@ export default function PerfilEditar({ codUsu }) {
             usu_sexo,
             usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
         });
-    
-        if (!usu_rm || !usu_nome || !usu_email || !cur_nome || !usu_sexo) {
-            alert('Todos os campos devem ser preenchidos');
-            return;
-        }
-    
+
+        // if ( !usu_email || !cur_nome || !usu_sexo) {
+        //     alert('Todos os campos devem ser preenchidos');
+        //     return;
+        // }
+
         setIsSaving(true); // Inicia o salvamento
-    
+
         try {
             const response = await api.patch(`/usuarios/${perfilEdt.usu_cod}`, {
                 ...perfilEdt,
                 usu_foto: imageSrc, // Inclui a foto se necessário
             });
-    
+
             if (response.data.sucesso) {
                 alert('Usuário atualizado com sucesso!');
                 router.push('/perfil'); // Redireciona após o sucesso
@@ -152,7 +152,7 @@ export default function PerfilEditar({ codUsu }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    
+
     console.log(perfilEdt);
 
     return (
@@ -236,11 +236,15 @@ export default function PerfilEditar({ codUsu }) {
                                             {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
                                         </option>
 
-                                        {cursos.map((cur) => (
-                                            <option key={cur.cur_cod} value={cur.cur_cod}>
-                                                {cur.cur_nome}
-                                            </option>
-                                        ))}
+                                        {perfilEdt.cursos.length > 0 ? (
+                                            perfilEdt.cursos.map((cur) => (
+                                                <option key={cur.cur_cod} value={cur.cur_cod}>
+                                                    {cur.cur_nome}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <p>Não há cursos registrados.</p>
+                                        )}
                                     </select>
                                 </div>
 
@@ -257,7 +261,7 @@ export default function PerfilEditar({ codUsu }) {
                                                 type="radio"
                                                 name="usu_sexo"
                                                 value={opcao.value}
-                                                defaultChecked={selectedSexo === opcao.value}
+                                                checked={Number(perfilEdt.usu_sexo) === Number(opcao.value)}
                                                 onChange={(e) => {
                                                     setSelectedSexo(e.target.value); // Atualiza selectedSexo
                                                     setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value }); // Atualiza perfilEdt

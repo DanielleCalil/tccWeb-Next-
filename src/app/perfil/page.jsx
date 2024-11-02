@@ -73,25 +73,25 @@ export default function Perfil() {
                                     <div className={styles.inputContainer}>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>RM:</label>
-                                            <p>{infoUsu.usu_rm}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_rm}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Nome social:</label>
-                                            <p>{infoUsu.usu_social}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_social}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Nome completo:</label>
-                                            <p>{infoUsu.usu_nome}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_nome}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>E-mail:</label>
-                                            <p>{infoUsu.usu_email}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_email}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Curso técnico ou médio:</label>
                                             {infoUsu.cursos.length > 0 ? (
                                                 infoUsu.cursos.map((curso) => (
-                                                    <p key={curso.cur_cod}>{curso.cur_nome}</p>
+                                                    <p key={curso.cur_cod} className={styles.infos} >{curso.cur_nome}</p>
                                                 ))
                                             ) : (
                                                 <p>Não há cursos registrados.</p>

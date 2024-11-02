@@ -277,20 +277,22 @@ export default function SignUp() {
             validado: valSucesso,
             mensagem: []
         };
-
-        if (usuario.usu_sexo == 0) {
+    
+        // Verifica se o sexo não foi selecionado, excluindo 0
+        if (usuario.usu_sexo === null || usuario.usu_sexo === undefined || usuario.usu_sexo === '') {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Selecione o sexo do usuário');
         }
-
+    
         setValida(prevState => ({
             ...prevState,
             sexo: objTemp
         }));
-
+    
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
         return testeResult;
     }
+    
 
     async function handleSubmit(event) {
         event.preventDefault();

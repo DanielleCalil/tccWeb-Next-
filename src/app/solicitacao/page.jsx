@@ -204,7 +204,7 @@ export default function Solicitacao() {
                   <p className={styles.info}>  Nome: {solicit.usu_nome}</p>
                   <p className={styles.info}>  RM: {solicit.usu_rm}</p>
                   <p className={styles.info}>  E-mail: {solicit.usu_email}</p>
-                  <p className={styles.info}>  Curso técnico ou médio: {solicit.cur_nome}</p>
+                  <p className={styles.info}>  Curso técnico ou médio: {solicit.cursos.length > 0 ? solicit.cursos[0].cur_nome : 'Nenhum curso encontrado'}</p>
                   <div className={styles.box}>
                     <input
                       type="checkbox"

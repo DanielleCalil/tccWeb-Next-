@@ -46,7 +46,15 @@ export default function GerenciarLivroExistente() {
         try {
             const response = await api.post('/liv_gerenciar', dados);
             console.log(response.data.dados);
-            setBooks(response.data.dados);
+            
+            // Adicionamos a atualização do estado `liv_ativo` para refletir os dados reais da API
+            const updatedBooks = response.data.dados.map(book => ({
+                ...book,
+                liv_ativo: book.liv_ativo // garante que o valor de `liv_ativo` seja o correto ao carregar
+            }));
+
+            setBooks(updatedBooks); // Atualiza o estado com os livros e seus status reais
+
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);

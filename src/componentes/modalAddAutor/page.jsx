@@ -11,7 +11,7 @@ export default function ModalAddAutor({ show, onClose }) {
     const router = useRouter();
 
     const [novoAutor, setNovoAutor] = useState({
-        "aut_cod": 0,
+        "aut_cod": "",
         "aut_nome": "",
     });
 

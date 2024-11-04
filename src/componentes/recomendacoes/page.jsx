@@ -78,7 +78,8 @@ export default function Recomendacoes() {
         if (!user) {
             router.push('/usuarios/login');
         } else {
-            listaLivros();        
+           // Chama listaLivros passando o curso do usuário
+           listaLivros(user.cur_cod);        
         }
     }, []);
 

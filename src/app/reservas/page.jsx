@@ -132,12 +132,8 @@ export default function Reservas() {
                                     </div>
                                     <div className={styles.line}></div>
                                     <p className={styles.info}>Reservado por: {reserv.usu_nome}</p>
-                                    <p className={styles.info}>Data do Empréstimo: {reserv.emp_data_emp || 'Data não disponível'}</p>
-
-                                    <p className={styles.info}>Início da Reserva: {reserv.periodo.inicio || 'Data não disponível'}</p>
-                                    <p className={styles.info}>Fim da Reserva: {reserv.periodo.fim || 'Data não disponível'}</p>
-
-                                    <p className={styles.info}>Data de Devolução: {reserv.emp_data_devol || 'Data não disponível'}</p>
+                                    <p className={styles.info}>Data do Empréstimo: {reserv.Empréstimo || 'Data não disponível'}</p>
+                                    <p className={styles.info}>Data de Devolução: {reserv.Devolução || 'Data não disponível'}</p>
                                     <div className={styles.line}></div>
                                     <p className={styles.pUsuario}>Confirmar retirada do livro</p>
                                     {mensagemStatus ? ( // Exibe a mensagem fixa se existir

@@ -177,7 +177,7 @@ export default function AddLivroNovo() {
     const generateBookCode = () => {
         // Aqui você pode implementar a lógica para gerar um código único para o livro.
         // Exemplo simples de código gerado aleatoriamente.
-        return Math.floor(Math.random() * 10000); // Código aleatório entre 0 e 9999
+        return Math.floor(Math.random() * 100); // Código aleatório entre 0 e 9999
     };
 
     // useEffect para definir o código do livro ao entrar na tela

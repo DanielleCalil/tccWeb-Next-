@@ -26,7 +26,12 @@ export default function Solicitacao() {
   const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [usuarioTipo, setUsuarioTipo] = useState("");
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
-  const [listaUsuarios, setListaUsuarios] = useState([]);
+  const [listaUsuarios, setListaUsuarios] = useState({
+    "usu_cod": "",
+    "usu_tipo": "",
+    "usu_ativo": "",
+    "usu_aprovado": "",
+  });
   const [filtroSituacao, setFiltroSituacao] = useState('');
 
   const [showModalConfirm, setShowModalConfirm] = useState(false);
@@ -67,9 +72,9 @@ export default function Solicitacao() {
     setSelectedUsers((prevSelectedUsers) => {
       const updatedSelection = new Set(prevSelectedUsers);
       if (updatedSelection.has(usu_cod)) {
-        updatedSelection.delete(usu_cod);
+        updatedSelection.delete(usu_cod); // Remove o usuário se já estiver selecionado
       } else {
-        updatedSelection.add(usu_cod);
+        updatedSelection.add(usu_cod); // Adiciona o usuário se não estiver selecionado
       }
       return updatedSelection;
     });
@@ -90,11 +95,16 @@ export default function Solicitacao() {
   }, []);
 
   const filtrarSolicitacoes = (situacaoOptions) => {
+    if (!situacaoOptions) {  // Verifica se nenhum filtro está selecionado
+      setSolicitacoesFiltradas([]);  // Define a lista filtrada como vazia
+      return;
+    }
+
     const filtradas = listaUsuarios.filter((solicit) => {
       if (situacaoOptions === 'Aprovados') return solicit.usu_aprovado === 1; // Usuários Ativos
       if (situacaoOptions === 'Reprovados') return solicit.usu_tipo === 5; // Usuários Inativos
       if (situacaoOptions === 'Pendentes') return solicit.usu_aprovado === 0; // Usuários Pendentes
-      return true; // Se não houver filtro, retorna nada
+      return false; // Se não houver filtro, retorna nada
     });
     setSolicitacoesFiltradas(filtradas);
   };

@@ -8,6 +8,7 @@ import FileInput from "@/componentes/FileInput/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
 
+
 export default function PerfilEditar({ codUsu }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -66,7 +67,8 @@ export default function PerfilEditar({ codUsu }) {
         try {
             const response = await api.post('/cursos');
             setCursos(response.data.dados);
-            console.log(response.data);
+            // console.log('cursos');            
+            // console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -128,10 +130,10 @@ export default function PerfilEditar({ codUsu }) {
             usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
         });
 
-        // if ( !usu_email || !cur_nome || !usu_sexo) {
-        //     alert('Todos os campos devem ser preenchidos');
-        //     return;
-        // }
+        if ( !usu_email || !cur_nome || !usu_sexo) {
+            alert('Todos os campos devem ser preenchidos');
+            return;
+        }
 
         setIsSaving(true); // Inicia o salvamento
 
@@ -153,8 +155,7 @@ export default function PerfilEditar({ codUsu }) {
         }
     };
 
-    console.log(perfilEdt);
-
+    console.log(perfilEdt);    
     return (
         <main className={styles.main}>
             <div className="containerGlobal">

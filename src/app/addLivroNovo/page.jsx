@@ -173,18 +173,18 @@ export default function AddLivroNovo() {
         }
     }
 
-    // Função para gerar o código do livro
-    const generateBookCode = () => {
-        // Aqui você pode implementar a lógica para gerar um código único para o livro.
-        // Exemplo simples de código gerado aleatoriamente.
-        return Math.floor(Math.random() * 100); // Código aleatório entre 0 e 9999
-    };
+    // // Função para gerar o código do livro
+    // const generateBookCode = () => {
+    //     // Aqui você pode implementar a lógica para gerar um código único para o livro.
+    //     // Exemplo simples de código gerado aleatoriamente.
+    //     return Math.floor(Math.random() * 100); // Código aleatório entre 0 e 9999
+    // };
 
-    // useEffect para definir o código do livro ao entrar na tela
-    useEffect(() => {
-        const newCode = generateBookCode(); // Gera um novo código
-        setLivro((prevLivro) => ({ ...prevLivro, liv_cod: newCode })); // Atualiza o estado do livro
-    }, []);
+    // // useEffect para definir o código do livro ao entrar na tela
+    // useEffect(() => {
+    //     const newCode = generateBookCode(); // Gera um novo código
+    //     setLivro((prevLivro) => ({ ...prevLivro, liv_cod: newCode })); // Atualiza o estado do livro
+    // }, []);
 
 
 

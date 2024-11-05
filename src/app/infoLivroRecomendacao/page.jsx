@@ -41,8 +41,6 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
 
     useEffect(() => {
 
-        handleCarregaLivro();
-
         // Função para carregar os dados do livro
         async function handleCarregaLivro() {
             const dadosApi = {
@@ -74,6 +72,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                 }
             }
         }
+        handleCarregaLivro();
     }, []);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -155,52 +154,54 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                     <div className={styles.line}></div>
                                     <p className={styles.descProf}>Recomendado para:</p>
                                     <p className={styles.descProfCurso}>{livroRec.cur_nome}</p>
+
                                     <form className={styles.moduloForm}>
-                                        <label className={styles.customCheckbox}>
+                                        <label>
                                             <input
                                                 type="checkbox"
                                                 name="modulo1"
-                                                value="1º modulo"
                                                 checked={modulo1}
                                                 onChange={() => setModulo1(!modulo1)}
                                                 disabled={true}
                                             />
+                                            <span className={styles.customCheckbox} />
                                             1º Módulo
                                         </label>
-                                        <label className={styles.customCheckbox}>
+                                        <label>
                                             <input
                                                 type="checkbox"
                                                 name="modulo2"
-                                                value="2º modulo"
                                                 checked={modulo2}
                                                 onChange={() => setModulo2(!modulo2)}
                                                 disabled={true}
                                             />
+                                            <span className={styles.customCheckbox} />
                                             2º Módulo
                                         </label>
-                                        <label className={styles.customCheckbox}>
+                                        <label>
                                             <input
                                                 type="checkbox"
                                                 name="modulo3"
-                                                value="3º modulo"
                                                 checked={modulo3}
                                                 onChange={() => setModulo3(!modulo3)}
                                                 disabled={true}
                                             />
+                                            <span className={styles.customCheckbox} />
                                             3º Módulo
                                         </label>
-                                        <label className={styles.customCheckbox}>
+                                        <label>
                                             <input
                                                 type="checkbox"
                                                 name="modulo4"
-                                                value="4º modulo"
                                                 checked={modulo4}
                                                 onChange={() => setModulo4(!modulo4)}
                                                 disabled={true}
                                             />
+                                            <span className={styles.customCheckbox} />
                                             4º Módulo
                                         </label>
                                     </form>
+
                                 </div>
                             </div>
                             <div className={styles.editar}>

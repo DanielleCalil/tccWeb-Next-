@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import FileInput from '@/componentes/FileInput/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
+import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
 import api from '@/services/api';
 
 export default function EditarInformacoesLivro({ codLivro }) {
@@ -34,7 +35,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "liv_categ_cod": '',
         "edt_cod": '',
 
-         // "liv_pha_cod": "D738p",
+        // "liv_pha_cod": "D738p",
         // "liv_categ_cod": "0.810",
         // "liv_nome": "A Garota do Lago 3",
         // "liv_desc": "A Garota do Lago é um thriller que se passa em uma pequena cidade montanhosa chamada Summit Lake, onde a repórter Kelsey Castle investiga o brutal assassinato da estudante de direito Becca Eckersley. Becca, filha de um advogado influente, foi morta em sua casa, deixando a comunidade em choque. Enquanto Kelsey segue as pistas do caso, ela se conecta intimamente com a vítima e descobre segredos sombrios sobre sua vida. A selvageria do crime e os esforços para abafar o caso indicam que pode não ter sido um ataque aleatório. Conforme Kelsey desvenda os segredos de Becca, ela também confronta seu próprio passado obscuro.",
@@ -56,6 +57,11 @@ export default function EditarInformacoesLivro({ codLivro }) {
         closeModalConfirm();
         await handleSave();
     };
+
+    const [ShowModalGenero, setShowModalGenero] = useState(false); // Estado para abrir/fechar o modal
+
+    const openModalGenero = () => setShowModalGenero(true); // Abre o modal
+    const closeModalGenero = () => setShowModalGenero(false);
 
     useEffect(() => {
         listaAutor();
@@ -266,13 +272,17 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <select id="gen_cod" name="gen_cod" value={livro.gen_cod} onChange={handleChange} className={styles.opcao}>
-                                                    <option value="0" style={{ color: '#999' }}>Selecione o gênero</option>
-                                                    {genero.map(gen => (
-                                                        <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
-                                                    ))}
-                                                </select>
+                                                <input
+                                                    type="text"
+                                                    id="gen_cod"
+                                                    name="gen_cod"
+                                                    value={livro.gen_cod}
+                                                    onClick={openModalGenero}
+                                                    className={styles.opcao}
+                                                    readOnly
+                                                />
                                             </div>
+                                            <ModalEdtGenero show={ShowModalGenero} onClose={closeModalGenero} />
                                         </div>
                                         <div className={styles.editar}>
                                             <button

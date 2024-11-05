@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import Link from "next/link";
+import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
 import FileInput from "@/componentes/FileInput/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
@@ -161,155 +162,155 @@ export default function PerfilEditar({ codUsu }) {
             <div className="containerGlobal">
                 <h1 className={styles.perfil}>Perfil</h1>
                 {perfilEdt.usu_cod ? (
-                        <div className={styles.PIContainer}>
-                            <div className={styles.profileContainer}>
-                                <div className={styles.imgContainer}>
-                                    <Image
-                                        src={imageSrc || perfilEdt.usu_foto}
-                                        alt="Foto de perfil"
-                                        width={512}
-                                        height={512}
-                                        loader={imageLoader}
-                                        priority
-                                    />
-                                </div>
-                                <FileInput onFileSelect={handleImageChange} />
+                    <div className={styles.PIContainer}>
+                        <div className={styles.profileContainer}>
+                            <div className={styles.imgContainer}>
+                                <Image
+                                    src={imageSrc || perfilEdt.usu_foto}
+                                    alt="Foto de perfil"
+                                    width={512}
+                                    height={512}
+                                    loader={imageLoader}
+                                    priority
+                                />
                             </div>
+                            <FileInput onFileSelect={handleImageChange} />
+                        </div>
 
-                            <div className={styles.inputContainer}>
-                                <div className={styles.inputGroup}>
-                                    <p className={styles.textInput}>RM:</p>
-                                    <input
-                                        type="number"
-                                        value={perfilEdt.usu_rm}
-                                        onChange={(e) => {
-                                            const value = Number(e.target.value);
-                                            setPerfilEdt({ ...perfilEdt, usu_rm: isNaN(value) ? 0 : value });
-                                        }}
-                                        className={`${styles.inputField} ${styles.inputRm}`}
-                                        aria-label="Registro de matrícula"
-                                        disabled
-                                    />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <p className={styles.textInput}>Nome social:</p>
-                                    <input
-                                        type="text"
-                                        value={perfilEdt.usu_social}
-                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_social: e.target.value })}
-                                        className={styles.inputField}
-                                        aria-label="Nome Social"
-                                    />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <p className={styles.textInput}>Nome completo:</p>
-                                    <input
-                                        type="text"
-                                        value={perfilEdt.usu_nome}
-                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome: e.target.value })}
-                                        className={styles.inputField}
-                                        aria-label="Nome Completo"
-                                        disabled
-                                    />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label className={styles.textInput}>E-mail:</label>
-                                    <input
-                                        type="email"
-                                        value={perfilEdt.usu_email}
-                                        onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_email: e.target.value })}
-                                        className={styles.inputField}
-                                        aria-label="E-mail"
-                                    />
-                                </div>
-                                <div className={styles.listaCursos}>
-                                    <div className={styles.inputCursos}>
-                                        <label className={styles.textInput}>Selecione um curso:</label>
-                                        <ul
-                                            id="cur_cod"
-                                            name="cur_cod"
-                                            value={perfilEdt.cur_cod}
-                                            onChange={handleChange}
-                                            className={styles.opcaoCursos}
-                                        >
+                        <div className={styles.inputContainer}>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>RM:</p>
+                                <input
+                                    type="number"
+                                    value={perfilEdt.usu_rm}
+                                    onChange={(e) => {
+                                        const value = Number(e.target.value);
+                                        setPerfilEdt({ ...perfilEdt, usu_rm: isNaN(value) ? 0 : value });
+                                    }}
+                                    className={`${styles.inputField} ${styles.inputRm}`}
+                                    aria-label="Registro de matrícula"
+                                    disabled
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Nome social:</p>
+                                <input
+                                    type="text"
+                                    value={perfilEdt.usu_social}
+                                    onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_social: e.target.value })}
+                                    className={styles.inputField}
+                                    aria-label="Nome Social"
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <p className={styles.textInput}>Nome completo:</p>
+                                <input
+                                    type="text"
+                                    value={perfilEdt.usu_nome}
+                                    onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_nome: e.target.value })}
+                                    className={styles.inputField}
+                                    aria-label="Nome Completo"
+                                    disabled
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label className={styles.textInput}>E-mail:</label>
+                                <input
+                                    type="email"
+                                    value={perfilEdt.usu_email}
+                                    onChange={(e) => setPerfilEdt({ ...perfilEdt, usu_email: e.target.value })}
+                                    className={styles.inputField}
+                                    aria-label="E-mail"
+                                />
+                            </div>
+                            <div className={styles.listaCursos}>
+                                <div className={styles.inputCursos}>
+                                    <label className={styles.textInput}>Selecione o curso:</label>
+                                    <ul
+                                        id="cur_cod"
+                                        name="cur_cod"
+                                        value={perfilEdt.cur_cod}
+                                        onChange={handleChange}
+                                        className={styles.opcaoCursos}
+                                    >
 
-                                            {/* <option value="" disabled>
+                                        {/* <option value="" disabled>
                                             {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
                                         </option> */}
 
-                                            {cursos.length > 0 ? (
-                                                cursos.map((cur) => (
-                                                    <li key={cur.cur_cod} value={cur.cur_cod}>
-                                                        {cur.cur_nome}
-                                                    </li>
-                                                ))
-                                            ) : (
-                                                <p>Não há cursos registrados.</p>
-                                            )}
-                                        </ul>
-                                    </div>
+                                        {cursos.length > 0 ? (
+                                            cursos.map((cur) => (
+                                                <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                    {cur.cur_nome}
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <p>Não há cursos registrados.</p>
+                                        )}
+                                    </ul>
+                                </div>
 
-                                    <div className={styles.buttons}>
-                                        <button className={styles.cursosButton}>
-                                            +
-                                        </button>
-                                        <button className={styles.cursosButton}>
-                                            -
-                                        </button>
-                                    </div>
+                                <div className={styles.buttons}>
+                                    <button className={styles.cursosButton}>
+                                        <IoChevronBack size={20} color="#FFF" />
+                                    </button>
+                                    <button className={styles.cursosButton}>
+                                        <IoChevronForward size={20} color="#FFF" />
+                                    </button>
+                                </div>
 
-                                    <div className={styles.inputCursos}>
-                                        <label className={styles.textInput}>Cursos já selecionados:</label>
-                                        <ul
-                                            id="cur_cod"
-                                            name="cur_cod"
-                                            value={perfilEdt.cur_cod}
-                                            onChange={handleChange}
-                                            className={styles.opcaoCursos}
-                                        >
+                                <div className={styles.inputCursos}>
+                                    <label className={styles.textInput}>Cursos já selecionados:</label>
+                                    <ul
+                                        id="cur_cod"
+                                        name="cur_cod"
+                                        value={perfilEdt.cur_cod}
+                                        onChange={handleChange}
+                                        className={styles.opcaoCursos}
+                                    >
 
-                                            {/* <option value="" disabled>
+                                        {/* <option value="" disabled>
                                                 {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
                                             </option> */}
 
-                                            {perfilEdt.cursos.length > 0 ? (
-                                                perfilEdt.cursos.map((cur) => (
-                                                    <li key={cur.cur_cod} value={cur.cur_cod}>
-                                                        {cur.cur_nome}
-                                                    </li>
-                                                ))
-                                            ) : (
-                                                <p>Não há cursos registrados.</p>
-                                            )}
-                                        </ul>
-                                    </div>
+                                        {perfilEdt.cursos.length > 0 ? (
+                                            perfilEdt.cursos.map((cur) => (
+                                                <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                    {cur.cur_nome}
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <p>Não há cursos registrados.</p>
+                                        )}
+                                    </ul>
                                 </div>
-
-                                <form className={styles.sexoForm}>
-                                    <legend>Sexo:</legend>
-                                    {[
-                                        { label: 'Feminino', value: '0' },
-                                        { label: 'Masculino', value: '1' },
-                                        { label: 'Neutro', value: '2' },
-                                        { label: 'Padrão', value: '3' }
-                                    ].map((opcao) => (
-                                        <label key={opcao.value}>
-                                            <input
-                                                type="radio"
-                                                name="usu_sexo"
-                                                value={opcao.value}
-                                                checked={Number(perfilEdt.usu_sexo) === Number(opcao.value)}
-                                                onChange={(e) => {
-                                                    setSelectedSexo(e.target.value); // Atualiza selectedSexo
-                                                    setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value }); // Atualiza perfilEdt
-                                                }}
-                                            />
-                                            {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
-                                        </label>
-                                    ))}
-                                </form>
                             </div>
+
+                            <form className={styles.sexoForm}>
+                                <legend>Sexo:</legend>
+                                {[
+                                    { label: 'Feminino', value: '0' },
+                                    { label: 'Masculino', value: '1' },
+                                    { label: 'Neutro', value: '2' },
+                                    { label: 'Padrão', value: '3' }
+                                ].map((opcao) => (
+                                    <label key={opcao.value}>
+                                        <input
+                                            type="radio"
+                                            name="usu_sexo"
+                                            value={opcao.value}
+                                            checked={Number(perfilEdt.usu_sexo) === Number(opcao.value)}
+                                            onChange={(e) => {
+                                                setSelectedSexo(e.target.value); // Atualiza selectedSexo
+                                                setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value }); // Atualiza perfilEdt
+                                            }}
+                                        />
+                                        {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
+                                    </label>
+                                ))}
+                            </form>
                         </div>
+                    </div>
 
                 ) : (
                     <h1 className={styles.aviso}>Não há resultados para a requisição</h1>

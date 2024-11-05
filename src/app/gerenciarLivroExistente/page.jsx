@@ -17,11 +17,8 @@ const searchOptions = [
 ];
 
 export default function GerenciarLivroExistente() {
-
     const [books, setBooks] = useState([]);
-
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
-
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
@@ -79,16 +76,9 @@ export default function GerenciarLivroExistente() {
                 liv_ativo: bookToUpdate.liv_ativo
             });
 
-            if (response.data.sucesso) {
-                console.log(`Status do livro ${liv_cod} atualizado com sucesso.`);
-            } else {
-                throw new Error("Erro ao atualizar o status do livro.");
-            }
+            if (!response.data.sucesso) throw new Error("Erro ao atualizar status");
         } catch (error) {
-            console.error('Erro ao atualizar o status do livro:', error);
-            alert('Erro ao atualizar o status do livro. Tente novamente.');
-
-            // Reverte a mudança no estado local se houver erro
+            alert('Erro ao atualizar o status: ' + error);
             setBooks(prevBooks =>
                 prevBooks.map(book =>
                     book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book

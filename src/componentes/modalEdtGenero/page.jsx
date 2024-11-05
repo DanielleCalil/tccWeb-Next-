@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
 import api from "@/services/api";
 
 import styles from "./page.module.css";
@@ -10,11 +10,7 @@ export default function ModalEdtGenero({ show, onClose }) {
     if (!show) return null;
     const router = useRouter();
 
-    const [edtGenero, setEdtGenero] = useState({
-        "gen_cod": '',
-        "gen_nome": '',
-    });
-
+    const [edtGenero, setEdtGenero] = useState([]);
     const [generos, setGeneros] = useState([]);
 
     useEffect(() => {
@@ -36,30 +32,37 @@ export default function ModalEdtGenero({ show, onClose }) {
         }
     }
 
+    const handleSelect = (gen) => {
+        // Adiciona o gênero selecionado ao estado
+        if (!edtGenero.some(selected => selected.gen_cod === gen.gen_cod)) {
+            setEdtGenero((prev) => [...prev, gen]);
+        }
+    };
+
+    const handleRemove = (genCod) => {
+        // Remove o gênero da lista de selecionados
+        setEdtGenero((prev) => prev.filter(gen => gen.gen_cod !== genCod));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Previne o comportamento padrão do formulário
+        console.log("Gêneros selecionados:", edtGenero);
+        onClose(); // Fecha o modal após a submissão
+    };
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-                <div className={styles.conteudo} onSubmit={handleSubmit}>
+                <form className={styles.conteudo} onSubmit={handleSubmit}>
                     <div className={styles.inputGroup}>
 
                         <div className={styles.listaCursos}>
                             <div className={styles.inputCursos}>
                                 <label className={styles.textInput}>Selecione o gênero:</label>
-                                <ul
-                                    id="gen_cod"
-                                    name="gen_cod"
-                                    value={edtGenero.gen_cod}
-                                    // onChange={handleChange}
-                                    className={styles.opcaoCursos}
-                                >
-
-                                    {/* <option value="" disabled>
-                                            {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
-                                        </option> */}
-
+                                <ul className={styles.opcaoCursos}>
                                     {generos.length > 0 ? (
                                         generos.map((gen) => (
-                                            <li key={gen.gen_cod} value={gen.gen_cod}>
+                                            <li key={gen.gen_cod} onClick={() => handleSelect(gen)}>
                                                 {gen.gen_nome}
                                             </li>
                                         ))
@@ -71,30 +74,19 @@ export default function ModalEdtGenero({ show, onClose }) {
 
                             <div className={styles.buttons}>
                                 <button className={styles.cursosButton}>
-                                    +
+                                    <IoChevronBack size={20} color="#FFF" />
                                 </button>
                                 <button className={styles.cursosButton}>
-                                    -
+                                    <IoChevronForward size={20} color="#FFF" />
                                 </button>
                             </div>
 
                             <div className={styles.inputCursos}>
                                 <label className={styles.textInput}>Gêneros já selecionados:</label>
-                                <ul
-                                    id="gen_cod"
-                                    name="gen_cod"
-                                    value={edtGenero.gen_cod}
-                                    onChange={handleChange}
-                                    className={styles.opcaoCursos}
-                                >
-
-                                    {/* <option value="" disabled>
-                                                {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
-                                            </option> */}
-
-                                    {edtGenero.generos.length > 0 ? (
-                                        edtGenero.generos.map((gen) => (
-                                            <li key={gen.gen_cod} value={gen.gen_cod}>
+                                <ul className={styles.opcaoCursos}>
+                                    {edtGenero.length > 0 ? (
+                                        edtGenero.map((gen) => (
+                                            <li key={gen.gen_cod} onClick={() => handleRemove(gen.gen_cod)}>
                                                 {gen.gen_nome}
                                             </li>
                                         ))
@@ -121,7 +113,7 @@ export default function ModalEdtGenero({ show, onClose }) {
                             Cancelar
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );

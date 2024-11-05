@@ -29,7 +29,7 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    max-width: 42%;
+    max-width: 50%;
     box-sizing: border-box;
 }
 
@@ -63,6 +63,60 @@
     flex-direction: column;
     margin-bottom: 1.4rem;
     display: flex;
+}
+
+.listaCursos {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.inputCursos {
+    width: auto;
+}
+
+.opcaoCursos {
+    width: 100%;
+    height: auto;
+    padding: 1rem 2rem;
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    border-radius: 3rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #000;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 2rem;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.cursosButton {
+    height: 5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: #FF735C;
+    color: white;
+    border: none;
+    border-radius: 3rem;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6rem;
+}
+
+.cursosButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
 }
 
 .textInput {

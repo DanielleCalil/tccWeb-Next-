@@ -130,7 +130,7 @@ export default function PerfilEditar({ codUsu }) {
             usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
         });
 
-        if ( !usu_email || !cur_nome || !usu_sexo) {
+        if (!usu_email || !cur_nome || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
@@ -155,13 +155,12 @@ export default function PerfilEditar({ codUsu }) {
         }
     };
 
-    console.log(perfilEdt);    
+    console.log(perfilEdt);
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.perfil}>Perfil</h1>
                 {perfilEdt.usu_cod ? (
-                    <div className={styles.parentContainer}>
                         <div className={styles.PIContainer}>
                             <div className={styles.profileContainer}>
                                 <div className={styles.imgContainer}>
@@ -223,30 +222,67 @@ export default function PerfilEditar({ codUsu }) {
                                         aria-label="E-mail"
                                     />
                                 </div>
-                                <div className={styles.inputGroup}>
-                                    <label className={styles.textInput}>Curso médio ou técnico:</label>
-                                    <select
-                                        id="cur_cod"
-                                        name="cur_cod"
-                                        value={perfilEdt.cur_cod}
-                                        onChange={handleChange}
-                                        className={styles.opcao}
-                                    >
+                                <div className={styles.listaCursos}>
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Selecione um curso:</label>
+                                        <ul
+                                            id="cur_cod"
+                                            name="cur_cod"
+                                            value={perfilEdt.cur_cod}
+                                            onChange={handleChange}
+                                            className={styles.opcaoCursos}
+                                        >
 
-                                        <option value="" disabled>
+                                            {/* <option value="" disabled>
                                             {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
-                                        </option>
+                                        </option> */}
 
-                                        {perfilEdt.cursos.length > 0 ? (
-                                            perfilEdt.cursos.map((cur) => (
-                                                <option key={cur.cur_cod} value={cur.cur_cod}>
-                                                    {cur.cur_nome}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <p>Não há cursos registrados.</p>
-                                        )}
-                                    </select>
+                                            {cursos.length > 0 ? (
+                                                cursos.map((cur) => (
+                                                    <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                        {cur.cur_nome}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p>Não há cursos registrados.</p>
+                                            )}
+                                        </ul>
+                                    </div>
+
+                                    <div className={styles.buttons}>
+                                        <button className={styles.cursosButton}>
+                                            +
+                                        </button>
+                                        <button className={styles.cursosButton}>
+                                            -
+                                        </button>
+                                    </div>
+
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Cursos já selecionados:</label>
+                                        <ul
+                                            id="cur_cod"
+                                            name="cur_cod"
+                                            value={perfilEdt.cur_cod}
+                                            onChange={handleChange}
+                                            className={styles.opcaoCursos}
+                                        >
+
+                                            {/* <option value="" disabled>
+                                                {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
+                                            </option> */}
+
+                                            {perfilEdt.cursos.length > 0 ? (
+                                                perfilEdt.cursos.map((cur) => (
+                                                    <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                        {cur.cur_nome}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p>Não há cursos registrados.</p>
+                                            )}
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <form className={styles.sexoForm}>
@@ -274,7 +310,7 @@ export default function PerfilEditar({ codUsu }) {
                                 </form>
                             </div>
                         </div>
-                    </div>
+
                 ) : (
                     <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
                 )}

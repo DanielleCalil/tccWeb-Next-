@@ -1,12 +1,13 @@
 "use client"
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoSearchOutline } from "react-icons/io5";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+
 import api from '../../../services/api';
+import styles from './page.module.css';
 
 export default function Login() {
     const router = useRouter();
@@ -28,7 +29,7 @@ export default function Login() {
         const validLogin = validaLogin();
         const validSenha = validaSenha();
 
-        if (validLogin && validSenha) {
+        if (validLogin || validSenha) {
             logar();
         }
     }

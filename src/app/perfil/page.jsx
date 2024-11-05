@@ -15,18 +15,24 @@ export default function Perfil() {
     };
 
     const router = useRouter();
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     const [perfil, setPerfil] = useState([]);
 
-    useEffect(() => {
-        carregaPerfil();
+    useEffect(() => { 
+        const user = JSON.parse(localStorage.getItem('user')); 
+        if (!user) {
+            router.push('/usuarios/login');
+        } else {
+            carregaPerfil(user.cod); 
+            // console.log(user.cod);            
+        }
+        
     }, []);
 
-    async function carregaPerfil() {
-        const dados = {
-            usu_rm: '11223344556'
-        };
+    async function carregaPerfil(user) {
 
+        const dados = { usu_cod: user };
+        
         try {
             const response = await api.post('/usuarios', dados);
             console.log(response.data.dados);
@@ -67,25 +73,25 @@ export default function Perfil() {
                                     <div className={styles.inputContainer}>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>RM:</label>
-                                            <p>{infoUsu.usu_rm}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_rm}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Nome social:</label>
-                                            <p>{infoUsu.usu_social}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_social}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Nome completo:</label>
-                                            <p>{infoUsu.usu_nome}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_nome}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>E-mail:</label>
-                                            <p>{infoUsu.usu_email}</p>
+                                            <p className={styles.infos}>{infoUsu.usu_email}</p>
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.textInput}>Curso técnico ou médio:</label>
                                             {infoUsu.cursos.length > 0 ? (
                                                 infoUsu.cursos.map((curso) => (
-                                                    <p key={curso.cur_cod}>{curso.cur_nome}</p>
+                                                    <p key={curso.cur_cod} className={styles.infos} >{curso.cur_nome}</p>
                                                 ))
                                             ) : (
                                                 <p>Não há cursos registrados.</p>
@@ -114,7 +120,7 @@ export default function Perfil() {
                                     </div>
                                 </div>
                                 <div className={styles.editar}>
-                                    <Link href={`/perfil/${infoUsu.usu_rm}`}>
+                                    <Link href={`/perfil/${infoUsu.usu_cod}`}>
                                         <button className={styles.editarButton}>
                                             <Image
                                                 src="/imagens_telas/editar_perfil.png"

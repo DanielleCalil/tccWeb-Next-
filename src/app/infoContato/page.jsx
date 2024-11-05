@@ -52,7 +52,7 @@ export default function InfoContato() {
               <p className={styles.infos}>{infoCont.esc_email}</p>
 
               <div className={styles.editar}>
-                <Link href={`/infoContato/${infoCont.cont_cod}`}>
+                <Link href={`/infoContato/${infoCont.cont_cod=1}`}>
                   <button className={styles.editarButton}>
                     <Image
                       src="/imagens_telas/editar_perfil.png"

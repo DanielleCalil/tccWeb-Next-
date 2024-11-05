@@ -8,6 +8,7 @@ import FileInput from "@/componentes/FileInput/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
 
+
 export default function PerfilEditar({ codUsu }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -21,6 +22,7 @@ export default function PerfilEditar({ codUsu }) {
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
+    const [selectedSexo, setSelectedSexo] = useState('');
 
     const [perfilEdt, setPerfilEdt] = useState({
         "usu_cod": '',
@@ -32,12 +34,12 @@ export default function PerfilEditar({ codUsu }) {
         "usu_sexo": '',
         "usu_foto": '',
         "usu_ativo": '',
-        "cur_cod" : '',
+        "cur_cod": '',
         "cur_nome": '',
     });
 
     const handleFileSelect = (imageUrl) => {
-        setProfileImage(imageUrl);
+        setImageSrc(imageUrl);
     };
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
@@ -47,8 +49,14 @@ export default function PerfilEditar({ codUsu }) {
     const closeModalConfirm = () => setShowModalConfirm(false);
 
     const handleConfirm = async () => {
-        closeModalConfirm();
-        await handleSave();
+        try {
+            closeModalConfirm(); // Fecha o modal de confirmação
+            await handleSave();  // Aguarda o salvamento dos dados
+        } catch (error) {
+            // Lide com erros que possam ocorrer ao tentar salvar
+            console.error("Erro ao confirmar a ação:", error);
+            alert('Ocorreu um erro ao tentar salvar. Por favor, tente novamente.'); // Mensagem para o usuário
+        }
     };
 
     useEffect(() => {
@@ -59,7 +67,8 @@ export default function PerfilEditar({ codUsu }) {
         try {
             const response = await api.post('/cursos');
             setCursos(response.data.dados);
-            console.log(response.data);
+            // console.log('cursos');            
+            // console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -69,16 +78,19 @@ export default function PerfilEditar({ codUsu }) {
         }
     }
 
-    // Busca os dados do perfil ao montar o componente
     useEffect(() => {
+        if (!codUsu) return;
+
         const handleCarregaPerfil = async () => {
-            const dados = { usu_cod: 29 }
+            const dados = { usu_cod: codUsu };
 
             try {
                 const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);
+
+                    setSelectedSexo(edtPerfilApi.usu_sexo);
                 } else {
                     setError(response.data.mensagem);
                 }
@@ -88,17 +100,37 @@ export default function PerfilEditar({ codUsu }) {
         };
 
         handleCarregaPerfil();
-    }, []);
+    }, [codUsu]);
 
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
         setPerfilEdt((prev) => ({ ...prev, usu_foto: imageURL }));
     };
 
-    const handleSave = async () => {
-        const { usu_rm, usu_nome, usu_nome_completo, usu_email, cur_nome, usu_sexo } = perfilEdt;
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setPerfilEdt(prev => ({ ...prev, [name]: value }));
+    }
 
-        if (!usu_rm || !usu_nome || !usu_nome_completo || !usu_email || !cur_nome || !usu_sexo) {
+    const handleChangeSexo = (e) => {
+        // Atualiza o valor de 'usu_sexo' com base na seleção do usuário
+        setSelectedSexo(e.target.value);
+    };
+
+    const handleSave = async () => {
+        const { usu_rm, usu_nome, usu_email, cur_nome, usu_sexo } = perfilEdt;
+
+        // Adiciona um log para ver os dados que estão sendo enviados
+        console.log("Dados a serem enviados:", {
+            usu_rm,
+            usu_nome,
+            usu_email,
+            cur_nome,
+            usu_sexo,
+            usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
+        });
+
+        if (!usu_email || !cur_nome || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
@@ -108,7 +140,7 @@ export default function PerfilEditar({ codUsu }) {
         try {
             const response = await api.patch(`/usuarios/${perfilEdt.usu_cod}`, {
                 ...perfilEdt,
-                usu_foto: imageSrc,
+                usu_foto: imageSrc, // Inclui a foto se necessário
             });
 
             if (response.data.sucesso) {
@@ -122,19 +154,13 @@ export default function PerfilEditar({ codUsu }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    // console.log(livro);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPerfilEdt(prev => ({ ...prev, [name]: value }));
-    }    
-
+    console.log(perfilEdt);
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.perfil}>Perfil</h1>
-                {perfilEdt ? (
-                    <div className={styles.parentContainer}>
+                {perfilEdt.usu_cod ? (
                         <div className={styles.PIContainer}>
                             <div className={styles.profileContainer}>
                                 <div className={styles.imgContainer}>
@@ -196,17 +222,69 @@ export default function PerfilEditar({ codUsu }) {
                                         aria-label="E-mail"
                                     />
                                 </div>
-                                <div className={styles.inputGroup}>
-                                <label className={styles.textInput}>Curso médio ou técnico:</label>
-                                    <select id="cur_cod" name="cur_cod" defaultValue={perfilEdt.cur_cod} onChange={handleChange} className={styles.opcao}>
-                                        <option value="0" style={{ color: '#999' }}>Sel. curso técnico ou médio</option>
-                                        {
-                                            cursos.map(cur => (
-                                                <option key={cur.cur_cod} value={cur.cur_cod}>{cur.cur_nome}</option>
-                                            ))
-                                        }
-                                    </select>
+                                <div className={styles.listaCursos}>
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Selecione um curso:</label>
+                                        <ul
+                                            id="cur_cod"
+                                            name="cur_cod"
+                                            value={perfilEdt.cur_cod}
+                                            onChange={handleChange}
+                                            className={styles.opcaoCursos}
+                                        >
+
+                                            {/* <option value="" disabled>
+                                            {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
+                                        </option> */}
+
+                                            {cursos.length > 0 ? (
+                                                cursos.map((cur) => (
+                                                    <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                        {cur.cur_nome}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p>Não há cursos registrados.</p>
+                                            )}
+                                        </ul>
+                                    </div>
+
+                                    <div className={styles.buttons}>
+                                        <button className={styles.cursosButton}>
+                                            +
+                                        </button>
+                                        <button className={styles.cursosButton}>
+                                            -
+                                        </button>
+                                    </div>
+
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Cursos já selecionados:</label>
+                                        <ul
+                                            id="cur_cod"
+                                            name="cur_cod"
+                                            value={perfilEdt.cur_cod}
+                                            onChange={handleChange}
+                                            className={styles.opcaoCursos}
+                                        >
+
+                                            {/* <option value="" disabled>
+                                                {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
+                                            </option> */}
+
+                                            {perfilEdt.cursos.length > 0 ? (
+                                                perfilEdt.cursos.map((cur) => (
+                                                    <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                        {cur.cur_nome}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p>Não há cursos registrados.</p>
+                                            )}
+                                        </ul>
+                                    </div>
                                 </div>
+
                                 <form className={styles.sexoForm}>
                                     <legend>Sexo:</legend>
                                     {[
@@ -220,8 +298,11 @@ export default function PerfilEditar({ codUsu }) {
                                                 type="radio"
                                                 name="usu_sexo"
                                                 value={opcao.value}
-                                                checked={perfilEdt.usu_sexo === opcao.value}
-                                                onChange={handleChange}
+                                                checked={Number(perfilEdt.usu_sexo) === Number(opcao.value)}
+                                                onChange={(e) => {
+                                                    setSelectedSexo(e.target.value); // Atualiza selectedSexo
+                                                    setPerfilEdt({ ...perfilEdt, usu_sexo: e.target.value }); // Atualiza perfilEdt
+                                                }}
                                             />
                                             {opcao.label.charAt(0).toUpperCase() + opcao.label.slice(1)}
                                         </label>
@@ -229,9 +310,9 @@ export default function PerfilEditar({ codUsu }) {
                                 </form>
                             </div>
                         </div>
-                    </div>
+
                 ) : (
-                    <h1>Não há resultados para a requisição</h1>
+                    <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
                 )}
             </div>
             <div className={styles.editar}>

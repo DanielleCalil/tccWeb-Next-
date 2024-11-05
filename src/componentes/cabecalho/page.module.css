@@ -96,13 +96,59 @@
     color: black;
     background-color: #FF735C;
 }
+.editar {
+    display: flex;
+    justify-content: center;
+    width: auto;
+}
+
+.editarMobile {
+    display: flex;
+    justify-content: left;
+    width: auto;
+}
+
+.sairMenuGrande {
+    padding: 1.25rem 3.5rem;
+    background-color: #FFF;
+    border: none;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sairMobile {
+    padding-top: 0.2rem;
+    padding-bottom: 1.25rem;
+    padding-right: 100%;
+    padding-left: 1.5rem;
+    background-color: #FFF;
+    border: none;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+}
+
 
 .containerNav .menu .menuGrande .sairMenuGrande {
     color: red;
+    cursor: pointer;
 }
 
 .containerNav .menu .menuGrande .sairMobile {
     color: red;
+    cursor: pointer;
 }
 
 .containerNav .menu .menuGrande .tpicon {
@@ -155,9 +201,9 @@
     color: red;
 }
 
-.containerNav .menuMobileExpandidos a.sairMobile {
+.containerNav .menuMobileExpandidos .sairMobile {
     color: red;
-    border-bottom: 1px solid #000;
+    border-bottom: 0.5px solid #000;
 }
 
 .containerNav .menuMobileExpandidos .tpiconSair {

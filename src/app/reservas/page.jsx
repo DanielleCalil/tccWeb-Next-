@@ -42,6 +42,7 @@ export default function Reservas() {
 
     const [reserva, setReserva] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
+    const [mensagemStatus, setMensagemStatus] = useState('');
 
     const [livNome, setlivNome] = useState('')
 
@@ -54,9 +55,9 @@ export default function Reservas() {
     }, []);
 
     async function listaLivros() {
-        const dados = { 
-            usu_cod: 18,
-            [selectedSearchOption]: livNome 
+        const dados = {
+            usu_cod: codUsu,
+            [selectedSearchOption]: livNome
         };
         try {
             const response = await api.post('/reservas', dados);
@@ -79,8 +80,13 @@ export default function Reservas() {
     const closeModalConfirm = () => setShowModalConfirm(false);
 
     const handleConfirm = () => {
-        setShowModalConfirm(false); // Fecha o modal
-        router.push('/reservas');
+        setMensagemStatus('Livro retirado!'); // Atualizado: Definir mensagem de confirmação
+        setShowModalConfirm(false);
+    };
+
+    const handleCancel = () => {
+        setMensagemStatus('Retirada cancelada.'); // Atualizado: Definir mensagem de cancelamento
+        setShowModalConfirm(false);
     };
 
     return (
@@ -107,8 +113,8 @@ export default function Reservas() {
 
                 <div className={styles.container}>
                     {reserva.length > 0 ? (
-                        reserva.map(reserv => (
-                            <div key={reserv.usu_nome} className={styles.lineSquare}>
+                        reserva.map((reserv) => (
+                            <div key={reserv.usu_cod} className={styles.lineSquare}>
                                 <div className={styles.inputContainer}>
                                     <div className={styles.infoBookReserva}>
                                         <Image
@@ -126,28 +132,32 @@ export default function Reservas() {
                                     </div>
                                     <div className={styles.line}></div>
                                     <p className={styles.info}>Reservado por: {reserv.usu_nome}</p>
-                                    <p className={styles.info}>Reserva realizada no dia: {reserv.Empréstimo}</p>
-                                    <p className={styles.info}>Período da reserva: {reserv.periodo?.inicio || 'Data não disponível'} até {reserv.periodo?.fim || 'Data não disponível'}</p>
+                                    <p className={styles.info}>Data do Empréstimo: {reserv.Empréstimo || 'Data não disponível'}</p>
+                                    <p className={styles.info}>Data de Devolução: {reserv.Devolução || 'Data não disponível'}</p>
                                     <div className={styles.line}></div>
                                     <p className={styles.pUsuario}>Confirmar retirada do livro</p>
-                                    <div className={styles.opcao}>
-                                        <button
-                                            type="button"
-                                            onClick={openModalConfirm}
-                                            className={styles.confirmButton}>
-                                            Retirada confirmada
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={openModalConfirm}
-                                            className={styles.cancelButton}>
-                                            Cancelar retirada
-                                        </button>
-                                    </div>
+                                    {mensagemStatus ? ( // Exibe a mensagem fixa se existir
+                                        <p className={styles.statusMessage}>{mensagemStatus}</p>
+                                    ) : (
+                                        <div className={styles.opcao}>
+                                            <button
+                                                type="button"
+                                                onClick={() => { openModalConfirm(); setMensagemStatus('Livro retirado!'); }}
+                                                className={styles.confirmButton}>
+                                                Retirada confirmada
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => { openModalConfirm(); setMensagemStatus('Retirada cancelada.'); }}
+                                                className={styles.cancelButton}>
+                                                Cancelar retirada
+                                            </button>
+                                        </div>
+                                    )}
                                     <p className={styles.obs}>
-                                        OBS: se após 3 dias da data inicial da reserva não for declarada nenhuma informação a respeito da retirada,
-                                        a reserva será automaticamente cancelada.
+                                        OBS: Lembre-se de devolver o livro até a data!
                                     </p>
+                                    {mensagemRetirada && <p className={styles.mensagemRetirada}>{mensagemRetirada}</p>}
                                 </div>
                             </div>
                         ))
@@ -160,6 +170,7 @@ export default function Reservas() {
                 show={showModalConfirm}
                 onClose={closeModalConfirm}
                 onConfirm={handleConfirm}
+                onCancel={handleCancel}
             />
         </main>
     );

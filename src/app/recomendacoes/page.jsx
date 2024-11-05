@@ -87,10 +87,7 @@ export default function Recomendacoes() {
     }, []);
 
     async function listaLivros() {
-        const dados = {
-            cur_cod: 88,
-            [selectedSearchOption]: livNome
-        };
+        const dados = { [selectedSearchOption]: livNome };
         try {
             const response = await api.post('/rec_listar', dados);
             console.log(response.data.dados);

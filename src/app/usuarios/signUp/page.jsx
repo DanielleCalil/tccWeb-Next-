@@ -14,6 +14,7 @@ import api from '@/services/api';
 export default function SignUp() {
     const router = useRouter();
     const [cursos, setCursos] = useState([]);
+    const [selectedSexo, setSelectedSexo] = useState('');
 
     const [usuario, setUsuario] = useState({
         "usu_rm": '',
@@ -21,8 +22,8 @@ export default function SignUp() {
         "usu_email": '',
         "usu_senha": '',
         "confSenha": '',
-        "usu_sexo": 0,
-        "cur_cod": 0,
+        "usu_sexo": '',
+        "cur_cod": '',
         "usu_foto": '',
     });
 
@@ -108,6 +109,12 @@ export default function SignUp() {
     const handleChange = (e) => {
         setUsuario(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
+
+    const handleChangeSexo = (event) => {
+        // Atualiza o valor de 'usu_sexo' com base na seleção do usuário
+        console.log('Valor selecionado:', event.target.value);
+        setSelectedSexo(event.target.value);
+    };
 
     // const [selectCursos, setSelectCursos] = useState('');
     // const handleSelectCursosChange = (e) => {
@@ -270,20 +277,22 @@ export default function SignUp() {
             validado: valSucesso,
             mensagem: []
         };
-
-        if (usuario.usu_sexo == 0) {
+    
+        // Verifica se o sexo não foi selecionado, excluindo 0
+        if (usuario.usu_sexo === null || usuario.usu_sexo === undefined || usuario.usu_sexo === '') {
             objTemp.validado = valErro;
             objTemp.mensagem.push('Selecione o sexo do usuário');
         }
-
+    
         setValida(prevState => ({
             ...prevState,
             sexo: objTemp
         }));
-
+    
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
         return testeResult;
     }
+    
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -299,7 +308,7 @@ export default function SignUp() {
 
         if (itensValidados === 7) {
             try {
-                const response = await api.post('/usuarios', usuario);
+                const response = await api.post('/usu_cadastrar', usuario);
                 if (response.data.sucesso) {
                     openModalAvisoCad();
                 }

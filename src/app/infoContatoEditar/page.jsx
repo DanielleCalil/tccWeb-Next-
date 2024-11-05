@@ -19,7 +19,7 @@ export default function InfoContatoEditar({ codInfo }) {
 
   const router = useRouter();
   const [error, setError] = useState(null);
-  const [isSaving, setIsSaving] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [infoContatoEdt, setInfoContatoEdt] = useState({
     "cont_cod": '',
@@ -41,8 +41,10 @@ export default function InfoContatoEditar({ codInfo }) {
   };
 
   useEffect(() => {
+    if (!codInfo) return;
+
     const handleCarregainfo = async () => {
-      const dadosApi = { cont_cod: codInfo };
+    const dadosApi = { cont_cod: 1 };
 
       try {
         const response = await api.post('/contatos', dadosApi);
@@ -58,7 +60,7 @@ export default function InfoContatoEditar({ codInfo }) {
     };
 
     handleCarregainfo();
-  }, []);
+  }, [codInfo]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -76,9 +78,7 @@ export default function InfoContatoEditar({ codInfo }) {
     setIsSaving(true); // Inicia o salvamento
 
     try {
-      const response = await api.patch(`/cont_editar/${infoContatoEdt.cont_cod}`, {
-        ...infoContatoEdt,
-      });
+      const response = await api.patch(`/cont_editar/${infoContatoEdt.cont_cod=1}`, infoContatoEdt);
 
       if (response.data.sucesso) {
         alert('Informações de contato atualizado com sucesso!');

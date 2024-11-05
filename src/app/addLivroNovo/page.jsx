@@ -13,6 +13,8 @@ import ModalAddAutor from '@/componentes/modalAddAutor/page';
 import ModalAddEditora from '@/componentes/modalAddEditora/page';
 import ModalAddGenero from '@/componentes/modalAddGenero/page';
 
+import ModaisLiv_ from '../../componentes/modaisLiv_/page';
+
 export default function AddLivroNovo() {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const router = useRouter();
@@ -22,19 +24,19 @@ export default function AddLivroNovo() {
     const [genero, setGenero] = useState([]);
 
     const [livro, setLivro] = useState({
-        "liv_cod": 0,
+        "liv_cod": '',
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "liv_nome": '',
         "liv_desc": '',
         "edt_nome": '',
-        "edt_cod": 0,
+        "edt_cod": '',
         "liv_foto_capa": '',
         "aut_nome": '',
-        "aut_cod": 0,
+        "aut_cod": '',
         "disponivel": '',
         "generos": '',
-        "gen_cod": 0,
+        "gen_cod": '',
     });
 
     const valDefault = styles.formControl;
@@ -100,7 +102,7 @@ export default function AddLivroNovo() {
     const handleAddAutor = () => {
         event.preventDefault();
         openModalAutor(); // Abre o modal
-      };
+    };
 
     async function listaEditoras() {
         try {
@@ -171,6 +173,21 @@ export default function AddLivroNovo() {
         }
     }
 
+    // // Função para gerar o código do livro
+    // const generateBookCode = () => {
+    //     // Aqui você pode implementar a lógica para gerar um código único para o livro.
+    //     // Exemplo simples de código gerado aleatoriamente.
+    //     return Math.floor(Math.random() * 100); // Código aleatório entre 0 e 9999
+    // };
+
+    // // useEffect para definir o código do livro ao entrar na tela
+    // useEffect(() => {
+    //     const newCode = generateBookCode(); // Gera um novo código
+    //     setLivro((prevLivro) => ({ ...prevLivro, liv_cod: newCode })); // Atualiza o estado do livro
+    // }, []);
+
+
+
     // validação
     const [valida, setValida] = useState({
         nome: {
@@ -208,7 +225,8 @@ export default function AddLivroNovo() {
     });
 
     const handleChange = (e) => {
-        setLivro(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        setLivro((prevLivro) => ({ ...prevLivro, [name]: value }));
     }
 
     // function validaFoto() {
@@ -367,22 +385,34 @@ export default function AddLivroNovo() {
         return testeResult;
     }
 
+    const [showModaisLiv, setShowModaisLiv] = useState(false);
+    const openModaisLiv = () => setShowModaisLiv(true);
+    const closeModaisLiv = () => setShowModaisLiv(false);
+    const handleLiv = () => {
+        setShowModaisLiv(false);
+        router.push('../biblioteca');
+    };
+
     async function handleSubmit(event) {
         event.preventDefault();
         let itensValidados = 0;
 
         // Validar campos
-        itensValidados += validaQuant();
-        itensValidados += validaNome();
-        itensValidados += validaSelectAutor();
-        itensValidados += validaSelectEditora();
-        itensValidados += validaSelectGenero();
-        itensValidados += validaResumo();
+        // itensValidados += validaQuant();
+        // itensValidados += validaNome();
+        // itensValidados += validaSelectAutor();
+        // itensValidados += validaSelectEditora();
+        // itensValidados += validaSelectGenero();
+        // itensValidados += validaResumo();
         // itensValidados += validaFoto();
 
         // Verificar se todos os campos estão validados
-        if (itensValidados === 6) {
+        console.log('Livro a ser salvo:', livro);
+        if (itensValidados === 0) {
             try {
+                // Abrir os três modais antes de enviar
+                openModaisLiv(); // Esta função abrirá os três modais e aguardará o fechamento deles
+
                 const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
                     router.push('biblioteca');
@@ -406,27 +436,39 @@ export default function AddLivroNovo() {
                     <div className={styles.inputTotal}>
                         <div className={styles.inputImgContainer}>
                             <div className={styles.imgBook}>
-                                
+
                                 {/* <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto"> */}
-                                    <p className={styles.textInput}>Capa:</p>
-                                    <div className={styles.imagePreview}>
-                                        <Image
-                                            src={capaImage}
-                                            alt="Capa do livro"
-                                            width={150}
-                                            height={200}
-                                        />
-                                        {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                <p className={styles.textInput}>Capa:</p>
+                                <div className={styles.imagePreview}>
+                                    <Image
+                                        src={capaImage}
+                                        alt="Capa do livro"
+                                        width={150}
+                                        height={200}
+                                    />
+                                    {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
                                         <IoAlertCircleOutline className={styles.erro} /> */}
-                                    </div>
-                                    <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
-                                    {/* {
+                                </div>
+                                <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
+                                {/* {
                                         valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
                                     }
                                 </div> */}
                             </div>
                         </div>
                         <div className={styles.inputContainer}>
+                            <div>
+                                <p className={styles.textInput}>Código do livro:</p>
+                                <div className={styles.divInput}>
+                                    <input
+                                        type="number"
+                                        name='liv_cod'
+                                        value={livro.liv_cod}
+                                        className={styles.inputQuant}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
 
                             <div className={valida.quant.validado + ' ' + styles.valQuant} id="valQuant">
                                 <label className={styles.textInput}>Quantidade:</label>
@@ -471,7 +513,7 @@ export default function AddLivroNovo() {
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione autor(a)</option>
                                         {
                                             autor.map(aut => (
-                                                <option key={aut.aut_cod} value={aut.aut_cod}>{aut.aut_nome}</option>
+                                                <option key={aut.aut_cod} value={aut.aut_cod}>{`${aut.aut_cod} - ${aut.aut_nome}`}</option>
                                             ))
                                         }
                                     </select>
@@ -492,7 +534,7 @@ export default function AddLivroNovo() {
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione editora</option>
                                         {
                                             editora.map(edt => (
-                                                <option key={edt.edt_cod} value={edt.edt_cod}>{edt.edt_nome}</option>
+                                                <option key={edt.edt_cod} value={edt.edt_cod}>{`${edt.edt_cod} - ${edt.edt_nome}`}</option>
                                             ))
                                         }
                                     </select>
@@ -513,7 +555,7 @@ export default function AddLivroNovo() {
                                         <option value="0" disabled style={{ color: '#ccc' }}>Selecione gênero</option>
                                         {
                                             genero.map(gen => (
-                                                <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
+                                                <option key={gen.gen_cod} value={gen.gen_cod}>{`${gen.gen_cod} - ${gen.gen_nome}`}</option>
                                             ))
                                         }
                                     </select>
@@ -602,6 +644,11 @@ export default function AddLivroNovo() {
                     </div>
                 </form>
             </div>
+            <ModaisLiv_
+                show={showModaisLiv}
+                onClose={closeModaisLiv}
+                onConfirm={handleLiv}
+            />
             <ModalConfirmar
                 show={showModalConfirm}
                 onClose={closeModalConfirm}

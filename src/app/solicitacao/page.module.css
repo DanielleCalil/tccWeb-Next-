@@ -63,7 +63,14 @@
   transform: translate(-50%, -50%);
 }
 
+.active {
+  background-color: #57bb9d!important;
+  box-shadow: inset 0 8px 14px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra interna para simular afundamento */
+  transform: translateY(6px); /* Leve movimento para baixo */
+}
+
 .situacaoButtons {
+  transition: all 0.2s ease;
   font-weight: 400;
   margin-top: 1.25rem;
   display: flex;

@@ -12,32 +12,43 @@ export default function ModalEdtGenero({ show, onClose }) {
 
     const [edtGenero, setEdtGenero] = useState([]);
     const [generos, setGeneros] = useState([]);
-    const [cursoSelecionado, setCursoSelecionado] = useState(null);
+    const [generoSelecionado, setGeneroSelecionado] = useState(null);
 
-    const handleAddCurso = (cur_cod) => {
-        const adiciona = cursos.find(cur => cur.cur_cod === cur_cod);
-        if (adiciona) {
-            setCursos(cursos.filter(cur => cur.cur_cod !== cur_cod));
-            setPerfilEdt({
-                ...perfilEdt,
-                cursos: [...perfilEdt.cursos, adiciona]
-            });
+    const handleAddGenero = async (gen_cod) => {
+        try {
+            const response = await api.post(`/livros_generos`, { gen_cod });
+            if (response.data.sucesso) {
+                alert('Gênero adicionado com sucesso!');
+                setGeneros(generos.filter(g => g.gen_cod !== gen_cod)); // Remove o curso da lista de disponíveis
+                setEdtGenero({
+                    ...edtGenero,
+                    generos: [...edtGenero.generos, generos.find(g => g.gen_cod === gen_cod)]
+                });
+            }
+        } catch (error) {
+            console.error("Error ao adicionar gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar gênero. Tente novamente.');
         }
     };
 
-    const handleRemoveCurso = (cur_cod) => {
-        const remove = perfilEdt.cursos.find(cur => cur.cur_cod === cur_cod);
-        if (remove) {
-            setPerfilEdt({
-                ...perfilEdt,
-                cursos: perfilEdt.cursos.filter(cur => cur.cur_cod !== cur_cod)
-            });
-            setCursos([...cursos, remove]);
+    const handleRemoveGenero = async (gen_cod) => {
+        try {
+            const response = await api.delete(`/livros_generos/${gen_cod}`);
+            if (response.data.sucesso) {
+                alert('Gênero removido com sucesso!');
+                setEdtGenero({
+                    ...edtGenero,
+                    generos: edtGenero.generos.filter(g => g.gen_cod !== gen_cod) // Remove o curso da lista de selecionados
+                });
+            }
+        } catch (error) {
+            console.error("Error ao remover gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
         }
     };
 
-    const handleClick = (cur_cod) => {
-        setCursoSelecionado(cur_cod);
+    const handleClick = (gen_cod) => {
+        setGeneroSelecionado(gen_cod);
     };
 
     const handleChange = (e) => {
@@ -52,9 +63,8 @@ export default function ModalEdtGenero({ show, onClose }) {
     async function listaGeneros() {
         try {
             const response = await api.post('/generos');
+            console.log("Resposta da API:", response.data);
             setGeneros(response.data.dados);
-            // console.log('generos');            
-            // console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -100,12 +110,12 @@ export default function ModalEdtGenero({ show, onClose }) {
                                     className={styles.opcaoCursos}
                                 >
 
-                                    {generos.length > 0 ? (
-                                        generos.map((gen) => (
+                                    {edtGenero.length > 0 ? (
+                                        edtGenero.map((gen) => (
                                             <li
                                                 key={gen.gen_cod}
-                                                onClick={() => handleClick(cur.cur_cod)}
-                                                className={cursoSelecionado === cur.cur_cod ? styles.selected : ''}>
+                                                onClick={() => handleClick(gen.gen_cod)}
+                                                className={generoSelecionado === gen.gen_cod ? styles.selected : ''}>
                                                 {gen.gen_nome}
                                             </li>
                                         ))
@@ -116,11 +126,11 @@ export default function ModalEdtGenero({ show, onClose }) {
                             </div>
                             <div className={styles.buttons}>
                                 <button className={styles.cursosButton}
-                                    onClick={() => cursoSelecionado && handleAddCurso(cursoSelecionado)}>
+                                    onClick={() => generoSelecionado && handleAddGenero(generoSelecionado)}>
                                     <IoChevronBack size={20} color="#FFF" />
                                 </button>
                                 <button className={styles.cursosButton}
-                                    onClick={() => cursoSelecionado && handleRemoveCurso(cursoSelecionado)}>
+                                    onClick={() => generoSelecionado && handleRemoveGenero(generoSelecionado)}>
                                     <IoChevronForward size={20} color="#FFF" />
                                 </button>
                             </div>
@@ -131,8 +141,8 @@ export default function ModalEdtGenero({ show, onClose }) {
                                         generos.map((gen) => (
                                             <li
                                                 key={gen.gen_cod}
-                                                onClick={() => handleClick(cur.cur_cod)}
-                                                className={cursoSelecionado === cur.cur_cod ? styles.selected : ''}>
+                                                onClick={() => handleClick(gen.gen_cod)}
+                                                className={generoSelecionado === gen.gen_cod ? styles.selected : ''}>
                                                 {gen.gen_nome}
                                             </li>
                                         ))
@@ -144,19 +154,19 @@ export default function ModalEdtGenero({ show, onClose }) {
                         </div>
                     </div>
                     <div className={styles.buttonsContainer}>
-                        <button
+                        {/* <button
                             type="submit"
                             className={styles.modalButtonAdd}
                             onClick={handleSubmit}
                         >
                             Adicionar
-                        </button>
+                        </button> */}
                         <button
                             type="button"
                             onClick={onClose}
                             className={styles.modalButtonCanc}
                         >
-                            Cancelar
+                            Fechar
                         </button>
                     </div>
                 </form>

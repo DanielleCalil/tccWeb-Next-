@@ -45,7 +45,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
 
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    const [genero, setGenero] = useState([]);
+    // const [genero, setGenero] = useState([]);
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
@@ -66,7 +66,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     useEffect(() => {
         listaAutor();
         listaEditora();
-        listaGenero();
+        // listaGenero();
     }, []);
 
     async function listaAutor() {
@@ -97,19 +97,19 @@ export default function EditarInformacoesLivro({ codLivro }) {
         }
     }
 
-    async function listaGenero() {
-        try {
-            const response = await api.get('/generos');
-            setGenero(response.data.dados);
-            console.log(response.data);
-        } catch (error) {
-            if (error.response) {
-                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-            } else {
-                alert('Erro no front-end' + '\n' + error);
-            }
-        }
-    }
+    // async function listaGenero() {
+    //     try {
+    //         const response = await api.get('/generos');
+    //         setGenero(response.data.dados);
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         if (error.response) {
+    //             alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+    //         } else {
+    //             alert('Erro no front-end' + '\n' + error);
+    //         }
+    //     }
+    // }
 
     useEffect(() => {
         if (!codLivro) return;

@@ -8,9 +8,11 @@ import api from '@/services/api';
 
 import { IoSearchOutline } from "react-icons/io5";
 import { IoEye, IoEyeOff, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+import ModalEsqueceuSenha from '@/componentes/modalEsqueceuSenha/page';
 
 export default function EsqueceuSenha1() {
     const router = useRouter();
+    const [showModal, setShowModal] = useState(false);
 
     const [usuario, setUsuario] = useState({
         usu_email: '',
@@ -59,7 +61,6 @@ export default function EsqueceuSenha1() {
 
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
         return testeResult;
-
     }
 
     async function handleSubmit(event) {
@@ -67,26 +68,20 @@ export default function EsqueceuSenha1() {
         let itensValidados = 0;
         itensValidados += validaEmail();
 
-        // salvar quando atingir o número de itens a serem validados
-        // alert(itensValidados);
         if (itensValidados === 1) {
-            // alert('chama api');            
-
+            setShowModal(true);
             try {
-                let confirmaCad;
-                const response = await api.post('/usuarios', usuario);
-                confirmaCad = response.data.sucesso;
-                // const idUsu = confirmaCad;
-                // alert(idUsu);
-                if (confirmaCad) {
-                    router.push('/usuarios/esqueceuSenha2')
+                if (usuario.usu_email) {
+                    const responseEmail = await api.post('/red_senha', { usu_email: usuario.usu_email });
+                    if (responseEmail.data.sucesso) {
+                        console.log('E-mail enviado com sucesso!');
+
+                    } else {
+                        alert('Erro ao enviar o e-mail:', responseEmail.data.mensagem);
+                    }
                 }
             } catch (error) {
-                if (error.response) {
-                    alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-                } else {
-                    alert('Erro no front-end' + '\n' + error);
-                }
+                alert('Erro no servidor:', error);
             }
         }
     }
@@ -107,8 +102,7 @@ export default function EsqueceuSenha1() {
                     <div className={styles.conteudo}>
                         <h1 className={styles.redefinirSenha}>Redefinir senha</h1>
                         <form id="form" onSubmit={handleSubmit}>
-                            <text className={styles.texto}>Digite o seu e-mail no campo abaixo e lhe enviaremos um código de ativação.</text>
-
+                            <text className={styles.texto}>Digite o seu e-mail no campo abaixo.</text>
 
                             <div className={valida.email.validado + ' ' + styles.valNome} id="valEmail">
                                 <div className={styles.divInput}>
@@ -133,6 +127,7 @@ export default function EsqueceuSenha1() {
 
                             <button
                                 type="submit"
+                                // onClick={handleSubmit}
                                 className={styles.redefinirButton}>
                                 Redefinir
                             </button>
@@ -140,6 +135,7 @@ export default function EsqueceuSenha1() {
                     </div>
                 </div>
             </div>
+            <ModalEsqueceuSenha show={showModal} onClose={() => setShowModal(false)} />
         </div>
     );
 }

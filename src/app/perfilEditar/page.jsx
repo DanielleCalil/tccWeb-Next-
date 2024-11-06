@@ -30,25 +30,38 @@ export default function PerfilEditar({ codUsu }) {
         setCursoSelecionado(cur_cod);
     };
 
-    const handleAddCurso = (cur_cod) => {
-        const adiciona = cursos.find(cur => cur.cur_cod === cur_cod);
-        if (adiciona) {
-            setCursos(cursos.filter(cur => cur.cur_cod !== cur_cod));
-            setPerfilEdt({
-                ...perfilEdt,
-                cursos: [...perfilEdt.cursos, adiciona]
-            });
+    const handleAddCurso = async (cur_cod) => {
+        try {
+            const response = await api.post(`/usuarios_cursos`, { cur_cod });
+            if (response.data.sucesso) {
+                alert('Curso adicionado com sucesso!');
+                setCursos(cursos.filter(c => c.cur_cod !== cur_cod)); // Remove o curso da lista de disponíveis
+                setPerfilEdt({
+                    ...perfilEdt,
+                    cursos: [...perfilEdt.cursos, cursos.find(c => c.cur_cod === cur_cod)]
+                });
+            }
+        } catch (error) {
+            console.error("Erro ao adicionar curso:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar curso. Tente novamente.');
         }
     };
 
-    const handleRemoveCurso = (cur_cod) => {
-        const remove = perfilEdt.cursos.find(cur => cur.cur_cod === cur_cod);
-        if (remove) {
-            setPerfilEdt({
-                ...perfilEdt,
-                cursos: perfilEdt.cursos.filter(cur => cur.cur_cod !== cur_cod)
-            });
-            setCursos([...cursos, remove]);
+    const handleRemoveCurso = async (cur_cod) => {
+        try {
+            const response = await api.delete(`/usuarios_cursos/${gen_cod}`);
+            if (response.data.sucesso) {
+                alert('Curso removido com sucesso!');
+                const cursoRemovido = perfilEdt.cursos.find(c => c.cur_cod === cur_cod);
+                setPerfilEdt({
+                    ...perfilEdt,
+                    cursos: perfilEdt.cursos.filter(c => c.cur_cod !== cur_cod)
+                });
+                setCursos([...cursos, cursoRemovido]); // Adiciona o curso de volta à lista de disponíveis
+            }
+        } catch (error) {
+            console.error("Erro ao remover curso:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao remover curso. Tente novamente.');
         }
     };
 

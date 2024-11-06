@@ -101,9 +101,9 @@ export default function Solicitacao() {
     }
 
     const filtradas = listaUsuarios.filter((solicit) => {
-      if (situacaoOptions === 'Aprovados') return solicit.usu_aprovado === 1; // Usuários Ativos
-      if (situacaoOptions === 'Reprovados') return solicit.usu_tipo === 5; // Usuários Inativos
-      if (situacaoOptions === 'Pendentes') return solicit.usu_aprovado === 0; // Usuários Pendentes
+      if (situacaoOptions === 'Aprovados') return solicit.status_aprovado === "Aprovado"; // Usuários Ativos
+      if (situacaoOptions === 'Reprovados') return solicit.status_tipo === 5; // Usuários Inativos
+      if (situacaoOptions === 'Pendentes') return solicit.status_aprovado === "Reprovado"; // Usuários Pendentes
       return false; // Se não houver filtro, retorna nada
     });
     setSolicitacoesFiltradas(filtradas);

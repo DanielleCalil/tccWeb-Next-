@@ -49,7 +49,7 @@ export default function PerfilEditar({ codUsu }) {
 
     const handleRemoveCurso = async (cur_cod) => {
         try {
-            const response = await api.delete(`/usuarios_cursos/${gen_cod}`);
+            const response = await api.delete(`/usuarios_cursos/${usu_cod}`);
             if (response.data.sucesso) {
                 alert('Curso removido com sucesso!');
                 const cursoRemovido = perfilEdt.cursos.find(c => c.cur_cod === cur_cod);
@@ -106,10 +106,10 @@ export default function PerfilEditar({ codUsu }) {
 
     async function listaCursos() {
         try {
-            const response = await api.post('/cursos');
+            const response = await api.get('/dispUsucursos', { codUsu });
             setCursos(response.data.dados);
-            // console.log('cursos');            
-            // console.log(response.data);
+             console.log(codUsu);            
+             console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -126,7 +126,7 @@ export default function PerfilEditar({ codUsu }) {
             const dados = { usu_cod: codUsu };
 
             try {
-                const response = await api.post('/usuarios', dados); // Ajuste o endpoint conforme necessário
+                const response = await api.post('/usuarios', dados);
                 if (response.data.sucesso) {
                     const edtPerfilApi = response.data.dados[0];
                     setPerfilEdt(edtPerfilApi);

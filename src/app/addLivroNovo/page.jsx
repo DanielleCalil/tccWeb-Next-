@@ -640,30 +640,32 @@ export default function AddLivroNovo() {
                         </div>
                         <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
                     </div>
-            </div>
 
-            <div className={styles.editar}>
-                <button
-                    type="submit"
-                    className={styles.addButtonPrinc}
-                >
-                    Adicionar
-                </button>
-            </div>
-        </form>
+
+                    <div className={styles.editar}>
+                        <button
+                            type="submit"
+                            className={styles.addButtonPrinc}
+                        >
+                            Adicionar
+                        </button>
+                    </div>
+                    <ModaisLiv_
+                        show={showModaisLiv}
+                        onClose={closeModaisLiv}
+                        onConfirm={handleLiv}
+                    />
+                    <ModalConfirmar
+                        show={showModalConfirm}
+                        onClose={closeModalConfirm}
+                        onConfirm={handleConfirm}
+                    />
+                    <ModalEdtGenero
+                        show={ShowModalGenero} o
+                        nClose={closeModalGenero}
+                    />
+                </form>
             </div >
-            <ModaisLiv_
-                show={showModaisLiv}
-                onClose={closeModaisLiv}
-                onConfirm={handleLiv}
-            />
-            <ModalConfirmar
-                show={showModalConfirm}
-                onClose={closeModalConfirm}
-                onConfirm={handleConfirm}
-            />
-            <ModalEdtGenero show={ShowModalGenero} onClose={closeModalGenero} />
-            
         </main >
     );
 }

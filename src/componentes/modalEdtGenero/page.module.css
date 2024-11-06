@@ -78,11 +78,23 @@
   font-weight: 400;
   font-style: normal;
   font-size: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  display: flex;
 }
 
 .cursosButton:hover {
   opacity: 0.5;
   transition: 0.5s;
+}
+
+.selected {
+  background-color: #3F7263;
+  color: #FFF;
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.2rem;
 }
 
 .inputField {
@@ -191,7 +203,7 @@
   width: 100%;
 }
 
- .divRadio {
+.divRadio {
   display: flex;
   justify-content: center;
   align-items: center;

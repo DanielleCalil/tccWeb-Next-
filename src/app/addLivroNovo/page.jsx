@@ -410,11 +410,12 @@ export default function AddLivroNovo() {
         console.log('Livro a ser salvo:', livro);
         if (itensValidados === 0) {
             try {
-                // Abrir os três modais antes de enviar
-                openModaisLiv(); // Esta função abrirá os três modais e aguardará o fechamento deles
-
                 const response = await api.post('/liv_cadastrar', livro);
                 if (response.data.sucesso) {
+                    const livroCodigo = response.data.liv_cod; // Supondo que o código do livro seja retornado aqui
+                    // Exibindo o aviso de sucesso com o código do livro
+                    alert(`Livro salvo com sucesso! Código do livro: ${livroCodigo}`);
+                    openModaisLiv();
                     router.push('biblioteca');
                 }
             } catch (error) {
@@ -457,7 +458,7 @@ export default function AddLivroNovo() {
                             </div>
                         </div>
                         <div className={styles.inputContainer}>
-                            <div>
+                            {/* <div>
                                 <p className={styles.textInput}>Código do livro:</p>
                                 <div className={styles.divInput}>
                                     <input
@@ -468,7 +469,7 @@ export default function AddLivroNovo() {
                                         disabled
                                     />
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className={valida.quant.validado + ' ' + styles.valQuant} id="valQuant">
                                 <label className={styles.textInput}>Quantidade:</label>

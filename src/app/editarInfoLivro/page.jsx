@@ -30,7 +30,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "edt_nome": '',
         "gen_nome": '',
         "liv_foto_capa": '',
-        "generos": '',
+        "Generos": '',
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "edt_cod": '',
@@ -276,7 +276,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     type="text"
                                                     id="gen_cod"
                                                     name="gen_cod"
-                                                    value={livro.gen_cod}
+                                                    value={livro.Generos}
                                                     onClick={openModalGenero}
                                                     className={styles.opcao}
                                                     readOnly

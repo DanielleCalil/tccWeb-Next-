@@ -24,6 +24,33 @@ export default function PerfilEditar({ codUsu }) {
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
     const [selectedSexo, setSelectedSexo] = useState('');
+    const [cursoSelecionado, setCursoSelecionado] = useState(null);
+
+    const handleClick = (cur_cod) => {
+        setCursoSelecionado(cur_cod);
+    };
+
+    const handleAddCurso = (cur_cod) => {
+        const adiciona = cursos.find(cur => cur.cur_cod === cur_cod);
+        if (adiciona) {
+            setCursos(cursos.filter(cur => cur.cur_cod !== cur_cod));
+            setPerfilEdt({
+                ...perfilEdt,
+                cursos: [...perfilEdt.cursos, adiciona]
+            });
+        }
+    };
+
+    const handleRemoveCurso = (cur_cod) => {
+        const remove = perfilEdt.cursos.find(cur => cur.cur_cod === cur_cod);
+        if (remove) {
+            setPerfilEdt({
+                ...perfilEdt,
+                cursos: perfilEdt.cursos.filter(cur => cur.cur_cod !== cur_cod)
+            });
+            setCursos([...cursos, remove]);
+        }
+    };
 
     const [perfilEdt, setPerfilEdt] = useState({
         "usu_cod": '',
@@ -224,40 +251,6 @@ export default function PerfilEditar({ codUsu }) {
                                 />
                             </div>
                             <div className={styles.listaCursos}>
-                                <div className={styles.inputCursos}>
-                                    <label className={styles.textInput}>Selecione o curso:</label>
-                                    <ul
-                                        id="cur_cod"
-                                        name="cur_cod"
-                                        value={perfilEdt.cur_cod}
-                                        onChange={handleChange}
-                                        className={styles.opcaoCursos}
-                                    >
-
-                                        {/* <option value="" disabled>
-                                            {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
-                                        </option> */}
-
-                                        {cursos.length > 0 ? (
-                                            cursos.map((cur) => (
-                                                <li key={cur.cur_cod} value={cur.cur_cod}>
-                                                    {cur.cur_nome}
-                                                </li>
-                                            ))
-                                        ) : (
-                                            <p>Não há cursos registrados.</p>
-                                        )}
-                                    </ul>
-                                </div>
-
-                                <div className={styles.buttons}>
-                                    <button className={styles.cursosButton}>
-                                        <IoChevronBack size={20} color="#FFF" />
-                                    </button>
-                                    <button className={styles.cursosButton}>
-                                        <IoChevronForward size={20} color="#FFF" />
-                                    </button>
-                                </div>
 
                                 <div className={styles.inputCursos}>
                                     <label className={styles.textInput}>Cursos já selecionados:</label>
@@ -269,13 +262,48 @@ export default function PerfilEditar({ codUsu }) {
                                         className={styles.opcaoCursos}
                                     >
 
-                                        {/* <option value="" disabled>
-                                                {cursos.length > 0 ? "Selecione um curso" : "Nenhum curso disponível"}
-                                            </option> */}
-
                                         {perfilEdt.cursos.length > 0 ? (
                                             perfilEdt.cursos.map((cur) => (
-                                                <li key={cur.cur_cod} value={cur.cur_cod}>
+                                                <li
+                                                    key={cur.cur_cod}
+                                                    value={cur.cur_cod}
+                                                    onClick={() => handleClick(cur.cur_cod)}
+                                                    className={cursoSelecionado === cur.cur_cod ? styles.selected : ''}>
+                                                    {cur.cur_nome}
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <p>Não há cursos registrados.</p>
+                                        )}
+                                    </ul>
+                                </div>
+                                <div className={styles.buttons}>
+                                    <button className={styles.cursosButton}
+                                     onClick={() => cursoSelecionado && handleAddCurso(cursoSelecionado)}>
+                                        <IoChevronBack size={20} color="#FFF" />
+                                    </button>
+                                    <button className={styles.cursosButton}
+                                     onClick={() => cursoSelecionado && handleRemoveCurso(cursoSelecionado)}>
+                                        <IoChevronForward size={20} color="#FFF" />
+                                    </button>
+                                </div>
+                                <div className={styles.inputCursos}>
+                                    <label className={styles.textInput}>Selecione o curso:</label>
+                                    <ul
+                                        id="cur_cod"
+                                        name="cur_cod"
+                                        value={perfilEdt.cur_cod}
+                                        onChange={handleChange}
+                                        className={styles.opcaoCursos}
+                                    >
+
+                                        {cursos.length > 0 ? (
+                                            cursos.map((cur) => (
+                                                <li
+                                                    key={cur.cur_cod}
+                                                    value={cur.cur_cod}
+                                                    onClick={() => handleClick(cur.cur_cod)}
+                                                    className={cursoSelecionado === cur.cur_cod ? styles.selected : ''}>
                                                     {cur.cur_nome}
                                                 </li>
                                             ))

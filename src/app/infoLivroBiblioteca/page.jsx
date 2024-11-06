@@ -114,7 +114,7 @@ export default function InfoLivroBiblioteca({ codLivro }) {
                                                 height={980}
                                                 className={styles.imgIcons}
                                             />
-                                            <span className={styles.titleInferior}>{livro.gen_nome}</span>
+                                            <span className={styles.titleInferior}>{livro.Generos}</span>
                                         </div>
                                     </div>
                                 </div>

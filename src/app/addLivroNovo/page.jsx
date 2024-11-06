@@ -575,8 +575,7 @@ export default function AddLivroNovo() {
                                     <small key={mens} id="generos" className={styles.small}>{mens}</small>
                                 ))
                             }
-                        </div>
-
+                        
                         <div className={valida.resumo.validado + ' ' + styles.valResumo} id="valResumo">
                             <label className={styles.textInput}>Resumo:</label>
                             <div className={styles.divInput}>
@@ -594,53 +593,55 @@ export default function AddLivroNovo() {
                                 valida.resumo.mensagem.map(mens => <small key={mens} id="resumo" className={styles.small}>{mens}</small>)
                             }
                         </div>
+                        
 
-                        <div className={styles.tresModais}>
-                            {/* Modal para adicionar autor */}
-                            <button
-                                type="button"
-                                onClick={handleAddAutor}
-                                className={styles.addButton}
-                            >
-                                Adicionar Autor(a)
-                            </button>
-                            <ModalAddAutor
-                                show={showModalAutor}
-                                onClose={closeModalAutor}
-                                onConfirm={handleAutor}
-                            />
+                    <div className={styles.tresModais}>
+                        {/* Modal para adicionar autor */}
+                        <button
+                            type="button"
+                            onClick={handleAddAutor}
+                            className={styles.addButton}
+                        >
+                            Adicionar Autor(a)
+                        </button>
+                        <ModalAddAutor
+                            show={showModalAutor}
+                            onClose={closeModalAutor}
+                            onConfirm={handleAutor}
+                        />
 
-                            {/* Modal para adicionar editora */}
-                            <button
-                                type="button"
-                                onClick={openModalEditora}
-                                className={styles.addButton}
-                            >
-                                Adicionar Editora
-                            </button>
-                            <ModalAddEditora
-                                show={showModalEditora}
-                                onClose={closeModalEditora}
-                                onConfirm={handleEditora}
-                            />
+                        {/* Modal para adicionar editora */}
+                        <button
+                            type="button"
+                            onClick={openModalEditora}
+                            className={styles.addButton}
+                        >
+                            Adicionar Editora
+                        </button>
+                        <ModalAddEditora
+                            show={showModalEditora}
+                            onClose={closeModalEditora}
+                            onConfirm={handleEditora}
+                        />
 
-                            {/* Modal para adicionar gênero */}
-                            <button
-                                type="button"
-                                onClick={openModalGenero}
-                                className={styles.addButton}
-                            >
-                                Adicionar Gênero
-                            </button>
-                            <ModalAddGenero
-                                show={showModalGenero}
-                                onClose={closeModalGenero}
-                                onConfirm={handleGenero}
-                            />
-                        </div>
-                        <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
+                        {/* Modal para adicionar gênero */}
+                        <button
+                            type="button"
+                            onClick={openModalGenero}
+                            className={styles.addButton}
+                        >
+                            Adicionar Gênero
+                        </button>
+                        <ModalAddGenero
+                            show={showModalGenero}
+                            onClose={closeModalGenero}
+                            onConfirm={handleGenero}
+                        />
                     </div>
+                    <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
 
+                    </div>
+                    </div>
 
                     <div className={styles.editar}>
                         <button

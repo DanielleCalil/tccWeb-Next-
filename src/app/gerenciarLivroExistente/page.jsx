@@ -43,7 +43,7 @@ export default function GerenciarLivroExistente() {
         try {
             const response = await api.post('/liv_gerenciar', dados);
             console.log(response.data.dados);
-            
+
             // Adicionamos a atualização do estado `liv_ativo` para refletir os dados reais da API
             const updatedBooks = response.data.dados.map(book => ({
                 ...book,
@@ -63,7 +63,6 @@ export default function GerenciarLivroExistente() {
 
     const toggleBookStatus = async (liv_cod) => {
         try {
-            // Atualiza o estado local
             const updatedBooks = books.map(book =>
                 book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
             );
@@ -71,14 +70,19 @@ export default function GerenciarLivroExistente() {
 
             // Envia a atualização para a API
             const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
+
             const response = await api.patch('/liv_inativar', {
                 liv_cod: bookToUpdate.liv_cod,
                 liv_ativo: bookToUpdate.liv_ativo
             });
 
-            if (!response.data.sucesso) throw new Error("Erro ao atualizar status");
+            // Confirmação no console
+            if (!response.data.sucesso) {
+                throw new Error("Erro ao atualizar status");
+            }
+            console.log(`Status atualizado para: ${bookToUpdate.liv_ativo}`);
         } catch (error) {
-            alert('Erro ao atualizar o status: ' + error);
+            alert('Erro ao atualizar o status: ' + error.message);
             setBooks(prevBooks =>
                 prevBooks.map(book =>
                     book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
@@ -86,6 +90,7 @@ export default function GerenciarLivroExistente() {
             );
         }
     };
+
 
     return (
         <main className={styles.main}>
@@ -112,12 +117,12 @@ export default function GerenciarLivroExistente() {
                         {books.length > 0 ? (
                             books.map(livro => (
                                 <div
-                                    className={`${styles.bookItem} ${livro.liv_ativo === 0 ? styles.inativo : ""}`}
                                     key={livro.liv_cod}
+                                    className={`${styles.bookItem} ${livro.liv_ativo === 1 ? styles.ativo : styles.inativo}`}
                                 >
                                     <div>
                                         <Image
-                                            loader={imageLoader} /* Quando imagem vem por URL */
+                                            loader={imageLoader}
                                             src={livro.liv_foto_capa}
                                             alt={livro.liv_nome}
                                             width={100}
@@ -139,13 +144,13 @@ export default function GerenciarLivroExistente() {
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>
                                     </div>
-
                                 </div>
                             ))
                         ) : (
                             <h1>Não há resultados para a requisição</h1>
                         )}
                     </div>
+
                     {/* <div className={styles.editar}>
                         <button
                             type="submit"

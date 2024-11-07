@@ -17,7 +17,7 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
         "Generos": '',
         "lge_cod": '',
     });
-    const [generos, setGeneros] = useState([]);
+    const [genLiv, setGenLiv] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
 
@@ -69,9 +69,9 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
         const dados = { liv_cod: codLiv };
 
         try {
-            const response = await api.post('/generos', dados);
+            const response = await api.post('/dispLivGeneros', dados);
             // console.log("Resposta da API:", response.data);
-            setGeneros(response.data.dados);
+            setGenLiv(response.data.dados);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -126,8 +126,8 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
                                     className={styles.opcaoCursos}
                                 >
 
-                                    {edtGenero.generos && edtGenero.generos.length > 0 ? (
-                                        edtGenero.generos.map((gen) => (
+                                    {edtGenero.genLiv && edtGenero.genLiv.length > 0 ? (
+                                        edtGenero.genLiv.map((gen) => (
                                             <li
                                                 key={gen.lge_cod}
                                                 value={gen.lge_cod}
@@ -160,8 +160,8 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
                                     onChange={handleChange}
                                     className={styles.opcaoCursos}
                                 >
-                                    {generos.length > 0 ? (
-                                        generos.map((gen) => (
+                                    {genLiv.length > 0 ? (
+                                        genLiv.map((gen) => (
                                             <li
                                                 key={gen.gen_cod}
                                                 value={gen.gen_cod}

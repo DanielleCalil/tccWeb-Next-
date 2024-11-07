@@ -13,8 +13,6 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import ModalAddAutor from '@/componentes/modalAddAutor/page';
 import ModalAddEditora from '@/componentes/modalAddEditora/page';
 import ModalAddGenero from '@/componentes/modalAddGenero/page';
-import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
-
 import ModaisLiv_ from '../../componentes/modaisLiv_/page';
 
 export default function AddLivroNovo({ codLiv }) {
@@ -23,7 +21,7 @@ export default function AddLivroNovo({ codLiv }) {
 
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    const [generos, setGeneros] = useState([]);
+    const [genLiv, setGenLiv] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
 
@@ -61,11 +59,6 @@ export default function AddLivroNovo({ codLiv }) {
             alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
         }
     };
-
-
-    const [ShowModalGenSel, setShowModalGenSel] = useState(false);
-    const openModalGenSel = () => setShowModalGenSel(true);
-    const closeModalGenSel = () => setShowModalGenSel(false);
 
     const [livro, setLivro] = useState({
         "liv_cod": '',
@@ -206,8 +199,8 @@ export default function AddLivroNovo({ codLiv }) {
     async function listaGeneros() {
         const dados = { liv_cod: codLiv };
         try {
-            const response = await api.get('/generos', dados);
-            setGeneros(response.data.dados);
+            const response = await api.post('/dispLivGeneros', dados);
+            setGenLiv(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -628,8 +621,8 @@ export default function AddLivroNovo({ codLiv }) {
                                                 className={styles.opcaoCursos}
                                             >
 
-                                                {livro.generos && livro.generos.length > 0 ? (
-                                                    livro.generos.map((gen) => (
+                                                {livro.genLiv && livro.genLiv.length > 0 ? (
+                                                    livro.genLiv.map((gen) => (
                                                         <li
                                                             key={gen.lge_cod}
                                                             value={gen.lge_cod}
@@ -665,8 +658,8 @@ export default function AddLivroNovo({ codLiv }) {
                                                 onChange={handleChange}
                                                 className={styles.opcaoCursos}
                                             >
-                                                {generos.length > 0 ? (
-                                                    generos.map((gen) => (
+                                                {genLiv.length > 0 ? (
+                                                    genLiv.map((gen) => (
                                                         <li
                                                             key={gen.gen_cod}
                                                             value={gen.gen_cod}
@@ -772,10 +765,6 @@ export default function AddLivroNovo({ codLiv }) {
                         show={showModalConfirm}
                         onClose={closeModalConfirm}
                         onConfirm={handleConfirm}
-                    />
-                    <ModalEdtGenero
-                        show={ShowModalGenSel}
-                        onClose={closeModalGenSel}
                     />
                 </form>
             </div >

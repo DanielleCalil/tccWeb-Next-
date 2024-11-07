@@ -199,7 +199,7 @@ export default function AddLivroNovo({ codLiv }) {
     async function listaGeneros() {
         const dados = { liv_cod: codLiv };
         try {
-            const response = await api.post('/dispLivGeneros', dados);
+            const response = await api.post('/dispGeneros', { liv_cod: codLiv });
             setGenLiv(response.data.dados);
             console.log(response.data);
         } catch (error) {

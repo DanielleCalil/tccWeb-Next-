@@ -69,7 +69,7 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
         const dados = { liv_cod: codLiv };
 
         try {
-            const response = await api.post('/dispLivGeneros', dados);
+            const response = await api.post('/dispGeneros', dados);
             // console.log("Resposta da API:", response.data);
             setGenLiv(response.data.dados);
         } catch (error) {

@@ -172,7 +172,7 @@ export default function PerfilEditar({ codUsu }) {
         //     usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
         // });
 
-        if (!usu_email || !cur_nome || !usu_sexo) {
+        if (!usu_email || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }

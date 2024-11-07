@@ -41,11 +41,6 @@ export default function PerfilEditar({ codUsu }) {
             const response = await api.post(`/usuarios_cursos`, { usu_cod: codUsu, cur_cod: cursoSelecionadoEscola });
             if (response.data.sucesso) {
                 alert('Curso adicionado com sucesso!');
-                // setCursos(cursos.filter(c => c.cur_cod !== cur_cod)); // Remove o curso da lista de disponíveis
-                // setPerfilEdt({
-                //     ...perfilEdt,
-                //     cursos: [...perfilEdt.cursos, cursos.find(c => c.cur_cod === cur_cod)]
-                // });
                 listaCursos();
                 handleCarregaPerfil();
             }
@@ -60,13 +55,6 @@ export default function PerfilEditar({ codUsu }) {
             const response = await api.delete(`/usuarios_cursos/${cursoSelecionadoAluno}`);
             if (response.data.sucesso) {
                 alert('Curso removido com sucesso!');
-                // const cursoRemovido = perfilEdt.cursos.find(c => c.cur_cod === cur_cod);
-                // setPerfilEdt({
-                //     ...perfilEdt,
-                //     cursos: perfilEdt.cursos.filter(c => c.cur_cod !== cur_cod)
-                // });
-                // setCursos([...cursos, cursoRemovido]); // Adiciona o curso de volta à lista de disponíveis
-
                 listaCursos();
                 handleCarregaPerfil();
             }
@@ -141,7 +129,6 @@ export default function PerfilEditar({ codUsu }) {
 
     const handleCarregaPerfil = async () => {
         const dados = { usu_cod: codUsu };
-
         try {
             const response = await api.post('/usuarios', dados);
             if (response.data.sucesso) {
@@ -150,10 +137,10 @@ export default function PerfilEditar({ codUsu }) {
                 setPerfilEdt(edtPerfilApi);
                 setSelectedSexo(edtPerfilApi.usu_sexo);
             } else {
-                setError(response.data.mensagem);
+                alert(response.data.mensagem);
             }
         } catch (error) {
-            setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
+            alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
         }
     }
 

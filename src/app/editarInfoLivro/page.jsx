@@ -59,7 +59,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
     };
 
     const [ShowModalGenero, setShowModalGenero] = useState(false); // Estado para abrir/fechar o modal
-
     const openModalGenero = () => setShowModalGenero(true); // Abre o modal
     const closeModalGenero = () => setShowModalGenero(false);
 

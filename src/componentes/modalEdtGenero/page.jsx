@@ -6,24 +6,35 @@ import api from "@/services/api";
 
 import styles from "./page.module.css";
 
-export default function ModalEdtGenero({ show, onClose }) {
+export default function ModalEdtGenero({ show, onClose, codLiv }) {
     if (!show) return null;
     const router = useRouter();
 
-    const [edtGenero, setEdtGenero] = useState([]);
+    const [edtGenero, setEdtGenero] = useState({
+        "liv_cod": '',
+        "gen_cod": '',
+        "gen_nome": '',
+        "Generos": '',
+        "lge_cod": '',
+    });
     const [generos, setGeneros] = useState([]);
-    const [generoSelecionado, setGeneroSelecionado] = useState(null);
+    const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
+    const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
+
+    const handleClickLivro = (gen_cod) => {
+        setGeneroSelecionadoLivro(gen_cod);
+    };
+    const handleClickEscola = (gen_cod) => {
+        setGeneroSelecionadoEscola(gen_cod);
+    };
 
     const handleAddGenero = async (gen_cod) => {
         try {
-            const response = await api.post(`/livros_generos`, { gen_cod });
+            const response = await api.post(`/livros_generos`, { liv_cod: codLiv, gen_cod: generoSelecionadoEscola });
             if (response.data.sucesso) {
                 alert('Gênero adicionado com sucesso!');
-                setGeneros(generos.filter(g => g.gen_cod !== gen_cod)); // Remove o curso da lista de disponíveis
-                setEdtGenero({
-                    ...edtGenero,
-                    generos: [...edtGenero.generos, generos.find(g => g.gen_cod === gen_cod)]
-                });
+                listaGeneros();
+                handleCarregaLivro();
             }
         } catch (error) {
             console.error("Error ao adicionar gênero:", error);
@@ -33,22 +44,16 @@ export default function ModalEdtGenero({ show, onClose }) {
 
     const handleRemoveGenero = async (gen_cod) => {
         try {
-            const response = await api.delete(`/livros_generos/${gen_cod}`);
+            const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
             if (response.data.sucesso) {
                 alert('Gênero removido com sucesso!');
-                setEdtGenero({
-                    ...edtGenero,
-                    generos: edtGenero.generos.filter(g => g.gen_cod !== gen_cod) // Remove o curso da lista de selecionados
-                });
+                listaGeneros();
+                handleCarregaLivro();
             }
         } catch (error) {
             console.error("Error ao remover gênero:", error);
             alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
         }
-    };
-
-    const handleClick = (gen_cod) => {
-        setGeneroSelecionado(gen_cod);
     };
 
     const handleChange = (e) => {
@@ -57,13 +62,15 @@ export default function ModalEdtGenero({ show, onClose }) {
     }
 
     useEffect(() => {
-        listaGeneros();
-    }, []);
+        if (codLiv) listaGeneros();
+    }, [codLiv]);
 
     async function listaGeneros() {
+        const dados = { liv_cod: codLiv };
+
         try {
-            const response = await api.post('/generos');
-            console.log("Resposta da API:", response.data);
+            const response = await api.post('/generos', dados);
+            // console.log("Resposta da API:", response.data);
             setGeneros(response.data.dados);
         } catch (error) {
             if (error.response) {
@@ -74,16 +81,25 @@ export default function ModalEdtGenero({ show, onClose }) {
         }
     }
 
-    const handleSelect = (gen) => {
-        // Adiciona o gênero selecionado ao estado
-        if (!edtGenero.some(selected => selected.gen_cod === gen.gen_cod)) {
-            setEdtGenero((prev) => [...prev, gen]);
-        }
-    };
+    useEffect(() => {
+        if (!codLiv) return;
 
-    const handleRemove = (genCod) => {
-        // Remove o gênero da lista de selecionados
-        setEdtGenero((prev) => prev.filter(gen => gen.gen_cod !== genCod));
+        handleCarregaLivro();
+    }, [codLiv]);
+
+    const handleCarregaLivro = async () => {
+        const dadosApi = { liv_cod: codLiv };
+        try {
+            const response = await api.post('/livros', dadosApi);
+            if (response.data.sucesso) {
+                const livroApi = response.data.dados[0];
+                setEdtGenero(livroApi);
+            } else {
+                alert(response.data.mensagem);
+            }
+        } catch (error) {
+            alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
+        }
     };
 
     const handleSubmit = (e) => {
@@ -110,13 +126,14 @@ export default function ModalEdtGenero({ show, onClose }) {
                                     className={styles.opcaoCursos}
                                 >
 
-                                    {edtGenero.length > 0 ? (
-                                        edtGenero.map((gen) => (
+                                    {edtGenero.generos && edtGenero.generos.length > 0 ? (
+                                        edtGenero.generos.map((gen) => (
                                             <li
-                                                key={gen.gen_cod}
-                                                onClick={() => handleClick(gen.gen_cod)}
-                                                className={generoSelecionado === gen.gen_cod ? styles.selected : ''}>
-                                                {gen.gen_nome}
+                                                key={gen.lge_cod}
+                                                value={gen.lge_cod}
+                                                onClick={() => handleClickLivro(gen.lge_cod)}
+                                                className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                {gen.Generos}
                                             </li>
                                         ))
                                     ) : (
@@ -126,24 +143,31 @@ export default function ModalEdtGenero({ show, onClose }) {
                             </div>
                             <div className={styles.buttons}>
                                 <button className={styles.cursosButton}
-                                    onClick={() => generoSelecionado && handleAddGenero(generoSelecionado)}>
+                                    onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}>
                                     <IoChevronBack size={20} color="#FFF" />
                                 </button>
                                 <button className={styles.cursosButton}
-                                    onClick={() => generoSelecionado && handleRemoveGenero(generoSelecionado)}>
+                                    onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}>
                                     <IoChevronForward size={20} color="#FFF" />
                                 </button>
                             </div>
                             <div className={styles.inputCursos}>
                                 <label className={styles.textInput}>Selecione o gênero:</label>
-                                <ul className={styles.opcaoCursos}>
+                                <ul
+                                    id="gen_cod"
+                                    name="gen_cod"
+                                    value={edtGenero.gen_cod}
+                                    onChange={handleChange}
+                                    className={styles.opcaoCursos}
+                                >
                                     {generos.length > 0 ? (
                                         generos.map((gen) => (
                                             <li
                                                 key={gen.gen_cod}
-                                                onClick={() => handleClick(gen.gen_cod)}
-                                                className={generoSelecionado === gen.gen_cod ? styles.selected : ''}>
-                                                {gen.gen_nome}
+                                                value={gen.gen_cod}
+                                                onClick={() => handleClickEscola(gen.gen_cod)}
+                                                className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
+                                                {gen.Generos}
                                             </li>
                                         ))
                                     ) : (
@@ -168,6 +192,7 @@ export default function ModalEdtGenero({ show, onClose }) {
                         >
                             Fechar
                         </button>
+
                     </div>
                 </form>
             </div>

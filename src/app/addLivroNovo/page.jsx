@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
 import api from '@/services/api';
 
 import FileInput from '@/componentes/FileInput/page';
@@ -16,16 +17,53 @@ import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
 
 import ModaisLiv_ from '../../componentes/modaisLiv_/page';
 
-export default function AddLivroNovo() {
+export default function AddLivroNovo({ codLiv }) {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const router = useRouter();
 
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    const [genero, setGenero] = useState([]);
+    const [generos, setGeneros] = useState([]);
+    const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
+    const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
 
-    const [ShowModalGenero, setShowModalGenSel] = useState(false);
+    const handleClickLivro = (gen_cod) => {
+        setGeneroSelecionadoLivro(gen_cod);
+    };
+    const handleClickEscola = (gen_cod) => {
+        setGeneroSelecionadoEscola(gen_cod);
+    };
 
+    const handleAddGenero = async (gen_cod) => {
+        try {
+            const response = await api.post(`/livros_generos`, { liv_cod: codLiv, gen_cod: generoSelecionadoEscola });
+            if (response.data.sucesso) {
+                alert('Gênero adicionado com sucesso!');
+                listaGeneros();
+                handleCarregaLivro();
+            }
+        } catch (error) {
+            console.error("Error ao adicionar gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar gênero. Tente novamente.');
+        }
+    };
+
+    const handleRemoveGenero = async (gen_cod) => {
+        try {
+            const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
+            if (response.data.sucesso) {
+                alert('Gênero removido com sucesso!');
+                listaGeneros();
+                handleCarregaLivro();
+            }
+        } catch (error) {
+            console.error("Error ao remover gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
+        }
+    };
+
+
+    const [ShowModalGenSel, setShowModalGenSel] = useState(false);
     const openModalGenSel = () => setShowModalGenSel(true);
     const closeModalGenSel = () => setShowModalGenSel(false);
 
@@ -166,9 +204,10 @@ export default function AddLivroNovo() {
 
 
     async function listaGeneros() {
+        const dados = { liv_cod: codLiv };
         try {
-            const response = await api.get('/generos');
-            setGenero(response.data.dados);
+            const response = await api.get('/generos', dados);
+            setGeneros(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -178,6 +217,27 @@ export default function AddLivroNovo() {
             }
         }
     }
+
+    useEffect(() => {
+        if (!codLiv) return;
+
+        handleCarregaLivro();
+    }, [codLiv]);
+
+    const handleCarregaLivro = async () => {
+        const dadosApi = { liv_cod: codLiv };
+        try {
+            const response = await api.post('/livros', dadosApi);
+            if (response.data.sucesso) {
+                const livroApi = response.data.dados[0];
+                setLivro(livroApi);
+            } else {
+                alert(response.data.mensagem);
+            }
+        } catch (error) {
+            alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
+        }
+    };
 
     // // Função para gerar o código do livro
     // const generateBookCode = () => {
@@ -556,18 +616,70 @@ export default function AddLivroNovo() {
                             </div>
 
                             <div className={valida.gen_cod.validado + ' ' + styles.valSelectGen} id="valSelectGen">
-                                <label className={styles.textInput}>Gênero:</label>
-                                <div className={styles.divInput}>
+                                <div className={styles.listaCursos}>
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Gêneros já selecionados:</label>
+                                        <div className={styles.divInput}>
+                                            <ul
+                                                id="gen_cod"
+                                                name="gen_cod"
+                                                value={livro.gen_cod}
+                                                onChange={handleChange}
+                                                className={styles.opcaoCursos}
+                                            >
 
-                                    <input
-                                        type="text"
-                                        id="gen_cod"
-                                        name="gen_cod"
-                                        value={livro.Generos}
-                                        onClick={openModalGenSel}
-                                        className={styles.inputField}
-                                        readOnly
-                                    />
+                                                {livro.generos && livro.generos.length > 0 ? (
+                                                    livro.generos.map((gen) => (
+                                                        <li
+                                                            key={gen.lge_cod}
+                                                            value={gen.lge_cod}
+                                                            onClick={() => handleClickLivro(gen.lge_cod)}
+                                                            className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                            {gen.Generos}
+                                                        </li>
+                                                    ))
+                                                ) : (
+                                                    <p>Não há gêneros registrados.</p>
+                                                )}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                    <div className={styles.buttons}>
+                                        <button className={styles.cursosButton}
+                                            onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}>
+                                            <IoChevronBack size={20} color="#FFF" />
+                                        </button>
+                                        <button className={styles.cursosButton}
+                                            onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}>
+                                            <IoChevronForward size={20} color="#FFF" />
+                                        </button>
+                                    </div>
+                                        <div className={styles.inputCursos}>
+                                            <label className={styles.textInput}>Selecione o gênero:</label>
+                                            <ul
+                                                id="gen_cod"
+                                                name="gen_cod"
+                                                value={livro.gen_cod}
+                                                onChange={handleChange}
+                                                className={styles.opcaoCursos}
+                                            >
+                                                {generos.length > 0 ? (
+                                                    generos.map((gen) => (
+                                                        <li
+                                                            key={gen.gen_cod}
+                                                            value={gen.gen_cod}
+                                                            onClick={() => handleClickEscola(gen.gen_cod)}
+                                                            className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
+                                                            {gen.Generos}
+                                                        </li>
+                                                    ))
+                                                ) : (
+                                                    <p>Não há gêneros registrados.</p>
+                                                )}
+                                            </ul>
+                                        </div>
                                 </div>
                             </div>
                             {
@@ -575,72 +687,72 @@ export default function AddLivroNovo() {
                                     <small key={mens} id="generos" className={styles.small}>{mens}</small>
                                 ))
                             }
-                        
-                        <div className={valida.resumo.validado + ' ' + styles.valResumo} id="valResumo">
-                            <label className={styles.textInput}>Resumo:</label>
-                            <div className={styles.divInput}>
-                                <textarea
-                                    id="resumo"
-                                    name="liv_desc"
-                                    value={livro.liv_desc}
-                                    className={styles.inputResumo}
-                                    onChange={handleChange}
-                                />
-                                <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                <IoAlertCircleOutline className={styles.erro} />
+
+                            <div className={valida.resumo.validado + ' ' + styles.valResumo} id="valResumo">
+                                <label className={styles.textInput}>Resumo:</label>
+                                <div className={styles.divInput}>
+                                    <textarea
+                                        id="resumo"
+                                        name="liv_desc"
+                                        value={livro.liv_desc}
+                                        className={styles.inputResumo}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.resumo.mensagem.map(mens => <small key={mens} id="resumo" className={styles.small}>{mens}</small>)
+                                }
                             </div>
-                            {
-                                valida.resumo.mensagem.map(mens => <small key={mens} id="resumo" className={styles.small}>{mens}</small>)
-                            }
+
+
+                            <div className={styles.tresModais}>
+                                {/* Modal para adicionar autor */}
+                                <button
+                                    type="button"
+                                    onClick={handleAddAutor}
+                                    className={styles.addButton}
+                                >
+                                    Adicionar Autor(a)
+                                </button>
+                                <ModalAddAutor
+                                    show={showModalAutor}
+                                    onClose={closeModalAutor}
+                                    onConfirm={handleAutor}
+                                />
+
+                                {/* Modal para adicionar editora */}
+                                <button
+                                    type="button"
+                                    onClick={openModalEditora}
+                                    className={styles.addButton}
+                                >
+                                    Adicionar Editora
+                                </button>
+                                <ModalAddEditora
+                                    show={showModalEditora}
+                                    onClose={closeModalEditora}
+                                    onConfirm={handleEditora}
+                                />
+
+                                {/* Modal para adicionar gênero */}
+                                <button
+                                    type="button"
+                                    onClick={openModalGenero}
+                                    className={styles.addButton}
+                                >
+                                    Adicionar Gênero
+                                </button>
+                                <ModalAddGenero
+                                    show={showModalGenero}
+                                    onClose={closeModalGenero}
+                                    onConfirm={handleGenero}
+                                />
+                            </div>
+                            <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
+
                         </div>
-                        
-
-                    <div className={styles.tresModais}>
-                        {/* Modal para adicionar autor */}
-                        <button
-                            type="button"
-                            onClick={handleAddAutor}
-                            className={styles.addButton}
-                        >
-                            Adicionar Autor(a)
-                        </button>
-                        <ModalAddAutor
-                            show={showModalAutor}
-                            onClose={closeModalAutor}
-                            onConfirm={handleAutor}
-                        />
-
-                        {/* Modal para adicionar editora */}
-                        <button
-                            type="button"
-                            onClick={openModalEditora}
-                            className={styles.addButton}
-                        >
-                            Adicionar Editora
-                        </button>
-                        <ModalAddEditora
-                            show={showModalEditora}
-                            onClose={closeModalEditora}
-                            onConfirm={handleEditora}
-                        />
-
-                        {/* Modal para adicionar gênero */}
-                        <button
-                            type="button"
-                            onClick={openModalGenero}
-                            className={styles.addButton}
-                        >
-                            Adicionar Gênero
-                        </button>
-                        <ModalAddGenero
-                            show={showModalGenero}
-                            onClose={closeModalGenero}
-                            onConfirm={handleGenero}
-                        />
-                    </div>
-                    <p className={styles.obs}>Obs.: se já tiver adicionado o que deseja em alguns dos botões acima é só selecionar o que deseja no campo selecionável desejável.</p>
-
-                    </div>
                     </div>
 
                     <div className={styles.editar}>
@@ -662,8 +774,8 @@ export default function AddLivroNovo() {
                         onConfirm={handleConfirm}
                     />
                     <ModalEdtGenero
-                        show={ShowModalGenero} o
-                        nClose={closeModalGenero}
+                        show={ShowModalGenSel}
+                        onClose={closeModalGenSel}
                     />
                 </form>
             </div >

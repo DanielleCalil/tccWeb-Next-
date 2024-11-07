@@ -50,6 +50,7 @@ export default function ModalEsqueceuSenha({ show, onClose }) {
                         <button
                             type="submit"
                             className={styles.modalButtonAdd}
+                            onClick={onClose}
                         >
                             Ok
                         </button>

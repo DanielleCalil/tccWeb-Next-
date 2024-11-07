@@ -72,7 +72,7 @@ export default function EsqueceuSenha1() {
             setShowModal(true);
             try {
                 if (usuario.usu_email) {
-                    const responseEmail = await api.post('/red_senha', { usu_email: usuario.usu_email });
+                    const responseEmail = await api.post('/envio_email', { usu_email: usuario.usu_email });
                     if (responseEmail.data.sucesso) {
                         console.log('E-mail enviado com sucesso!');
 

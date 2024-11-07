@@ -24,22 +24,30 @@ export default function PerfilEditar({ codUsu }) {
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
     const [selectedSexo, setSelectedSexo] = useState('');
-    const [cursoSelecionado, setCursoSelecionado] = useState(null);
+    const [cursoSelecionadoAluno, setCursoSelecionadoAluno] = useState(null);
+    const [cursoSelecionadoEscola, setCursoSelecionadoEscola] = useState(null);
+    console.log(cursoSelecionadoAluno);
+    
 
-    const handleClick = (cur_cod) => {
-        setCursoSelecionado(cur_cod);
+    const handleClickAluno = (cur_cod) => {
+        setCursoSelecionadoAluno(cur_cod);
+    };
+    const handleClickEscola = (cur_cod) => {
+        setCursoSelecionadoEscola(cur_cod);
     };
 
     const handleAddCurso = async (cur_cod) => {
         try {
-            const response = await api.post(`/usuarios_cursos`, { cur_cod });
+            const response = await api.post(`/usuarios_cursos`, { usu_cod: codUsu, cur_cod: cursoSelecionadoEscola });
             if (response.data.sucesso) {
                 alert('Curso adicionado com sucesso!');
-                setCursos(cursos.filter(c => c.cur_cod !== cur_cod)); // Remove o curso da lista de disponíveis
-                setPerfilEdt({
-                    ...perfilEdt,
-                    cursos: [...perfilEdt.cursos, cursos.find(c => c.cur_cod === cur_cod)]
-                });
+                // setCursos(cursos.filter(c => c.cur_cod !== cur_cod)); // Remove o curso da lista de disponíveis
+                // setPerfilEdt({
+                //     ...perfilEdt,
+                //     cursos: [...perfilEdt.cursos, cursos.find(c => c.cur_cod === cur_cod)]
+                // });
+                listaCursos();
+                handleCarregaPerfil();
             }
         } catch (error) {
             console.error("Erro ao adicionar curso:", error);
@@ -49,15 +57,18 @@ export default function PerfilEditar({ codUsu }) {
 
     const handleRemoveCurso = async (cur_cod) => {
         try {
-            const response = await api.delete(`/usuarios_cursos/${usu_cod}`);
+            const response = await api.delete(`/usuarios_cursos/${cursoSelecionadoAluno}`);
             if (response.data.sucesso) {
                 alert('Curso removido com sucesso!');
-                const cursoRemovido = perfilEdt.cursos.find(c => c.cur_cod === cur_cod);
-                setPerfilEdt({
-                    ...perfilEdt,
-                    cursos: perfilEdt.cursos.filter(c => c.cur_cod !== cur_cod)
-                });
-                setCursos([...cursos, cursoRemovido]); // Adiciona o curso de volta à lista de disponíveis
+                // const cursoRemovido = perfilEdt.cursos.find(c => c.cur_cod === cur_cod);
+                // setPerfilEdt({
+                //     ...perfilEdt,
+                //     cursos: perfilEdt.cursos.filter(c => c.cur_cod !== cur_cod)
+                // });
+                // setCursos([...cursos, cursoRemovido]); // Adiciona o curso de volta à lista de disponíveis
+
+                listaCursos();
+                handleCarregaPerfil();
             }
         } catch (error) {
             console.error("Erro ao remover curso:", error);
@@ -75,6 +86,7 @@ export default function PerfilEditar({ codUsu }) {
         "usu_sexo": '',
         "usu_foto": '',
         "usu_ativo": '',
+        "ucu_cod": '',
         "cur_cod": '',
         "cur_nome": '',
     });
@@ -91,25 +103,26 @@ export default function PerfilEditar({ codUsu }) {
 
     const handleConfirm = async () => {
         try {
-            closeModalConfirm(); // Fecha o modal de confirmação
-            await handleSave();  // Aguarda o salvamento dos dados
+            closeModalConfirm();
+            await handleSave();
         } catch (error) {
-            // Lide com erros que possam ocorrer ao tentar salvar
             console.error("Erro ao confirmar a ação:", error);
-            alert('Ocorreu um erro ao tentar salvar. Por favor, tente novamente.'); // Mensagem para o usuário
+            alert('Ocorreu um erro ao tentar salvar. Por favor, tente novamente.');
         }
     };
 
     useEffect(() => {
-        listaCursos();
-    }, []);
+        if (codUsu) listaCursos();
+    }, [codUsu]);
 
     async function listaCursos() {
+        const dados = { usu_cod: codUsu };
+
         try {
-            const response = await api.get('/dispUsucursos', { codUsu });
+            const response = await api.post('/dispUsucursos',dados); 
             setCursos(response.data.dados);
-             console.log(codUsu);            
-             console.log(response.data);
+            // console.log("codUsu:", codUsu);
+            // console.log("Resposta da API:", response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -119,29 +132,30 @@ export default function PerfilEditar({ codUsu }) {
         }
     }
 
+
     useEffect(() => {
-        if (!codUsu) return;
-
-        const handleCarregaPerfil = async () => {
-            const dados = { usu_cod: codUsu };
-
-            try {
-                const response = await api.post('/usuarios', dados);
-                if (response.data.sucesso) {
-                    const edtPerfilApi = response.data.dados[0];
-                    setPerfilEdt(edtPerfilApi);
-
-                    setSelectedSexo(edtPerfilApi.usu_sexo);
-                } else {
-                    setError(response.data.mensagem);
-                }
-            } catch (error) {
-                setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
-            }
-        };
+        if (!codUsu) return;        
 
         handleCarregaPerfil();
-    }, [codUsu]);
+    }, [codUsu]); 
+
+    const handleCarregaPerfil = async () => {
+        const dados = { usu_cod: codUsu };
+
+        try {
+            const response = await api.post('/usuarios', dados);
+            if (response.data.sucesso) {
+                const edtPerfilApi = response.data.dados[0];
+                // console.log("Perfil carregado:", edtPerfilApi);
+                setPerfilEdt(edtPerfilApi);
+                setSelectedSexo(edtPerfilApi.usu_sexo);
+            } else {
+                setError(response.data.mensagem);
+            }
+        } catch (error) {
+            setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
+        }
+    }
 
     const handleImageChange = (imageURL) => {
         setImageSrc(imageURL);
@@ -162,14 +176,14 @@ export default function PerfilEditar({ codUsu }) {
         const { usu_rm, usu_nome, usu_email, cur_nome, usu_sexo } = perfilEdt;
 
         // Adiciona um log para ver os dados que estão sendo enviados
-        console.log("Dados a serem enviados:", {
-            usu_rm,
-            usu_nome,
-            usu_email,
-            cur_nome,
-            usu_sexo,
-            usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
-        });
+        // console.log("Dados a serem enviados:", {
+        //     usu_rm,
+        //     usu_nome,
+        //     usu_email,
+        //     cur_nome,
+        //     usu_sexo,
+        //     usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
+        // });
 
         if (!usu_email || !cur_nome || !usu_sexo) {
             alert('Todos os campos devem ser preenchidos');
@@ -196,7 +210,7 @@ export default function PerfilEditar({ codUsu }) {
         }
     };
 
-    console.log(perfilEdt);
+    // console.log(perfilEdt);
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -278,10 +292,10 @@ export default function PerfilEditar({ codUsu }) {
                                         {perfilEdt.cursos.length > 0 ? (
                                             perfilEdt.cursos.map((cur) => (
                                                 <li
-                                                    key={cur.cur_cod}
-                                                    value={cur.cur_cod}
-                                                    onClick={() => handleClick(cur.cur_cod)}
-                                                    className={cursoSelecionado === cur.cur_cod ? styles.selected : ''}>
+                                                    key={cur.ucu_cod}
+                                                    value={cur.ucu_cod}
+                                                    onClick={() => handleClickAluno(cur.ucu_cod)}
+                                                    className={cursoSelecionadoAluno === cur.ucu_cod ? styles.selected : ''}>
                                                     {cur.cur_nome}
                                                 </li>
                                             ))
@@ -292,11 +306,11 @@ export default function PerfilEditar({ codUsu }) {
                                 </div>
                                 <div className={styles.buttons}>
                                     <button className={styles.cursosButton}
-                                     onClick={() => cursoSelecionado && handleAddCurso(cursoSelecionado)}>
+                                        onClick={() => cursoSelecionadoEscola && handleAddCurso(cursoSelecionadoAluno)}>
                                         <IoChevronBack size={20} color="#FFF" />
                                     </button>
                                     <button className={styles.cursosButton}
-                                     onClick={() => cursoSelecionado && handleRemoveCurso(cursoSelecionado)}>
+                                        onClick={() => cursoSelecionadoAluno && handleRemoveCurso(cursoSelecionadoEscola)}>
                                         <IoChevronForward size={20} color="#FFF" />
                                     </button>
                                 </div>
@@ -315,8 +329,8 @@ export default function PerfilEditar({ codUsu }) {
                                                 <li
                                                     key={cur.cur_cod}
                                                     value={cur.cur_cod}
-                                                    onClick={() => handleClick(cur.cur_cod)}
-                                                    className={cursoSelecionado === cur.cur_cod ? styles.selected : ''}>
+                                                    onClick={() => handleClickEscola(cur.cur_cod)}
+                                                    className={cursoSelecionadoEscola === cur.cur_cod ? styles.selected : ''}>
                                                     {cur.cur_nome}
                                                 </li>
                                             ))

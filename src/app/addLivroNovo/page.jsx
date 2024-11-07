@@ -565,7 +565,7 @@ export default function AddLivroNovo() {
                                         name="gen_cod"
                                         value={livro.Generos}
                                         onClick={openModalGenSel}
-                                        className={styles.opcao}
+                                        className={styles.inputField}
                                         readOnly
                                     />
                                 </div>

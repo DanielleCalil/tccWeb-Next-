@@ -74,6 +74,7 @@ export default function AddLivroNovo({ codLiv }) {
         "disponivel": '',
         "Generos": '',
         "gen_cod": '',
+        "gen_nome": '',
     });
 
     const valDefault = styles.formControl;
@@ -199,7 +200,7 @@ export default function AddLivroNovo({ codLiv }) {
     async function listaGeneros() {
         const dados = { liv_cod: codLiv };
         try {
-            const response = await api.post('/dispGeneros', { liv_cod: codLiv });
+            const response = await api.post('/dispGeneros', dados);
             setGenLiv(response.data.dados);
             console.log(response.data);
         } catch (error) {
@@ -628,7 +629,7 @@ export default function AddLivroNovo({ codLiv }) {
                                                             value={gen.lge_cod}
                                                             onClick={() => handleClickLivro(gen.lge_cod)}
                                                             className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
-                                                            {gen.Generos}
+                                                            {gen.gen_nome}
                                                         </li>
                                                     ))
                                                 ) : (
@@ -665,7 +666,7 @@ export default function AddLivroNovo({ codLiv }) {
                                                             value={gen.gen_cod}
                                                             onClick={() => handleClickEscola(gen.gen_cod)}
                                                             className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
-                                                            {gen.Generos}
+                                                            {gen.gen_nome}
                                                         </li>
                                                     ))
                                                 ) : (

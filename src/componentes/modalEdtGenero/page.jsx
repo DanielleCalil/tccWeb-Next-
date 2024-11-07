@@ -70,7 +70,7 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
 
         try {
             const response = await api.post('/dispGeneros', dados);
-            // console.log("Resposta da API:", response.data);
+            console.log("Resposta da API:", response.data);
             setGenLiv(response.data.dados);
         } catch (error) {
             if (error.response) {

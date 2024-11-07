@@ -146,7 +146,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const handleSave = async () => {
         const { liv_nome, disponivel, liv_desc, aut_nome, edt_nome, gen_nome } = livro;
 
-        if (!liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome || !gen_nome) {
+        if (!liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome ) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
@@ -154,10 +154,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         setIsSaving(true); // Inicia o salvamento
 
         try {
-            const response = await api.patch(`/livros/${livro.liv_cod}`, {
-                ...livro,
-                liv_foto_capa: imageSrc,
-            });
+            const response = await api.patch(`/livros/${livro.liv_cod}`, );
 
             if (response.data.sucesso) {
                 alert('Livro atualizado com sucesso!');

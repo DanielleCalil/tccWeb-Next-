@@ -8,10 +8,16 @@ import api from '@/services/api';
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
+const situacaoMap = {
+  Aprovados: "Aprovado",
+  Reprovados: 5,
+  Pendentes: "Não Aprovado"
+};
+
 const situacaoOptions = [
   { value: 'Aprovados', label: 'Aprovados' },
   { value: 'Reprovados', label: 'Reprovados' },
-  { value: 'Pendentes', label: 'Pendentes' },
+  { value: 'Pendentes', label: 'Pendentes' }
 ];
 
 const searchOptions = [
@@ -33,7 +39,6 @@ export default function Solicitacao() {
     "usu_aprovado": "",
   });
   const [filtroSituacao, setFiltroSituacao] = useState('');
-
   const [showModalConfirm, setShowModalConfirm] = useState(false);
 
   const openModalConfirm = () => setShowModalConfirm(true);
@@ -84,9 +89,8 @@ export default function Solicitacao() {
     async function fetchUsuariosPendentes() {
       try {
         const response = await api.post('/usu_pendentes');
-        const usuarios = response.data.dados;
-        setListaUsuarios(usuarios);
-        setSolicitacoesFiltradas(usuarios);
+        setListaUsuarios(response.data.dados);
+        setSolicitacoesFiltradas(response.data.dados);
       } catch (error) {
         alert('Erro ao buscar usuários pendentes.');
       }
@@ -94,18 +98,15 @@ export default function Solicitacao() {
     fetchUsuariosPendentes();
   }, []);
 
-  const filtrarSolicitacoes = (situacaoOptions) => {
-    if (!situacaoOptions) {  // Verifica se nenhum filtro está selecionado
-      setSolicitacoesFiltradas([]);  // Define a lista filtrada como vazia
-      return;
-    }
-
-    const filtradas = listaUsuarios.filter((solicit) => {
-      if (situacaoOptions === 'Aprovados') return solicit.usu_aprovado === "Aprovado"; // Usuários Ativos
-      if (situacaoOptions === 'Reprovados') return solicit.usu_tipo === 5; // Usuários Inativos
-      if (situacaoOptions === 'Pendentes') return solicit.usu_aprovado === "Não Aprovado"; // Usuários Pendentes
-      return false; // Se não houver filtro, retorna nada
+    const filtrarSolicitacoes = (situacao) => {
+      const situacaoFilter = situacaoMap[situacao];
+      const filtradas = listaUsuarios.filter((solicit) => {
+      if (situacao === "Aprovados") return solicit.usu_aprovado === situacaoFilter;
+      if (situacao === "Reprovados") return solicit.usu_tipo === situacaoFilter;
+      if (situacao === "Pendentes") return solicit.usu_aprovado === situacaoFilter;
+      return false;
     });
+
     setSolicitacoesFiltradas(filtradas);
   };
 
@@ -173,7 +174,7 @@ export default function Solicitacao() {
             <div
               key={status.value}
               className={`${styles.situacao} ${filtroSituacao === status.value ? styles.active : ''}`}
-              onClick={() => handleFiltroChange({ target: { value: status.value } })}
+              onClick={() => setFiltroSituacao(status.value)}
             >
               <Image
                 src={`/solicitacoes/${status.value.replace(/\s+/g, '_')}.png`}
@@ -186,57 +187,58 @@ export default function Solicitacao() {
             </div>
           ))}
         </div>
+        <form onSubmit={handleConfirm}>
+          <div className={styles.opcao}>
+            <select
+              className={styles.selectInput}
+              value={usuarioTipo}
+              onChange={(e) => setUsuarioTipo(e.target.value)}
+            >
+              <option value="" disabled>Selecione uma opção</option>
+              <option value="2">Funcionário(a) - ADM</option>
+              <option value="1">Professor(a)</option>
+              <option value="0">Aluno(a)</option>
+              <option value="5">Acesso negado</option>
+            </select>
+            <button type="submit" className={styles.confirmButton}>
+              Confirmar
+            </button>
+          </div>
 
-        <div className={styles.opcao}>
-          <select
-            className={styles.selectInput}
-            value={usuarioTipo}
-            onChange={(e) => setUsuarioTipo(e.target.value)}
-          >
-            <option value="" disabled>Selecione uma opção</option>
-            <option value="2">Funcionário(a) - ADM</option>
-            <option value="1">Professor(a)</option>
-            <option value="0">Aluno(a)</option>
-            <option value="5">Acesso negado</option>
-          </select>
-          <button type="submit" onClick={openModalConfirm} className={styles.confirmButton}>
-            Confirmar
-          </button>
-        </div>
+          {/* Exibe as solicitações filtradas */}
+          <div className={styles.container}>
 
-        {/* Exibe as solicitações filtradas */}
-        <div className={styles.container}>
-
-          {solicitacoesFiltradas.length > 0 ? (
-            solicitacoesFiltradas.map((solicit) => (
-              <div key={solicit.usu_cod} className={styles.lineSquare}>
-                <div className={styles.inputContainer}>
-                  <p className={styles.info}>  Nome: {solicit.usu_nome}</p>
-                  <p className={styles.info}>  RM: {solicit.usu_rm}</p>
-                  <p className={styles.info}>  E-mail: {solicit.usu_email}</p>
-                  <p className={styles.info}>  Curso técnico ou médio: {solicit.cursos.length > 0 ? solicit.cursos[0].cur_nome : 'Nenhum curso encontrado'}</p>
-                  <div className={styles.box}>
-                    <input
-                      type="checkbox"
-                      id={`checkbox-${solicit.usu_cod}`}
-                      checked={selectedUsers.has(solicit.usu_cod)}
-                      onChange={() => toggleUserSelection(solicit.usu_cod)}
-                    />
-                    <label htmlFor={`checkbox-${solicit.usu_cod}`} className={styles.customCheckbox}></label>
+            {solicitacoesFiltradas.length > 0 ? (
+              solicitacoesFiltradas.map((solicit) => (
+                <div key={solicit.usu_cod} className={styles.lineSquare}>
+                  <div className={styles.inputContainer}>
+                    <p className={styles.info}>  Nome: {solicit.usu_nome}</p>
+                    <p className={styles.info}>  RM: {solicit.usu_rm}</p>
+                    <p className={styles.info}>  E-mail: {solicit.usu_email}</p>
+                    <p className={styles.info}>  Curso técnico ou médio: {solicit.cursos.length > 0 ? solicit.cursos[0].cur_nome : 'Nenhum curso encontrado'}</p>
+                    <div className={styles.box}>
+                      <input
+                        type="checkbox"
+                        id={`checkbox-${solicit.usu_cod}`}
+                        checked={selectedUsers.has(solicit.usu_cod)}
+                        onChange={() => toggleUserSelection(solicit.usu_cod)}
+                      />
+                      <label htmlFor={`checkbox-${solicit.usu_cod}`} className={styles.customCheckbox}></label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <h1>Não há resultados para a requisição</h1>
-          )}
-        </div>
-        <ModalConfirmar
-          show={showModalConfirm}
-          onClose={closeModalConfirm}
-          onConfirm={handleConfirm}
-          mensagem="Tem certeza que deseja aprovar as solicitações?"
-        />
+              ))
+            ) : (
+              <h1>Não há resultados para a requisição</h1>
+            )}
+          </div>
+          <ModalConfirmar
+            show={showModalConfirm}
+            onClose={closeModalConfirm}
+            onConfirm={handleConfirm}
+            mensagem="Tem certeza que deseja aprovar as solicitações?"
+          />
+        </form>
       </div>
     </main>
   );

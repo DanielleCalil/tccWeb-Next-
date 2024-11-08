@@ -62,7 +62,10 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
     }
 
     useEffect(() => {
-        if (codLiv) listaGeneros();
+        if (codLiv) {
+            handleCarregaLivro();
+            listaGeneros();
+        }
     }, [codLiv]);
 
     async function listaGeneros() {
@@ -80,12 +83,6 @@ export default function ModalEdtGenero({ show, onClose, codLiv }) {
             }
         }
     }
-
-    useEffect(() => {
-        if (!codLiv) return;
-
-        handleCarregaLivro();
-    }, [codLiv]);
 
     const handleCarregaLivro = async () => {
         const dadosApi = { liv_cod: codLiv };

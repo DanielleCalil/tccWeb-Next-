@@ -144,9 +144,9 @@ export default function EditarInformacoesLivro({ codLivro }) {
     };
 
     const handleSave = async () => {
-        const { liv_nome, disponivel, liv_desc, aut_nome, edt_nome, gen_nome } = livro;
+        const { liv_pha_cod, liv_categ_cod, liv_foto_capa, liv_nome, disponivel, liv_desc, aut_nome, edt_nome, gen_nome } = livro;
 
-        if (!liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome ) {
+        if (!liv_pha_cod || !liv_categ_cod || !liv_foto_capa || !liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome ) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
@@ -196,6 +196,20 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                         <div className={styles.headerLineSquare}>
                                             <div className={styles.title}>
                                                 <p className={styles.geral}>Visão geral</p>
+                                                <input
+                                                    type="text"
+                                                    value={livro.liv_pha_cod}
+                                                    onChange={(e) => setLivro({ ...livro, liv_pha_cod: e.target.value })}
+                                                    className={`${styles.editInputTittle} ${styles.editInput}`}
+                                                    aria-label="pha do livro"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={livro.liv_categ_cod}
+                                                    onChange={(e) => setLivro({ ...livro, liv_categ_cod: e.target.value })}
+                                                    className={`${styles.editInputTittle} ${styles.editInput}`}
+                                                    aria-label="categ do livro"
+                                                />
                                                 <input
                                                     type="text"
                                                     value={livro.liv_nome}

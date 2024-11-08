@@ -20,6 +20,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
+    const [initialImage, setInitialImage] = useState('');
 
     const [livro, setLivro] = useState({
         "liv_cod": '',
@@ -121,6 +122,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                 if (response.data.sucesso) {
                     const livroApi = response.data.dados[0];
                     setLivro(livroApi);
+                    setInitialImage(livroApi.liv_foto_capa);
                     setImageSrc(livroApi.liv_foto_capa);
                 } else {
                     setError(response.data.mensagem);
@@ -144,21 +146,29 @@ export default function EditarInformacoesLivro({ codLivro }) {
     };
 
     const handleSave = async () => {
-        const { liv_pha_cod, liv_categ_cod, liv_foto_capa, liv_nome, disponivel, liv_desc, aut_nome, edt_nome, gen_nome } = livro;
-
-        if (!liv_pha_cod || !liv_categ_cod || !liv_foto_capa || !liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome ) {
+        const { liv_pha_cod, liv_categ_cod, liv_nome, disponivel, liv_desc, aut_nome, edt_nome } = livro;
+    
+        // Verifica se os campos obrigatórios estão preenchidos
+        if (!liv_pha_cod || !liv_categ_cod || !liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
-
+    
         setIsSaving(true); // Inicia o salvamento
-
+    
         try {
-            const response = await api.patch(`/livros/${livro.liv_cod}`, );
-
+            // Verifica se uma nova imagem foi carregada. Se não, mantém a imagem existente.
+            const livroAtualizado = {
+                ...livro,
+                liv_foto_capa: imageSrc || livro.liv_foto_capa // Mantém a imagem original se nenhuma nova foi carregada
+            };
+    
+            // Envia o objeto atualizado para a API
+            const response = await api.patch(`/livros/${livro.liv_cod}`, livroAtualizado);
+    
             if (response.data.sucesso) {
                 alert('Livro atualizado com sucesso!');
-                router.push('/infoLivroBiblioteca'); // Redireciona após o sucesso
+                router.push('/biblioteca'); // Redireciona após o sucesso
             }
         } catch (error) {
             console.error("Erro ao salvar informações do livro:", error);
@@ -167,6 +177,8 @@ export default function EditarInformacoesLivro({ codLivro }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
+    
+
     console.log(livro);
 
     return (
@@ -196,20 +208,22 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                         <div className={styles.headerLineSquare}>
                                             <div className={styles.title}>
                                                 <p className={styles.geral}>Visão geral</p>
-                                                <input
-                                                    type="text"
-                                                    value={livro.liv_pha_cod}
-                                                    onChange={(e) => setLivro({ ...livro, liv_pha_cod: e.target.value })}
-                                                    className={`${styles.editInputTittle} ${styles.editInput}`}
-                                                    aria-label="pha do livro"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    value={livro.liv_categ_cod}
-                                                    onChange={(e) => setLivro({ ...livro, liv_categ_cod: e.target.value })}
-                                                    className={`${styles.editInputTittle} ${styles.editInput}`}
-                                                    aria-label="categ do livro"
-                                                />
+                                                <div className={styles.cods}>
+                                                    <input
+                                                        type="text"
+                                                        value={livro.liv_pha_cod}
+                                                        onChange={(e) => setLivro({ ...livro, liv_pha_cod: e.target.value })}
+                                                        className={styles.editInputCods}
+                                                        aria-label="pha do livro"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        value={livro.liv_categ_cod}
+                                                        onChange={(e) => setLivro({ ...livro, liv_categ_cod: e.target.value })}
+                                                        className={styles.editInputCods}
+                                                        aria-label="categ do livro"
+                                                    />
+                                                </div>
                                                 <input
                                                     type="text"
                                                     value={livro.liv_nome}

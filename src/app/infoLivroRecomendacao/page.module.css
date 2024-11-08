@@ -185,19 +185,19 @@
   
   /* Estilo para o checkbox personalizado */
   .customCheckbox {
-    width: 10px; /* Largura do checkbox */
-    height: 10px; /* Altura do checkbox */
-    border: 2px solid #CCC; /* Cor da borda do checkbox */
-    border-radius: 4px; /* Bordas arredondadas */
+    width: 10px;
+    height: 10px;
+    border: 2px solid #CCC;
+    border-radius: 4px;
     display: inline-block; /* Para permitir o espaço ao redor */
-    position: relative; /* Para posicionar o "check" */
-    cursor: pointer; /* Cursor pointer para indicar que é clicável */
-    margin-right: 5px; /* Espaçamento entre o checkbox e o texto */
+    position: relative;
+    /* cursor: pointer; */
+    margin-right: 5px;
   }
   
   /* Estilo para o "check" quando o checkbox é marcado */
   .inputContainer input[type="checkbox"]:checked + .customCheckbox {
-    background-color: #FF735C; /* Cor de fundo quando selecionado */
+    background-color: #FF735C;
     border: 2px solid #FF735C;
   }
   
@@ -205,13 +205,13 @@
   .inputContainer input[type="checkbox"]:checked + .customCheckbox::after {
     content: ''; /* Cria um conteúdo vazio */
     position: absolute; /* Posiciona o "check" */
-    left: 6px; /* Distância da esquerda */
-    top: 2px; /* Distância do topo */
-    width: 5px; /* Largura do "check" */
-    height: 10px; /* Altura do "check" */
-    border: solid white; /* Cor do "check" */
-    border-width: 0 2px 2px 0; /* Define as bordas do "check" */
-    transform: rotate(45deg); /* Rotaciona o "check" */
+    left: 12px;
+    top: 0px;
+    width: 0px;
+    height: 0px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
   }
   
 

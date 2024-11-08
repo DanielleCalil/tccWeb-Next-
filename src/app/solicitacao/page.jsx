@@ -32,12 +32,7 @@ export default function Solicitacao() {
   const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [usuarioTipo, setUsuarioTipo] = useState("");
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
-  const [listaUsuarios, setListaUsuarios] = useState({
-    "usu_cod": "",
-    "usu_tipo": "",
-    "usu_ativo": "",
-    "usu_aprovado": "",
-  });
+  const [listaUsuarios, setListaUsuarios] = useState([]);
   const [filtroSituacao, setFiltroSituacao] = useState('');
   const [showModalConfirm, setShowModalConfirm] = useState(false);
 
@@ -98,9 +93,9 @@ export default function Solicitacao() {
     fetchUsuariosPendentes();
   }, []);
 
-    const filtrarSolicitacoes = (situacao) => {
-      const situacaoFilter = situacaoMap[situacao];
-      const filtradas = listaUsuarios.filter((solicit) => {
+  const filtrarSolicitacoes = (situacao) => {
+    const situacaoFilter = situacaoMap[situacao];
+    const filtradas = listaUsuarios.filter((solicit) => {
       if (situacao === "Aprovados") return solicit.usu_aprovado === situacaoFilter;
       if (situacao === "Reprovados") return solicit.usu_tipo === situacaoFilter;
       if (situacao === "Pendentes") return solicit.usu_aprovado === situacaoFilter;
@@ -215,7 +210,7 @@ export default function Solicitacao() {
                     <p className={styles.info}>  Nome: {solicit.usu_nome}</p>
                     <p className={styles.info}>  RM: {solicit.usu_rm}</p>
                     <p className={styles.info}>  E-mail: {solicit.usu_email}</p>
-                    <p className={styles.info}>  Curso técnico ou médio: {solicit.cursos.length > 0 ? solicit.cursos[0].cur_nome : 'Nenhum curso encontrado'}</p>
+                    <p className={styles.info}>  Curso técnico ou médio: {solicit.cursos && solicit.cursos.length > 0 ? solicit.cursos[0].cur_nome : 'Nenhum curso encontrado'}</p>
                     <div className={styles.box}>
                       <input
                         type="checkbox"

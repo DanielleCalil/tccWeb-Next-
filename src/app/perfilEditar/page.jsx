@@ -70,7 +70,7 @@ export default function PerfilEditar({ codUsu }) {
         "usu_social": '',
         "usu_nome": '',
         "usu_email": '',
-        "usu_senha": '',
+        "usu_senha": null,
         "usu_sexo": '',
         "usu_foto": '',
         "usu_ativo": '',

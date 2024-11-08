@@ -266,6 +266,14 @@ export default function AddLivroNovo({ codLiv }) {
             validado: valDefault,
             mensagem: []
         },
+        liv_pha_cod: {
+            validado: valDefault,
+            mensagem: []
+        },
+        liv_categ_cod: {
+            validado: valDefault,
+            mensagem: []
+        },
         capa: {
             validado: valDefault,
             mensagem: []
@@ -421,6 +429,54 @@ export default function AddLivroNovo({ codLiv }) {
         return testeResult;
     }
 
+    function validapha() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.liv_pha_cod === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('O pha do livro é obrigatório');
+        } else if (livro.liv_pha_cod.length < 5) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Insira o pha do livro');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            liv_pha_cod: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
+    function validacateg() {
+
+        let objTemp = {
+            validado: valSucesso, // css referente ao estado de validação
+            mensagem: [] // array de mensagens de validação
+        };
+
+        if (livro.liv_categ_cod === '') {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('A categ do livro é obrigatório');
+        } else if (livro.liv_categ_cod.length < 5) {
+            objTemp.validado = valErro;
+            objTemp.mensagem.push('Insira a categ do livro');
+        }
+
+        setValida(prevState => ({
+            ...prevState, // mantém os valores anteriores
+            liv_categ_cod: objTemp // atualiza apenas o campo 'nome'
+        }));
+
+        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+        return testeResult;
+    }
+
     function validaResumo() {
 
         let objTemp = {
@@ -463,6 +519,8 @@ export default function AddLivroNovo({ codLiv }) {
         // itensValidados += validaSelectAutor();
         // itensValidados += validaSelectEditora();
         // itensValidados += validaSelectGenero();
+        // itensValidados += validapha();
+        // itensValidados += validacateg();
         // itensValidados += validaResumo();
         // itensValidados += validaFoto();
 
@@ -530,6 +588,42 @@ export default function AddLivroNovo({ codLiv }) {
                                     />
                                 </div>
                             </div> */}
+
+                            <div className={valida.liv_pha_cod.validado + ' ' + styles.valpha} id="valpha">
+                                <label className={styles.textInput}>Códido do pha:</label>
+                                <div className={styles.divInput}>
+                                    <input
+                                        id="pha"
+                                        name="liv_pha_cod"
+                                        value={livro.liv_pha_cod}
+                                        className={styles.inputQuant}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.liv_pha_cod.mensagem.map(mens => <small key={mens} id="pha" className={styles.small}>{mens}</small>)
+                                }
+                            </div>
+
+                            <div className={valida.liv_categ_cod.validado + ' ' + styles.valResumo} id="valcateg">
+                                <label className={styles.textInput}>Código da categ:</label>
+                                <div className={styles.divInput}>
+                                    <input
+                                        id="categ"
+                                        name="liv_categ_cod"
+                                        value={livro.liv_categ_cod}
+                                        className={styles.inputQuant}
+                                        onChange={handleChange}
+                                    />
+                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
+                                    <IoAlertCircleOutline className={styles.erro} />
+                                </div>
+                                {
+                                    valida.liv_categ_cod.mensagem.map(mens => <small key={mens} id="categ" className={styles.small}>{mens}</small>)
+                                }
+                            </div>
 
                             <div className={valida.quant.validado + ' ' + styles.valQuant} id="valQuant">
                                 <label className={styles.textInput}>Quantidade:</label>
@@ -650,30 +744,30 @@ export default function AddLivroNovo({ codLiv }) {
                                             <IoChevronForward size={20} color="#FFF" />
                                         </button>
                                     </div>
-                                        <div className={styles.inputCursos}>
-                                            <label className={styles.textInput}>Selecione o gênero:</label>
-                                            <ul
-                                                id="gen_cod"
-                                                name="gen_cod"
-                                                value={livro.gen_cod}
-                                                onChange={handleChange}
-                                                className={styles.opcaoCursos}
-                                            >
-                                                {genLiv.length > 0 ? (
-                                                    genLiv.map((gen) => (
-                                                        <li
-                                                            key={gen.gen_cod}
-                                                            value={gen.gen_cod}
-                                                            onClick={() => handleClickEscola(gen.gen_cod)}
-                                                            className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
-                                                            {gen.gen_nome}
-                                                        </li>
-                                                    ))
-                                                ) : (
-                                                    <p>Não há gêneros registrados.</p>
-                                                )}
-                                            </ul>
-                                        </div>
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Selecione o gênero:</label>
+                                        <ul
+                                            id="gen_cod"
+                                            name="gen_cod"
+                                            value={livro.gen_cod}
+                                            onChange={handleChange}
+                                            className={styles.opcaoCursos}
+                                        >
+                                            {genLiv.length > 0 ? (
+                                                genLiv.map((gen) => (
+                                                    <li
+                                                        key={gen.gen_cod}
+                                                        value={gen.gen_cod}
+                                                        onClick={() => handleClickEscola(gen.gen_cod)}
+                                                        className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
+                                                        {gen.gen_nome}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p>Não há gêneros registrados.</p>
+                                            )}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             {

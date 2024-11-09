@@ -120,7 +120,7 @@ export default function InfoLivroBiblioteca({ codLivro }) {
                                 </div>
                             </div>
                             <div className={styles.editar}>
-                                <Link href="/reservarLivro/">
+                            <Link href={`/reservarLivro/${livro?.liv_cod}`}>
                                     <button className={styles.reservButton}>Reservar livro</button>
                                 </Link>
                             </div>

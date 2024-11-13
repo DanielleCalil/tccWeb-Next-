@@ -6,12 +6,14 @@ import styles from "./page.module.css";
 import FileInput from '@/componentes/FileInput/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
+import { extractFileName } from "../utils/extractFileName";
 import api from '@/services/api';
 
 export default function EditarInformacoesLivro({ codLivro }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+    let fileName = '';
 
     const imageLoader = ({ src, width, quality }) => {
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
@@ -122,7 +124,9 @@ export default function EditarInformacoesLivro({ codLivro }) {
                 if (response.data.sucesso) {
                     const livroApi = response.data.dados[0];
                     setLivro(livroApi);
-                    setInitialImage(livroApi.liv_foto_capa);
+                    fileName = extractFileName(livroApi.liv_foto_capa);
+                    console.log(fileName);
+                    setInitialImage(fileName);
                     setImageSrc(livroApi.liv_foto_capa);
                 } else {
                     setError(response.data.mensagem);
@@ -160,8 +164,11 @@ export default function EditarInformacoesLivro({ codLivro }) {
             // Verifica se uma nova imagem foi carregada. Se não, mantém a imagem existente.
             const livroAtualizado = {
                 ...livro,
-                liv_foto_capa: imageSrc || livro.liv_foto_capa // Mantém a imagem original se nenhuma nova foi carregada
+                liv_foto_capa: `'${fileName}'` // Mantém a imagem original se nenhuma nova foi carregada
+                
+                
             };
+            //console.log(fileName);
     
             // Envia o objeto atualizado para a API
             const response = await api.patch(`/livros/${livro.liv_cod}`, livroAtualizado);
@@ -193,7 +200,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                     <div className={styles.imgBook}>
                                         <div className={styles.imagePreview}>
                                             <Image
-                                                src={imageSrc || livro.liv_foto_capa}
+                                                src={livro.liv_foto_capa}
                                                 alt={livro.liv_nome}
                                                 width={667}
                                                 height={1000}

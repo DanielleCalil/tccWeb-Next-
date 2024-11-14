@@ -35,6 +35,8 @@ export default function Solicitacao() {
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [filtroSituacao, setFiltroSituacao] = useState('');
   const [showModalConfirm, setShowModalConfirm] = useState(false);
+  const [usuariosPendentes, setUsuariosPendentes] = useState([]);
+  const [usuariosReprovados, setUsuariosReprovados] = useState([]);
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -84,13 +86,26 @@ export default function Solicitacao() {
     async function fetchUsuariosPendentes() {
       try {
         const response = await api.post('/usu_pendentes');
-        setListaUsuarios(response.data.dados);
+        setUsuariosPendentes(response.data.dados);
         setSolicitacoesFiltradas(response.data.dados);
       } catch (error) {
         alert('Erro ao buscar usuários pendentes.');
       }
     }
     fetchUsuariosPendentes();
+  }, []);
+
+  useEffect(() => {
+    async function fetchUsuariosReprovados() {
+      try {
+        const response = await api.post('/usu_reprovados');
+        setUsuariosReprovados(response.data.dados);
+        setSolicitacoesFiltradas(response.data.dados);
+      } catch (error) {
+        alert('Erro ao buscar usuários reprovados.');
+      }
+    }
+    fetchUsuariosReprovados();
   }, []);
 
   const filtrarSolicitacoes = (situacao) => {

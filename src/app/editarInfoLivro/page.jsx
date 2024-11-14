@@ -29,6 +29,41 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
     console.log(generoSelecionadoLivro);
 
+    const handleClickLivro = (gen_cod) => {
+        setGeneroSelecionadoLivro(gen_cod);
+    };
+    const handleClickEscola = (gen_cod) => {
+        setGeneroSelecionadoEscola(gen_cod);
+    };
+
+    const handleAddGenero = async () => {
+        try {
+            const response = await api.post(`/livros_generos`, { liv_cod: codLivro, gen_cod: generoSelecionadoEscola });
+            if (response.data.sucesso) {
+                alert('Gênero adicionado com sucesso!');
+                listaGeneros();
+                handleCarregaLivro();
+            }
+        } catch (error) {
+            console.error("Erro ao adicionar gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar gênero. Tente novamente.');
+        }
+    };
+
+    const handleRemoveGenero = async () => {
+        try {
+            const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
+            if (response.data.sucesso) {
+                alert('Gênero removido com sucesso!');
+                listaGeneros();
+                handleCarregaLivro();
+            }
+        } catch (error) {
+            console.error("Erro ao remover gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
+        }
+    };
+
     const [livro, setLivro] = useState({
         "liv_cod": '',
         "liv_nome": '',
@@ -38,7 +73,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "edt_nome": '',
         "gen_nome": '',
         "liv_foto_capa": '',
-        "Generos": '',
+        "Generos": [],
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "edt_cod": '',
@@ -68,41 +103,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         await handleSave();
     };
 
-    const handleClickLivro = (gen_cod) => {
-        setGeneroSelecionadoLivro(gen_cod);
-    };
-    const handleClickEscola = (gen_cod) => {
-        setGeneroSelecionadoEscola(gen_cod);
-    };
-
-    const handleAddGenero = async () => {
-        try {
-            const response = await api.post(`/livros_generos`, { gen_cod: codLivro, gen_cod: generoSelecionadoEscola });
-            if (response.data.sucesso) {
-                alert('Gênero adicionado com sucesso!');
-                listaGeneros();
-                handleCarregaLivro();
-            }
-        } catch (error) {
-            console.error("Erro ao adicionar gênero:", error);
-            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar gênero. Tente novamente.');
-        }
-    };
-
-    const handleRemoveGenero = async () => {
-        try {
-            const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
-            if (response.data.sucesso) {
-                alert('Gênero removido com sucesso!');
-                listaGeneros();
-                handleCarregaLivro();
-            }
-        } catch (error) {
-            console.error("Erro ao remover gênero:", error);
-            alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
-        }
-    };
-
+    
     useEffect(() => {
         listaAutor();
         listaEditora();
@@ -141,7 +142,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     }, [codLivro]);
 
     async function listaGeneros() {
-        const dados = { usu_cod: codLivro };
+        const dados = { liv_cod: codLivro };
 
         try {
             const response = await api.post('/dispGeneros', dados);
@@ -370,7 +371,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                                         value={gen.lge_cod}
                                                                         onClick={() => handleClickLivro(gen.lge_cod)}
                                                                         className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
-                                                                        {gen.gen_nome}
+                                                                        {gen.Generos}
                                                                     </li>
                                                                 ))
                                                             ) : (

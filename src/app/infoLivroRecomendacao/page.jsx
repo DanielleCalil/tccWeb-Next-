@@ -22,20 +22,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
     const [modulo3, setModulo3] = useState(false);
     const [modulo4, setModulo4] = useState(false);
 
-    const [livroRec, setLivroRec] = useState({
-        "rcm_cod": "",
-        "cur_nome": "",
-        "cur_cod": "",
-        "liv_cod": "",
-        "liv_foto_capa": "",
-        "liv_nome": "",
-        "liv_desc": "",
-        "aut_nome": "",
-        "gen_nome": "",
-        "generos": "",
-        "edt_nome": "",
-        "disponivel": "",
-    });
+    const [livroRec, setLivroRec] = useState(null);
 
     const router = useRouter();
 
@@ -87,7 +74,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro</h1>
                 <div className={styles.container}>
-                    {livroRec.liv_cod !== '' ? (
+                    {livroRec ? (
                         <>
                             <div className={styles.lineSquare}>
                                 <div className={styles.inputContainer}>
@@ -205,7 +192,7 @@ export default function InfoLivroRecomendacao({ codLivroRec }) {
                                 </div>
                             </div>
                             <div className={styles.editar}>
-                                <Link href="/reservarLivro">
+                                <Link href={`/reservarLivro/${livroRec?.liv_cod}`}>
                                     <span>
                                         <button className={styles.reservButton}>Reservar livro</button>
                                     </span>

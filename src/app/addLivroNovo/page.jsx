@@ -32,7 +32,12 @@ export default function AddLivroNovo({ codLiv }) {
         setGeneroSelecionadoEscola(gen_cod);
     };
 
-    const handleAddGenero = async (gen_cod) => {
+    const handleAddGenero = async () => {
+        if (!livro.liv_cod) {
+            alert("O livro precisa ser cadastrado antes de adicionar um gênero.");
+            return;
+        }
+
         try {
             const response = await api.post(`/livros_generos`, { liv_cod: codLiv, gen_cod: generoSelecionadoEscola });
             if (response.data.sucesso) {
@@ -72,7 +77,7 @@ export default function AddLivroNovo({ codLiv }) {
         "aut_nome": '',
         "aut_cod": '',
         "disponivel": '',
-        "Generos": '',
+        "Generos": [],
         "gen_cod": '',
         "gen_nome": '',
     });
@@ -120,7 +125,6 @@ export default function AddLivroNovo({ codLiv }) {
     useEffect(() => {
         listaAutores();
         listaEditoras();
-        listaGeneros();
     }, []);
 
     async function listaAutores() {
@@ -196,6 +200,9 @@ export default function AddLivroNovo({ codLiv }) {
         }));
     };
 
+    useEffect(() => {
+        if (codUsu) listaGeneros();
+    }, [codUsu]);
 
     async function listaGeneros() {
         const dados = { liv_cod: codLiv };
@@ -532,7 +539,13 @@ export default function AddLivroNovo({ codLiv }) {
                 if (response.data.sucesso) {
                     const livroCodigo = response.data.liv_cod; // Supondo que o código do livro seja retornado aqui
                     // Exibindo o aviso de sucesso com o código do livro
+                    setLivro((prevLivro) => ({ ...prevLivro, liv_cod: livroCodigo }));
                     alert(`Livro salvo com sucesso! Código do livro: ${livroCodigo}`);
+
+                    if (generoSelecionadoEscola) {
+                        await handleAddGenero(); // Chama a função para associar o gênero ao livro
+                    }
+
                     openModaisLiv();
                     router.push('biblioteca');
                 }
@@ -704,10 +717,51 @@ export default function AddLivroNovo({ codLiv }) {
                             </div>
 
                             <div className={valida.gen_cod.validado + ' ' + styles.valSelectGen} id="valSelectGen">
-                                <div className={styles.listaCursos}>
-                                    <div className={styles.inputCursos}>
-                                        <label className={styles.textInput}>Gêneros já selecionados:</label>
-                                        <div className={styles.divInput}>
+                                {livro.liv_cod ? (
+                                    <div className={styles.listaCursos}>
+                                        <div className={styles.inputCursos}>
+                                            <label className={styles.textInput}>Gêneros já selecionados:</label>
+                                            <div className={styles.divInput}>
+                                                <ul
+                                                    id="gen_cod"
+                                                    name="gen_cod"
+                                                    value={livro.gen_cod}
+                                                    onChange={handleChange}
+                                                    className={styles.opcaoCursos}
+                                                >
+
+                                                    {livro.genLiv && livro.genLiv.length > 0 ? (
+                                                        livro.genLiv.map((gen) => (
+                                                            <li
+                                                                key={gen.lge_cod}
+                                                                value={gen.lge_cod}
+                                                                onClick={() => handleClickLivro(gen.lge_cod)}
+                                                                className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                                {gen.gen_nome}
+                                                            </li>
+                                                        ))
+                                                    ) : (
+                                                        <p>Não há gêneros registrados.</p>
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        </div>
+
+
+                                        <div className={styles.buttons}>
+                                            <button className={styles.cursosButton}
+                                                onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}
+                                                disabled={!livro.liv_cod}>
+                                                <IoChevronBack size={20} color="#FFF" />
+                                            </button>
+                                            <button className={styles.cursosButton}
+                                                onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}
+                                                disabled={!livro.liv_cod}>
+                                                <IoChevronForward size={20} color="#FFF" />
+                                            </button>
+                                        </div>
+                                        <div className={styles.inputCursos}>
+                                            <label className={styles.textInput}>Selecione o gênero:</label>
                                             <ul
                                                 id="gen_cod"
                                                 name="gen_cod"
@@ -715,14 +769,13 @@ export default function AddLivroNovo({ codLiv }) {
                                                 onChange={handleChange}
                                                 className={styles.opcaoCursos}
                                             >
-
-                                                {livro.genLiv && livro.genLiv.length > 0 ? (
-                                                    livro.genLiv.map((gen) => (
+                                                {genLiv.length > 0 ? (
+                                                    genLiv.map((gen) => (
                                                         <li
-                                                            key={gen.lge_cod}
-                                                            value={gen.lge_cod}
-                                                            onClick={() => handleClickLivro(gen.lge_cod)}
-                                                            className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                            key={gen.gen_cod}
+                                                            value={gen.gen_cod}
+                                                            onClick={() => handleClickEscola(gen.gen_cod)}
+                                                            className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
                                                             {gen.gen_nome}
                                                         </li>
                                                     ))
@@ -732,43 +785,9 @@ export default function AddLivroNovo({ codLiv }) {
                                             </ul>
                                         </div>
                                     </div>
-
-
-                                    <div className={styles.buttons}>
-                                        <button className={styles.cursosButton}
-                                            onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}>
-                                            <IoChevronBack size={20} color="#FFF" />
-                                        </button>
-                                        <button className={styles.cursosButton}
-                                            onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}>
-                                            <IoChevronForward size={20} color="#FFF" />
-                                        </button>
-                                    </div>
-                                    <div className={styles.inputCursos}>
-                                        <label className={styles.textInput}>Selecione o gênero:</label>
-                                        <ul
-                                            id="gen_cod"
-                                            name="gen_cod"
-                                            value={livro.gen_cod}
-                                            onChange={handleChange}
-                                            className={styles.opcaoCursos}
-                                        >
-                                            {genLiv.length > 0 ? (
-                                                genLiv.map((gen) => (
-                                                    <li
-                                                        key={gen.gen_cod}
-                                                        value={gen.gen_cod}
-                                                        onClick={() => handleClickEscola(gen.gen_cod)}
-                                                        className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
-                                                        {gen.gen_nome}
-                                                    </li>
-                                                ))
-                                            ) : (
-                                                <p>Não há gêneros registrados.</p>
-                                            )}
-                                        </ul>
-                                    </div>
-                                </div>
+                                ) : (
+                                    <p>Carregando dados...</p>
+                                )}
                             </div>
                             {
                                 valida.gen_cod.mensagem.map(mens => (

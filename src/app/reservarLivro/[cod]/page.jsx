@@ -8,10 +8,11 @@ import styles from './page.module.css'; // Arquivo com os estilos personalizados
 import Calendario from '@/componentes/calendario/page'; // Importa o componente Calendario
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
-export default function ReservarLivro({ livroCod }) {
+export default function ReservarLivro({ params }) {
 
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const router = useRouter();
+  const livroCod = parseInt(params.cod);
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -46,7 +47,7 @@ export default function ReservarLivro({ livroCod }) {
     }
     handleCarregaLivro();
 }, [livroCod]);
-
+  
   return (
     <main className={styles.main}>
       <div className="containerGlobal">

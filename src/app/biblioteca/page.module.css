@@ -152,6 +152,8 @@
 
 .bookInfo {
     padding: 1px;
+    display: flex;
+    justify-content: end;
 }
 
 .bookTitle {

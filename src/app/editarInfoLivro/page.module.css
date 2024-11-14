@@ -27,6 +27,24 @@
     width: 100%;
 }
 
+.customFileUpload {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem 1rem;
+    cursor: pointer;
+    background-color: #3F7263;
+    color: white;
+    border: 1px solid #3F7263;
+    border-radius: 3rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.customFileUpload:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
 .lineSquare {
     width: auto;
     height: auto;
@@ -42,6 +60,7 @@
 
 .infoBookReserva {
     display: flex;
+    width: 105rem;
 }
 
 .imgBook {
@@ -69,6 +88,7 @@
     font-weight: 400;
     margin-top: 0.313rem;
     margin-left: 2rem;
+    width: 100%;
 }
 
 .headerLineSquare {
@@ -94,6 +114,15 @@
     flex-direction: row;
 }
 
+.codsText {
+    font-weight: 400;
+    font-size: 12px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-right: 0.5rem;
+}
+
 .editInputCods {
     flex-direction: column;
     margin-bottom: 0.625rem;
@@ -114,7 +143,7 @@
 
 .smallLineSquare {
     width: auto;
-    height: 4rem;
+    max-height: 8rem;
     box-sizing: border-box;
     height: auto;
     border: 1px solid black;
@@ -168,12 +197,88 @@
     margin: 0;
 }
 
+.listaCursos {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.inputCursos {
+    width: auto;
+}
+
+.opcaoCursos {
+    width: 100%;
+    height: auto;
+    padding: 1rem 2rem;
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    border-radius: 3rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #000;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 2rem;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.cursosButton {
+    height: 5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: #FF735C;
+    color: white;
+    border: none;
+    border-radius: 3rem;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6rem;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    display: flex;
+}
+
+.cursosButton:hover {
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.selected {
+    background-color: #3F7263;
+    color: #FFF;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.2rem;
+    cursor: pointer;
+}
+
+
+.textInput {
+    font-weight: 300;
+    font-size: 1.4rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
 .editInputTittle {
-    width: 60rem;
+    width: 81.5rem;
 }
 
 .inputResumo {
-    width: 70rem;
+    width: 90%;
     height: 16rem;
     padding: 1.5rem;
     margin: 0.625rem 0;
@@ -199,8 +304,8 @@
 .infoContainer {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: space-around;
+    margin-top: 1rem;
 }
 
 .infoBox {
@@ -248,6 +353,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    max-width: 90%;
 }
 
 .saveButton {

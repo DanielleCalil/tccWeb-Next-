@@ -6,14 +6,15 @@ import styles from "./page.module.css";
 import FileInput from '@/componentes/FileInput/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
-import { extractFileName } from "../utils/extractFileName";
+// import { extractFileName } from "../utils/extractFileName";
+import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
 import api from '@/services/api';
 
 export default function EditarInformacoesLivro({ codLivro }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
-    let fileName = '';
+    // let fileName = '';
 
     const imageLoader = ({ src, width, quality }) => {
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
@@ -23,6 +24,10 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const [initialImage, setInitialImage] = useState('');
+    const [genLiv, setGenLiv] = useState([]);
+    const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
+    const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
+    console.log(generoSelecionadoLivro);
 
     const [livro, setLivro] = useState({
         "liv_cod": '',
@@ -37,6 +42,8 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "edt_cod": '',
+        "lge_cod": '',
+        "gen_cod": '',
 
         // "liv_pha_cod": "D738p",
         // "liv_categ_cod": "0.810",
@@ -61,14 +68,44 @@ export default function EditarInformacoesLivro({ codLivro }) {
         await handleSave();
     };
 
-    const [ShowModalGenero, setShowModalGenero] = useState(false); // Estado para abrir/fechar o modal
-    const openModalGenero = () => setShowModalGenero(true); // Abre o modal
-    const closeModalGenero = () => setShowModalGenero(false);
+    const handleClickLivro = (gen_cod) => {
+        setGeneroSelecionadoLivro(gen_cod);
+    };
+    const handleClickEscola = (gen_cod) => {
+        setGeneroSelecionadoEscola(gen_cod);
+    };
+
+    const handleAddGenero = async () => {
+        try {
+            const response = await api.post(`/livros_generos`, { gen_cod: codLivro, gen_cod: generoSelecionadoEscola });
+            if (response.data.sucesso) {
+                alert('Gênero adicionado com sucesso!');
+                listaGeneros();
+                handleCarregaLivro();
+            }
+        } catch (error) {
+            console.error("Erro ao adicionar gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar gênero. Tente novamente.');
+        }
+    };
+
+    const handleRemoveGenero = async () => {
+        try {
+            const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
+            if (response.data.sucesso) {
+                alert('Gênero removido com sucesso!');
+                listaGeneros();
+                handleCarregaLivro();
+            }
+        } catch (error) {
+            console.error("Erro ao remover gênero:", error);
+            alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
+        }
+    };
 
     useEffect(() => {
         listaAutor();
         listaEditora();
-        // listaGenero();
     }, []);
 
     async function listaAutor() {
@@ -99,45 +136,55 @@ export default function EditarInformacoesLivro({ codLivro }) {
         }
     }
 
-    // async function listaGenero() {
-    //     try {
-    //         const response = await api.get('/generos');
-    //         setGenero(response.data.dados);
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         if (error.response) {
-    //             alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-    //         } else {
-    //             alert('Erro no front-end' + '\n' + error);
-    //         }
-    //     }
-    // }
+    useEffect(() => {
+        if (codLivro) listaGeneros();
+    }, [codLivro]);
+
+    async function listaGeneros() {
+        const dados = { usu_cod: codLivro };
+
+        try {
+            const response = await api.post('/dispGeneros', dados);
+            setGenLiv(response.data.dados);
+            // console.log("codLivro:", codLivro);
+            // console.log("Resposta da API:", response.data);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.mensagem + '\n' + error.response.data.dados);
+            } else {
+                alert('Erro no front-end' + '\n' + error);
+            }
+        }
+    }
 
     useEffect(() => {
         if (!codLivro) return;
 
-        const handleCarregaLivro = async () => {
-            const dadosApi = { liv_cod: codLivro };
-
-            try {
-                const response = await api.post('/livros', dadosApi);
-                if (response.data.sucesso) {
-                    const livroApi = response.data.dados[0];
-                    setLivro(livroApi);
-                    fileName = extractFileName(livroApi.liv_foto_capa);
-                    console.log(fileName);
-                    setInitialImage(fileName);
-                    setImageSrc(livroApi.liv_foto_capa);
-                } else {
-                    setError(response.data.mensagem);
-                }
-            } catch (error) {
-                setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
-            }
-        };
-
         handleCarregaLivro();
     }, [codLivro]);
+
+    const handleCarregaLivro = async () => {
+        const dadosApi = { liv_cod: codLivro };
+
+        try {
+            const response = await api.post('/livros', dadosApi);
+            if (response.data.sucesso) {
+                const livroApi = response.data.dados[0];
+                setLivro(livroApi);
+                // fileName = extractFileName(livroApi.liv_foto_capa);
+                // console.log(fileName);
+                // setInitialImage(fileName);
+                setInitialImage(livroApi.liv_foto_capa);
+                setImageSrc(livroApi.liv_foto_capa);
+            } else {
+                setError(response.data.mensagem);
+            }
+        } catch (error) {
+            setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
+        }
+    };
+
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -151,28 +198,28 @@ export default function EditarInformacoesLivro({ codLivro }) {
 
     const handleSave = async () => {
         const { liv_pha_cod, liv_categ_cod, liv_nome, disponivel, liv_desc, aut_nome, edt_nome } = livro;
-    
+
         // Verifica se os campos obrigatórios estão preenchidos
         if (!liv_pha_cod || !liv_categ_cod || !liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }
-    
+
         setIsSaving(true); // Inicia o salvamento
-    
+
         try {
             // Verifica se uma nova imagem foi carregada. Se não, mantém a imagem existente.
             const livroAtualizado = {
                 ...livro,
-                liv_foto_capa: `'${fileName}'` // Mantém a imagem original se nenhuma nova foi carregada
-                
-                
+                liv_foto_capa: imageSrc || livro.liv_foto_capa // Mantém a imagem original se nenhuma nova foi carregada
+
+
             };
             //console.log(fileName);
-    
+
             // Envia o objeto atualizado para a API
             const response = await api.patch(`/livros/${livro.liv_cod}`, livroAtualizado);
-    
+
             if (response.data.sucesso) {
                 alert('Livro atualizado com sucesso!');
                 router.push('/biblioteca'); // Redireciona após o sucesso
@@ -184,7 +231,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
             setIsSaving(false); // Finaliza o salvamento
         }
     };
-    
+
 
     console.log(livro);
 
@@ -200,7 +247,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                     <div className={styles.imgBook}>
                                         <div className={styles.imagePreview}>
                                             <Image
-                                                src={livro.liv_foto_capa}
+                                                src={imageSrc|| livro.liv_foto_capa}
                                                 alt={livro.liv_nome}
                                                 width={667}
                                                 height={1000}
@@ -216,6 +263,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                             <div className={styles.title}>
                                                 <p className={styles.geral}>Visão geral</p>
                                                 <div className={styles.cods}>
+                                                    <label className={styles.codsText}>Código PHA do livro:</label>
                                                     <input
                                                         type="text"
                                                         value={livro.liv_pha_cod}
@@ -223,6 +271,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                         className={styles.editInputCods}
                                                         aria-label="pha do livro"
                                                     />
+                                                    <label className={styles.codsText}>Código da categoria do livro:</label>
                                                     <input
                                                         type="text"
                                                         value={livro.liv_categ_cod}
@@ -303,17 +352,69 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <input
-                                                    type="text"
-                                                    id="gen_cod"
-                                                    name="gen_cod"
-                                                    value={livro.Generos}
-                                                    onClick={openModalGenero}
-                                                    className={styles.opcao}
-                                                    readOnly
-                                                />
+                                                <div className={styles.listaCursos}>
+                                                    <div className={styles.inputCursos}>
+                                                        <label className={styles.textInput}>Gêneros já selecionados:</label>
+                                                        <ul
+                                                            id="gen_cod"
+                                                            name="gen_cod"
+                                                            value={livro.gen_cod}
+                                                            onChange={handleChange}
+                                                            className={styles.opcaoCursos}
+                                                        >
+
+                                                            {livro.genLiv && livro.genLiv.length > 0 ? (
+                                                                livro.genLiv.map((gen) => (
+                                                                    <li
+                                                                        key={gen.lge_cod}
+                                                                        value={gen.lge_cod}
+                                                                        onClick={() => handleClickLivro(gen.lge_cod)}
+                                                                        className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                                        {gen.gen_nome}
+                                                                    </li>
+                                                                ))
+                                                            ) : (
+                                                                <p>Não há gêneros registrados.</p>
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                    <div className={styles.buttons}>
+                                                        <button className={styles.cursosButton}
+                                                            onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}>
+                                                            <IoChevronBack size={20} color="#FFF" />
+                                                        </button>
+                                                        <button className={styles.cursosButton}
+                                                            onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}>
+                                                            <IoChevronForward size={20} color="#FFF" />
+                                                        </button>
+                                                    </div>
+                                                    <div className={styles.inputCursos}>
+                                                        <label className={styles.textInput}>Selecione o gênero:</label>
+                                                        <ul
+                                                            id="gen_cod"
+                                                            name="gen_cod"
+                                                            value={livro.gen_cod}
+                                                            onChange={handleChange}
+                                                            className={styles.opcaoCursos}
+                                                        >
+
+                                                            {genLiv.length > 0 ? (
+                                                                genLiv.map((gen) => (
+                                                                    <li
+                                                                        key={gen.gen_cod}
+                                                                        value={gen.gen_cod}
+                                                                        onClick={() => handleClickEscola(gen.gen_cod)}
+                                                                        className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
+                                                                        {gen.gen_nome}
+                                                                    </li>
+                                                                ))
+                                                            ) : (
+                                                                <p>Não há gêneros registrados.</p>
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <ModalEdtGenero show={ShowModalGenero} onClose={closeModalGenero} />
                                         </div>
                                         <div className={styles.editar}>
                                             <button

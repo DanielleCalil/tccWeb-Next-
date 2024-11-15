@@ -24,6 +24,7 @@ export default function AddLivroNovo({ codLiv }) {
     const [genLiv, setGenLiv] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
+    console.log(generoSelecionadoLivro);
 
     const handleClickLivro = (gen_cod) => {
         setGeneroSelecionadoLivro(gen_cod);
@@ -201,8 +202,8 @@ export default function AddLivroNovo({ codLiv }) {
     };
 
     useEffect(() => {
-        if (codUsu) listaGeneros();
-    }, [codUsu]);
+        if (codLiv) listaGeneros();
+    }, [codLiv]);
 
     async function listaGeneros() {
         const dados = { liv_cod: codLiv };
@@ -717,7 +718,7 @@ export default function AddLivroNovo({ codLiv }) {
                             </div>
 
                             <div className={valida.gen_cod.validado + ' ' + styles.valSelectGen} id="valSelectGen">
-                                {livro.liv_cod ? (
+
                                     <div className={styles.listaCursos}>
                                         <div className={styles.inputCursos}>
                                             <label className={styles.textInput}>Gêneros já selecionados:</label>
@@ -737,7 +738,7 @@ export default function AddLivroNovo({ codLiv }) {
                                                                 value={gen.lge_cod}
                                                                 onClick={() => handleClickLivro(gen.lge_cod)}
                                                                 className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
-                                                                {gen.gen_nome}
+                                                                {gen.Generos}
                                                             </li>
                                                         ))
                                                     ) : (
@@ -746,8 +747,6 @@ export default function AddLivroNovo({ codLiv }) {
                                                 </ul>
                                             </div>
                                         </div>
-
-
                                         <div className={styles.buttons}>
                                             <button className={styles.cursosButton}
                                                 onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}
@@ -785,9 +784,7 @@ export default function AddLivroNovo({ codLiv }) {
                                             </ul>
                                         </div>
                                     </div>
-                                ) : (
-                                    <p>Carregando dados...</p>
-                                )}
+
                             </div>
                             {
                                 valida.gen_cod.mensagem.map(mens => (

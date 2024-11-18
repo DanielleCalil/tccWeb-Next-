@@ -25,7 +25,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const [isSaving, setIsSaving] = useState(false);
     const [initialImage, setInitialImage] = useState('');
     //const [genLiv, setGenLiv] = useState([]);
-    const [generos, setGeneros] = useState([]);
+    const [generoLivro, setGeneroLivro] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
     console.log(generoSelecionadoLivro);
@@ -104,7 +104,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         await handleSave();
     };
 
-    
+
     useEffect(() => {
         listaAutor();
         listaEditora();
@@ -140,17 +140,14 @@ export default function EditarInformacoesLivro({ codLivro }) {
     useEffect(() => {
         if (codLivro) listaGeneros();
     }, [codLivro]);
-    
+
     async function listaGeneros() {
         const dados = { liv_cod: codLivro };
-    
+
         try {
             const response = await api.post('/dispGeneros', dados);
-            console.log("Resposta da API completa:", response.data);  // Verifique toda a resposta
-            console.log("Gêneros:", generos); 
-            // Garantir que o campo 'Generos' seja uma string e separe os gêneros por vírgula
-            const generosArray = response.data.Generos ? response.data.Generos.split(',') : [];
-            setGeneros(generosArray);  // Atualiza o estado com os gêneros
+            setGeneroLivro(response.data.dados);
+            console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -159,46 +156,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
             }
         }
     }
-    // Supondo que a resposta da API seja como a mostrada no console
-const response = {
-    sucesso: true,
-    mensagem: 'Lista de gêneros disponíveis para o livro.',
-    dados: [
-      {
-        liv_cod: 74,
-        liv_nome: 'A Culpa é das Estrelas',
-        Generos: "Autobiográfico,Comédia,Drama,Ficção Científica,Mistério,Romance",  // Este é o campo com os gêneros
-        // outros dados...
-      }
-    ]
-  };
-  
-  // Agora vamos pegar a string dos gêneros e dividir em um array
-   const generosString = response.dados[0].Generos;  // Pega a string de gêneros
-   const generosArray = generosString.split(',');    // Converte a string em um array
-  
-   console.log(generosArray);  // Verifique no console se os gêneros estão corretos
-
-    // useEffect(() => {
-    //     if (codLivro) listaGeneros();
-    // }, [codLivro]);
-
-    // async function listaGeneros() {
-    //     const dados = { liv_cod: codLivro };
-
-    //     try {
-    //         const response = await api.post('/dispGeneros', dados);
-    //         setGenLiv(response.data.dados);
-    //         // console.log("codLivro:", codLivro);
-    //         // console.log("Resposta da API:", response.data);
-    //     } catch (error) {
-    //         if (error.response) {
-    //             alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-    //         } else {
-    //             alert('Erro no front-end' + '\n' + error);
-    //         }
-    //     }
-    // }
 
     useEffect(() => {
         if (!codLivro) return;
@@ -290,7 +247,7 @@ const response = {
                                     <div className={styles.imgBook}>
                                         <div className={styles.imagePreview}>
                                             <Image
-                                                src={imageSrc|| livro.liv_foto_capa}
+                                                src={imageSrc || livro.liv_foto_capa}
                                                 alt={livro.liv_nome}
                                                 width={667}
                                                 height={1000}
@@ -396,21 +353,71 @@ const response = {
                                                     className={styles.imgIcons}
                                                 />
                                                 <div className={styles.infoBox}>
-                                                        <div className={styles.listaCursos}>
-                                                            <div className={styles.inputCursos}>
-                                                                <label className={styles.textInput}>Gêneros já selecionados:</label>
-                                                                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                                                                    {generos.length > 0 ? (
-                                                                        generos.map((genero, index) => (
-                                                                        <li key={index} style={{ marginBottom: '8px' }}>{genero}</li>  // Adiciona um espaçamento entre os itens
-                                                                        ))
-                                                                    ) : (
-                                                                        <p>Não há gêneros para este livro.</p>
-                                                                    )}
-                                                                    </ul>
-                                                            </div>
+                                                    <div className={styles.listaCursos}>
+                                                        <div className={styles.inputCursos}>
+                                                            <label className={styles.textInput}>Gêneros já selecionados:</label>
+                                                            <ul
+                                                                id="gen_cod"
+                                                                name="gen_cod"
+                                                                value={livro.gen_cod}
+                                                                onChange={handleChange}
+                                                                className={styles.opcaoCursos}
+                                                            >
+                                                                {livro.generoLivro?.length > 0 ? (
+                                                                    // Gera uma string com os nomes dos gêneros separados por vírgulas
+                                                                    <li
+                                                                        value={genero.lge_cod}
+                                                                        onClick={() => handleClickLivro(generoNome)}
+                                                                        className={generoSelecionadoLivro === genero.lge_cod ? styles.selected : ''}>
+                                                                        {livro.generoLivro
+                                                                            .map(genero => Object.keys(genero)[0])
+                                                                            .join(', ')}
+                                                                    </li>
+                                                                ) : (
+                                                                    <p>Não há gêneros registrados.</p>
+                                                                )}
+                                                            </ul>
+                                                        </div>
+
+                                                        <div className={styles.buttons}>
+                                                            <button className={styles.cursosButton}
+                                                                onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}
+                                                                disabled={!livro.liv_cod}>
+                                                                <IoChevronBack size={20} color="#FFF" />
+                                                            </button>
+                                                            <button className={styles.cursosButton}
+                                                                onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}
+                                                                disabled={!livro.liv_cod}>
+                                                                <IoChevronForward size={20} color="#FFF" />
+                                                            </button>
+                                                        </div>
+
+                                                        <div className={styles.inputCursos}>
+                                                            <label className={styles.textInput}>Selecione o gênero:</label>
+                                                            <ul
+                                                                id="gen_cod"
+                                                                name="gen_cod"
+                                                                value={livro.gen_cod}
+                                                                onChange={handleChange}
+                                                                className={styles.opcaoCursos}
+                                                            >
+                                                                {generoLivro.length > 0 ? (
+                                                                    generoLivro.map((gen) => (
+                                                                        <li
+                                                                            key={gen.gen_cod}
+                                                                            value={gen.gen_cod}
+                                                                            onClick={() => handleClickEscola(gen.gen_cod)}
+                                                                            className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
+                                                                            {gen.gen_nome}
+                                                                        </li>
+                                                                    ))
+                                                                ) : (
+                                                                    <p>Não há gêneros registrados.</p>
+                                                                )}
+                                                            </ul>
                                                         </div>
                                                     </div>
+                                                </div>
 
                                             </div>
                                         </div>

@@ -21,7 +21,8 @@ export default function AddLivroNovo({ codLiv }) {
 
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    const [genLiv, setGenLiv] = useState([]);
+    // const [genLiv, setGenLiv] = useState([]);
+    const [generoLivro, setGeneroLivro] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
     console.log(generoSelecionadoLivro);
@@ -209,7 +210,7 @@ export default function AddLivroNovo({ codLiv }) {
         const dados = { liv_cod: codLiv };
         try {
             const response = await api.post('/dispGeneros', dados);
-            setGenLiv(response.data.dados);
+            setGeneroLivro(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -719,48 +720,10 @@ export default function AddLivroNovo({ codLiv }) {
 
                             <div className={valida.gen_cod.validado + ' ' + styles.valSelectGen} id="valSelectGen">
 
-                                    <div className={styles.listaCursos}>
-                                        <div className={styles.inputCursos}>
-                                            <label className={styles.textInput}>Gêneros já selecionados:</label>
-                                            <div className={styles.divInput}>
-                                                <ul
-                                                    id="gen_cod"
-                                                    name="gen_cod"
-                                                    value={livro.gen_cod}
-                                                    onChange={handleChange}
-                                                    className={styles.opcaoCursos}
-                                                >
-
-                                                    {livro.genLiv && livro.genLiv.length > 0 ? (
-                                                        livro.genLiv.map((gen) => (
-                                                            <li
-                                                                key={gen.lge_cod}
-                                                                value={gen.lge_cod}
-                                                                onClick={() => handleClickLivro(gen.lge_cod)}
-                                                                className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
-                                                                {gen.Generos}
-                                                            </li>
-                                                        ))
-                                                    ) : (
-                                                        <p>Não há gêneros registrados.</p>
-                                                    )}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className={styles.buttons}>
-                                            <button className={styles.cursosButton}
-                                                onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}
-                                                disabled={!livro.liv_cod}>
-                                                <IoChevronBack size={20} color="#FFF" />
-                                            </button>
-                                            <button className={styles.cursosButton}
-                                                onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}
-                                                disabled={!livro.liv_cod}>
-                                                <IoChevronForward size={20} color="#FFF" />
-                                            </button>
-                                        </div>
-                                        <div className={styles.inputCursos}>
-                                            <label className={styles.textInput}>Selecione o gênero:</label>
+                                <div className={styles.listaCursos}>
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Gêneros já selecionados:</label>
+                                        <div className={styles.divInput}>
                                             <ul
                                                 id="gen_cod"
                                                 name="gen_cod"
@@ -768,22 +731,59 @@ export default function AddLivroNovo({ codLiv }) {
                                                 onChange={handleChange}
                                                 className={styles.opcaoCursos}
                                             >
-                                                {genLiv.length > 0 ? (
-                                                    genLiv.map((gen) => (
+                                                {livro.generoLivro?.length > 0 ? (
+                                                    // Gera uma string com os nomes dos gêneros separados por vírgulas
                                                         <li
-                                                            key={gen.gen_cod}
-                                                            value={gen.gen_cod}
-                                                            onClick={() => handleClickEscola(gen.gen_cod)}
-                                                            className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
-                                                            {gen.gen_nome}
+                                                            value={genero.lge_cod}
+                                                            onClick={() => handleClickLivro(generoNome)}
+                                                            className={generoSelecionadoLivro === genero.lge_cod ? styles.selected : ''}>
+                                                            {livro.generoLivro
+                                                                .map(genero => Object.keys(genero)[0])
+                                                                .join(', ')}
                                                         </li>
-                                                    ))
                                                 ) : (
                                                     <p>Não há gêneros registrados.</p>
                                                 )}
                                             </ul>
                                         </div>
                                     </div>
+                                    <div className={styles.buttons}>
+                                        <button className={styles.cursosButton}
+                                            onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}
+                                            disabled={!livro.liv_cod}>
+                                            <IoChevronBack size={20} color="#FFF" />
+                                        </button>
+                                        <button className={styles.cursosButton}
+                                            onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}
+                                            disabled={!livro.liv_cod}>
+                                            <IoChevronForward size={20} color="#FFF" />
+                                        </button>
+                                    </div>
+                                    <div className={styles.inputCursos}>
+                                        <label className={styles.textInput}>Selecione o gênero:</label>
+                                        <ul
+                                            id="gen_cod"
+                                            name="gen_cod"
+                                            value={livro.gen_cod}
+                                            onChange={handleChange}
+                                            className={styles.opcaoCursos}
+                                        >
+                                            {generoLivro.length > 0 ? (
+                                                generoLivro.map((gen) => (
+                                                    <li
+                                                        key={gen.gen_cod}
+                                                        value={gen.gen_cod}
+                                                        onClick={() => handleClickEscola(gen.gen_cod)}
+                                                        className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
+                                                        {gen.gen_nome}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p>Não há gêneros registrados.</p>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </div>
 
                             </div>
                             {

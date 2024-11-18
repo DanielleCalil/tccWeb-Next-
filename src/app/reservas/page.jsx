@@ -9,22 +9,6 @@ import api from '@/services/api';
 import BarraPesquisa from '@/componentes/barraPesquisa/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
-// const infoReserva = [
-//     {
-//         livro: {
-//             liv_nome: "O Diário de Anne Frank",
-//             aut_nome: "Anne Frank",
-//             liv_foto_capa: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg"
-//         },
-//         usu_nome: "Clara Oliveira da Silva",
-//         emp_data_emp: "12/03/2024",
-//         periodo: {
-//             inicio: "12/03/2024",
-//             fim: "27/03/2024"
-//         },
-//     },
-// ];
-
 const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
@@ -51,14 +35,17 @@ export default function Reservas() {
     }
 
     useEffect(() => {
-        listaLivros();
+        const user = JSON.parse(localStorage.getItem('user')); 
+        if (!user) {
+            router.push('/usuarios/login');
+        } else {
+            listaLivros(user.cod); 
+            // console.log(user.cod);            
+        }
     }, []);
 
-    async function listaLivros() {
-        const dados = {
-            usu_cod: codUsu,
-            [selectedSearchOption]: livNome
-        };
+    async function listaLivros(user) {
+        const dados = { usu_cod: user };
         try {
             const response = await api.post('/reservas', dados);
             console.log(response.data.dados);
@@ -71,23 +58,6 @@ export default function Reservas() {
             }
         }
     }
-
-
-    const [showModalConfirm, setShowModalConfirm] = useState(false);
-    const router = useRouter();
-
-    const openModalConfirm = () => setShowModalConfirm(true);
-    const closeModalConfirm = () => setShowModalConfirm(false);
-
-    const handleConfirm = () => {
-        setMensagemStatus('Livro retirado!'); // Atualizado: Definir mensagem de confirmação
-        setShowModalConfirm(false);
-    };
-
-    const handleCancel = () => {
-        setMensagemStatus('Retirada cancelada.'); // Atualizado: Definir mensagem de cancelamento
-        setShowModalConfirm(false);
-    };
 
     return (
         <main className={styles.main}>
@@ -135,29 +105,9 @@ export default function Reservas() {
                                     <p className={styles.info}>Data do Empréstimo: {reserv.Empréstimo || 'Data não disponível'}</p>
                                     <p className={styles.info}>Data de Devolução: {reserv.Devolução || 'Data não disponível'}</p>
                                     <div className={styles.line}></div>
-                                    <p className={styles.pUsuario}>Confirmar retirada do livro</p>
-                                    {mensagemStatus ? ( // Exibe a mensagem fixa se existir
-                                        <p className={styles.statusMessage}>{mensagemStatus}</p>
-                                    ) : (
-                                        <div className={styles.opcao}>
-                                            <button
-                                                type="button"
-                                                onClick={() => { openModalConfirm(); setMensagemStatus('Livro retirado!'); }}
-                                                className={styles.confirmButton}>
-                                                Retirada confirmada
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => { openModalConfirm(); setMensagemStatus('Retirada cancelada.'); }}
-                                                className={styles.cancelButton}>
-                                                Cancelar retirada
-                                            </button>
-                                        </div>
-                                    )}
                                     <p className={styles.obs}>
                                         OBS: Lembre-se de devolver o livro até a data!
                                     </p>
-                                    {mensagemRetirada && <p className={styles.mensagemRetirada}>{mensagemRetirada}</p>}
                                 </div>
                             </div>
                         ))
@@ -166,12 +116,6 @@ export default function Reservas() {
                     )}
                 </div>
             </div>
-            <ModalConfirmar
-                show={showModalConfirm}
-                onClose={closeModalConfirm}
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-            />
         </main>
     );
 }

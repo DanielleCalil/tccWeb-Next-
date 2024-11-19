@@ -27,7 +27,12 @@
     width: 100%;
 }
 
-.customFileUpload {
+/* Estilo para custom-file-upload */
+.customFile {
+    display: none;
+  }
+  
+  .customFileUpload {
     display: flex;
     flex-direction: column;
     padding: 1.2rem 1rem;
@@ -38,12 +43,12 @@
     border-radius: 3rem;
     text-align: center;
     font-size: 1.2rem;
-}
-
-.customFileUpload:hover {
+  }
+  
+  .customFileUpload:hover {
     opacity: 0.5;
     transition: 0.5s;
-}
+  }
 
 .lineSquare {
     width: auto;

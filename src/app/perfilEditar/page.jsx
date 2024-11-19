@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import Link from "next/link";
-import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import FileInput from "@/componentes/FileInput/page";
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
+import Usuario from "@/../../public/Icons TCC/perfil.jpg";
 import api from '@/services/api';
 
 
-export default function PerfilEditar({ codUsu }) {
+export default function PerfilEditar({ codUsu, imgUp }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
@@ -24,10 +25,11 @@ export default function PerfilEditar({ codUsu }) {
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
     const [selectedSexo, setSelectedSexo] = useState('');
+    const [img, setImg] = useState('');
     const [cursoSelecionadoAluno, setCursoSelecionadoAluno] = useState(null);
     const [cursoSelecionadoEscola, setCursoSelecionadoEscola] = useState(null);
     console.log(cursoSelecionadoAluno);
-    
+
 
     const handleClickAluno = (cur_cod) => {
         setCursoSelecionadoAluno(cur_cod);
@@ -77,14 +79,10 @@ export default function PerfilEditar({ codUsu }) {
         "ucu_cod": '',
         "cur_cod": '',
         "cur_nome": '',
+        img: imgUp
     });
 
-    const handleFileSelect = (imageUrl) => {
-        setImageSrc(imageUrl);
-    };
-
     const [showModalConfirm, setShowModalConfirm] = useState(false);
-    const [imageSrc, setImageSrc] = useState(perfilEdt.liv_foto_capa || '');
 
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
@@ -107,7 +105,7 @@ export default function PerfilEditar({ codUsu }) {
         const dados = { usu_cod: codUsu };
 
         try {
-            const response = await api.post('/dispUsucursos',dados); 
+            const response = await api.post('/dispUsucursos', dados);
             setCursos(response.data.dados);
             // console.log("codUsu:", codUsu);
             // console.log("Resposta da API:", response.data);
@@ -122,10 +120,10 @@ export default function PerfilEditar({ codUsu }) {
 
 
     useEffect(() => {
-        if (!codUsu) return;        
+        if (!codUsu) return;
 
         handleCarregaPerfil();
-    }, [codUsu]); 
+    }, [codUsu]);
 
     const handleCarregaPerfil = async () => {
         const dados = { usu_cod: codUsu };
@@ -143,11 +141,6 @@ export default function PerfilEditar({ codUsu }) {
             alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
         }
     }
-
-    const handleImageChange = (imageURL) => {
-        setImageSrc(imageURL);
-        setPerfilEdt((prev) => ({ ...prev, usu_foto: imageURL }));
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -169,7 +162,7 @@ export default function PerfilEditar({ codUsu }) {
         //     usu_email,
         //     cur_nome,
         //     usu_sexo,
-        //     usu_foto: imageSrc, // Não esqueça de incluir a foto se necessário
+        //     usu_foto
         // });
 
         if (!usu_email || !usu_sexo) {
@@ -182,7 +175,7 @@ export default function PerfilEditar({ codUsu }) {
         try {
             const response = await api.patch(`/usuarios/${perfilEdt.usu_cod}`, {
                 ...perfilEdt,
-                usu_foto: imageSrc, // Inclui a foto se necessário
+                usu_foto: img
             });
 
             if (response.data.sucesso) {
@@ -197,6 +190,25 @@ export default function PerfilEditar({ codUsu }) {
         }
     };
 
+    const upload = async () => {
+        try {
+            const formdata = new FormData();
+            formdata.append('img', img);
+            const res = await api.post('/upload', formdata);
+            setImg(res.data.dados);
+            return res.data.dados;
+        } catch (err) {
+            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+        }
+    };
+
+    async function handleSubmitImagem(event) {
+        event.preventDefault();
+        let imgUrl = "";
+        if (img) imgUrl = await upload();
+        await handleCreate(imgUrl);
+    }
+
     // console.log(perfilEdt);
     return (
         <main className={styles.main}>
@@ -206,16 +218,22 @@ export default function PerfilEditar({ codUsu }) {
                     <div className={styles.PIContainer}>
                         <div className={styles.profileContainer}>
                             <div className={styles.imgContainer}>
-                                <Image
-                                    src={imageSrc || perfilEdt.usu_foto}
+                                <img
+                                    htmlFor="perfil"
+                                    src={Usuario}
                                     alt="Foto de perfil"
-                                    width={512}
-                                    height={512}
-                                    loader={imageLoader}
-                                    priority
                                 />
                             </div>
-                            <FileInput onFileSelect={handleImageChange} />
+                            <div>
+                                <input
+                                    type="file"
+                                    id="fileinput"
+                                    name='perfil'
+                                    className={styles.customFile}
+                                    onChange={v => setImg(v.target.files[0])}
+                                />
+                                <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
+                            </div>
                         </div>
 
                         <div className={styles.inputContainer}>
@@ -361,7 +379,7 @@ export default function PerfilEditar({ codUsu }) {
             <div className={styles.editar}>
                 <button
                     type="submit"
-                    onClick={openModalConfirm}
+                    onClick={() => { handleSubmitImagem(); handleSave(); }}
                     className={styles.saveButton}
                 >
                     {isSaving ? 'Salvando...' : 'Salvar alterações'}

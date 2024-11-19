@@ -7,14 +7,13 @@ import FileInput from '@/componentes/FileInput/page';
 import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
 // import { extractFileName } from "../utils/extractFileName";
-import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import api from '@/services/api';
 
-export default function EditarInformacoesLivro({ codLivro }) {
+export default function EditarInformacoesLivro({ codLivro, imgUp }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
-    // let fileName = '';
 
     const imageLoader = ({ src, width, quality }) => {
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
@@ -23,8 +22,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
-    const [initialImage, setInitialImage] = useState('');
-    //const [genLiv, setGenLiv] = useState([]);
+    const [img, setImg] = useState('');
     const [generoLivro, setGeneroLivro] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
@@ -37,7 +35,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         setGeneroSelecionadoEscola(gen_cod);
     };
 
-    const handleAddGenero = async () => {
+    const handleAddGenero = async (gen_cod) => {
         try {
             const response = await api.post(`/livros_generos`, { liv_cod: codLivro, gen_cod: generoSelecionadoEscola });
             if (response.data.sucesso) {
@@ -51,7 +49,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
         }
     };
 
-    const handleRemoveGenero = async () => {
+    const handleRemoveGenero = async (gen_cod) => {
         try {
             const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
             if (response.data.sucesso) {
@@ -74,12 +72,13 @@ export default function EditarInformacoesLivro({ codLivro }) {
         "edt_nome": '',
         "gen_nome": '',
         "liv_foto_capa": '',
-        "Generos": [],
+        "Generos": '',
         "liv_pha_cod": '',
         "liv_categ_cod": '',
         "edt_cod": '',
         "lge_cod": '',
         "gen_cod": '',
+        img: imgUp
 
         // "liv_pha_cod": "D738p",
         // "liv_categ_cod": "0.810",
@@ -94,7 +93,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
     // const [genero, setGenero] = useState([]);
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
-    const [imageSrc, setImageSrc] = useState('');
 
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
@@ -103,7 +101,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
         closeModalConfirm();
         await handleSave();
     };
-
 
     useEffect(() => {
         listaAutor();
@@ -157,6 +154,25 @@ export default function EditarInformacoesLivro({ codLivro }) {
         }
     }
 
+    const upload = async () => {
+        try {
+            const formdata = new FormData();
+            formdata.append('img', img);
+            const res = await api.post('/upload', formdata);
+            setImg(res.data.dados);
+            return res.data.dados;
+        } catch (err) {
+            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+        }
+    };
+
+    async function handleSubmitImagem(event) {
+        event.preventDefault();
+        let imgUrl = "";
+        if (img) imgUrl = await upload();
+        await handleCreate(imgUrl);
+    }
+
     useEffect(() => {
         if (!codLivro) return;
 
@@ -171,16 +187,11 @@ export default function EditarInformacoesLivro({ codLivro }) {
             if (response.data.sucesso) {
                 const livroApi = response.data.dados[0];
                 setLivro(livroApi);
-                // fileName = extractFileName(livroApi.liv_foto_capa);
-                // console.log(fileName);
-                // setInitialImage(fileName);
-                setInitialImage(livroApi.liv_foto_capa);
-                setImageSrc(livroApi.liv_foto_capa);
             } else {
-                setError(response.data.mensagem);
+                alert(response.data.mensagem);
             }
         } catch (error) {
-            setError(error.response ? error.response.data.mensagem : 'Erro no front-end');
+            alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
         }
     };
 
@@ -189,11 +200,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLivro(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleImageChange = (imageURL) => {
-        setImageSrc(imageURL);
-        setLivro((prev) => ({ ...prev, liv_foto_capa: imageURL }));
     };
 
     const handleSave = async () => {
@@ -208,17 +214,10 @@ export default function EditarInformacoesLivro({ codLivro }) {
         setIsSaving(true); // Inicia o salvamento
 
         try {
-            // Verifica se uma nova imagem foi carregada. Se não, mantém a imagem existente.
-            const livroAtualizado = {
+            const response = await api.patch(`/livros/${livro.liv_cod}`, {
                 ...livro,
-                liv_foto_capa: imageSrc || livro.liv_foto_capa // Mantém a imagem original se nenhuma nova foi carregada
-
-
-            };
-            //console.log(fileName);
-
-            // Envia o objeto atualizado para a API
-            const response = await api.patch(`/livros/${livro.liv_cod}`, livroAtualizado);
+                liv_foto_capa: img || livro.liv_foto_capa // Mantém a imagem original se nenhuma nova foi carregada
+            });
 
             if (response.data.sucesso) {
                 alert('Livro atualizado com sucesso!');
@@ -234,29 +233,36 @@ export default function EditarInformacoesLivro({ codLivro }) {
 
 
     console.log(livro);
+    console.log(livro.Generos);
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Editar informações do livro</h1>
                 <div className={styles.container}>
-                    {livro ? (
+                    {livro.liv_cod ? (
                         <div className={styles.lineSquare}>
                             <div className={styles.inputContainer}>
                                 <div className={styles.infoBookReserva}>
                                     <div className={styles.imgBook}>
                                         <div className={styles.imagePreview}>
-                                            <Image
-                                                src={imageSrc || livro.liv_foto_capa}
-                                                alt={livro.liv_nome}
-                                                width={667}
-                                                height={1000}
+                                            <img
+                                                htmlFor="perfil"
+                                                src={livro.liv_foto_capa}
+                                                alt="Foto de perfil"
                                                 className={styles.imgReserva}
-                                                loader={imageLoader}
-                                                priority
                                             />
                                         </div>
-                                        <FileInput onFileSelect={handleImageChange} />
+                                        <div>
+                                            <input
+                                                type="file"
+                                                id="fileinput"
+                                                name='perfil'
+                                                className={styles.customFile}
+                                                onChange={v => setImg(v.target.files[0])}
+                                            />
+                                            <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
+                                        </div>
                                     </div>
                                     <div className={styles.livroInfo}>
                                         <div className={styles.headerLineSquare}>
@@ -353,6 +359,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     className={styles.imgIcons}
                                                 />
                                                 <div className={styles.infoBox}>
+
                                                     <div className={styles.listaCursos}>
                                                         <div className={styles.inputCursos}>
                                                             <label className={styles.textInput}>Gêneros já selecionados:</label>
@@ -363,19 +370,33 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                                 onChange={handleChange}
                                                                 className={styles.opcaoCursos}
                                                             >
-                                                                {livro.generoLivro?.length > 0 ? (
-                                                                    // Gera uma string com os nomes dos gêneros separados por vírgulas
-                                                                    <li
-                                                                        value={genero.lge_cod}
-                                                                        onClick={() => handleClickLivro(generoNome)}
-                                                                        className={generoSelecionadoLivro === genero.lge_cod ? styles.selected : ''}>
-                                                                        {livro.generoLivro
-                                                                            .map(genero => Object.keys(genero)[0])
-                                                                            .join(', ')}
-                                                                    </li>
+                                                                {livro.generoLivro.length > 0 ? (
+                                                                    livro.generoLivro.map((gen) => (
+                                                                        <li
+                                                                            key={gen.lge_cod}
+                                                                            value={gen.lge_cod}
+                                                                            onClick={() => handleClickLivro(gen.lge_cod)}
+                                                                            className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                                            {gen.Generos}
+                                                                        </li>
+                                                                    ))
                                                                 ) : (
                                                                     <p>Não há gêneros registrados.</p>
                                                                 )}
+                                                                {/* {livro.Generos ? (
+                                                                    livro.Generos.split(',').map((genero, index) => (
+                                                                        <li
+                                                                            key={index}
+                                                                            value={genero.trim()}
+                                                                            onClick={() => handleClickLivro(genero.trim())}
+                                                                            className={generoSelecionadoLivro === genero.trim() ? styles.selected : ''}
+                                                                        >
+                                                                            {genero.trim()}
+                                                                        </li>
+                                                                    ))
+                                                                ) : (
+                                                                    <p>Não há gêneros registrados.</p>
+                                                                )} */}
                                                             </ul>
                                                         </div>
 
@@ -424,7 +445,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                         <div className={styles.editar}>
                                             <button
                                                 type="submit"
-                                                onClick={openModalConfirm}
+                                                onClick={() => { handleSubmitImagem(); handleSave(); }}
                                                 className={styles.saveButton}
                                             >
                                                 {isSaving ? 'Salvando...' : 'Salvar alterações'}

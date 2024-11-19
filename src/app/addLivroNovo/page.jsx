@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
-import { IoChevronBack, IoChevronForward, IoCaretBack, IoCaretForward } from "react-icons/io5";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import api from '@/services/api';
 
 import FileInput from '@/componentes/FileInput/page';
@@ -14,14 +14,18 @@ import ModalAddAutor from '@/componentes/modalAddAutor/page';
 import ModalAddEditora from '@/componentes/modalAddEditora/page';
 import ModalAddGenero from '@/componentes/modalAddGenero/page';
 import ModaisLiv_ from '../../componentes/modaisLiv_/page';
+import capaLivro from '@/../../public/imagens_telas/imgLivroNovo.jpg';
 
-export default function AddLivroNovo({ codLiv }) {
-    const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
+export default function AddLivroNovo({ codLiv, imgUp }) {
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
+
     const router = useRouter();
 
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    // const [genLiv, setGenLiv] = useState([]);
+    const [img, setImg] = useState('');
     const [generoLivro, setGeneroLivro] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
@@ -34,7 +38,7 @@ export default function AddLivroNovo({ codLiv }) {
         setGeneroSelecionadoEscola(gen_cod);
     };
 
-    const handleAddGenero = async () => {
+    const handleAddGenero = async (gen_cod) => {
         if (!livro.liv_cod) {
             alert("O livro precisa ser cadastrado antes de adicionar um gênero.");
             return;
@@ -79,9 +83,10 @@ export default function AddLivroNovo({ codLiv }) {
         "aut_nome": '',
         "aut_cod": '',
         "disponivel": '',
-        "Generos": [],
+        "Generos": '',
         "gen_cod": '',
         "gen_nome": '',
+        img: imgUp,
     });
 
     const valDefault = styles.formControl;
@@ -118,10 +123,6 @@ export default function AddLivroNovo({ codLiv }) {
     const handleGenero = () => {
         setShowModalGenero(false);
         router.push('../gerenciarLivroExistente');
-    };
-
-    const handleFileSelect = (imageUrl) => {
-        setCapaImage(imageUrl);
     };
 
     useEffect(() => {
@@ -162,52 +163,13 @@ export default function AddLivroNovo({ codLiv }) {
         }
     }
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-
-        // Verifica se o arquivo foi selecionado
-        if (!file) {
-            setValida((prevState) => ({
-                ...prevState,
-                foto: { validado: valErro, mensagem: ["Por favor, selecione uma foto."] },
-            }));
-            return;
-        }
-
-        // Verifica o tipo do arquivo
-        const validFileTypes = ["image/jpeg", "image/png"];
-        if (!validFileTypes.includes(file.type)) {
-            setValida((prevState) => ({
-                ...prevState,
-                foto: { validado: valErro, mensagem: ["O formato do arquivo deve ser PNG ou JPEG."] },
-            }));
-            return;
-        }
-
-        // Verifica o tamanho do arquivo (limite de 5MB, por exemplo)
-        const maxSizeInBytes = 5 * 1024 * 1024;
-        if (file.size > maxSizeInBytes) {
-            setValida((prevState) => ({
-                ...prevState,
-                foto: { validado: valErro, mensagem: ["O tamanho do arquivo deve ser menor que 5MB."] },
-            }));
-            return;
-        }
-
-        // Se o arquivo for válido
-        setLivro((prev) => ({ ...prev, usu_foto: file }));
-        setValida((prevState) => ({
-            ...prevState,
-            foto: { validado: valSucesso, mensagem: [] },
-        }));
-    };
-
     useEffect(() => {
         if (codLiv) listaGeneros();
     }, [codLiv]);
 
     async function listaGeneros() {
         const dados = { liv_cod: codLiv };
+
         try {
             const response = await api.post('/dispGeneros', dados);
             setGeneroLivro(response.data.dados);
@@ -221,6 +183,25 @@ export default function AddLivroNovo({ codLiv }) {
         }
     }
 
+    const upload = async () => {
+        try {
+            const formdata = new FormData();
+            formdata.append('img', img);
+            const res = await api.post('/upload', formdata);
+            setImg(res.data.dados);
+            return res.data.dados;
+        } catch (err) {
+            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+        }
+    };
+
+    async function handleSubmitImagem(event) {
+        event.preventDefault();
+        let imgUrl = "";
+        if (img) imgUrl = await upload();
+        await handleCreate(imgUrl);
+    }
+
     useEffect(() => {
         if (!codLiv) return;
 
@@ -229,6 +210,7 @@ export default function AddLivroNovo({ codLiv }) {
 
     const handleCarregaLivro = async () => {
         const dadosApi = { liv_cod: codLiv };
+
         try {
             const response = await api.post('/livros', dadosApi);
             if (response.data.sucesso) {
@@ -303,7 +285,7 @@ export default function AddLivroNovo({ codLiv }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setLivro((prevLivro) => ({ ...prevLivro, [name]: value }));
+        setLivro(prev => ({ ...prev, [name]: value }));
     }
 
     // function validaFoto() {
@@ -574,16 +556,25 @@ export default function AddLivroNovo({ codLiv }) {
                                 {/* <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto"> */}
                                 <p className={styles.textInput}>Capa:</p>
                                 <div className={styles.imagePreview}>
-                                    <Image
-                                        src={capaImage}
-                                        alt="Capa do livro"
-                                        width={150}
-                                        height={200}
+                                    <img
+                                        htmlFor="perfil"
+                                        src={capaLivro}
+                                        alt="Prévia da capa do livro"
                                     />
+
                                     {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
                                         <IoAlertCircleOutline className={styles.erro} /> */}
                                 </div>
-                                <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
+                                <div>
+                                    <input
+                                        type="file"
+                                        id="fileInput"
+                                        name="livro"
+                                        className={styles.customFile}
+                                        onChange={v => setImg(v.target.value[0])}
+                                    />
+                                    <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
+                                </div>
                                 {/* {
                                         valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
                                     }
@@ -732,15 +723,15 @@ export default function AddLivroNovo({ codLiv }) {
                                                 className={styles.opcaoCursos}
                                             >
                                                 {livro.generoLivro?.length > 0 ? (
-                                                    // Gera uma string com os nomes dos gêneros separados por vírgulas
+                                                    livro.generoLivro.map((gen) => (
                                                         <li
-                                                            value={genero.lge_cod}
-                                                            onClick={() => handleClickLivro(generoNome)}
-                                                            className={generoSelecionadoLivro === genero.lge_cod ? styles.selected : ''}>
-                                                            {livro.generoLivro
-                                                                .map(genero => Object.keys(genero)[0])
-                                                                .join(', ')}
+                                                            key={gen.lge_cod}
+                                                            value={gen.lge_cod}
+                                                            onClick={() => handleClickLivro(gen.lge_cod)}
+                                                            className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
+                                                            {gen.Generos}
                                                         </li>
+                                                    ))
                                                 ) : (
                                                     <p>Não há gêneros registrados.</p>
                                                 )}
@@ -862,6 +853,7 @@ export default function AddLivroNovo({ codLiv }) {
                     <div className={styles.editar}>
                         <button
                             type="submit"
+                            onClick={() => { handleSubmitImagem(); handleSubmit(); }}
                             className={styles.addButtonPrinc}
                         >
                             Adicionar

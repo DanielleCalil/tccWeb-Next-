@@ -37,6 +37,7 @@ export default function Solicitacao() {
   const [showModalConfirm, setShowModalConfirm] = useState(false);
   const [usuariosPendentes, setUsuariosPendentes] = useState([]);
   const [usuariosReprovados, setUsuariosReprovados] = useState([]);
+  const [usuariosAprovados, setUsuariosAprovados] = useState([]);
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -62,7 +63,7 @@ export default function Solicitacao() {
     }));
 
     try {
-      await api.patch('/analizarUcu', { usuarios: updatedData });
+      await api.patch('/analisarUcu', { usuarios: updatedData });
       setShowModalConfirm(false);
       setSelectedUsers(new Set()); // Limpa a seleção após a confirmação
       setUsuarioTipo(""); // Limpa o tipo selecionado
@@ -86,31 +87,36 @@ export default function Solicitacao() {
   };
 
   useEffect(() => {
-    if (filtroSituacao === "Reprovados") {
-      async function fetchUsuariosReprovados() {
-        try {
-          const response = await api.post('/usu_reprovados');
+    // Define uma função assíncrona para buscar as solicitações com base no filtro
+    async function fetchSolicitacoes() {
+      try {
+        let response;
+  
+        if (filtroSituacao === "Reprovados") {
+          // Busca solicitações reprovadas
+          response = await api.post('/usu_reprovados');
           setUsuariosReprovados(response.data.dados);
-          setSolicitacoesFiltradas(response.data.dados);  // Filtra automaticamente para reprovados
-        } catch (error) {
-          alert('Erro ao buscar usuários reprovados.');
-        }
-      }
-      fetchUsuariosReprovados();
-    } else {
-      // Quando não for reprovados, deve-se buscar pendentes ou aprovados
-      async function fetchUsuariosPendentes() {
-        try {
-          const response = await api.post('/usu_pendentes');
+        } else if (filtroSituacao === "Aprovados") {
+          // Busca solicitações aprovadas
+          response = await api.post('/buscarUsuariosAprovados');
+          setUsuariosAprovados(response.data.dados);
+        } else {
+          // Caso padrão: Pendentes
+          response = await api.post('/usu_pendentes');
           setUsuariosPendentes(response.data.dados);
-          setSolicitacoesFiltradas(response.data.dados);
-        } catch (error) {
-          alert('Erro ao buscar usuários pendentes.');
         }
+  
+        // Define as solicitações filtradas com base no filtro atual
+        setSolicitacoesFiltradas(response.data.dados);
+      } catch (error) {
+        alert(`Erro ao buscar solicitações (${filtroSituacao}).`);
+        console.error(`Erro ao buscar solicitações (${filtroSituacao}):`, error);
       }
-      fetchUsuariosPendentes();
     }
+  
+    fetchSolicitacoes();
   }, [filtroSituacao]); // Re-executa sempre que o filtro for alterado
+  
 
 
   const filtrarSolicitacoes = (situacao) => {

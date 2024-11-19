@@ -16,51 +16,6 @@ const searchOptions = [
     { value: 'cur_nome', label: 'Curso' },
 ];
 
-// const books = [
-//     {
-//         liv_nome: 'O diário de Anne Frank',
-//         aut_nome: 'Anne Frank',
-//         generos: 'Autobiografia',
-//         liv_foto_capa: '/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg',
-//         course: 'Téc. Recursos Humanos'
-//     },
-//     {
-//         liv_nome: 'Dom Casmurro',
-//         aut_nome: 'Machado de Assis',
-//         generos: 'Romance',
-//         liv_foto_capa: '/Capa_dos_livros/Dom_Casmurro.jpg',
-//         course: 'Téc. Contabilidade'
-//     },
-//     {
-//         liv_nome: 'Romeu e Julieta',
-//         aut_nome: 'William Shakespeare',
-//         generos: 'Romance',
-//         liv_foto_capa: '/Capa_dos_livros/Romeu_e_Julieta.jpg',
-//         course: 'Téc. Design de Interiores'
-//     },
-//     {
-//         liv_nome: '1984',
-//         aut_nome: 'George Orwell',
-//         generos: 'Ficção Científica',
-//         liv_foto_capa: '/Capa_dos_livros/1984.jpg',
-//         course: 'Téc. Informática'
-//     },
-//     {
-//         liv_nome: 'Os Miseráveis',
-//         aut_nome: 'Victor Hugo',
-//         generos: 'Romance',
-//         liv_foto_capa: '/Capa_dos_livros/Os_Miseraveis.jpg',
-//         course: 'Téc. Administração'
-//     },
-//     {
-//         liv_nome: 'Orgulho e Preconceito',
-//         aut_nome: 'Jane Austen',
-//         generos: 'Romance',
-//         liv_foto_capa: '/Capa_dos_livros/Orgulho_e_Preconceito.png',
-//         course: 'Téc. Farmácia'
-//     },
-// ];
-
 export default function Recomendacoes() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;

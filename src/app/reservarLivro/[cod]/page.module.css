@@ -15,6 +15,26 @@
   text-align: center;
 }
 
+.divInput {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.inputField {
+  width: 100%;
+  max-width: 40%;
+  height: 4.4rem;
+  padding: 1rem 2rem;
+  margin: 0.625rem 0rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 3rem;
+  box-sizing: border-box; 
+  font-size: 1.25rem;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+}
+
 .observacao {
   display: flex;
   justify-content: center;
@@ -60,4 +80,10 @@
 .reservButton:hover {
   opacity: 0.5;
   transition: 0.5s;
+}
+
+.reservButton:disabled {
+  background-color: #adb7c2;
+  opacity: 0.5; /* Ajuste o valor de opacidade aqui */
+  cursor: not-allowed; /* Cursor visualmente desabilitado */
 }

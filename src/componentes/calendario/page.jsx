@@ -12,7 +12,7 @@ const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const Calendario = () => {
+const Calendario = ({recebeData}) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [events, setEvents] = useState([]);
@@ -72,13 +72,14 @@ const Calendario = () => {
       })),
     ]);
 
-    setTimeout(() => onDataSelecionada(selectedDate), 0);
+    // setTimeout(() => onDataSelecionada(selectedDate), 0); 
+    recebeData(format(selectedDate, 'yyyy-MM-dd'));
   };
 
   const handlePrev = () => {
     const calendarApi = calendarRef.current.getApi();
     calendarApi.prev(); // Vai para o mês anterior
-    setCurrentDate(calendarApi.getDate()); // Atualiza a data atual do calendário
+    // setCurrentDate(calendarApi.getDate()); // Envia data selecionada para a página de pesquisa de disponibilidade
   };
 
   const handleNext = () => {
@@ -139,8 +140,6 @@ const Calendario = () => {
               Data Final:
               <input type="text" value={endDate} readOnly className={styles.dateInput} />
             </label>
-            {/* Exibe o período de reserva */}
-            <div className={styles.reservaPeriodo}>{reservaPeriodo}</div>
           </div>
         </div>
       </div>

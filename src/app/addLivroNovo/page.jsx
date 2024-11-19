@@ -701,7 +701,7 @@ export default function AddLivroNovo({ codLiv }) {
                                 <label className={styles.textInput}>Editora:</label>
                                 <div className={styles.divInput}>
                                     <select id="edt_cod" name="edt_cod" defaultValue={livro.edt_cod} onChange={handleChange} className={styles.inputField}>
-                                        <option value="0" disabled style={{ color: '#ccc' }}>Selecione editora</option>
+                                        <option value="0" disabled style={{ color: '#CCC' }}>Selecione editora</option>
                                         {
                                             editora.map(edt => (
                                                 <option key={edt.edt_cod} value={edt.edt_cod}>{`${edt.edt_cod} - ${edt.edt_nome}`}</option>

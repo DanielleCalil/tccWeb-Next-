@@ -23,7 +23,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const [img, setImg] = useState('');
-    const [generoLivro, setGeneroLivro] = useState([]);
+    const [generos, setGeneros] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
     console.log(generoSelecionadoLivro);
@@ -142,8 +142,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
         const dados = { liv_cod: codLivro };
 
         try {
-            const response = await api.post('/dispGeneros', dados);
-            setGeneroLivro(response.data.dados);
+            const response = await api.post('/Gen_disp', dados);
+            setGeneros(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -232,8 +232,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
     };
 
 
-    console.log(livro);
-    console.log(livro.Generos);
+    console.log(generos);
+    // console.log(livro.Generos);
 
     return (
         <main className={styles.main}>
@@ -370,20 +370,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                                                 onChange={handleChange}
                                                                 className={styles.opcaoCursos}
                                                             >
-                                                                {livro.generoLivro.length > 0 ? (
-                                                                    livro.generoLivro.map((gen) => (
-                                                                        <li
-                                                                            key={gen.lge_cod}
-                                                                            value={gen.lge_cod}
-                                                                            onClick={() => handleClickLivro(gen.lge_cod)}
-                                                                            className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
-                                                                            {gen.Generos}
-                                                                        </li>
-                                                                    ))
-                                                                ) : (
-                                                                    <p>Não há gêneros registrados.</p>
-                                                                )}
-                                                                {/* {livro.Generos ? (
+                                                                
+                                                                 {livro.Generos ? (
                                                                     livro.Generos.split(',').map((genero, index) => (
                                                                         <li
                                                                             key={index}
@@ -396,7 +384,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                                                     ))
                                                                 ) : (
                                                                     <p>Não há gêneros registrados.</p>
-                                                                )} */}
+                                                                )} 
                                                             </ul>
                                                         </div>
 
@@ -422,8 +410,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                                                 onChange={handleChange}
                                                                 className={styles.opcaoCursos}
                                                             >
-                                                                {generoLivro.length > 0 ? (
-                                                                    generoLivro.map((gen) => (
+                                                                {generos.length > 0 ? (
+                                                                    generos.map((gen) => (
                                                                         <li
                                                                             key={gen.gen_cod}
                                                                             value={gen.gen_cod}

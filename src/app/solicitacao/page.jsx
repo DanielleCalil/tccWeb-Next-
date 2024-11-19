@@ -63,7 +63,7 @@ export default function Solicitacao() {
     }));
 
     try {
-      await api.patch('/analisarUcu', { usuarios: updatedData });
+      await api.patch('/usuc_aprovar', { usuarios: updatedData });
       setShowModalConfirm(false);
       setSelectedUsers(new Set()); // Limpa a seleção após a confirmação
       setUsuarioTipo(""); // Limpa o tipo selecionado

@@ -105,7 +105,7 @@ export default function PerfilEditar({ codUsu, imgUp }) {
         const dados = { usu_cod: codUsu };
 
         try {
-            const response = await api.post('/dispUsucursos', dados);
+            const response = await api.post('/Usuc_disp', dados);
             setCursos(response.data.dados);
             // console.log("codUsu:", codUsu);
             // console.log("Resposta da API:", response.data);
@@ -117,6 +117,7 @@ export default function PerfilEditar({ codUsu, imgUp }) {
             }
         }
     }
+console.log(cursos);
 
 
     useEffect(() => {

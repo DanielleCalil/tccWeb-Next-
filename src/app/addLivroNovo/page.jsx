@@ -26,7 +26,7 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
     const [img, setImg] = useState('');
-    const [generoLivro, setGeneroLivro] = useState([]);
+    const [generos, setGeneros] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
     console.log(generoSelecionadoLivro);
@@ -172,7 +172,7 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
 
         try {
             const response = await api.post('/dispGeneros', dados);
-            setGeneroLivro(response.data.dados);
+            setGeneros(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -722,14 +722,14 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
                                                 onChange={handleChange}
                                                 className={styles.opcaoCursos}
                                             >
-                                                {livro.generoLivro?.length > 0 ? (
-                                                    livro.generoLivro.map((gen) => (
+                                                {livro.Generos ? (
+                                                    livro.Generos.split(',').map((genero, index) => (
                                                         <li
-                                                            key={gen.lge_cod}
-                                                            value={gen.lge_cod}
-                                                            onClick={() => handleClickLivro(gen.lge_cod)}
-                                                            className={generoSelecionadoLivro === gen.lge_cod ? styles.selected : ''}>
-                                                            {gen.Generos}
+                                                            key={index}
+                                                            value={genero.trim()}
+                                                            onClick={() => handleClickLivro(genero.trim())}
+                                                            className={generoSelecionadoLivro === genero.trim() ? styles.selected : ''}>
+                                                            {genero.trim()}
                                                         </li>
                                                     ))
                                                 ) : (
@@ -759,8 +759,8 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
                                             onChange={handleChange}
                                             className={styles.opcaoCursos}
                                         >
-                                            {generoLivro.length > 0 ? (
-                                                generoLivro.map((gen) => (
+                                            {generos.length > 0 ? (
+                                                generos.map((gen) => (
                                                     <li
                                                         key={gen.gen_cod}
                                                         value={gen.gen_cod}

@@ -10,9 +10,9 @@ import ModalConfirmar from '@/componentes/modalConfirmar/page';
 
 
 export default function ReservarLivro({ params }) {
-
+  const user = JSON.parse(localStorage.getItem('user'));
   const [showModalConfirm, setShowModalConfirm] = useState(false);
-  const [dataReserva, setDataReserva] = useState('2024-04-10');
+  const [dataReserva, setDataReserva] = useState('');
 
   const router = useRouter();
   const livroCod = parseInt(params.cod);
@@ -26,7 +26,29 @@ export default function ReservarLivro({ params }) {
   };
 
   const [infoLivro, setInfoLivro] = useState([]);
-  const [exemplarSelecionado, setExemplarSelecionado] = useState('');
+  const [exemplarSelecionado, setExemplarSelecionado] = useState(''); 
+
+  async function handleRealizaReserva () {
+    const dadosReserva = {
+        "usu_cod": user.cod,
+        "exe_cod": exemplarSelecionado.exe_cod,
+        "emp_data_emp": dataReserva
+    }; 
+
+    try {
+      const response = await api.post('/emp_cadastrar', dadosReserva); 
+      if (response.data.sucesso) {
+        openModalConfirm();
+      }
+
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+
+
+  
+  }
 
   useEffect(() => {
     if (!livroCod) return;
@@ -51,14 +73,14 @@ export default function ReservarLivro({ params }) {
     }
     handleCarregaLivro();
   }, [livroCod]);
-  console.log(infoLivro);
+  
 
   async function recebeData(dataIni) {
     setDataReserva(dataIni);
     try {
       const response = await api.post('/consulta_exemplares', {
-        "liv_cod": 74,
-        "dataConsulta": "2024-04-10"
+        "liv_cod": livroCod,
+        "dataConsulta": dataIni
       });
 
       if (response.data.sucesso == true) {
@@ -76,7 +98,7 @@ export default function ReservarLivro({ params }) {
     setExemplarSelecionado(prev => ({ ...prev, [name]: value }));
   };
 
-
+  
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
@@ -105,7 +127,7 @@ export default function ReservarLivro({ params }) {
           <div className={styles.editar}>
             <button
               type="submit"
-              onClick={openModalConfirm}
+              onClick={() => handleRealizaReserva()}
               className={styles.reservButton}
               disabled={!exemplarSelecionado}
             >

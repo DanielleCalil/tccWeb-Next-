@@ -59,7 +59,7 @@ export default function Solicitacao() {
       usu_cod,
       usu_tipo: parseInt(usuarioTipo),
       usu_ativo: 1,
-      usu_aprovado: 1,
+      usu_aprovado: 0,
     }));
 
     try {
@@ -98,7 +98,7 @@ export default function Solicitacao() {
           setUsuariosReprovados(response.data.dados);
         } else if (filtroSituacao === "Aprovados") {
           // Busca solicitações aprovadas
-          response = await api.post('/buscarUsuariosAprovados');
+          response = await api.post('/usu_aprovados');
           setUsuariosAprovados(response.data.dados);
         } else {
           // Caso padrão: Pendentes
@@ -222,7 +222,6 @@ export default function Solicitacao() {
               onChange={(e) => setUsuarioTipo(e.target.value)}
             >
               <option value="" disabled>Selecione uma opção</option>
-              <option value="2">Funcionário(a) - ADM</option>
               <option value="1">Professor(a)</option>
               <option value="0">Aluno(a)</option>
               <option value="5">Acesso negado</option>

@@ -28,7 +28,7 @@ export default function PerfilEditar({ codUsu, imgUp }) {
     const [img, setImg] = useState('');
     const [cursoSelecionadoAluno, setCursoSelecionadoAluno] = useState(null);
     const [cursoSelecionadoEscola, setCursoSelecionadoEscola] = useState(null);
-    console.log(cursoSelecionadoAluno);
+    console.log('aluno:', cursoSelecionadoAluno);
 
 
     const handleClickAluno = (cur_cod) => {

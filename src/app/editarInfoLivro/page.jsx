@@ -26,7 +26,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
     const [generos, setGeneros] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
-    console.log(generoSelecionadoLivro);
+
 
     const handleClickLivro = (gen_cod) => {
         setGeneroSelecionadoLivro(gen_cod);
@@ -232,7 +232,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
     };
 
 
-    console.log(generos);
+    console.log('gen:', generoSelecionadoLivro);
     // console.log(livro.Generos);
 
     return (

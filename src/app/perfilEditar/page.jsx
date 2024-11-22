@@ -11,7 +11,7 @@ import Usuario from "@/../../public/Icons TCC/perfil.jpg";
 import api from '@/services/api';
 
 
-export default function PerfilEditar({ codUsu, imgUp }) {
+export default function PerfilEditar({ codUsu }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
@@ -25,7 +25,7 @@ export default function PerfilEditar({ codUsu, imgUp }) {
     const [isSaving, setIsSaving] = useState(null);
     const [cursos, setCursos] = useState([]);
     const [selectedSexo, setSelectedSexo] = useState('');
-    const [img, setImg] = useState('');
+    // const [img, setImg] = useState('');
     const [cursoSelecionadoAluno, setCursoSelecionadoAluno] = useState(null);
     const [cursoSelecionadoEscola, setCursoSelecionadoEscola] = useState(null);
     console.log('aluno:', cursoSelecionadoAluno);
@@ -79,8 +79,18 @@ export default function PerfilEditar({ codUsu, imgUp }) {
         "ucu_cod": '',
         "cur_cod": '',
         "cur_nome": '',
-        img: imgUp
+        // img: imgUp
     });
+
+    const [imageSrc, setImageSrc] = useState(perfilEdt.liv_foto_capa || '');
+    const handleFileSelect = (imageUrl) => {
+        setImageSrc(imageUrl);
+    };
+
+    const handleImageChange = (imageURL) => {
+        setImageSrc(imageURL);
+        setPerfilEdt((prev) => ({ ...prev, usu_foto: imageURL }));
+    };
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
 
@@ -117,7 +127,7 @@ export default function PerfilEditar({ codUsu, imgUp }) {
             }
         }
     }
-console.log(cursos);
+    console.log(cursos);
 
 
     useEffect(() => {
@@ -147,6 +157,47 @@ console.log(cursos);
         const { name, value } = e.target;
         setPerfilEdt(prev => ({ ...prev, [name]: value }));
     }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+
+        // Verifica se o arquivo foi selecionado
+        if (!file) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["Por favor, selecione uma foto."] },
+            }));
+            return;
+        }
+
+        // Verifica o tipo do arquivo
+        const validFileTypes = ["image/jpeg", "image/png"];
+        if (!validFileTypes.includes(file.type)) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O formato do arquivo deve ser PNG ou JPEG."] },
+            }));
+            return;
+        }
+
+        // Verifica o tamanho do arquivo (limite de 5MB, por exemplo)
+        const maxSizeInBytes = 5 * 1024 * 1024;
+        if (file.size > maxSizeInBytes) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O tamanho do arquivo deve ser menor que 5MB."] },
+            }));
+            return;
+        }
+
+        // Se o arquivo for válido
+        setLivro((prev) => ({ ...prev, usu_foto: file }));
+        setValida((prevState) => ({
+            ...prevState,
+            foto: { validado: valSucesso, mensagem: [] },
+        }));
+    };
+
 
     const handleChangeSexo = (e) => {
         // Atualiza o valor de 'usu_sexo' com base na seleção do usuário
@@ -191,24 +242,24 @@ console.log(cursos);
         }
     };
 
-    const upload = async () => {
-        try {
-            const formdata = new FormData();
-            formdata.append('img', img);
-            const res = await api.post('/upload', formdata);
-            setImg(res.data.dados);
-            return res.data.dados;
-        } catch (err) {
-            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
-        }
-    };
+    // const upload = async () => {
+    //     try {
+    //         const formdata = new FormData();
+    //         formdata.append('img', img);
+    //         const res = await api.post('/upload', formdata);
+    //         setImg(res.data.dados);
+    //         return res.data.dados;
+    //     } catch (err) {
+    //         alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+    //     }
+    // };
 
-    async function handleSubmitImagem(event) {
-        event.preventDefault();
-        let imgUrl = "";
-        if (img) imgUrl = await upload();
-        await handleCreate(imgUrl);
-    }
+    // async function handleSubmitImagem(event) {
+    //     event.preventDefault();
+    //     let imgUrl = "";
+    //     if (img) imgUrl = await upload();
+    //     await handleCreate(imgUrl);
+    // }
 
     // console.log(perfilEdt);
     return (
@@ -219,13 +270,17 @@ console.log(cursos);
                     <div className={styles.PIContainer}>
                         <div className={styles.profileContainer}>
                             <div className={styles.imgContainer}>
-                                <img
-                                    htmlFor="perfil"
-                                    src={Usuario}
+                                <Image
+                                    src={imageSrc || perfilEdt.usu_foto}
                                     alt="Foto de perfil"
+                                    width={512}
+                                    height={512}
+                                    loader={imageLoader}
+                                    priority
                                 />
                             </div>
-                            <div>
+                            <FileInput onFileSelect={handleImageChange} onChange={handleFileChange} />
+                            {/* <div>
                                 <input
                                     type="file"
                                     id="fileinput"
@@ -234,7 +289,7 @@ console.log(cursos);
                                     onChange={v => setImg(v.target.files[0])}
                                 />
                                 <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.inputContainer}>
@@ -380,7 +435,7 @@ console.log(cursos);
             <div className={styles.editar}>
                 <button
                     type="submit"
-                    onClick={() => { handleSubmitImagem(); handleSave(); }}
+                    onClick={() => { handleSave(); }}
                     className={styles.saveButton}
                 >
                     {isSaving ? 'Salvando...' : 'Salvar alterações'}

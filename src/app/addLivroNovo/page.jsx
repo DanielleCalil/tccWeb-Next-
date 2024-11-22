@@ -16,16 +16,17 @@ import ModalAddGenero from '@/componentes/modalAddGenero/page';
 import ModaisLiv_ from '../../componentes/modaisLiv_/page';
 import capaLivro from '@/../../public/imagens_telas/imgLivroNovo.jpg';
 
-export default function AddLivroNovo({ codLiv, imgUp }) {
+export default function AddLivroNovo({ codLiv }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
     const router = useRouter();
 
+    const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    const [img, setImg] = useState('');
+    // const [img, setImg] = useState('');
     const [generos, setGeneros] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
@@ -86,7 +87,7 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
         "Generos": '',
         "gen_cod": '',
         "gen_nome": '',
-        img: imgUp,
+        // img: imgUp,
     });
 
     const valDefault = styles.formControl;
@@ -123,6 +124,50 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
     const handleGenero = () => {
         setShowModalGenero(false);
         router.push('../gerenciarLivroExistente');
+    };
+
+    const handleFileSelect = (imageUrl) => {
+        setCapaImage(imageUrl);
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+
+        // Verifica se o arquivo foi selecionado
+        if (!file) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["Por favor, selecione uma foto."] },
+            }));
+            return;
+        }
+
+        // Verifica o tipo do arquivo
+        const validFileTypes = ["image/jpeg", "image/png"];
+        if (!validFileTypes.includes(file.type)) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O formato do arquivo deve ser PNG ou JPEG."] },
+            }));
+            return;
+        }
+
+        // Verifica o tamanho do arquivo (limite de 5MB, por exemplo)
+        const maxSizeInBytes = 5 * 1024 * 1024;
+        if (file.size > maxSizeInBytes) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O tamanho do arquivo deve ser menor que 5MB."] },
+            }));
+            return;
+        }
+
+        // Se o arquivo for válido
+        setLivro((prev) => ({ ...prev, usu_foto: file }));
+        setValida((prevState) => ({
+            ...prevState,
+            foto: { validado: valSucesso, mensagem: [] },
+        }));
     };
 
     useEffect(() => {
@@ -183,24 +228,24 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
         }
     }
 
-    const upload = async () => {
-        try {
-            const formdata = new FormData();
-            formdata.append('img', img);
-            const res = await api.post('/upload', formdata);
-            setImg(res.data.dados);
-            return res.data.dados;
-        } catch (err) {
-            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
-        }
-    };
+    // const upload = async () => {
+    //     try {
+    //         const formdata = new FormData();
+    //         formdata.append('img', img);
+    //         const res = await api.post('/upload', formdata);
+    //         setImg(res.data.dados);
+    //         return res.data.dados;
+    //     } catch (err) {
+    //         alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+    //     }
+    // };
 
-    async function handleSubmitImagem(event) {
-        event.preventDefault();
-        let imgUrl = "";
-        if (img) imgUrl = await upload();
-        await handleCreate(imgUrl);
-    }
+    // async function handleSubmitImagem(event) {
+    //     event.preventDefault();
+    //     let imgUrl = "";
+    //     if (img) imgUrl = await upload();
+    //     await handleCreate(imgUrl);
+    // }
 
     useEffect(() => {
         if (!codLiv) return;
@@ -523,7 +568,7 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
                 if (response.data.sucesso) {
                     const livroCodigo = response.data.liv_cod; // Supondo que o código do livro seja retornado aqui
                     // Exibindo o aviso de sucesso com o código do livro
-                    setLivro((prevLivro) => ({ ...prevLivro, liv_cod: livroCodigo }));
+                    setLivro((prev) => ({ ...prev, liv_cod: livroCodigo }));
                     alert(`Livro salvo com sucesso! Código do livro: ${livroCodigo}`);
 
                     if (generoSelecionadoEscola) {
@@ -556,16 +601,18 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
                                 {/* <div className={valida.foto.validado + ' ' + styles.valFoto} id="valFoto"> */}
                                 <p className={styles.textInput}>Capa:</p>
                                 <div className={styles.imagePreview}>
-                                    <img
-                                        htmlFor="perfil"
-                                        src={capaLivro}
-                                        alt="Prévia da capa do livro"
+                                    <Image
+                                        src={capaImage}
+                                        alt="Capa do livro"
+                                        width={150}
+                                        height={200}
                                     />
 
                                     {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
                                         <IoAlertCircleOutline className={styles.erro} /> */}
                                 </div>
-                                <div>
+                                <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
+                                {/* <div>
                                     <input
                                         type="file"
                                         id="fileInput"
@@ -574,7 +621,7 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
                                         onChange={v => setImg(v.target.value[0])}
                                     />
                                     <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
-                                </div>
+                                </div> */}
                                 {/* {
                                         valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
                                     }
@@ -853,7 +900,6 @@ export default function AddLivroNovo({ codLiv, imgUp }) {
                     <div className={styles.editar}>
                         <button
                             type="submit"
-                            onClick={() => { handleSubmitImagem(); handleSubmit(); }}
                             className={styles.addButtonPrinc}
                         >
                             Adicionar

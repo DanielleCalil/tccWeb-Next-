@@ -10,7 +10,7 @@ import ModalEdtGenero from '../../componentes/modalEdtGenero/page';
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import api from '@/services/api';
 
-export default function EditarInformacoesLivro({ codLivro, imgUp }) {
+export default function EditarInformacoesLivro({ codLivro }) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
@@ -22,7 +22,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
-    const [img, setImg] = useState('');
+    const [initialImage, setInitialImage] = useState('');
+    // const [img, setImg] = useState('');
     const [generos, setGeneros] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
@@ -78,7 +79,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
         "edt_cod": '',
         "lge_cod": '',
         "gen_cod": '',
-        img: imgUp
+        // img: imgUp
 
         // "liv_pha_cod": "D738p",
         // "liv_categ_cod": "0.810",
@@ -93,6 +94,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
     // const [genero, setGenero] = useState([]);
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
+    const [imageSrc, setImageSrc] = useState('');
 
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
@@ -154,24 +156,24 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
         }
     }
 
-    const upload = async () => {
-        try {
-            const formdata = new FormData();
-            formdata.append('img', img);
-            const res = await api.post('/upload', formdata);
-            setImg(res.data.dados);
-            return res.data.dados;
-        } catch (err) {
-            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
-        }
-    };
+    // const upload = async () => {
+    //     try {
+    //         const formdata = new FormData();
+    //         formdata.append('img', img);
+    //         const res = await api.post('/upload', formdata);
+    //         setImg(res.data.dados);
+    //         return res.data.dados;
+    //     } catch (err) {
+    //         alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+    //     }
+    // };
 
-    async function handleSubmitImagem(event) {
-        event.preventDefault();
-        let imgUrl = "";
-        if (img) imgUrl = await upload();
-        await handleCreate(imgUrl);
-    }
+    // async function handleSubmitImagem(event) {
+    //     event.preventDefault();
+    //     let imgUrl = "";
+    //     if (img) imgUrl = await upload();
+    //     await handleCreate(imgUrl);
+    // }
 
     useEffect(() => {
         if (!codLivro) return;
@@ -187,6 +189,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
             if (response.data.sucesso) {
                 const livroApi = response.data.dados[0];
                 setLivro(livroApi);
+                // setInitialImage(livroApi.liv_foto_capa);
+                setImageSrc(livroApi.liv_foto_capa);
             } else {
                 alert(response.data.mensagem);
             }
@@ -195,7 +199,50 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
         }
     };
 
+    const handleImageChange = (imageURL) => {
+        setImageSrc(imageURL);
+        setLivro((prev) => ({ ...prev, liv_foto_capa: imageURL }));
+    };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+
+        // Verifica se o arquivo foi selecionado
+        if (!file) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["Por favor, selecione uma foto."] },
+            }));
+            return;
+        }
+
+        // Verifica o tipo do arquivo
+        const validFileTypes = ["image/jpeg", "image/png"];
+        if (!validFileTypes.includes(file.type)) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O formato do arquivo deve ser PNG ou JPEG."] },
+            }));
+            return;
+        }
+
+        // Verifica o tamanho do arquivo (limite de 5MB, por exemplo)
+        const maxSizeInBytes = 5 * 1024 * 1024;
+        if (file.size > maxSizeInBytes) {
+            setValida((prevState) => ({
+                ...prevState,
+                foto: { validado: valErro, mensagem: ["O tamanho do arquivo deve ser menor que 5MB."] },
+            }));
+            return;
+        }
+
+        // Se o arquivo for válido
+        setLivro((prev) => ({ ...prev, usu_foto: file }));
+        setValida((prevState) => ({
+            ...prevState,
+            foto: { validado: valSucesso, mensagem: [] },
+        }));
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -246,14 +293,15 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                 <div className={styles.infoBookReserva}>
                                     <div className={styles.imgBook}>
                                         <div className={styles.imagePreview}>
-                                            <img
-                                                htmlFor="perfil"
-                                                src={livro.liv_foto_capa}
-                                                alt="Foto de perfil"
-                                                className={styles.imgReserva}
+                                            <Image
+                                                src={imageSrc || livro.liv_foto_capa}
+                                                alt={livro.liv_nome}
+                                                width={667}
+                                                height={1000}
                                             />
                                         </div>
-                                        <div>
+                                        <FileInput onFileSelect={handleImageChange} onChange={handleFileChange}/>
+                                        {/* <div>
                                             <input
                                                 type="file"
                                                 id="fileinput"
@@ -262,7 +310,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                                 onChange={v => setImg(v.target.files[0])}
                                             />
                                             <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className={styles.livroInfo}>
                                         <div className={styles.headerLineSquare}>
@@ -370,8 +418,8 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                                                 onChange={handleChange}
                                                                 className={styles.opcaoCursos}
                                                             >
-                                                                
-                                                                 {livro.Generos ? (
+
+                                                                {livro.Generos ? (
                                                                     livro.Generos.split(',').map((genero, index) => (
                                                                         <li
                                                                             key={index}
@@ -384,7 +432,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                                                     ))
                                                                 ) : (
                                                                     <p>Não há gêneros registrados.</p>
-                                                                )} 
+                                                                )}
                                                             </ul>
                                                         </div>
 
@@ -433,7 +481,7 @@ export default function EditarInformacoesLivro({ codLivro, imgUp }) {
                                         <div className={styles.editar}>
                                             <button
                                                 type="submit"
-                                                onClick={() => { handleSubmitImagem(); handleSave(); }}
+                                                onClick={() => { handleSave(); }}
                                                 className={styles.saveButton}
                                             >
                                                 {isSaving ? 'Salvando...' : 'Salvar alterações'}

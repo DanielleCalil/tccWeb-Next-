@@ -55,15 +55,25 @@ export default function Solicitacao() {
       return;
     }
 
-    const updatedData = Array.from(selectedUsers).map((usu_cod) => ({
-      usu_cod,
-      usu_tipo: parseInt(usuarioTipo),
-      usu_ativo: 1,
-      usu_aprovado: 0,
-    }));
+    // Cria uma string com os números de `usu_cod` para exibir fora do array
+    const codigosUsuarios = Array.from(selectedUsers)[0]; // Transforma o conjunto em uma lista separada por vírgulas
+
+    const updatedData = {
+      usuarios: Array.from(selectedUsers).map((usu_cod) => ({
+        usu_cod: parseInt(usu_cod), // Converte o código do usuário para número inteiro
+        usu_tipo: 4, // Tipo do usuário
+        usu_ativo: 1, // Usuário ativo
+        usu_aprovado: 0, // Usuário ainda não aprovado
+        ucu_ativo: 1,
+        ucu_aprovado: 0,
+        ucu_status: 0
+      })),
+      novoTipo: parseInt(usuarioTipo) // Propriedade adicional
+    };
+    
 
     try {
-      await api.patch('/usuc_aprovar', { usuarios: updatedData });
+      await api.patch('/usuc_aprovar/', updatedData);
       setShowModalConfirm(false);
       setSelectedUsers(new Set()); // Limpa a seleção após a confirmação
       setUsuarioTipo(""); // Limpa o tipo selecionado
@@ -91,7 +101,7 @@ export default function Solicitacao() {
     async function fetchSolicitacoes() {
       try {
         let response;
-  
+
         if (filtroSituacao === "Reprovados") {
           // Busca solicitações reprovadas
           response = await api.post('/usu_reprovados');
@@ -105,7 +115,7 @@ export default function Solicitacao() {
           response = await api.post('/usu_pendentes');
           setUsuariosPendentes(response.data.dados);
         }
-  
+
         // Define as solicitações filtradas com base no filtro atual
         setSolicitacoesFiltradas(response.data.dados);
       } catch (error) {
@@ -113,10 +123,10 @@ export default function Solicitacao() {
         console.error(`Erro ao buscar solicitações (${filtroSituacao}):`, error);
       }
     }
-  
+
     fetchSolicitacoes();
   }, [filtroSituacao]); // Re-executa sempre que o filtro for alterado
-  
+
 
 
   const filtrarSolicitacoes = (situacao) => {
@@ -133,6 +143,7 @@ export default function Solicitacao() {
       }
       return false;
     });
+    console.log("fil:", filtradas);
 
     setSolicitacoesFiltradas(filtradas);
   };
@@ -241,7 +252,8 @@ export default function Solicitacao() {
                     <p className={styles.info}>  Nome: {solicit.usu_nome}</p>
                     <p className={styles.info}>  RM: {solicit.usu_rm}</p>
                     <p className={styles.info}>  E-mail: {solicit.usu_email}</p>
-                    <p className={styles.info}>  Curso técnico ou médio: {solicit.cursos && solicit.cursos.length > 0 ? solicit.cursos[0].cur_nome : 'Nenhum curso encontrado'}</p>
+                    <p className={styles.info}>  Curso técnico ou médio: {solicit.cur_nome}</p>
+ 
                     <div className={styles.box}>
                       <input
                         type="checkbox"

@@ -118,7 +118,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 95%;
+  /* max-width: 95%; */
   /* margin: auto; */
   gap: 1rem;
   padding: 1.25rem;

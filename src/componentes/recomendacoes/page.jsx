@@ -6,52 +6,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/services/api';
 
-// Lista de livros
-// const books = [
-//     {
-//         src: "/Capa_dos_livros/O_Diario_de_Anne_Frank.jpg",
-//         title: "O diário de Anne Frank",
-//         author: "Anne Frank",
-//         course: "Téc. Recursos Humanos",
-//         active: true
-//     },
-//     {
-//         src: "/Capa_dos_livros/Dom_Casmurro.jpg",
-//         title: "Dom Casmurro",
-//         author: "Machado de Assis",
-//         course: "Téc. Contabilidade",
-//         active: true
-//     },
-//     {
-//         src: "/Capa_dos_livros/Romeu_e_Julieta.jpg",
-//         title: "Romeu e Julieta",
-//         author: "William Shakespeare",
-//         course: "Téc. Design de Interiores",
-//         active: true
-//     },
-//     {
-//         src: "/Capa_dos_livros/1984.jpg",
-//         title: "1984",
-//         author: "George Orwell",
-//         course: "Téc. Informática",
-//         active: true
-//     },
-//     {
-//         src: "/Capa_dos_livros/Os_Miseraveis.jpg",
-//         title: "Os Miseráveis",
-//         author: "Victor Hugo",
-//         course: "Téc. Administração",
-//         active: true
-//     },
-//     {
-//         src: "/Capa_dos_livros/Orgulho_e_Preconceito.png",
-//         title: "Orgulho e Preconceito",
-//         author: "Jane Austen",
-//         course: "Téc. Farmácia",
-//         active: true
-//     }
-// ];
-
 export default function Recomendacoes() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;

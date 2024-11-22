@@ -227,7 +227,7 @@ export default function PerfilEditar({ codUsu }) {
         try {
             const response = await api.patch(`/usuarios/${perfilEdt.usu_cod}`, {
                 ...perfilEdt,
-                usu_foto: img
+                usu_foto: imageSrc
             });
 
             if (response.data.sucesso) {

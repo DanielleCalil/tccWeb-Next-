@@ -26,11 +26,11 @@ export default function AddLivroNovo({ codLiv }) {
     const [capaImage, setCapaImage] = useState('/imagens_telas/imgLivroNovo.jpg');
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    // const [img, setImg] = useState('');
+    const [img, setImg] = useState('');
     const [generos, setGeneros] = useState([]);
     const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
     const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
-    console.log(generoSelecionadoLivro);
+    // console.log(generoSelecionadoLivro);
 
     const handleClickLivro = (gen_cod) => {
         setGeneroSelecionadoLivro(gen_cod);
@@ -179,7 +179,7 @@ export default function AddLivroNovo({ codLiv }) {
         try {
             const response = await api.get('/autores');
             setAutor(response.data.dados);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -198,7 +198,7 @@ export default function AddLivroNovo({ codLiv }) {
         try {
             const response = await api.get('/editoras');
             setEditora(response.data.dados);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -218,7 +218,7 @@ export default function AddLivroNovo({ codLiv }) {
         try {
             const response = await api.post('/dispGeneros', dados);
             setGeneros(response.data.dados);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             if (error.response) {
                 alert(error.response.data.mensagem + '\n' + error.response.data.dados);
@@ -228,24 +228,31 @@ export default function AddLivroNovo({ codLiv }) {
         }
     }
 
-    // const upload = async () => {
-    //     try {
-    //         const formdata = new FormData();
-    //         formdata.append('img', img);
-    //         const res = await api.post('/upload', formdata);
-    //         setImg(res.data.dados);
-    //         return res.data.dados;
-    //     } catch (err) {
-    //         alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
-    //     }
-    // };
+    const upload = async () => {
+        try {
+            const formdata = new FormData();
+            formdata.append('img', img);
+            console.log(img);
+            
+            const res = await api.post('/upload_livro', formdata);
+            setImg(res.data.dados);
+            return res.data.dados;
+        } catch (err) {
+            alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
+        }
+    };
 
-    // async function handleSubmitImagem(event) {
-    //     event.preventDefault();
-    //     let imgUrl = "";
-    //     if (img) imgUrl = await upload();
-    //     await handleCreate(imgUrl);
-    // }
+    async function handleSubmitImagem(event) {
+        event.preventDefault();
+        let imgUrl = "";
+        if (img) imgUrl = await upload();
+        console.log('imagem');
+        
+        console.log(imgUrl);        
+        await handleSubmit(imgUrl);
+        openModaisLiv();
+        router.push('biblioteca');
+    }
 
     useEffect(() => {
         if (!codLiv) return;
@@ -545,8 +552,8 @@ export default function AddLivroNovo({ codLiv }) {
         router.push('../biblioteca');
     };
 
-    async function handleSubmit(event) {
-        event.preventDefault();
+    async function handleSubmit(imgUrl) {
+        
         let itensValidados = 0;
 
         // Validar campos
@@ -562,21 +569,31 @@ export default function AddLivroNovo({ codLiv }) {
 
         // Verificar se todos os campos estão validados
         console.log('Livro a ser salvo:', livro);
+
+        const dados = {
+                liv_pha_cod: livro.liv_pha_cod, 
+                liv_categ_cod: livro.liv_categ_cod, 
+                liv_nome: livro.liv_nome, 
+                liv_desc: livro.liv_desc, 
+                edt_cod: livro.edt_cod, 
+                liv_ativo: 1, 
+                liv_foto_capa: imgUrl
+        }
+
         if (itensValidados === 0) {
             try {
-                const response = await api.post('/liv_cadastrar', livro);
+                const response = await api.post('/liv_cadastrar', dados);
                 if (response.data.sucesso) {
                     const livroCodigo = response.data.liv_cod; // Supondo que o código do livro seja retornado aqui
                     // Exibindo o aviso de sucesso com o código do livro
                     setLivro((prev) => ({ ...prev, liv_cod: livroCodigo }));
                     alert(`Livro salvo com sucesso! Código do livro: ${livroCodigo}`);
 
-                    if (generoSelecionadoEscola) {
-                        await handleAddGenero(); // Chama a função para associar o gênero ao livro
-                    }
+                    // if (generoSelecionadoEscola) {
+                    //     await handleAddGenero(); // Chama a função para associar o gênero ao livro
+                    // }
 
-                    openModaisLiv();
-                    router.push('biblioteca');
+
                 }
             } catch (error) {
                 if (error.response) {
@@ -587,13 +604,13 @@ export default function AddLivroNovo({ codLiv }) {
             }
         }
     }
-    console.log(livro);
+    // console.log(livro);
 
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.addLivroNovo}>Adicionar livro novo</h1>
-                <form id="form" className={styles.container} onSubmit={handleSubmit}>
+                <form id="form" className={styles.container} onSubmit={() => handleSubmitImagem()}>
                     <div className={styles.inputTotal}>
                         <div className={styles.inputImgContainer}>
                             <div className={styles.imgBook}>
@@ -611,17 +628,17 @@ export default function AddLivroNovo({ codLiv }) {
                                     {/* <IoCheckmarkCircleOutline className={styles.sucesso} />
                                         <IoAlertCircleOutline className={styles.erro} /> */}
                                 </div>
-                                <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} />
-                                {/* <div>
+                                {/* <FileInput onFileSelect={handleFileSelect} onChange={handleFileChange} /> */}
+                                <div>
                                     <input
                                         type="file"
                                         id="fileInput"
                                         name="livro"
                                         className={styles.customFile}
-                                        onChange={v => setImg(v.target.value[0])}
+                                        onChange={v => setImg(v.target.files[0])}
                                     />
                                     <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
-                                </div> */}
+                                </div>
                                 {/* {
                                         valida.foto.mensagem.map(mens => <small key={mens} id="foto" className={styles.small}>{mens}</small>)
                                     }

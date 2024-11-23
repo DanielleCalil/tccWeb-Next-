@@ -29,7 +29,7 @@ const searchOptions = [
 export default function Solicitacao() {
   const router = useRouter();
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_cod');
-  const [selectedUsers, setSelectedUsers] = useState(new Set());
+  // const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [usuarioTipo, setUsuarioTipo] = useState("");
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
@@ -38,6 +38,10 @@ export default function Solicitacao() {
   const [usuariosPendentes, setUsuariosPendentes] = useState([]);
   const [usuariosReprovados, setUsuariosReprovados] = useState([]);
   const [usuariosAprovados, setUsuariosAprovados] = useState([]);
+  const [usuariosAprovar, setUsuariosAprovar] = useState([]);
+  console.log('select');
+  console.log(usuariosAprovar);
+
 
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
@@ -45,7 +49,7 @@ export default function Solicitacao() {
   const handleConfirm = async () => {
     event.preventDefault();
 
-    if (selectedUsers.size === 0) {
+    if (usuariosAprovar.length === 0) {
       alert("Nenhum usuário selecionado. Por favor, selecione um usuário antes de confirmar.");
       return;
     }
@@ -55,27 +59,17 @@ export default function Solicitacao() {
       return;
     }
 
-    // Cria uma string com os números de `usu_cod` para exibir fora do array
-    const codigosUsuarios = Array.from(selectedUsers)[0]; // Transforma o conjunto em uma lista separada por vírgulas
-
     const updatedData = {
-      usuarios: Array.from(selectedUsers).map((usu_cod) => ({
-        usu_cod: parseInt(usu_cod), // Converte o código do usuário para número inteiro
-        usu_tipo: 4, // Tipo do usuário
-        usu_ativo: 1, // Usuário ativo
-        usu_aprovado: 0, // Usuário ainda não aprovado
-        ucu_ativo: 1,
-        ucu_aprovado: 0,
-        ucu_status: 0
-      })),
+      usuarios: usuariosAprovar,
       novoTipo: parseInt(usuarioTipo) // Propriedade adicional
     };
-    
+
 
     try {
-      await api.patch('/usuc_aprovar/', updatedData);
+      await api.patch('/usuc_aprovar', updatedData);
       setShowModalConfirm(false);
-      setSelectedUsers(new Set()); // Limpa a seleção após a confirmação
+      // setSelectedUsers(new Set()); // Limpa a seleção após a confirmação 
+      setUsuariosAprovar([]); // Limpa a seleção após a confirmação
       setUsuarioTipo(""); // Limpa o tipo selecionado
     } catch (error) {
       alert("Erro ao atualizar usuários. Por favor, tente novamente.");
@@ -84,15 +78,16 @@ export default function Solicitacao() {
   };
 
 
-  const toggleUserSelection = (usu_cod) => {
-    setSelectedUsers((prevSelectedUsers) => {
-      const updatedSelection = new Set(prevSelectedUsers);
-      if (updatedSelection.has(usu_cod)) {
-        updatedSelection.delete(usu_cod); // Remove o usuário se já estiver selecionado
-      } else {
-        updatedSelection.add(usu_cod); // Adiciona o usuário se não estiver selecionado
-      }
-      return updatedSelection;
+  const toggleUserSelection = (usu_cod, usu_tipo) => {
+    // Cria o novo objeto de seleção
+    const updatedSelection = {
+      "usu_cod": usu_cod,
+      "usu_tipo": usu_tipo
+    };
+
+    // Atualiza o estado utilizando o setter
+    setUsuariosAprovar((prevUsuariosAprovar) => {
+      return [...prevUsuariosAprovar, updatedSelection];
     });
   };
 
@@ -105,7 +100,7 @@ export default function Solicitacao() {
         if (filtroSituacao === "Reprovados") {
           // Busca solicitações reprovadas
           response = await api.post('/usu_reprovados');
-          setUsuariosReprovados(response.data.dados);
+          setUsuariosReprovados(response.data.dados); 
         } else if (filtroSituacao === "Aprovados") {
           // Busca solicitações aprovadas
           response = await api.post('/usu_aprovados');
@@ -118,6 +113,7 @@ export default function Solicitacao() {
 
         // Define as solicitações filtradas com base no filtro atual
         setSolicitacoesFiltradas(response.data.dados);
+        setUsuariosAprovar([]); 
       } catch (error) {
         alert(`Erro ao buscar solicitações (${filtroSituacao}).`);
         console.error(`Erro ao buscar solicitações (${filtroSituacao}):`, error);
@@ -143,7 +139,7 @@ export default function Solicitacao() {
       }
       return false;
     });
-    console.log("fil:", filtradas);
+    // console.log("fil:", filtradas);
 
     setSolicitacoesFiltradas(filtradas);
   };
@@ -173,7 +169,7 @@ export default function Solicitacao() {
     const dados = { [selectedSearchOption]: livNome };
     try {
       const response = await api.post("/usuarios", dados);
-      console.log(response.data.dados);
+      // console.log(response.data.dados);
       setListaUsuarios(response.data.dados);
     } catch (error) {
       if (error.response) {
@@ -253,13 +249,13 @@ export default function Solicitacao() {
                     <p className={styles.info}>  RM: {solicit.usu_rm}</p>
                     <p className={styles.info}>  E-mail: {solicit.usu_email}</p>
                     <p className={styles.info}>  Curso técnico ou médio: {solicit.cur_nome}</p>
- 
+
                     <div className={styles.box}>
                       <input
                         type="checkbox"
                         id={`checkbox-${solicit.usu_cod}`}
-                        checked={selectedUsers.has(solicit.usu_cod)}
-                        onChange={() => toggleUserSelection(solicit.usu_cod)}
+                        checked={usuariosAprovar.usu_cod}
+                        onChange={() => toggleUserSelection(solicit.usu_cod, solicit.usu_tipo)}
                       />
                       <label htmlFor={`checkbox-${solicit.usu_cod}`} className={styles.customCheckbox}></label>
                     </div>

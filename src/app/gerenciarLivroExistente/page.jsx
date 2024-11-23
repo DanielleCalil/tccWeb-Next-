@@ -61,35 +61,30 @@ export default function GerenciarLivroExistente() {
         }
     }
 
-    const toggleBookStatus = async (liv_cod) => {
+    const toggleBookStatus = async (liv_cod, currentStatus) => {
         try {
-            const updatedBooks = books.map(book =>
-                book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
-            );
-            setBooks(updatedBooks);
-
-            // Envia a atualização para a API
-            const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
-
-            const response = await api.patch('/liv_inativar', {
-                liv_cod: bookToUpdate.liv_cod,
-                liv_ativo: bookToUpdate.liv_ativo
-            });
-
-            // Confirmação no console
-            if (!response.data.sucesso) {
-                throw new Error("Erro ao atualizar status");
+            // Define a rota correta
+            const route = currentStatus === 1 ? '/api/liv_inativar' : '/api/liv_ativar';
+    
+            // Faz a solicitação à API
+            const response = await api.post(route, { liv_cod });
+    
+            if (response.status === 200) {
+                const updatedBooks = books.map(book =>
+                    book.liv_cod === liv_cod ? { ...book, liv_ativo: currentStatus === 1 ? 0 : 1 } : book
+                );
+                setBooks(updatedBooks);
+                console.log(response.data.message);
+            } else {
+                throw new Error(`Erro: ${response.status}`);
             }
-            console.log(`Status atualizado para: ${bookToUpdate.liv_ativo}`);
         } catch (error) {
-            alert('Erro ao atualizar o status: ' + error.message);
-            setBooks(prevBooks =>
-                prevBooks.map(book =>
-                    book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
-                )
-            );
+            console.error("Erro ao alterar status:", error.message);
+            alert("Não foi possível alterar o status do livro.");
         }
     };
+    
+    
 
 
     return (
@@ -134,15 +129,16 @@ export default function GerenciarLivroExistente() {
                                             <p className={styles.bookAuthor}>{livro.aut_nome}</p>
                                         </div>
                                     </div>
-                                    <div className={styles.toggleContainer}>
-                                        <label className={styles.switch}>
-                                            <input
-                                                type="checkbox"
-                                                checked={livro.liv_ativo === 1}
-                                                onChange={() => toggleBookStatus(livro.liv_cod)}
-                                            />
-                                            <span className={`${styles.slider} ${styles.round}`}></span>
-                                        </label>
+                                    <div >
+                                    <label className={styles.switch}>
+    <input
+        type="checkbox"
+        checked={livro.liv_ativo === 1}
+        onChange={() => toggleBookStatus(livro.liv_cod, livro.liv_ativo)}
+    />
+    <span className={`${styles.slider} ${styles.round}`}></span>
+</label>
+
                                     </div>
                                 </div>
                             ))

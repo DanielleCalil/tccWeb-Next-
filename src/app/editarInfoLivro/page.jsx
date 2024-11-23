@@ -24,45 +24,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
     const [isSaving, setIsSaving] = useState(false);
     const [initialImage, setInitialImage] = useState('');
     // const [img, setImg] = useState('');
-    const [generos, setGeneros] = useState([]);
-    const [generoSelecionadoLivro, setGeneroSelecionadoLivro] = useState(null);
-    const [generoSelecionadoEscola, setGeneroSelecionadoEscola] = useState(null);
-
-
-    const handleClickLivro = (gen_cod) => {
-        setGeneroSelecionadoLivro(gen_cod);
-    };
-    const handleClickEscola = (gen_cod) => {
-        setGeneroSelecionadoEscola(gen_cod);
-    };
-
-    const handleAddGenero = async (gen_cod) => {
-        try {
-            const response = await api.post(`/livros_generos`, { liv_cod: codLivro, gen_cod: generoSelecionadoEscola });
-            if (response.data.sucesso) {
-                alert('Gênero adicionado com sucesso!');
-                listaGeneros();
-                handleCarregaLivro();
-            }
-        } catch (error) {
-            console.error("Erro ao adicionar gênero:", error);
-            alert(error.response ? error.response.data.mensagem : 'Erro ao adicionar gênero. Tente novamente.');
-        }
-    };
-
-    const handleRemoveGenero = async (gen_cod) => {
-        try {
-            const response = await api.delete(`/livros_generos/${generoSelecionadoLivro}`);
-            if (response.data.sucesso) {
-                alert('Gênero removido com sucesso!');
-                listaGeneros();
-                handleCarregaLivro();
-            }
-        } catch (error) {
-            console.error("Erro ao remover gênero:", error);
-            alert(error.response ? error.response.data.mensagem : 'Erro ao remover gênero. Tente novamente.');
-        }
-    };
 
     const [livro, setLivro] = useState({
         "liv_cod": '',
@@ -88,13 +49,14 @@ export default function EditarInformacoesLivro({ codLivro }) {
         // "edt_cod": "27",
         // "liv_foto_capa": "a garota do lago.jpg" 
     });
+    console.log(livro);
 
     const [autor, setAutor] = useState([]);
     const [editora, setEditora] = useState([]);
-    // const [genero, setGenero] = useState([]);
+    const [genero, setGenero] = useState([]);
 
     const [showModalConfirm, setShowModalConfirm] = useState(false);
-    const [imageSrc, setImageSrc] = useState('');
+    // const [imageSrc, setImageSrc] = useState('');
 
     const openModalConfirm = () => setShowModalConfirm(true);
     const closeModalConfirm = () => setShowModalConfirm(false);
@@ -107,6 +69,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
     useEffect(() => {
         listaAutor();
         listaEditora();
+        listaGeneros();
     }, []);
 
     async function listaAutor() {
@@ -136,16 +99,11 @@ export default function EditarInformacoesLivro({ codLivro }) {
             }
         }
     }
-    useEffect(() => {
-        if (codLivro) listaGeneros();
-    }, [codLivro]);
 
     async function listaGeneros() {
-        const dados = { liv_cod: codLivro };
-
         try {
-            const response = await api.post('/Gen_disp', dados);
-            setGeneros(response.data.dados);
+            const response = await api.post('/generos');
+            setGenero(response.data.dados);
             console.log(response.data);
         } catch (error) {
             if (error.response) {
@@ -155,25 +113,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
             }
         }
     }
-
-    // const upload = async () => {
-    //     try {
-    //         const formdata = new FormData();
-    //         formdata.append('img', img);
-    //         const res = await api.post('/upload', formdata);
-    //         setImg(res.data.dados);
-    //         return res.data.dados;
-    //     } catch (err) {
-    //         alert(`Erro no upload, tente novamente. ${"\n"} ${err}${err.mensagem}`);
-    //     }
-    // };
-
-    // async function handleSubmitImagem(event) {
-    //     event.preventDefault();
-    //     let imgUrl = "";
-    //     if (img) imgUrl = await upload();
-    //     await handleCreate(imgUrl);
-    // }
 
     useEffect(() => {
         if (!codLivro) return;
@@ -189,59 +128,12 @@ export default function EditarInformacoesLivro({ codLivro }) {
             if (response.data.sucesso) {
                 const livroApi = response.data.dados[0];
                 setLivro(livroApi);
-                // setInitialImage(livroApi.liv_foto_capa);
-                setImageSrc(livroApi.liv_foto_capa);
             } else {
                 alert(response.data.mensagem);
             }
         } catch (error) {
             alert(error.response ? error.response.data.mensagem : 'Erro no front-end');
         }
-    };
-
-    const handleImageChange = (imageURL) => {
-        setImageSrc(imageURL);
-        setLivro((prev) => ({ ...prev, liv_foto_capa: imageURL }));
-    };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-
-        // Verifica se o arquivo foi selecionado
-        if (!file) {
-            setValida((prevState) => ({
-                ...prevState,
-                foto: { validado: valErro, mensagem: ["Por favor, selecione uma foto."] },
-            }));
-            return;
-        }
-
-        // Verifica o tipo do arquivo
-        const validFileTypes = ["image/jpeg", "image/png"];
-        if (!validFileTypes.includes(file.type)) {
-            setValida((prevState) => ({
-                ...prevState,
-                foto: { validado: valErro, mensagem: ["O formato do arquivo deve ser PNG ou JPEG."] },
-            }));
-            return;
-        }
-
-        // Verifica o tamanho do arquivo (limite de 5MB, por exemplo)
-        const maxSizeInBytes = 5 * 1024 * 1024;
-        if (file.size > maxSizeInBytes) {
-            setValida((prevState) => ({
-                ...prevState,
-                foto: { validado: valErro, mensagem: ["O tamanho do arquivo deve ser menor que 5MB."] },
-            }));
-            return;
-        }
-
-        // Se o arquivo for válido
-        setLivro((prev) => ({ ...prev, usu_foto: file }));
-        setValida((prevState) => ({
-            ...prevState,
-            foto: { validado: valSucesso, mensagem: [] },
-        }));
     };
 
     const handleChange = (e) => {
@@ -263,7 +155,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
         try {
             const response = await api.patch(`/livros/${livro.liv_cod}`, {
                 ...livro,
-                liv_foto_capa: img || livro.liv_foto_capa // Mantém a imagem original se nenhuma nova foi carregada
             });
 
             if (response.data.sucesso) {
@@ -278,10 +169,6 @@ export default function EditarInformacoesLivro({ codLivro }) {
         }
     };
 
-
-    console.log('gen:', generoSelecionadoLivro);
-    // console.log(livro.Generos);
-
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -294,23 +181,14 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                     <div className={styles.imgBook}>
                                         <div className={styles.imagePreview}>
                                             <Image
-                                                src={imageSrc || livro.liv_foto_capa}
+                                                loader={imageLoader}
+                                                src={livro.liv_foto_capa}
                                                 alt={livro.liv_nome}
                                                 width={667}
                                                 height={1000}
+                                                className={styles.imgReserva}
                                             />
                                         </div>
-                                        <FileInput onFileSelect={handleImageChange} onChange={handleFileChange}/>
-                                        {/* <div>
-                                            <input
-                                                type="file"
-                                                id="fileinput"
-                                                name='perfil'
-                                                className={styles.customFile}
-                                                onChange={v => setImg(v.target.files[0])}
-                                            />
-                                            <label htmlFor="fileInput" className={styles.customFileUpload}>Escolha o arquivo</label>
-                                        </div> */}
                                     </div>
                                     <div className={styles.livroInfo}>
                                         <div className={styles.headerLineSquare}>
@@ -406,76 +284,12 @@ export default function EditarInformacoesLivro({ codLivro }) {
                                                     height={980}
                                                     className={styles.imgIcons}
                                                 />
-                                                <div className={styles.infoBox}>
-
-                                                    <div className={styles.listaCursos}>
-                                                        <div className={styles.inputCursos}>
-                                                            <label className={styles.textInput}>Gêneros já selecionados:</label>
-                                                            <ul
-                                                                id="gen_cod"
-                                                                name="gen_cod"
-                                                                value={livro.gen_cod}
-                                                                onChange={handleChange}
-                                                                className={styles.opcaoCursos}
-                                                            >
-
-                                                                {livro.Generos ? (
-                                                                    livro.Generos.split(',').map((genero, index) => (
-                                                                        <li
-                                                                            key={index}
-                                                                            value={genero.trim()}
-                                                                            onClick={() => handleClickLivro(genero.trim())}
-                                                                            className={generoSelecionadoLivro === genero.trim() ? styles.selected : ''}
-                                                                        >
-                                                                            {genero.trim()}
-                                                                        </li>
-                                                                    ))
-                                                                ) : (
-                                                                    <p>Não há gêneros registrados.</p>
-                                                                )}
-                                                            </ul>
-                                                        </div>
-
-                                                        <div className={styles.buttons}>
-                                                            <button className={styles.cursosButton}
-                                                                onClick={() => generoSelecionadoEscola && handleAddGenero(generoSelecionadoLivro)}
-                                                                disabled={!livro.liv_cod}>
-                                                                <IoChevronBack size={20} color="#FFF" />
-                                                            </button>
-                                                            <button className={styles.cursosButton}
-                                                                onClick={() => generoSelecionadoLivro && handleRemoveGenero(generoSelecionadoEscola)}
-                                                                disabled={!livro.liv_cod}>
-                                                                <IoChevronForward size={20} color="#FFF" />
-                                                            </button>
-                                                        </div>
-
-                                                        <div className={styles.inputCursos}>
-                                                            <label className={styles.textInput}>Selecione o gênero:</label>
-                                                            <ul
-                                                                id="gen_cod"
-                                                                name="gen_cod"
-                                                                value={livro.gen_cod}
-                                                                onChange={handleChange}
-                                                                className={styles.opcaoCursos}
-                                                            >
-                                                                {generos.length > 0 ? (
-                                                                    generos.map((gen) => (
-                                                                        <li
-                                                                            key={gen.gen_cod}
-                                                                            value={gen.gen_cod}
-                                                                            onClick={() => handleClickEscola(gen.gen_cod)}
-                                                                            className={generoSelecionadoEscola === gen.gen_cod ? styles.selected : ''}>
-                                                                            {gen.gen_nome}
-                                                                        </li>
-                                                                    ))
-                                                                ) : (
-                                                                    <p>Não há gêneros registrados.</p>
-                                                                )}
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                                <select id="gen_cod" name="gen_cod" value={livro.gen_cod} onChange={handleChange} className={styles.opcao}>
+                                                    <option value="0" style={{ color: '#999' }}>Selecione o Gênero</option>
+                                                    {genero.map(gen => (
+                                                        <option key={gen.gen_cod} value={gen.gen_cod}>{gen.gen_nome}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                         <div className={styles.editar}>

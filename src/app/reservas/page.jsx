@@ -47,7 +47,7 @@ export default function Reservas() {
     async function listaLivros(user) {
         const dados = { usu_cod: user };
         try {
-            const response = await api.post('/reservas', dados);
+            const response = await api.post('/reservas/:usu_cod', dados);
             console.log(response.data.dados);
             setReserva(response.data.dados);
         } catch (error) {

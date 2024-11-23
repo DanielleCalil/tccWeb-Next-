@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
-import api from '@/services/api';
+import api from "@/services/api";
 
 const searchOptions = [
-  { value: 'usu_nome', label: 'Usuário' },
-  { value: 'emp_data_emp', label: 'Data da reserva' },
-  { value: 'liv_nome', label: 'Livro' },
-  { value: 'aut_nome', label: 'Autor' },
+  { value: "usu_nome", label: "Usuário" },
+  { value: "emp_data_emp", label: "Data da Reserva" },
+  { value: "liv_nome", label: "Livro" },
+  { value: "aut_nome", label: "Autor" },
 ];
 
 export default function Emprestimos() {
@@ -20,33 +20,22 @@ export default function Emprestimos() {
     return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
   };
 
-  const [selectedSearchOption, setSelectedSearchOption] = useState('usu_nome');
-  const [emprestimo, setEmprestimo] = useState([]); // Verifique se isso está definido corretamente
-  const [livNome, setLivNome] = useState('');
-
-  const atLivNome = (nome) => {
-    setLivNome(nome);
-  };
+  const [selectedSearchOption, setSelectedSearchOption] = useState("usu_nome");
+  const [emprestimo, setEmprestimo] = useState([]);
+  const [livNome, setLivNome] = useState("");
 
   useEffect(() => {
-    listaLivros(); // Buscar dados quando o componente montar
-  }, []);
+    const timeoutId = setTimeout(listaLivros, 300);
+    return () => clearTimeout(timeoutId);
+  }, [livNome, selectedSearchOption]);
 
   async function listaLivros() {
     const dados = { [selectedSearchOption]: livNome };
     try {
-      const response = await api.post('/emprestimos', dados);
-      console.log(response.data.dados);
-      const emprestimos = Array.isArray(response.data.dados) 
-      ? response.data.dados.filter(item => !Buffer.isBuffer(item)) 
-      : [];
-      setEmprestimo(emprestimos);
+      const response = await api.post("/emprestimos", dados);
+      setEmprestimo(Array.isArray(response.data.dados) ? response.data.dados : []);
     } catch (error) {
-      if (error.response) {
-        alert(error.response.data.mensagem + '\n' + error.response.data.dados);
-      } else {
-        alert('Erro no front-end' + '\n' + error);
-      }
+      alert(error.response?.data?.mensagem || "Erro ao buscar empréstimos.");
     }
   }
 
@@ -54,10 +43,9 @@ export default function Emprestimos() {
     <main className={styles.main}>
       <div className="containerGlobal">
         <h1 className={styles.emprestimo}>Empréstimos</h1>
-        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
-
+        <BarraPesquisa livNome={livNome} atLivNome={setLivNome} listaLivros={listaLivros} />
         <div className={styles.searchOptions}>
-          {searchOptions.map(option => (
+          {searchOptions.map((option) => (
             <label key={option.value} className={styles.radioLabel}>
               <input
                 type="radio"
@@ -70,7 +58,6 @@ export default function Emprestimos() {
             </label>
           ))}
         </div>
-
         <div className={styles.container}>
           {emprestimo.length > 0 ? (
             emprestimo.map((emp) => (
@@ -93,7 +80,10 @@ export default function Emprestimos() {
                   <div className={styles.line}></div>
                   <p className={styles.info}>Reservado por: {emp.usu_nome}</p>
                   <p className={styles.info}>Curso: {emp.cur_nome}</p>
-                  <p className={styles.info}>Período da reserva: {emp.Empréstimo || 'Data não disponível'} até {emp.Devolução || 'Data não disponível'}</p>
+                  <p className={styles.info}>
+                    Período da reserva: {emp.Empréstimo || "Data não disponível"} até{" "}
+                    {emp.Devolução || "Data não disponível"}
+                  </p>
                 </div>
               </div>
             ))

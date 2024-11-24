@@ -16,16 +16,11 @@ export default function ModaisLiv_({ show, onClose }) {
             "liv_cod": ''
         }
     ]);
-    // const [livEditora, setLivEditora] = useState([
-    //     { 
-    //         "edt_cod": '', 
-    //         "liv_cod": '' 
-    //     }
-    // ]);
+
     const [livGenero, setLivGenero] = useState([
-        { 
-            "gen_cod": '', 
-            "liv_cod": '' 
+        {
+            "gen_cod": '',
+            "liv_cod": ''
         }
     ]);
 
@@ -67,9 +62,6 @@ export default function ModaisLiv_({ show, onClose }) {
     const handleChangeAut = (e) => {
         setLivAutores(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
-    // const handleChangeEdt = (e) => {
-    //     setLivEditora(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    // };
     const handleChangeGen = (e) => {
         setLivGenero(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -118,48 +110,6 @@ export default function ModaisLiv_({ show, onClose }) {
         const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
         return testeResult;
     }
-
-    // function validaEdtCod() {
-
-    //     let objTemp = {
-    //         validado: valSucesso, // css referente ao estado de validação
-    //         mensagem: [] // array de mensagens de validação
-    //     };
-
-    //     if (!livEditora.edt_cod) {
-    //         objTemp.validado = valErro;
-    //         objTemp.mensagem.push('O código da editora é obrigatório');
-    //     }
-
-    //     setValida(prevState => ({
-    //         ...prevState, // mantém os valores anteriores
-    //         edt_cod: objTemp // atualiza apenas o campo 'nome'
-    //     }));
-
-    //     const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-    //     return testeResult;
-    // }
-
-    // function validaLivCodEdt() {
-
-    //     let objTemp = {
-    //         validado: valSucesso, // css referente ao estado de validação
-    //         mensagem: [] // array de mensagens de validação
-    //     };
-
-    //     if (!livEditora.liv_cod) {
-    //         objTemp.validado = valErro;
-    //         objTemp.mensagem.push('O código do livro é obrigatório');
-    //     }
-
-    //     setValida(prevState => ({
-    //         ...prevState, // mantém os valores anteriores
-    //         livCodEdt: objTemp // atualiza apenas o campo 'nome'
-    //     }));
-
-    //     const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-    //     return testeResult;
-    // }
 
     function validaGenCod() {
 
@@ -225,23 +175,6 @@ export default function ModaisLiv_({ show, onClose }) {
                     );
                 }
             }
-        // } else if (currentModal === 2) {
-        //     isValid = validaEdtCod() || validaLivCodEdt();
-        //     if (isValid) {
-        //         try {
-        //             const response = await api.post("/livros_editoras", livEditora);
-        //             if (response.data.sucesso) {
-        //                 alert("livro_editora adicionado com sucesso!");
-        //                 setCurrentModal(3); // Avançar para o terceiro modal
-        //             }
-        //         } catch (error) {
-        //             alert(
-        //                 error.response
-        //                     ? error.response.data.mensagem + "\n" + error.response.data.dados
-        //                     : "Erro no front-end" + "\n" + error
-        //             );
-        //         }
-        //     }
         } else if (currentModal === 2) {
             isValid = validaGenCod() || validaLivCodGen();
             if (isValid) {
@@ -307,43 +240,6 @@ export default function ModaisLiv_({ show, onClose }) {
                         </div>
                     )}
 
-                    {/* {currentModal === 2 && (
-                        <div className={styles.inputGroup}>
-                            <div className={valida.edt_cod.validado + ' ' + styles.valEdtCod} id="valAutNome">
-                                <p className={styles.textInput}>Código editora:</p>
-                                <div className={styles.divInput}>
-                                    <input
-                                        type="number"
-                                        name="edt_cod"
-                                        className={styles.inputField}
-                                        onChange={handleChangeEdt}
-                                    />
-                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                    <IoAlertCircleOutline className={styles.erro} />
-                                </div>
-                                {
-                                    valida.edt_cod.mensagem.map(mens => <small key={mens} id="edtCod" className={styles.small}>{mens}</small>)
-                                }
-                            </div>
-
-                            <div className={valida.livCodEdt.validado + ' ' + styles.valLivCod} id="valAutNome">
-                                <p className={styles.textInput}>Código do livro:</p>
-                                <div className={styles.divInput}>
-                                    <input
-                                        type="number"
-                                        name="liv_cod"
-                                        className={styles.inputField}
-                                        onChange={handleChangeEdt}
-                                    />
-                                    <IoCheckmarkCircleOutline className={styles.sucesso} />
-                                    <IoAlertCircleOutline className={styles.erro} />
-                                </div>
-                                {
-                                    valida.livCodEdt.mensagem.map(mens => <small key={mens} id="livCod" className={styles.small}>{mens}</small>)
-                                }
-                            </div>
-                        </div>
-                    )} */}
                     {currentModal === 2 && (
                         <div className={styles.inputGroup}>
 

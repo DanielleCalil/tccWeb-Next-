@@ -127,3 +127,44 @@
   margin-left: 0.5rem;
   line-height: 3rem;
 }
+
+.confirmButton {
+  height: 3.5rem;
+  padding: 0.7rem 2rem;
+  background-color: #FF735C;
+  color: white;
+  border: none;
+  border-radius: 1.875rem;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.cancelButton {
+  height: 3.5rem;
+  padding: 0.7rem 2rem;
+  background-color: #FFF;
+  color: black;
+  border: 1px solid black;
+  border-radius: 1.875rem;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.contButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.confirmButton:hover,
+.cancelButton:hover {
+  opacity: 0.5;
+  transition: 0.5s;
+}

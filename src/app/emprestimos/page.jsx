@@ -39,6 +39,44 @@ export default function Emprestimos() {
     }
   }
 
+  async function cancelarReserva(emp_cod) {
+    try {
+      // Atualize a chamada da API para incluir o emp_cod
+      const response = await api.patch(`/res_cancelar/${emp_cod}`);
+
+      // Recarregar a lista de reservas do servidor
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        listaLivros(user.cod); // Recarrega reservas do usuário
+      }
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.mensagem || "Erro ao cancelar a reserva.");
+      } else {
+        alert("Erro ao conectar ao servidor.");
+      }
+    }
+  }
+
+  async function confirmarReserva(emp_cod) {
+    try {
+      // Atualize a chamada da API para incluir o emp_cod
+      const response = await api.patch(`/emp_confirmar/${emp_cod}`);
+
+      // Recarregar a lista de reservas do servidor
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        listaLivros(user.cod); // Recarrega reservas do usuário
+      }
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.mensagem || "Erro ao confirmar a reserva.");
+      } else {
+        alert("Erro ao conectar ao servidor.");
+      }
+    }
+  }
+
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
@@ -82,8 +120,26 @@ export default function Emprestimos() {
                   <p className={styles.info}>Curso: {emp.cur_nome}</p>
                   <p className={styles.info}>
                     Período da reserva: {emp.Empréstimo || "Data não disponível"} até{" "}
-                    {emp.Devolução || "Data não disponível"}
+                    {emp.Devol_Prevista || "Data não disponível"}
                   </p>
+                  <p className={styles.info}>Devolvido: {emp.Devolução || "Data não disponível"}</p>
+                  <div className={styles.line}></div>
+                  <div className={styles.contButton}>
+
+                    <button
+                      className={styles.confirmButton}
+                      onClick={() => confirmarReserva(emp.emp_cod)}
+                    >
+                      Confirmar Reserva
+                    </button>
+                    <button
+                      className={styles.cancelButton}
+                      onClick={() => cancelarReserva(emp.emp_cod)}
+                    >
+                      Cancelar Reserva
+                    </button>
+
+                  </div>
                 </div>
               </div>
             ))

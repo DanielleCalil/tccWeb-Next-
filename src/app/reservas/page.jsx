@@ -61,8 +61,7 @@ export default function Reservas() {
         try {
             // Atualize a chamada da API para incluir o emp_cod
             const response = await api.patch(`/res_cancelar/${emp_cod}`);
-            setMensagemStatus(response.data.mensagem || "Reserva cancelada com sucesso!");
-            
+
             // Recarregar a lista de reservas do servidor
             const user = JSON.parse(localStorage.getItem('user'));
             if (user) {
@@ -70,14 +69,12 @@ export default function Reservas() {
             }
         } catch (error) {
             if (error.response) {
-                setMensagemStatus(error.response.data.mensagem || "Erro ao cancelar a reserva.");
+                alert(error.response.data.mensagem || "Erro ao cancelar a reserva.");
             } else {
-                setMensagemStatus("Erro ao conectar ao servidor.");
+                alert("Erro ao conectar ao servidor.");
             }
         }
     }
-    
-    
 
     return (
         <main className={styles.main}>
@@ -124,17 +121,18 @@ export default function Reservas() {
                                     <p className={styles.info}>Data do Empréstimo: {reserv.Empréstimo || 'Data não disponível'}</p>
                                     <p className={styles.info}>Data de Devolução: {reserv.Devolução || 'Data não disponível'}</p>
                                     <div className={styles.line}></div>
-                                    
-                                    {/* Botão de cancelar reserva */}
-                                    <button
-                                        className={styles.cancelButton}
-                                        onClick={() => cancelarReserva(reserv.emp_cod)}
-                                    >
-                                        Cancelar Reserva
-                                    </button>
-                                    <p className={styles.obs}>
-                                        OBS: Lembre-se de devolver o livro até a data!
-                                    </p>
+
+                                    <div className={styles.contButton}>
+                                        <button
+                                            className={styles.cancelButton}
+                                            onClick={() => cancelarReserva(reserv.emp_cod)}
+                                        >
+                                            Cancelar Reserva
+                                        </button>
+                                        <p className={styles.obs}>
+                                            OBS: Lembre-se de devolver o livro até a data!
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         ))
@@ -142,8 +140,6 @@ export default function Reservas() {
                         <h1>Não há resultados para a requisição</h1>
                     )}
                 </div>
-                {/* Mensagem de status */}
-                {mensagemStatus && <p className={styles.statusMessage}>{mensagemStatus}</p>}
             </div>
         </main>
     );

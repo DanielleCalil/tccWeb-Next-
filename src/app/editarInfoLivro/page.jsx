@@ -102,7 +102,7 @@ export default function EditarInformacoesLivro({ codLivro }) {
 
     async function listaGeneros() {
         try {
-            const response = await api.post('/generos');
+            const response = await api.get('/generos');
             setGenero(response.data.dados);
             console.log(response.data);
         } catch (error) {
@@ -142,10 +142,10 @@ export default function EditarInformacoesLivro({ codLivro }) {
     };
 
     const handleSave = async () => {
-        const { liv_pha_cod, liv_categ_cod, liv_nome, disponivel, liv_desc, aut_nome, edt_nome } = livro;
+        const { liv_pha_cod, liv_categ_cod, liv_nome, disponivel, liv_desc } = livro;
 
         // Verifica se os campos obrigatórios estão preenchidos
-        if (!liv_pha_cod || !liv_categ_cod || !liv_nome || !disponivel || !liv_desc || !aut_nome || !edt_nome) {
+        if (!liv_pha_cod || !liv_categ_cod || !liv_nome || !disponivel || !liv_desc) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }

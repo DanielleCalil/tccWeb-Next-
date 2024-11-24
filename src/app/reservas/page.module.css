@@ -174,6 +174,13 @@
     font-size: 1rem;
 }
 
+.contButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .confirmButton:hover,
 .cancelButton:hover {
     opacity: 0.5;

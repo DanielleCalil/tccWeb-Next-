@@ -217,7 +217,7 @@ export default function PerfilEditar({ codUsu }) {
         //     usu_foto
         // });
 
-        if (!usu_email || !usu_sexo) {
+        if (!usu_email) {
             alert('Todos os campos devem ser preenchidos');
             return;
         }

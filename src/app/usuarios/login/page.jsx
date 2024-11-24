@@ -35,45 +35,55 @@ export default function Login() {
     }
 
     async function logar() {
-
         try {
             const dados = {
                 usu_email_rm: login,
-                usu_senha: senha
-            }
-
+                usu_senha: senha,
+            };
+    
             const response = await api.post('/usu_login', dados);
-
-            if (response.data.sucesso == true) {
+    
+            if (response.data.sucesso === true) {
                 const usuario = response.data.dados;
+    
+                // **Validação de usu_tipo**
+                if (usuario.usu_tipo !== 2 && usuario.usu_tipo !== 3) {
+                    // Usuário com tipo inválido
+                    alert('Acesso negado: Este usuário não tem permissão para acessar o sistema.');
+                    return; // Interrompe o processo de login
+                }
+    
+                // **Se for um usuário válido, continua o login**
                 const objLogado = {
-                    "cod": usuario.usu_cod,
-                    "nome": usuario.usu_nome,
-                    "acesso": usuario.usu_tipo,
-                    "curso": usuario.cur_cod,
+                    cod: usuario.usu_cod,
+                    nome: usuario.usu_nome,
+                    acesso: usuario.usu_tipo,
+                    curso: usuario.cur_cod,
                 };
                 console.log(objLogado);
-                
-                // signin(JSON.stringify(objLogado));                
+    
+                // Salva os dados no localStorage
                 localStorage.clear();
                 localStorage.setItem('user', JSON.stringify(objLogado));
-                router.push('/'); // é possível direcionar de acordo com a situação
-
+    
+                // Redireciona para a página inicial
+                router.push('/');
             } else {
-                alert('Erro: ' + response.data.mensagem + '\n' + response.data.dados)
+                alert('Erro: ' + response.data.mensagem + '\n' + response.data.dados);
             }
-
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.dados == null ?
-                    error.response.data.mensagem
-                    :
-                    error.response.data.mensagem + '\n' + error.response.data.dados);
+                alert(
+                    error.response.data.dados == null
+                        ? error.response.data.mensagem
+                        : error.response.data.mensagem + '\n' + error.response.data.dados
+                );
             } else {
                 alert('Erro no front-end' + '\n' + error);
             }
         }
     }
+    
 
     // validação
     const [valida, setValida] = useState({

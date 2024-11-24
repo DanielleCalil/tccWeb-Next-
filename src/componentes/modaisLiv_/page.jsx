@@ -10,10 +10,24 @@ export default function ModaisLiv_({ show, onClose }) {
     if (!show) return null;
     const router = useRouter();
 
-    const [livAutores, setLivAutores] = useState({ "aut_cod": 0, "liv_cod": 0 });
-    const [livEditora, setLivEditora] = useState({ "edt_cod": 0, "liv_cod": 0 });
-    const [livGenero, setLivGenero] = useState({ "gen_cod": 0, "liv_cod": 0 });
-    // const [livCod, setLivCod] = useState({ "liv_cod": "" });
+    const [livAutores, setLivAutores] = useState([
+        {
+            "aut_cod": '',
+            "liv_cod": ''
+        }
+    ]);
+    // const [livEditora, setLivEditora] = useState([
+    //     { 
+    //         "edt_cod": '', 
+    //         "liv_cod": '' 
+    //     }
+    // ]);
+    const [livGenero, setLivGenero] = useState([
+        { 
+            "gen_cod": '', 
+            "liv_cod": '' 
+        }
+    ]);
 
     // Estado para controlar qual modal está sendo exibido
     const [currentModal, setCurrentModal] = useState(1);
@@ -53,9 +67,9 @@ export default function ModaisLiv_({ show, onClose }) {
     const handleChangeAut = (e) => {
         setLivAutores(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
-    const handleChangeEdt = (e) => {
-        setLivEditora(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    };
+    // const handleChangeEdt = (e) => {
+    //     setLivEditora(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    // };
     const handleChangeGen = (e) => {
         setLivGenero(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -105,47 +119,47 @@ export default function ModaisLiv_({ show, onClose }) {
         return testeResult;
     }
 
-    function validaEdtCod() {
+    // function validaEdtCod() {
 
-        let objTemp = {
-            validado: valSucesso, // css referente ao estado de validação
-            mensagem: [] // array de mensagens de validação
-        };
+    //     let objTemp = {
+    //         validado: valSucesso, // css referente ao estado de validação
+    //         mensagem: [] // array de mensagens de validação
+    //     };
 
-        if (!livEditora.edt_cod) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('O código da editora é obrigatório');
-        }
+    //     if (!livEditora.edt_cod) {
+    //         objTemp.validado = valErro;
+    //         objTemp.mensagem.push('O código da editora é obrigatório');
+    //     }
 
-        setValida(prevState => ({
-            ...prevState, // mantém os valores anteriores
-            edt_cod: objTemp // atualiza apenas o campo 'nome'
-        }));
+    //     setValida(prevState => ({
+    //         ...prevState, // mantém os valores anteriores
+    //         edt_cod: objTemp // atualiza apenas o campo 'nome'
+    //     }));
 
-        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-        return testeResult;
-    }
+    //     const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+    //     return testeResult;
+    // }
 
-    function validaLivCodEdt() {
+    // function validaLivCodEdt() {
 
-        let objTemp = {
-            validado: valSucesso, // css referente ao estado de validação
-            mensagem: [] // array de mensagens de validação
-        };
+    //     let objTemp = {
+    //         validado: valSucesso, // css referente ao estado de validação
+    //         mensagem: [] // array de mensagens de validação
+    //     };
 
-        if (!livEditora.liv_cod) {
-            objTemp.validado = valErro;
-            objTemp.mensagem.push('O código do livro é obrigatório');
-        }
+    //     if (!livEditora.liv_cod) {
+    //         objTemp.validado = valErro;
+    //         objTemp.mensagem.push('O código do livro é obrigatório');
+    //     }
 
-        setValida(prevState => ({
-            ...prevState, // mantém os valores anteriores
-            livCodEdt: objTemp // atualiza apenas o campo 'nome'
-        }));
+    //     setValida(prevState => ({
+    //         ...prevState, // mantém os valores anteriores
+    //         livCodEdt: objTemp // atualiza apenas o campo 'nome'
+    //     }));
 
-        const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
-        return testeResult;
-    }
+    //     const testeResult = objTemp.mensagem.length === 0 ? 1 : 0;
+    //     return testeResult;
+    // }
 
     function validaGenCod() {
 
@@ -211,24 +225,24 @@ export default function ModaisLiv_({ show, onClose }) {
                     );
                 }
             }
+        // } else if (currentModal === 2) {
+        //     isValid = validaEdtCod() || validaLivCodEdt();
+        //     if (isValid) {
+        //         try {
+        //             const response = await api.post("/livros_editoras", livEditora);
+        //             if (response.data.sucesso) {
+        //                 alert("livro_editora adicionado com sucesso!");
+        //                 setCurrentModal(3); // Avançar para o terceiro modal
+        //             }
+        //         } catch (error) {
+        //             alert(
+        //                 error.response
+        //                     ? error.response.data.mensagem + "\n" + error.response.data.dados
+        //                     : "Erro no front-end" + "\n" + error
+        //             );
+        //         }
+        //     }
         } else if (currentModal === 2) {
-            isValid = validaEdtCod() || validaLivCodEdt();
-            if (isValid) {
-                try {
-                    const response = await api.post("/livros_editoras", livEditora);
-                    if (response.data.sucesso) {
-                        alert("livro_editora adicionado com sucesso!");
-                        setCurrentModal(3); // Avançar para o terceiro modal
-                    }
-                } catch (error) {
-                    alert(
-                        error.response
-                            ? error.response.data.mensagem + "\n" + error.response.data.dados
-                            : "Erro no front-end" + "\n" + error
-                    );
-                }
-            }
-        } else if (currentModal === 3) {
             isValid = validaGenCod() || validaLivCodGen();
             if (isValid) {
                 try {
@@ -237,7 +251,8 @@ export default function ModaisLiv_({ show, onClose }) {
                         alert("livro_genero adicionado com sucesso!");
                         setTimeout(() => {
                             onClose(); // Fecha o modal após 2 segundos
-                        }, 2000);
+                        }, 1000);
+                        router.push('biblioteca')
                     }
                 } catch (error) {
                     alert(
@@ -292,7 +307,7 @@ export default function ModaisLiv_({ show, onClose }) {
                         </div>
                     )}
 
-                    {currentModal === 2 && (
+                    {/* {currentModal === 2 && (
                         <div className={styles.inputGroup}>
                             <div className={valida.edt_cod.validado + ' ' + styles.valEdtCod} id="valAutNome">
                                 <p className={styles.textInput}>Código editora:</p>
@@ -328,8 +343,8 @@ export default function ModaisLiv_({ show, onClose }) {
                                 }
                             </div>
                         </div>
-                    )}
-                    {currentModal === 3 && (
+                    )} */}
+                    {currentModal === 2 && (
                         <div className={styles.inputGroup}>
 
                             <div className={valida.gen_cod.validado + ' ' + styles.valGenCod} id="valAutNome">

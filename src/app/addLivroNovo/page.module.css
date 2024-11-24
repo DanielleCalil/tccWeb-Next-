@@ -26,14 +26,6 @@
     width: 100%;
 }
 
-.imgBook .imagePreview {
-    width: 15rem;
-    height: 20rem;
-    object-fit: cover;
-    border: 0.2rem solid #ccc;
-    margin-bottom: 1.25rem;
-}
-
 .inputTotal {
     margin: 0 auto;
     display: flex;

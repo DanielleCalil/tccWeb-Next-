@@ -38,11 +38,9 @@ export default function Solicitacao() {
   const [usuariosReprovados, setUsuariosReprovados] = useState([]);
   const [usuariosAprovados, setUsuariosAprovados] = useState([]);
   const [usuariosAprovar, setUsuariosAprovar] = useState([]);
-  
   // Funções para abrir e fechar o modal
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
-
   // Função para confirmar a aprovação/reprovação
   const handleConfirm = async (event) => {
     event.preventDefault();
@@ -76,7 +74,6 @@ export default function Solicitacao() {
       console.error(error);
     }
   };
-
   // Função para selecionar/deselecionar usuários
   const toggleUserSelection = (usu_cod, usu_tipo) => {
     setUsuariosAprovar((prevUsuariosAprovar) => {
@@ -88,7 +85,6 @@ export default function Solicitacao() {
       }
     });
   };
-
   // Função para buscar usuários com base no filtro
   const fetchSolicitacoes = async () => {
     try {
@@ -97,7 +93,7 @@ export default function Solicitacao() {
       if (filtroSituacao === "Reprovados") {
         // Busca solicitações reprovadas
         response = await api.post('/usu_reprovados');
-        setUsuariosReprovados(response.data.dados); 
+        setUsuariosReprovados(response.data.dados);
       } else if (filtroSituacao === "Aprovados") {
         // Busca solicitações aprovadas
         response = await api.post('/usu_aprovados');
@@ -107,10 +103,9 @@ export default function Solicitacao() {
         response = await api.post('/usu_pendentes');
         setUsuariosPendentes(response.data.dados);
       }
-
       // Define as solicitações filtradas com base no filtro atual
       setSolicitacoesFiltradas(response.data.dados);
-      setUsuariosAprovar([]); 
+      setUsuariosAprovar([]);
     } catch (error) {
       alert(`Erro ao buscar solicitações (${filtroSituacao}).`);
       console.error(`Erro ao buscar solicitações (${filtroSituacao}):`, error);
@@ -186,7 +181,7 @@ export default function Solicitacao() {
             </div>
           ))}
         </div>
-        
+
         <form onSubmit={handleConfirm}>
           <div className={styles.opcao}>
             <select
@@ -232,7 +227,7 @@ export default function Solicitacao() {
               <h1>Pressione algum dos filtros</h1>
             )}
           </div>
-          
+
           <ModalConfirmar
             show={showModalConfirm}
             onClose={closeModalConfirm}

@@ -16,31 +16,30 @@ const searchOptions = [
 ];
 
 export default function Reservas() {
-
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
     const imageLoader = ({ src, width, quality }) => {
-        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`
-    }
+        return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
+    };
 
     const [reserva, setReserva] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('liv_nome');
     const [mensagemStatus, setMensagemStatus] = useState('');
+    const [livNome, setlivNome] = useState('');
 
-    const [livNome, setlivNome] = useState('')
+    const router = useRouter();
 
     function atLivNome(nome) {
-        setlivNome(nome)
+        setlivNome(nome);
     }
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user')); 
+        const user = JSON.parse(localStorage.getItem('user'));
         if (!user) {
             router.push('/usuarios/login');
         } else {
-            listaLivros(user.cod); 
-            // console.log(user.cod);            
+            listaLivros(user.cod);
         }
     }, []);
 
@@ -48,7 +47,6 @@ export default function Reservas() {
         const dados = { usu_cod: user };
         try {
             const response = await api.post('/reservas/:usu_cod', dados);
-            console.log(response.data.dados);
             setReserva(response.data.dados);
         } catch (error) {
             if (error.response) {
@@ -59,13 +57,34 @@ export default function Reservas() {
         }
     }
 
+    async function cancelarReserva(emp_cod) {
+        try {
+            // Atualize a chamada da API para incluir o emp_cod
+            const response = await api.patch(`/res_cancelar/${emp_cod}`);
+            setMensagemStatus(response.data.mensagem || "Reserva cancelada com sucesso!");
+            
+            // Recarregar a lista de reservas do servidor
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                listaLivros(user.cod); // Recarrega reservas do usuário
+            }
+        } catch (error) {
+            if (error.response) {
+                setMensagemStatus(error.response.data.mensagem || "Erro ao cancelar a reserva.");
+            } else {
+                setMensagemStatus("Erro ao conectar ao servidor.");
+            }
+        }
+    }
+    
+    
+
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
                 <h1 className={styles.informacoes}>Informações do livro reservado</h1>
                 <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
 
-                {/* Radio Buttons para selecionar o critério de pesquisa */}
                 <div className={styles.searchOptions}>
                     {searchOptions.map(option => (
                         <label key={option.value} className={styles.radioLabel}>
@@ -105,6 +124,14 @@ export default function Reservas() {
                                     <p className={styles.info}>Data do Empréstimo: {reserv.Empréstimo || 'Data não disponível'}</p>
                                     <p className={styles.info}>Data de Devolução: {reserv.Devolução || 'Data não disponível'}</p>
                                     <div className={styles.line}></div>
+                                    
+                                    {/* Botão de cancelar reserva */}
+                                    <button
+                                        className={styles.cancelButton}
+                                        onClick={() => cancelarReserva(reserv.emp_cod)}
+                                    >
+                                        Cancelar Reserva
+                                    </button>
                                     <p className={styles.obs}>
                                         OBS: Lembre-se de devolver o livro até a data!
                                     </p>
@@ -115,6 +142,8 @@ export default function Reservas() {
                         <h1>Não há resultados para a requisição</h1>
                     )}
                 </div>
+                {/* Mensagem de status */}
+                {mensagemStatus && <p className={styles.statusMessage}>{mensagemStatus}</p>}
             </div>
         </main>
     );

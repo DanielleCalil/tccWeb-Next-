@@ -61,18 +61,35 @@ export default function GerenciarLivroExistente() {
         }
     }
 
-    const toggleBookStatus = async (liv_cod, currentStatus) => {
+    const toggleBookStatus = async (liv_cod, exe_cod, currentStatus) => {
         try {
             // Define a rota correta
-            const route = currentStatus === 1 ? '/api/liv_inativar' : '/api/liv_ativar';
-    
+            const route = currentStatus === 1 ? '/liv_inativar' : '/liv_ativar';
+            const payload = { liv_cod, exe_cod };
+
             // Faz a solicitação à API
-            const response = await api.post(route, { liv_cod });
-    
+            const response = await api.post(route, payload);
+
             if (response.status === 200) {
-                const updatedBooks = books.map(book =>
-                    book.liv_cod === liv_cod ? { ...book, liv_ativo: currentStatus === 1 ? 0 : 1 } : book
-                );
+                const updatedBooks = books.map(book => {
+                   if (book.liv_cod === liv_cod) {
+                    return {
+                        ...books,
+                        exemplares: Array.isArray(books.exemplares)
+                            ? book.exemplares.map(exemplar => {
+                                if (exemplar.exe_cod === exe_cod) {
+                                    return {
+                                        ...exemplar,
+                                        exe_ativo: currentStatus === 1 ? 0 : 1,
+                                    };
+                                }
+                                return exemplar;
+                            })
+                            : [],
+                    };
+                }
+                    return book;
+                });
                 setBooks(updatedBooks);
                 console.log(response.data.message);
             } else {
@@ -83,8 +100,8 @@ export default function GerenciarLivroExistente() {
             alert("Não foi possível alterar o status do livro.");
         }
     };
-    
-    
+
+
 
 
     return (
@@ -130,14 +147,14 @@ export default function GerenciarLivroExistente() {
                                         </div>
                                     </div>
                                     <div >
-                                    <label className={styles.switch}>
-    <input
-        type="checkbox"
-        checked={livro.liv_ativo === 1}
-        onChange={() => toggleBookStatus(livro.liv_cod, livro.liv_ativo)}
-    />
-    <span className={`${styles.slider} ${styles.round}`}></span>
-</label>
+                                        <label className={styles.switch}>
+                                            <input
+                                                type="checkbox"
+                                                checked={livro.liv_ativo === 1}
+                                                onChange={() => toggleBookStatus(livro.liv_cod, livro.liv_ativo)}
+                                            />
+                                            <span className={`${styles.slider} ${styles.round}`}></span>
+                                        </label>
 
                                     </div>
                                 </div>

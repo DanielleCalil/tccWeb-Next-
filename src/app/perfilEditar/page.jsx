@@ -115,7 +115,7 @@ export default function PerfilEditar({ codUsu }) {
         const dados = { usu_cod: codUsu };
 
         try {
-            const response = await api.post('/Usuc_disp', dados);
+            const response = await api.post('/usuc_disp', dados);
             setCursos(response.data.dados);
             // console.log("codUsu:", codUsu);
             // console.log("Resposta da API:", response.data);

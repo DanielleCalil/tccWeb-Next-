@@ -29,7 +29,6 @@ const searchOptions = [
 export default function Solicitacao() {
   const router = useRouter();
   const [selectedSearchOption, setSelectedSearchOption] = useState('usu_cod');
-  // const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [usuarioTipo, setUsuarioTipo] = useState("");
   const [solicitacoesFiltradas, setSolicitacoesFiltradas] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
@@ -39,14 +38,13 @@ export default function Solicitacao() {
   const [usuariosReprovados, setUsuariosReprovados] = useState([]);
   const [usuariosAprovados, setUsuariosAprovados] = useState([]);
   const [usuariosAprovar, setUsuariosAprovar] = useState([]);
-  console.log('select');
-  console.log(usuariosAprovar);
-
-
+  
+  // Funções para abrir e fechar o modal
   const openModalConfirm = () => setShowModalConfirm(true);
   const closeModalConfirm = () => setShowModalConfirm(false);
 
-  const handleConfirm = async () => {
+  // Função para confirmar a aprovação/reprovação
+  const handleConfirm = async (event) => {
     event.preventDefault();
 
     if (usuariosAprovar.length === 0) {
@@ -61,99 +59,67 @@ export default function Solicitacao() {
 
     const updatedData = {
       usuarios: usuariosAprovar,
-      novoTipo: parseInt(usuarioTipo) // Propriedade adicional
+      novoTipo: parseInt(usuarioTipo) // Converte para número
     };
 
-
     try {
-      await api.patch('/usuc_aprovar', updatedData);
+      // Chamada da API sem ':usu_cod'
+      await api.patch('/usuc_aprovar/:usu_cod', updatedData);
+      alert("Usuários atualizados com sucesso!");
       setShowModalConfirm(false);
-      // setSelectedUsers(new Set()); // Limpa a seleção após a confirmação 
       setUsuariosAprovar([]); // Limpa a seleção após a confirmação
       setUsuarioTipo(""); // Limpa o tipo selecionado
+      // Recarrega a lista de usuários após atualização
+      fetchSolicitacoes();
     } catch (error) {
       alert("Erro ao atualizar usuários. Por favor, tente novamente.");
       console.error(error);
     }
   };
 
-
+  // Função para selecionar/deselecionar usuários
   const toggleUserSelection = (usu_cod, usu_tipo) => {
-    // Cria o novo objeto de seleção
-    const updatedSelection = {
-      "usu_cod": usu_cod,
-      "usu_tipo": usu_tipo
-    };
-
-    // Atualiza o estado utilizando o setter
     setUsuariosAprovar((prevUsuariosAprovar) => {
-      return [...prevUsuariosAprovar, updatedSelection];
+      const exists = prevUsuariosAprovar.find(user => user.usu_cod === usu_cod);
+      if (exists) {
+        return prevUsuariosAprovar.filter(user => user.usu_cod !== usu_cod);
+      } else {
+        return [...prevUsuariosAprovar, { usu_cod, usu_tipo }];
+      }
     });
   };
 
-  useEffect(() => {
-    // Define uma função assíncrona para buscar as solicitações com base no filtro
-    async function fetchSolicitacoes() {
-      try {
-        let response;
+  // Função para buscar usuários com base no filtro
+  const fetchSolicitacoes = async () => {
+    try {
+      let response;
 
-        if (filtroSituacao === "Reprovados") {
-          // Busca solicitações reprovadas
-          response = await api.post('/usu_reprovados');
-          setUsuariosReprovados(response.data.dados); 
-        } else if (filtroSituacao === "Aprovados") {
-          // Busca solicitações aprovadas
-          response = await api.post('/usu_aprovados');
-          setUsuariosAprovados(response.data.dados);
-        } else {
-          // Caso padrão: Pendentes
-          response = await api.post('/usu_pendentes');
-          setUsuariosPendentes(response.data.dados);
-        }
-
-        // Define as solicitações filtradas com base no filtro atual
-        setSolicitacoesFiltradas(response.data.dados);
-        setUsuariosAprovar([]); 
-      } catch (error) {
-        alert(`Erro ao buscar solicitações (${filtroSituacao}).`);
-        console.error(`Erro ao buscar solicitações (${filtroSituacao}):`, error);
+      if (filtroSituacao === "Reprovados") {
+        // Busca solicitações reprovadas
+        response = await api.post('/usu_reprovados');
+        setUsuariosReprovados(response.data.dados); 
+      } else if (filtroSituacao === "Aprovados") {
+        // Busca solicitações aprovadas
+        response = await api.post('/usu_aprovados');
+        setUsuariosAprovados(response.data.dados);
+      } else {
+        // Caso padrão: Pendentes
+        response = await api.post('/usu_pendentes');
+        setUsuariosPendentes(response.data.dados);
       }
+
+      // Define as solicitações filtradas com base no filtro atual
+      setSolicitacoesFiltradas(response.data.dados);
+      setUsuariosAprovar([]); 
+    } catch (error) {
+      alert(`Erro ao buscar solicitações (${filtroSituacao}).`);
+      console.error(`Erro ao buscar solicitações (${filtroSituacao}):`, error);
     }
-
-    fetchSolicitacoes();
-  }, [filtroSituacao]); // Re-executa sempre que o filtro for alterado
-
-
-
-  const filtrarSolicitacoes = (situacao) => {
-    const situacaoFilter = situacaoMap[situacao];
-    const filtradas = listaUsuarios.filter((solicit) => {
-      if (situacao === "Aprovados") {
-        return solicit.usu_aprovado === situacaoFilter;
-      }
-      if (situacao === "Reprovados") {
-        return solicit.usu_tipo === situacaoFilter;
-      }
-      if (situacao === "Pendentes") {
-        return solicit.usu_aprovado === situacaoFilter;
-      }
-      return false;
-    });
-    // console.log("fil:", filtradas);
-
-    setSolicitacoesFiltradas(filtradas);
-  };
-
-  // Mudar o filtro de situação
-  const handleFiltroChange = (event) => {
-    const selectedSituation = event.target.value;
-    setFiltroSituacao(selectedSituation);
-    filtrarSolicitacoes(selectedSituation); // Aplica o filtro ao mudar
   };
 
   useEffect(() => {
-    filtrarSolicitacoes(filtroSituacao);
-  }, [listaUsuarios, filtroSituacao]); // Refiltra sempre que lista de usuários ou filtro mudar
+    fetchSolicitacoes();
+  }, [filtroSituacao]);
 
   const [livNome, setlivNome] = useState('');
 
@@ -169,7 +135,6 @@ export default function Solicitacao() {
     const dados = { [selectedSearchOption]: livNome };
     try {
       const response = await api.post("/usuarios", dados);
-      // console.log(response.data.dados);
       setListaUsuarios(response.data.dados);
     } catch (error) {
       if (error.response) {
@@ -221,6 +186,7 @@ export default function Solicitacao() {
             </div>
           ))}
         </div>
+        
         <form onSubmit={handleConfirm}>
           <div className={styles.opcao}>
             <select
@@ -254,7 +220,7 @@ export default function Solicitacao() {
                       <input
                         type="checkbox"
                         id={`checkbox-${solicit.usu_cod}`}
-                        checked={usuariosAprovar.usu_cod}
+                        checked={usuariosAprovar.some(user => user.usu_cod === solicit.usu_cod)}
                         onChange={() => toggleUserSelection(solicit.usu_cod, solicit.usu_tipo)}
                       />
                       <label htmlFor={`checkbox-${solicit.usu_cod}`} className={styles.customCheckbox}></label>
@@ -266,6 +232,7 @@ export default function Solicitacao() {
               <h1>Pressione algum dos filtros</h1>
             )}
           </div>
+          
           <ModalConfirmar
             show={showModalConfirm}
             onClose={closeModalConfirm}

@@ -86,6 +86,24 @@
   text-align: center;
 }
 
+.bookSection {
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.title {
+  font-weight: 400;
+  font-size: 1.8rem;
+  text-align: center; 
+  margin: 0; 
+  padding: 0; 
+}
+
 .bookList {
   font-weight: 400;
   margin-top: 1.25rem;
@@ -93,7 +111,6 @@
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  max-width: 98%;
   margin: 0 auto;
   margin-bottom: 1.875rem;
   cursor: pointer;
@@ -120,18 +137,25 @@
   transform: scale(1.05);
 }
 
+.bookCourse {
+  font-size: 1.2rem;
+  color: #000;
+  margin: 0;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+  font-weight: 400;
+  margin-top: 0.5rem;
+}
+
 .bookImage {
   width: 45%;
   height: auto;
   border-radius: 0.6rem;
   margin-bottom: 0.5rem;
-  margin-top: 1rem;
 }
 
 .bookInfo {
   padding: 1px;
-  display: flex;
-  flex-direction: column;
 }
 
 .bookTitle {
@@ -145,4 +169,8 @@
   font-size: 1.2rem;
   color: #555;
   margin-bottom: 0.5rem;
+}
+
+.aviso {
+  width: 300px;
 }

@@ -50,7 +50,7 @@ export default function Home() {
   async function listaLivros() {
     // Envia o dado de pesquisa de acordo com o campo selecionado
     const dados = {
-      [selectedSearchOption]: livNome, // Dinamicamente envia o campo baseado no radio button
+      [selectedSearchOption]: livNome,
     };
 
     try {
@@ -70,7 +70,22 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className="containerGlobal">
-        {/* Seções de Imagem e Recomendação */}
+        <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
+        <div className={styles.searchOptions}>
+          {searchOptions.map(option => (
+            <label key={option.value} className={styles.radioLabel}>
+              <input
+                type="radio"
+                name="searchOption"
+                value={option.value}
+                checked={selectedSearchOption === option.value}
+                onChange={() => setSelectedSearchOption(option.value)}
+              />
+              {option.label}
+            </label>
+          ))}
+        </div>
+
         <div className={styles.img}>
           <Image
             src="/imagens_telas/horario.png"
@@ -82,47 +97,36 @@ export default function Home() {
           />
         </div>
       </div>
-      <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
-      {/* Radio Buttons para selecionar o critério de pesquisa */}
-      <div className={styles.searchOptions}>
-        {searchOptions.map(option => (
-          <label key={option.value} className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="searchOption"
-              value={option.value}
-              checked={selectedSearchOption === option.value}
-              onChange={() => setSelectedSearchOption(option.value)}
-            />
-            {option.label}
-          </label>
-        ))}
+
+      <div className={styles.bookSection}>
+        <h1 className={styles.title}>Recomendações dos professores</h1>
       </div>
       <div className={styles.container}>
         <div className={styles.bookList}>
           {sortedBooks.length > 0 ? (
-            sortedBooks.map(livro => (
-              <div className={styles.bookItem} key={livro.liv_cod}>
-                <Link href={`/biblioteca/${livro.liv_cod}`}>
+            sortedBooks.map(livroRec => (
+              <div className={styles.bookItem} key={livroRec.liv_nome}>
+                <Link href={`/recomendacoes/${livroRec.liv_cod}`}>
                   <div>
+                    <p className={styles.bookCourse}>{livroRec.cur_nome}</p>
                     <Image
-                      loader={imageLoader} /* Quando imagem vem por url */
-                      src={livro.liv_foto_capa}
-                      alt={livro.liv_nome}
+                      loader={imageLoader}
+                      src={livroRec.liv_foto_capa}
+                      alt={livroRec.liv_nome}
                       width={100}
                       height={150}
                       className={styles.bookImage}
                     />
                     <div className={styles.bookInfo}>
-                      <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
-                      <p className={styles.bookAuthor}>{livro.aut_nome}</p>
+                      <h2 className={styles.bookTitle}>{livroRec.liv_nome}</h2>
+                      <p className={styles.bookAuthor}>{livroRec.aut_nome}</p>
                     </div>
                   </div>
                 </Link>
               </div>
             ))
           ) : (
-            <h1>Não há resultados para a requisição</h1>
+            <h1 className={styles.aviso}>Não há resultados para a requisição</h1>
           )}
         </div>
       </div>

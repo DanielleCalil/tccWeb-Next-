@@ -279,7 +279,7 @@ export default function PerfilEditar({ codUsu }) {
                                     priority
                                 />
                             </div>
-                            <FileInput onFileSelect={handleImageChange} onChange={handleFileChange} />
+                            {/* <FileInput onFileSelect={handleImageChange} onChange={handleFileChange} /> */}
                             {/* <div>
                                 <input
                                     type="file"

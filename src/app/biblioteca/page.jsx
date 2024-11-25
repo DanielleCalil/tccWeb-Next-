@@ -12,8 +12,7 @@ const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
-    { value: 'gen_nome', label: 'Gênero' },
-    { value: 'liv_cod', label: 'Código' },
+    { value: 'gen_nome', label: 'Gênero' }
 ];
 
 export default function Biblioteca() {

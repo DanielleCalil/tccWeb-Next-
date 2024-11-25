@@ -13,7 +13,6 @@ const searchOptions = [
     { value: 'liv_nome', label: 'Livro' },
     { value: 'aut_nome', label: 'Autor' },
     { value: 'edt_nome', label: 'Editora' },
-    { value: 'liv_cod', label: 'Código' },
 ];
 
 export default function GerenciarLivroExistente() {
@@ -61,48 +60,35 @@ export default function GerenciarLivroExistente() {
         }
     }
 
-    const toggleBookStatus = async (liv_cod, exe_cod, currentStatus) => {
+    const toggleBookStatus = async (liv_cod) => {
         try {
-            // Define a rota correta
-            const route = currentStatus === 1 ? '/liv_inativar' : '/liv_ativar';
-            const payload = { liv_cod, exe_cod };
+            const updatedBooks = books.map(book =>
+                book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
+            );
+            setBooks(updatedBooks);
 
-            // Faz a solicitação à API
-            const response = await api.post(route, payload);
+            // Envia a atualização para a API
+            const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
 
-            if (response.status === 200) {
-                const updatedBooks = books.map(book => {
-                   if (book.liv_cod === liv_cod) {
-                    return {
-                        ...books,
-                        exemplares: Array.isArray(books.exemplares)
-                            ? book.exemplares.map(exemplar => {
-                                if (exemplar.exe_cod === exe_cod) {
-                                    return {
-                                        ...exemplar,
-                                        exe_ativo: currentStatus === 1 ? 0 : 1,
-                                    };
-                                }
-                                return exemplar;
-                            })
-                            : [],
-                    };
-                }
-                    return book;
-                });
-                setBooks(updatedBooks);
-                console.log(response.data.message);
-            } else {
-                throw new Error(`Erro: ${response.status}`);
+            const response = await api.post('/statusLivros', {
+                liv_cod: bookToUpdate.liv_cod,
+                liv_ativo: bookToUpdate.liv_ativo
+            });
+
+            // Confirmação no console
+            if (!response.data.sucesso) {
+                throw new Error("Erro ao atualizar status");
             }
+            console.log(`Status atualizado para: ${bookToUpdate.liv_ativo}`);
         } catch (error) {
-            console.error("Erro ao alterar status:", error.message);
-            alert("Não foi possível alterar o status do livro.");
+            alert('Erro ao atualizar o status: ' + error.message);
+            setBooks(prevBooks =>
+                prevBooks.map(book =>
+                    book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
+                )
+            );
         }
     };
-
-
-
 
     return (
         <main className={styles.main}>
@@ -146,16 +132,15 @@ export default function GerenciarLivroExistente() {
                                             <p className={styles.bookAuthor}>{livro.aut_nome}</p>
                                         </div>
                                     </div>
-                                    <div >
+                                    <div className={styles.toggleContainer}>
                                         <label className={styles.switch}>
                                             <input
                                                 type="checkbox"
                                                 checked={livro.liv_ativo === 1}
-                                                onChange={() => toggleBookStatus(livro.liv_cod, livro.liv_ativo)}
+                                                onChange={() => toggleBookStatus(livro.liv_cod)}
                                             />
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>
-
                                     </div>
                                 </div>
                             ))
@@ -163,23 +148,8 @@ export default function GerenciarLivroExistente() {
                             <h1>Não há resultados para a requisição</h1>
                         )}
                     </div>
-
-                    {/* <div className={styles.editar}>
-                        <button
-                            type="submit"
-                            onClick={openModalConfirm}
-                            className={styles.addButton}
-                        >
-                            Salvar Alterações
-                        </button>
-                    </div> */}
                 </div>
             </div>
-            {/* <ModalConfirmar
-                show={showModalConfirm}
-                onClose={closeModalConfirm}
-                onConfirm={handleConfirm}
-            /> */}
         </main>
     );
 }

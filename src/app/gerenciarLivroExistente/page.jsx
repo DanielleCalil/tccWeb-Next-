@@ -72,12 +72,13 @@ export default function GerenciarLivroExistente() {
 
             const response = await api.post('/statusLivros', {
                 liv_cod: bookToUpdate.liv_cod,
-                liv_ativo: bookToUpdate.liv_ativo
+                currentStatus: bookToUpdate.liv_ativo,
             });
 
-            // Confirmação no console
+            const data = await response.json();
+
             if (!response.data.sucesso) {
-                throw new Error("Erro ao atualizar status");
+                throw new Error(data.error ||"Erro ao atualizar status");
             }
             console.log(`Status atualizado para: ${bookToUpdate.liv_ativo}`);
         } catch (error) {

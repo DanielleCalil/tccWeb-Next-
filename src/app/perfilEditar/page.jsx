@@ -435,7 +435,7 @@ export default function PerfilEditar({ codUsu }) {
             <div className={styles.editar}>
                 <button
                     type="submit"
-                    onClick={() => { handleSave(); }}
+                    onClick={() => { handleSave() }}
                     className={styles.saveButton}
                 >
                     {isSaving ? 'Salvando...' : 'Salvar alterações'}

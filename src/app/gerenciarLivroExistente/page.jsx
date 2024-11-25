@@ -68,14 +68,12 @@ export default function GerenciarLivroExistente() {
     const toggleBookStatus = async (liv_cod, exe_cod, exe_ativo, liv_ativo) => {
         try {
             // Define a rota correta com base no estado atual
-            const route = exe_ativo === 0 ? '/liv_inativar' : '/liv_ativar';
+            
+            const route = liv_ativo === 0 ? '/liv_ativar' : '/liv_inativar';
     
             // Inclui os valores adicionais no payload
             const payload = {
-                liv_cod,
-                exe_cod,
-                exe_ativo: exe_ativo === 0 ? 1 : 0, // Atualiza o status do exemplar
-                liv_ativo: liv_ativo === 0 ? 1 : 0,
+                liv_cod
             };
     
             // Faz a solicitação à API
@@ -108,6 +106,7 @@ export default function GerenciarLivroExistente() {
             } else {
                 throw new Error(`Erro: ${response.status}`);
             }
+            listaLivros();
         } catch (error) {
             console.error("Erro ao alterar status:", error.message);
             alert("Não foi possível alterar o status do livro.");
@@ -119,22 +118,6 @@ export default function GerenciarLivroExistente() {
             <div className="containerGlobal">
                 <h1 className={styles.ativarLivroExistente}>Gerenciar livros existentes</h1>
                 <div className={styles.container}>
-                    <BarraPesquisa livNome={livNome} atLivNome={atLivNome} listaLivros={listaLivros} />
-                    {/* Radio Buttons para selecionar o critério de pesquisa */}
-                    <div className={styles.searchOptions}>
-                        {searchOptions.map(option => (
-                            <label key={option.value} className={styles.radioLabel}>
-                                <input
-                                    type="radio"
-                                    name="searchOption"
-                                    value={option.value}
-                                    checked={selectedSearchOption === option.value}
-                                    onChange={() => setSelectedSearchOption(option.value)}
-                                />
-                                {option.label}
-                            </label>
-                        ))}
-                    </div>
                     <div className={styles.bookList}>
                         {books.length > 0 ? (
                             books.map(livro => (

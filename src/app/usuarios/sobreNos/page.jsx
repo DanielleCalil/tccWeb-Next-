@@ -50,13 +50,13 @@ export default function SobreNos() {
                 <div className={styles.membros}>
                   <Image
                     src="/imagens_telas/avatarKian.jpeg"
-                    alt="Avatar Kian"
+                    alt="Avatar Dylan"
                     className={styles.imagemFlutuante}
                     width={1024}
                     height={1024}
                   />
-                  <text className={styles.nome}>Sayuri: </text><text>Formada em design gráfico pela Univem em Marilía, mas decidiu se aprofundar na
-                    área do desenvolvimento para conciliar os seus conhecimentos. Como já tinha conhecimento no front, ela resolveu se
+                  <text className={styles.nome}>Dylan: </text><text>Formado em design gráfico pela Univem em Marilía, mas decidiu se aprofundar na
+                    área do desenvolvimento para conciliar os seus conhecimentos. Como já tinha conhecimento no front, ele resolveu se
                     desafiar no banco de dados e API, mas nunca abandonou o lado criativo.
                   </text>
                 </div>

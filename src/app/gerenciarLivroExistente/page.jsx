@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 
 import styles from "./page.module.css";
 import BarraPesquisa from "@/componentes/barraPesquisa/page";
-import ModalConfirmar from '@/componentes/modalConfirmar/page';
 import api from '@/services/api';
 
 const searchOptions = [
@@ -22,8 +21,14 @@ export default function GerenciarLivroExistente() {
     const apiPorta = process.env.NEXT_PUBLIC_API_PORTA;
 
     const imageLoader = ({ src, width, quality }) => {
+        if (!src) return ''; // Retorna vazio se o src estiver ausente
+        if (!apiUrl || !apiPorta) {
+            console.error('Variáveis de ambiente para API não configuradas corretamente.');
+            return '';
+        }
         return `${apiUrl}:${apiPorta}${src}?w=${width}&q=${quality || 75}`;
     };
+
 
     const router = useRouter();
 
@@ -60,26 +65,34 @@ export default function GerenciarLivroExistente() {
         }
     }
 
-    const toggleBookStatus = async (liv_cod, exe_cod, liv_ativo) => {
+    const toggleBookStatus = async (liv_cod, exe_cod, exe_ativo, liv_ativo) => {
         try {
-            // Define a rota correta
-            const route = liv_ativo === 1 ? '/liv_inativar' : '/liv_ativar';
-            const payload = { liv_cod, exe_cod };
-
+            // Define a rota correta com base no estado atual
+            const route = exe_ativo === 0 ? '/liv_inativar' : '/liv_ativar';
+    
+            // Inclui os valores adicionais no payload
+            const payload = {
+                liv_cod,
+                exe_cod,
+                exe_ativo: exe_ativo === 0 ? 1 : 0, // Atualiza o status do exemplar
+                liv_ativo: liv_ativo === 0 ? 1 : 0,
+            };
+    
             // Faz a solicitação à API
-            const response = await api.post(route, payload);
-
+            const response = await api.patch(route, payload);
+    
             if (response.status === 200) {
+                // Atualiza o estado local dos livros
                 const updatedBooks = books.map(book => {
                     if (book.liv_cod === liv_cod) {
                         return {
-                            ...books,
-                            exemplares: Array.isArray(books.exemplares)
+                            ...book,
+                            exemplares: Array.isArray(book.exemplares)
                                 ? book.exemplares.map(exemplar => {
                                     if (exemplar.exe_cod === exe_cod) {
                                         return {
                                             ...exemplar,
-                                            exe_ativo: liv_ativo === 1 ? 0 : 1,
+                                            exe_ativo: exe_ativo === 0 ? 1 : 0, // Atualiza o valor do `exe_ativo`
                                         };
                                     }
                                     return exemplar;
@@ -89,7 +102,8 @@ export default function GerenciarLivroExistente() {
                     }
                     return book;
                 });
-                setBooks(updatedBooks);
+    
+                setBooks(updatedBooks); // Atualiza a lista de livros no estado
                 console.log(response.data.message);
             } else {
                 throw new Error(`Erro: ${response.status}`);
@@ -99,7 +113,7 @@ export default function GerenciarLivroExistente() {
             alert("Não foi possível alterar o status do livro.");
         }
     };
-
+    
     return (
         <main className={styles.main}>
             <div className="containerGlobal">
@@ -129,14 +143,19 @@ export default function GerenciarLivroExistente() {
                                     className={`${styles.bookItem} ${livro.liv_ativo === 1 ? styles.ativo : styles.inativo}`}
                                 >
                                     <div>
-                                        <Image
-                                            loader={imageLoader}
-                                            src={livro.liv_foto_capa}
-                                            alt={livro.liv_nome}
-                                            width={100}
-                                            height={150}
-                                            className={styles.bookImage}
-                                        />
+                                        {livro.liv_foto_capa ? (
+                                            <Image
+                                                loader={imageLoader}
+                                                src={livro.liv_foto_capa}
+                                                alt={livro.liv_nome || 'Capa do livro'}
+                                                width={100}
+                                                height={150}
+                                                className={styles.bookImage}
+                                            />
+                                        ) : (
+                                            <div className={styles.placeholderImage}>Imagem não disponível</div>
+                                        )}
+
                                         <div className={styles.bookInfo}>
                                             <h2 className={styles.bookTitle}>{livro.liv_nome}</h2>
                                             <p className={styles.bookAuthor}>{livro.aut_nome}</p>
@@ -147,7 +166,7 @@ export default function GerenciarLivroExistente() {
                                             <input
                                                 type="checkbox"
                                                 checked={livro.liv_ativo === 1}
-                                                onChange={() => toggleBookStatus(livro.liv_cod)}
+                                                onChange={() => toggleBookStatus(livro.liv_cod, livro.exe_cod, livro.exe_ativo, livro.liv_ativo)}
                                             />
                                             <span className={`${styles.slider} ${styles.round}`}></span>
                                         </label>

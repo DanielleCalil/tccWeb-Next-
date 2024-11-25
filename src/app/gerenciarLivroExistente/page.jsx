@@ -60,34 +60,43 @@ export default function GerenciarLivroExistente() {
         }
     }
 
-    const toggleBookStatus = async (liv_cod) => {
+    const toggleBookStatus = async (liv_cod, exe_cod, liv_ativo) => {
         try {
-            const updatedBooks = books.map(book =>
-                book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
-            );
-            setBooks(updatedBooks);
+            // Define a rota correta
+            const route = liv_ativo === 1 ? '/liv_inativar' : '/liv_ativar';
+            const payload = { liv_cod, exe_cod };
 
-            // Envia a atualização para a API
-            const bookToUpdate = updatedBooks.find(b => b.liv_cod === liv_cod);
+            // Faz a solicitação à API
+            const response = await api.post(route, payload);
 
-            const response = await api.post('/statusLivros', {
-                liv_cod: bookToUpdate.liv_cod,
-                currentStatus: bookToUpdate.liv_ativo,
-            });
-
-            const data = await response.json();
-
-            if (!response.data.sucesso) {
-                throw new Error(data.error ||"Erro ao atualizar status");
+            if (response.status === 200) {
+                const updatedBooks = books.map(book => {
+                    if (book.liv_cod === liv_cod) {
+                        return {
+                            ...books,
+                            exemplares: Array.isArray(books.exemplares)
+                                ? book.exemplares.map(exemplar => {
+                                    if (exemplar.exe_cod === exe_cod) {
+                                        return {
+                                            ...exemplar,
+                                            exe_ativo: liv_ativo === 1 ? 0 : 1,
+                                        };
+                                    }
+                                    return exemplar;
+                                })
+                                : [],
+                        };
+                    }
+                    return book;
+                });
+                setBooks(updatedBooks);
+                console.log(response.data.message);
+            } else {
+                throw new Error(`Erro: ${response.status}`);
             }
-            console.log(`Status atualizado para: ${bookToUpdate.liv_ativo}`);
         } catch (error) {
-            alert('Erro ao atualizar o status: ' + error.message);
-            setBooks(prevBooks =>
-                prevBooks.map(book =>
-                    book.liv_cod === liv_cod ? { ...book, liv_ativo: book.liv_ativo === 1 ? 0 : 1 } : book
-                )
-            );
+            console.error("Erro ao alterar status:", error.message);
+            alert("Não foi possível alterar o status do livro.");
         }
     };
 
